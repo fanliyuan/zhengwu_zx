@@ -41,11 +41,13 @@ export default class PageHeader extends PureComponent {
       this.getBreadcrumbDom();
     }
   }
+
   onChange = key => {
     if (this.props.onTabChange) {
       this.props.onTabChange(key);
     }
   };
+
   getBreadcrumbProps = () => {
     return {
       routes: this.props.routes || this.context.routes,
@@ -54,12 +56,14 @@ export default class PageHeader extends PureComponent {
       breadcrumbNameMap: this.props.breadcrumbNameMap || this.context.breadcrumbNameMap,
     };
   };
+
   getBreadcrumbDom = () => {
     const breadcrumb = this.conversionBreadcrumbList();
     this.setState({
       breadcrumb,
     });
   };
+
   // Generated according to props
   conversionFromProps = () => {
     const { breadcrumbList, breadcrumbSeparator, linkElement = 'a' } = this.props;
@@ -81,15 +85,16 @@ export default class PageHeader extends PureComponent {
       </Breadcrumb>
     );
   };
+
   conversionFromLocation = (routerLocation, breadcrumbNameMap) => {
     const { breadcrumbSeparator, linkElement = 'a' } = this.props;
     // Convert the url to an array
-    console.log(routerLocation.pathname); // eslint-disable-line
-    console.log(routerLocation.pathname.substr(routerLocation.pathname.lastIndexOf('/'))); // eslint-disable-line
+    // console.log(routerLocation.pathname); // eslint-disable-line
+    // console.log(routerLocation.pathname.substr(routerLocation.pathname.lastIndexOf('/'))); // eslint-disable-line
     // const pathSnippets = urlToList(routerLocation.pathname.substr(routerLocation.pathname.lastIndexOf('/')));
     const pathSnippets = urlToList(routerLocation.pathname);
     // Loop data mosaic routing
-    console.log(pathSnippets); // eslint-disable-line
+    // console.log(pathSnippets); // eslint-disable-line
     const extraBreadcrumbItems = pathSnippets.map((url, index) => {
       const currentBreadcrumb = getBreadcrumb(breadcrumbNameMap, url);
       const isLinkable = index !== pathSnippets.length - 1 && currentBreadcrumb.component;
@@ -121,6 +126,7 @@ export default class PageHeader extends PureComponent {
       </Breadcrumb>
     );
   };
+
   /**
    * 将参数转化为面包屑
    * Convert parameters into breadcrumbs
@@ -156,6 +162,7 @@ export default class PageHeader extends PureComponent {
     }
     return null;
   };
+
   // 渲染Breadcrumb 子节点
   // Render the Breadcrumb child node
   itemRender = (route, params, routes, paths) => {

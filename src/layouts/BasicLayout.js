@@ -121,7 +121,7 @@ class BasicLayout extends React.PureComponent {
   getPageTitle() {
     const { routerData, location } = this.props;
     const { pathname } = location;
-    let title = 'Ant Design Pro';
+    let title = '政务系统';
     let currRouterData = null;
     // match params path
     Object.keys(routerData).forEach(key => {
@@ -130,7 +130,7 @@ class BasicLayout extends React.PureComponent {
       }
     });
     if (currRouterData && currRouterData.name) {
-      title = `${currRouterData.name} - Ant Design Pro`;
+      title = `${currRouterData.name} - 政务系统`;
     }
     return title;
   }
@@ -279,7 +279,7 @@ class BasicLayout extends React.PureComponent {
               ]}
               copyright={
                 <Fragment>
-                  Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+                  Copyright <Icon type="copyright" /> 2018 国信优易
                 </Fragment>
               }
             />
