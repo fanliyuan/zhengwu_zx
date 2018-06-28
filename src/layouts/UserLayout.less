@@ -5,24 +5,31 @@
   flex-direction: column;
   height: 100vh;
   overflow: auto;
-  background: #f0f2f5;
+  background: @bg_color;
 }
 
 .content {
-  padding: 32px 0;
+  padding: 11px 25px;
   flex: 1;
 }
 
 @media (min-width: @screen-md-min) {
   .container {
-    background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
-    background-repeat: no-repeat;
-    background-position: center 110px;
-    background-size: 100%;
+    // background-image: url('https://gw.alipayobjects.com/zos/rmsportal/TVYTbAXWheQpRcWDaDMu.svg');
+    // background-repeat: no-repeat;
+    // background-position: center 110px;
+    // background-size: 100%;
+    background: @bg_color;
   }
 
   .content {
-    padding: 112px 0 24px 0;
+    // padding: 112px 0 24px 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: @heading-color-dark;
+    border-radius: 10px;
   }
 }
 
@@ -31,19 +38,28 @@
 }
 
 .header {
-  height: 44px;
-  line-height: 44px;
+  height: 77px;
+  line-height: 77px;
   a {
     text-decoration: none;
   }
 }
 
 .logo {
-  height: 44px;
+  height: 77px;
+  width: 76px;
   vertical-align: top;
-  margin-right: 16px;
+  // margin-right: 16px;
 }
-
+.superTitle {
+  // font-family: 'PingFangSC-Semibold', 'PingFang SC Semibold', 'PingFang SC';
+  font-weight: 600;
+  font-style: normal;
+  font-size: 24px;
+  color: @bg_color;
+  line-height: 47px;
+  margin-top: 10px;
+}
 .title {
   font-size: 33px;
   color: @heading-color;

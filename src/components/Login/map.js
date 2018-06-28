@@ -12,7 +12,7 @@ const map = {
     },
     rules: [
       {
-        required: true,
+        required: false,
         message: 'Please enter username!',
       },
     ],
@@ -27,7 +27,7 @@ const map = {
     },
     rules: [
       {
-        required: true,
+        required: false,
         message: 'Please enter password!',
       },
     ],
@@ -41,7 +41,7 @@ const map = {
     },
     rules: [
       {
-        required: true,
+        required: false,
         message: 'Please enter mobile number!',
       },
       {
@@ -59,7 +59,7 @@ const map = {
     },
     rules: [
       {
-        required: true,
+        required: false,
         message: 'Please enter Captcha!',
       },
     ],
