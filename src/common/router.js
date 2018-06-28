@@ -76,7 +76,9 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Overview/Analysis')),
     },
     '/overview/logging': {
-      component: dynamicWrapper(app, ['overviewLogging'], () => import('../routes/Overview/Logging')),
+      component: dynamicWrapper(app, ['overviewLogging'], () =>
+        import('../routes/Overview/Logging')
+      ),
     },
     // '/overview/workplace': {
     //   component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
@@ -89,8 +91,16 @@ export const getRouterData = app => {
     '/audit/logging': {
       component: dynamicWrapper(app, ['auditLogging'], () => import('../routes/Audit/Logging')),
     },
+    '/overview/SystemNotification': {
+      component: dynamicWrapper(app, [], () => import('../routes/Overview/SystemNotification')),
+    },
+    '/overview/noticeDetail': {
+      component: dynamicWrapper(app, [], () => import('../routes/Overview/noticeDetail')),
+    },
     '/audit/operation': {
-      component: dynamicWrapper(app, ['auditOperation', 'auditLogging'], () => import('../routes/Audit/Operation')),
+      component: dynamicWrapper(app, ['auditOperation', 'auditLogging'], () =>
+        import('../routes/Audit/Operation')
+      ),
     },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),

@@ -14,6 +14,14 @@ const menuData = [
         name: '登录日志',
         path: 'logging',
       },
+      {
+        name: '系统通知',
+        path: 'systemNotification',
+      },
+      {
+        name: '通知详情',
+        path: 'noticeDetail',
+      },
       // {
       //   name: '工作台',
       //   path: 'workplace',
