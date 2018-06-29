@@ -82,31 +82,59 @@ export async function getLog(params) {
   return request('/api/log', {
     method: 'POST',
     body: params,
-  })
+  });
+}
+
+export async function getNotices(params) {
+  return request('/api/sysNotices', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function deleteTableRows(params) {
+  return request('/api/deleteRows', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function changeTableStates(params) {
+  return request('/api/changeRows', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+export async function selectInfos(params) {
+  return request('/api/selectTableInfo', {
+    method: 'POST',
+    body: params,
+  });
 }
 
 export async function getLogState() {
-  return request('/api/log/state')
+  return request('/api/log/state');
 }
 
 export async function getOrganization() {
-  return request('/api/organization')
+  return request('/api/organization');
 }
 
 export async function getAuditLog(params) {
   return request('/api/audit/logging', {
     method: 'POST',
     body: params,
-  })
+  });
 }
 
 export async function getAuditOperation(params) {
   return request('/api/audit/operation', {
     method: 'POST',
     body: params,
-  })
+  });
 }
 
 export async function getOperationList() {
-  return request('/api/audit/operation-list')
+  return request('/api/audit/operation-list');
 }

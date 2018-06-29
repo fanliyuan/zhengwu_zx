@@ -92,10 +92,14 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['auditLogging'], () => import('../routes/Audit/Logging')),
     },
     '/overview/SystemNotification': {
-      component: dynamicWrapper(app, [], () => import('../routes/Overview/SystemNotification')),
+      component: dynamicWrapper(app, ['SystemNotification'], () =>
+        import('../routes/Overview/SystemNotification')
+      ),
     },
-    '/overview/noticeDetail': {
-      component: dynamicWrapper(app, [], () => import('../routes/Overview/noticeDetail')),
+    '/overview/noticeDetail/:params': {
+      component: dynamicWrapper(app, ['SystemNotification'], () =>
+        import('../routes/Overview/noticeDetail')
+      ),
     },
     '/audit/operation': {
       component: dynamicWrapper(app, ['auditOperation', 'auditLogging'], () =>

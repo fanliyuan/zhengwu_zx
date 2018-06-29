@@ -6,7 +6,8 @@ import { getProfileBasicData } from './mock/profile';
 import { getProfileAdvancedData } from './mock/profile';
 import { getNotices } from './mock/notices';
 import { format, delay } from 'roadhog-api-doc';
-import { getLog, getState } from './mock/log'
+import { getLog, getState } from './mock/log';
+import { getSysNotices, getDeleteInfo, getChangeInfo, selectRowInfo } from './mock/sysNotices';
 import { organizationData, getAuditOperation, getAuditLog } from './mock/audit';
 
 // 是否禁用代理
@@ -102,12 +103,16 @@ const proxy = {
   },
   'GET /api/notices': getNotices,
   'POST /api/log': getLog,
+  'POST /api/sysNotices': getSysNotices,
+  'POST /api/deleteRows': getDeleteInfo,
+  'POST /api/changeRows': getChangeInfo,
+  'POST /api/selectTableInfo': selectRowInfo,
   'GET /api/log/state': getState,
   'GET /api/organization': (req, res) => {
     res.send({
       status: 200,
       data: organizationData,
-    })
+    });
   },
   'POST /api/audit/logging': getAuditLog,
   'POST /api/audit/operation': getAuditOperation,
@@ -126,9 +131,9 @@ const proxy = {
         {
           id: 3,
           label: '删除',
-        }
-      ]
-    })
+        },
+      ],
+    });
   },
   'GET /api/500': (req, res) => {
     res.status(500).send({
