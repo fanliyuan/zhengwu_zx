@@ -106,6 +106,11 @@ export const getRouterData = app => {
         import('../routes/Audit/Operation')
       ),
     },
+    '/infrastructure/node': {
+      component: dynamicWrapper(app, ['infrastructureManagementNode'], () =>
+        import('../routes/InfrastructureManagement/NodeManagement')
+      ),
+    },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     },

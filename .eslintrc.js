@@ -62,6 +62,9 @@ module.exports = {
     'require-yield': [1],
     "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"],
     "no-plusplus": [0],
+    "react/destructuring-assignment": [0],
+    "no-param-reassign": [0],
+    "react/jsx-tag-spacing": [0],
   },
   parserOptions: {
     ecmaFeatures: {
