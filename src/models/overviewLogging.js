@@ -10,7 +10,9 @@ export default {
     stateList: [],
   },
   effects: {
-    *state (_, { call, put} ) {
+    *state (_, obj ) {
+      const { call, put } = obj
+      console.log(obj)
       const response = yield call(getLogState)
       response.unshift({value: -1, label: '全部结果'})
       yield put({
@@ -18,14 +20,20 @@ export default {
         payload: response,
       })
     },
-    *log({ payload }, { call, put }) {
+    *log({ payload }, { call, put, select, take }) {
+      let stateList = yield select(state => state.overviewLogging.stateList)
       const response = yield call(getLog, payload)
-      // response.data.forEach(item => {
-      //   item.result = item.result === 0 ? '登录失败' : '登录成功'
-      //   item.time = moment(item.time, 'x').format('LLL')
-      // })
+      if (!stateList.length) {
+        yield put({type: 'state'})
+        yield take('state/@@end')
+        stateList = yield select(state => state.overviewLogging.stateList)
+      }
+      const stateObject = stateList.reduce((pre, cur) => {
+        pre[cur.value] = cur.label // eslint-disable-line
+        return pre
+      }, {})
       response.data = response.data.map(item => {
-        return {...item, result: item.result === 0 ? '登录失败' : '登录成功', time: moment(item.time, 'x').format('LLL')}
+        return {...item, result: stateObject[item.result], time: moment(item.time, 'x').format('LLL')}
       })
       yield put({
         type: 'save',

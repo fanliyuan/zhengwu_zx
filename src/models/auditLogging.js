@@ -34,10 +34,11 @@ export default {
         payload: response,
       })
     },
-    *log({ payload }, { call, put }) {
+    *log({ payload }, { call, put, select }) {
       const response = yield call(getAuditLog, payload)
-      const organizationList = yield call(getOrganization)
-      const list = organizationList.data.reduce((pre, cur) => {
+      // const organizationList = yield call(getOrganization)
+      const organizationList = yield select(state => state.auditLogging.organizationList)
+      const list = organizationList.reduce((pre, cur) => {
         return [...pre, ...cur.children]
       }, [])
       const organizatioObject = list.reduce((pre, cur) => {
@@ -52,10 +53,6 @@ export default {
       yield put({
         type: 'save',
         payload: response.data,
-      })
-      yield put({
-        type: 'saveOrganization',
-        payload: organizationList,
       })
     },
   },

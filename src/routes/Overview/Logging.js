@@ -20,15 +20,12 @@ export default class Log extends Component {
     IPValue: '',
     state: -1,
     date: [],
+    isChanged: false,
   };
 
   componentDidMount () {
     const { dispatch } = this.props
     const { date } = this.state
-
-    dispatch({
-      type: 'overviewLogging/state',
-    })
 
     const dateRange = date.map((item) => {
       if (moment.isMoment(item)) {
@@ -46,11 +43,17 @@ export default class Log extends Component {
 
   handleIPChange = e => {
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       IPValue: e.target.value.trim(),
     });
   };
 
   handSelectChange = val => {
+    this.setState({
+      isChanged: true,
+    })
     this.setState({
       state: val,
     })
@@ -58,11 +61,15 @@ export default class Log extends Component {
 
   handlePick = (val) => {
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       date: val,
     })
   }
 
   handleSearch = () => {
+    if (!this.state.isChanged) return // eslint-disable-line
     const { dispatch } = this.props;
     const query = this.state
     const pagination = {
@@ -75,6 +82,9 @@ export default class Log extends Component {
       } else {
         return 0
       }
+    })
+    this.setState({
+      isChanged: false,
     })
     dispatch({
       type: 'overviewLogging/log',

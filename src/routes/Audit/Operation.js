@@ -25,6 +25,7 @@ export default class Operation extends Component {
       current: 1,
       pageSize: 10,
     },
+    isChanged: false,
   }
 
   async componentDidMount() {
@@ -51,6 +52,9 @@ export default class Operation extends Component {
   handleNameChange = (e) => {
     const { query } = this.state
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       query: {
         ...query,
         account: e.target.value.trim(),
@@ -61,6 +65,9 @@ export default class Operation extends Component {
   handleOrganizationChange = (value) =>{
     const { query } = this.state
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       query: {
         ...query,
         organization: value,
@@ -70,6 +77,9 @@ export default class Operation extends Component {
 
   handleIPChange = (e) => {
     const { query } = this.state
+    this.setState({
+      isChanged: true,
+    })
     this.setState({
       query: {
         ...query,
@@ -82,6 +92,9 @@ export default class Operation extends Component {
     // let query = { ...this.state.query, date: value.map(item => +item.format('x')) }
     const { query } = this.state
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       query: {
         ...query,
         date: value.map(item => +item.format('x')),
@@ -92,6 +105,9 @@ export default class Operation extends Component {
   handleOperationChange = (value) => {
     const { query } = this.state
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       query: {
         ...query,
         operation: value,
@@ -101,7 +117,11 @@ export default class Operation extends Component {
 
   handleSearch = () => {
     const { state } = this
+    if (!state.isChanged) return
     const { dispatch } = this.props
+    this.setState({
+      isChanged: false,
+    })
     dispatch({
       type: 'auditOperation/search',
       payload: {...state},

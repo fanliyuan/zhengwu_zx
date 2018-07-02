@@ -21,16 +21,17 @@ export default class Logging extends Component {
       current: 1,
       pageSize: 10,
     },
+    isChanged: false,
   }
 
-  componentDidMount () {
+  async componentDidMount () {
     const { pagination, query } = this.state
     const { dispatch } = this.props
-    // this.props.dispatch({
-    //   type: 'auditLogging/organization'
-    // })
     dispatch({
       type: 'auditLogging/state',
+    })
+    await dispatch({
+      type: 'auditLogging/organization',
     })
     dispatch({
       type: 'auditLogging/log',
@@ -41,12 +42,18 @@ export default class Logging extends Component {
   handleUserNameChange = (e) => {
     const { query } = this.state
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       query: { ...query, account: e.target.value.trim() },
     })
   }
 
   handleOrganizationChange = (value) => {
     const { query } = this.state
+    this.setState({
+      isChanged: true,
+    })
     this.setState({
       query: { ...query, organization: value },
     })
@@ -55,13 +62,19 @@ export default class Logging extends Component {
   handleIPChange = (e) => {
     const { query } = this.state
     this.setState({
-      query: { ...query, ip: e.target.vaulue.trim() },
+      isChanged: true,
+    })
+    this.setState({
+      query: { ...query, ip: e.target.value.trim() },
     })
   }
 
   handleDatePickerChange = (value) => {
     // const query = { ...this.state.query, date: value.map(item => +item.format('x')) }
     const { query } = this.state
+    this.setState({
+      isChanged: true,
+    })
     this.setState({
       query: { ...query, date: value.map(item => +item.format('x')) },
     })
@@ -71,12 +84,19 @@ export default class Logging extends Component {
     // let query = { ...this.state.query, state: value }
     const { query } = this.state
     this.setState({
+      isChanged: true,
+    })
+    this.setState({
       query: { ...query, state: value },
     })
   }
 
   handleSearch = () => {
-    const { pagination } = this.state
+    const { pagination, isChanged } = this.state
+    if (! isChanged) return
+    this.setState({
+      isChanged: false,
+    })
     const { dispatch } = this.props
     dispatch({
       type: 'auditLogging/log',
