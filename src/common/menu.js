@@ -48,44 +48,55 @@ const menuData = [
     authority: ['user'],
   },
   {
-    name: '结果页',
-    icon: 'check-circle-o',
-    path: 'result',
+    name: '基础设施管理',
+    icon: 'dashboard',
+    path: 'infrastructure',
     children: [
       {
-        name: '成功',
-        path: 'success',
-      },
-      {
-        name: '失败',
-        path: 'fail',
+        name: '节点管理',
+        path: 'node',
       },
     ],
   },
-  {
-    name: '异常页',
-    icon: 'warning',
-    path: 'exception',
-    children: [
-      {
-        name: '403',
-        path: '403',
-      },
-      {
-        name: '404',
-        path: '404',
-      },
-      {
-        name: '500',
-        path: '500',
-      },
-      {
-        name: '触发异常',
-        path: 'trigger',
-        hideInMenu: true,
-      },
-    ],
-  },
+  // {
+  //   name: '结果页',
+  //   icon: 'check-circle-o',
+  //   path: 'result',
+  //   children: [
+  //     {
+  //       name: '成功',
+  //       path: 'success',
+  //     },
+  //     {
+  //       name: '失败',
+  //       path: 'fail',
+  //     },
+  //   ],
+  // },
+  // {
+  //   name: '异常页',
+  //   icon: 'warning',
+  //   path: 'exception',
+  //   children: [
+  //     {
+  //       name: '403',
+  //       path: '403',
+  //     },
+  //     {
+  //       name: '404',
+  //       path: '404',
+  //     },
+  //     {
+  //       name: '500',
+  //       path: '500',
+  //     },
+  //     {
+  //       name: '触发异常',
+  //       path: 'trigger',
+  //       hideInMenu: true,
+  //     },
+  //   ],
+  // },
   {
     name: '账户',
     icon: 'user',

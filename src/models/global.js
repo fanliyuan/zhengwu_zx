@@ -1,4 +1,4 @@
-import key from 'keymaster'
+// import key from 'keymaster'
 import { queryNotices } from '../services/api';
 
 export default {

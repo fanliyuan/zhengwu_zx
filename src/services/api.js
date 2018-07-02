@@ -138,3 +138,18 @@ export async function getAuditOperation(params) {
 export async function getOperationList() {
   return request('/api/audit/operation-list');
 }
+
+export async function getNodeList() {
+  return request('/api/node/list')
+}
+
+export async function getState() {
+  return request('/api/state/list')
+}
+
+export async function getInfrastructureManagementNode(params) {
+  return request('/api/infrastructure/node', {
+    method: 'POST',
+    body: params,
+  })
+}
