@@ -2,11 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-02 17:06:53
+ * @Last Modified time: 2018-07-03 10:01:45
 */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Form, Input, Select, Button, Table, Cascader, Badge } from 'antd';
+import { Link } from 'dva/router';
+import { Form, Input, Select, Button, Table, Cascader, Badge, Popconfirm, message } from 'antd';
 
 import styles from './NodeManagement.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -116,6 +117,14 @@ export default class NodeManagement extends Component {
     });
   };
 
+  handleDelete = () => {
+    message.success('确认删除')
+  }
+
+  handleCancel = () => {
+    message.info('删除取消')
+  }
+
   render() {
     const {
       infrastructureManagementNode: { list, pagination, nodeList, organizationList, stateList },
@@ -158,19 +167,24 @@ export default class NodeManagement extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
-        render(text, row) {
+        render: (text, row) => {
           return (
             <div>
-              <a href={`#${row.id}`} style={{ marginRight: 10 }}>
-                编辑
-              </a>
-              <a href={`#${row.id}`} style={{ marginRight: 10 }}>
-                编辑
-              </a>
-              <a href={`#${row.id}`} style={{ marginRight: 10 }}>
-                编辑
-              </a>
-              <a href={`#${row.id}`}>删除</a>
+              <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
+                修改
+              </Link>
+              <Popconfirm title='确认删除?' onConfirm={this.handleDelete} onCancel={this.handleCancel} okText='确定' cancelText='取消' >
+                <Link to={`#${row.id}`} style={{ marginRight: 10 }}>删除</Link>
+              </Popconfirm>
+              <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
+                监控
+              </Link>
+              <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
+                统计
+              </Link>
+              <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
+                任务
+              </Link>
             </div>
           );
         },
@@ -179,15 +193,6 @@ export default class NodeManagement extends Component {
     columns.forEach(item => {
       item.align = 'center';
     });
-
-    // const nodeComs = nodeList.map(item => {
-    //   const style = item.rank === 1 ? { paddingLeft: 20 } : {};
-    //   return (
-    //     <Select.Option value={item.value} key={item.value} title={item.label} style={style}>
-    //       {item.label}
-    //     </Select.Option>
-    //   );
-    // });
     const stateComs = stateList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value} title={item.label}>

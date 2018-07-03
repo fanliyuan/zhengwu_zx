@@ -58,6 +58,25 @@ const menuData = [
       },
     ],
   },
+  {
+    name: '数据交换处理',
+    icon: 'dashboard',
+    path: 'dataExchange',
+    children: [
+      {
+        name: '资源订阅',
+        path: 'resourceSub',
+      },
+      {
+        name: '所有订阅',
+        path: 'allSub',
+      },
+      {
+        name: '数据管理',
+        path: 'dataManagement',
+      },
+    ],
+  },
   // {
   //   name: '结果页',
   //   icon: 'check-circle-o',

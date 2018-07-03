@@ -111,6 +111,21 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/NodeManagement')
       ),
     },
+    'dataExchange/resourceSub': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataExchange/ResourceSub')
+      ),
+    },
+    'dataExchange/allSub': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataExchange/AllSub')
+      ),
+    },
+    'dataExchange/dataManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataExchange/DataManagement')
+      ),
+    },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     },
