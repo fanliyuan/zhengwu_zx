@@ -7,6 +7,7 @@
 */
 import React, { Component } from 'react'
 import { Tabs, Table, Input, Select, Cascader, Button, DatePicker, Form, message } from 'antd'
+import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Node.less'
@@ -158,6 +159,73 @@ export default class Node extends Component {
         ],
       },
     ]
+    const columnsWarning = [
+      {
+        title: '告警时间',
+        dataIndex: 'time',
+      },
+      {
+        title: '告警名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '当前值',
+        dataIndex: 'value',
+      },
+    ]
+    columnsWarning.forEach(item => {
+      item.align = 'center'
+    })
+    const dataWarning = []
+    const usageType = ['CPU利用率', '内存利用率', '硬盘利用率', '网络利用率']
+    for(let i = 0; i < 145; i ++) {
+      dataWarning.push({
+        id: i,
+        time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
+        name: usageType[Math.floor(Math.random() * 4)],
+        value: Math.floor(Math.random() * 30 + 40),
+      })
+    }
+    const columnsOption = [
+      {
+        title: '告警名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '监控对象',
+        dataIndex: 'target',
+      },
+      {
+        title: '告警阈值',
+        dataIndex: 'threshold',
+      },
+      {
+        title: '检测周期',
+        dataIndex: 'period',
+      },
+      {
+        title: '是否有效',
+        dataIndex: 'boolean',
+      },
+      {
+        title: '操作',
+        dataIndex: 'operation',
+      },
+    ]
+    columnsOption.forEach(item  => {
+      item.align = 'center'
+    })
+    const dataOption = []
+    for (let i = 0; i < 178; i ++) {
+      dataOption.push({
+        id: i,
+        name: usageType[Math.floor(Math.random() * 4)] + i,
+        target: usageType[Math.floor(Math.random() * 4)].replace('利用率', ''),
+        threshold: Math.floor(Math.random() * 60 + 40),
+        period: '5分钟',
+        boolean: Math.round(Math.random()) === 1 ? '有效' : '无效',
+      })
+    }
 
     const stateComs = stateList.map(item => {
       return (
@@ -176,7 +244,7 @@ export default class Node extends Component {
                 <DatePicker.RangePicker value={warningTime} onChange={this.warningTimeChange} className={styles.date} />
                 <Button type='primary' icon='search' onClick={this.search} >搜索</Button>
               </Form>
-              <Table />
+              <Table columns={columnsWarning} dataSource={dataWarning} bordered rowKey='id' />
             </div>
           </Tabs.TabPane>
           <Tabs.TabPane tab='系统告警设置' key='option' >
@@ -190,6 +258,7 @@ export default class Node extends Component {
                 </Select>
                 <Button type='primary' icon='search' onClick={this.searchOption} >搜索</Button>
               </Form>
+              <Table columns={columnsOption} dataSource={dataOption} bordered rowKey='id' />
             </div>
           </Tabs.TabPane>
         </Tabs>
