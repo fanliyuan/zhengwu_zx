@@ -1,0 +1,199 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-07-03 16:54:02
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-03 18:04:20
+ * @描述: 监控告警 -- 节点系统监控
+*/
+import React, { Component } from 'react'
+import { Tabs, Table, Input, Select, Cascader, Button, DatePicker, Form, message } from 'antd'
+
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './Node.less'
+
+export default class Node extends Component {
+  state = {
+    query1: {
+      warningName: '',
+      warningTime: [],
+    },
+    query2: {
+      dataOriginName: '',
+      serverAddress: '',
+      organization: [],
+      state: -1,
+    },
+    isChanged1: false,
+    isChanged2: false,
+  }
+
+  warningNameChange = (e) => {
+    const { query1 } = this.state
+    this.setState({
+      query1: {
+        ...query1,
+        warningName: e.target.value,
+      },
+      isChanged1: true,
+    })
+  }
+
+  warningTimeChange = (value) => {
+    const { query1 } = this.state
+    this.setState({
+      query1: {
+        ...query1,
+        warningTime: value,
+      },
+      isChanged1: true,
+    })
+  }
+
+  search = () => {
+    if (!this.state.isChanged1) return false
+    message.success('this.state.query1')
+  }
+
+  dataOriginNameChange = (e) => {
+    const { query2 } = this.state
+    this.setState({
+      query2: {
+        ...query2,
+        dataOriginName: e.target.value,
+      },
+      isChanged2: true,
+    })
+  }
+
+  serverAddressChagne = (e) => {
+    const { query2 } = this.state
+    this.setState({
+      query2: {
+        ...query2,
+        serverAddress: e.target.value,
+      },
+      isChanged2: true,
+    })
+  }
+
+  organizationChange = (value) => {
+    const { query2 } = this.state
+    this.setState({
+      query2: {
+        ...query2,
+        organization: value,
+      },
+      isChanged2: true,
+    })
+  }
+
+  stateChange = (value) => {
+    const { query2 } = this.state
+    this.setState({
+      query2: {
+        ...query2,
+        state: value,
+      },
+      isChanged2: true,
+    })
+  }
+
+  searchOption = () => {
+    console.log(this.state.query2)
+    if (!this.state.isChanged2) {
+      return false
+    }
+    message.success('this.state.query2')
+  }
+
+
+  render() {
+    const { query1: { warningName, warningTime }, query2: { dataOriginName, serverAddress, organization, state } } = this.state
+
+    const stateList = [
+      {
+        value: -1,
+        lable: '全部状态',
+      },
+      {
+        value: 0,
+        lable: '连接正常',
+      },
+      {
+        value: 1,
+        lable: '连接失败',
+      },
+    ]
+    const organizationList = [
+      {
+        value: 101,
+        label: '省直属',
+        children: [
+          {
+            value: 101001,
+            label: '省公安厅',
+          },
+          {
+            value: 101002,
+            label: '省设计院',
+          },
+        ],
+      },
+      {
+        value: 102,
+        label: '广州市',
+        children: [
+          {
+            value: 102001,
+            label: '市公安局',
+          },
+          {
+            value: 102002,
+            label: '市财政局',
+          },
+          {
+            value: 102003,
+            label: '市交通局',
+          },
+        ],
+      },
+    ]
+
+    const stateComs = stateList.map(item => {
+      return (
+        <Select.Option value={item.value} key={item.value} >{item.lable}</Select.Option>
+      )
+    })
+
+    return (
+      <PageHeaderLayout>
+        <Tabs>
+          <Tabs.TabPane tab='系统监控' key='system' >系统监控页</Tabs.TabPane>
+          <Tabs.TabPane tab='系统告警' key='warning' >
+            <div className={styles.layout} >
+              <Form className={styles.search} >
+                <Input value={warningName} onChange={this.warningNameChange} className={styles.input} />
+                <DatePicker.RangePicker value={warningTime} onChange={this.warningTimeChange} className={styles.date} />
+                <Button type='primary' icon='search' onClick={this.search} >搜索</Button>
+              </Form>
+              <Table />
+            </div>
+          </Tabs.TabPane>
+          <Tabs.TabPane tab='系统告警设置' key='option' >
+            <div className={styles.layout} >
+              <Form className={styles.search} >
+                <Input value={dataOriginName} onChange={this.dataOriginNameChange} className={styles.input} />
+                <Input value={serverAddress} onChange={this.serverAddressChagne} className={styles.input} />
+                <Cascader options={organizationList} value={organization} onChange={this.organizationChange} placeholder='请选择机构' className={styles.select} />
+                <Select value={state} onChange={this.stateChange} className={styles.select} >
+                  {stateComs}
+                </Select>
+                <Button type='primary' icon='search' onClick={this.searchOption} >搜索</Button>
+              </Form>
+            </div>
+          </Tabs.TabPane>
+        </Tabs>
+      </PageHeaderLayout>
+    )
+  }
+}

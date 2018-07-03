@@ -111,19 +111,49 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/NodeManagement')
       ),
     },
-    'dataExchange/resourceSub': {
+    '/dataExchange/resourceSub': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataExchange/ResourceSub')
       ),
     },
-    'dataExchange/allSub': {
+    '/dataExchange/allSub': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataExchange/AllSub')
       ),
     },
-    'dataExchange/dataManagement': {
+    '/dataExchange/dataManagement': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataExchange/DataManagement')
+      ),
+    },
+    '/portalManagement/newsManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/NewsManagement')
+      ),
+    },
+    '/portalManagement/publicationManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/PublicationManagement')
+      ),
+    },
+    '/portalManagement/newsLibrary': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/NewsLibrary')
+      ),
+    },
+    '/portalManagement/menuManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/MenuManagement')
+      ),
+    },
+    '/portalManagement/carouselManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/CarouselManagement')
+      ),
+    },
+    '/monitor/node': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/Node')
       ),
     },
     '/result/success': {

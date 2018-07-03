@@ -77,6 +77,63 @@ const menuData = [
       },
     ],
   },
+  {
+    name: '开放门户管理',
+    icon: 'dashboard',
+    path: 'portalManagement',
+    children: [
+      {
+        name: '资讯管理',
+        path: 'newsManagement',
+      },
+      {
+        name: '发布管理',
+        path: 'publicationManagement',
+        hideInMenu: true,
+      },
+      {
+        name: '资讯库',
+        path: 'newsLibrary',
+        hideInMenu: true,
+      },
+      {
+        name: '目录分类管理',
+        path: 'menuManagement',
+      },
+      {
+        name: '轮播图管理',
+        path: 'carouselManagement',
+      },
+    ],
+  },
+  {
+    name: '监控告警',
+    icon: 'dashboard',
+    path: 'monitor',
+    children: [
+      {
+        name: '告警配置',
+        path: 'warningOption',
+      },
+      {
+        name: '节点监控',
+        path: 'node',
+      },
+      {
+        name: '通道监控',
+        path: 'pass',
+      },
+      {
+        name: '任务监控',
+        path: 'task',
+      },
+      {
+        name: '告警查询',
+        path: 'warningQuery',
+        // hideInMenu: true,
+      },
+    ],
+  },
   // {
   //   name: '结果页',
   //   icon: 'check-circle-o',

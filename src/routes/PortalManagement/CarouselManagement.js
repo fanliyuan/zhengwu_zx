@@ -1,8 +1,9 @@
 /*
  * @Author: ChouEric
- * @Date: 2018-07-03 13:40:41
+ * @Date: 2018-07-03 15:42:31
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 13:58:39
+ * @Last Modified time: 2018-07-03 15:54:55
+ * @描述: 开放门户管理--资讯管理--轮播图管理
 */
 import React, { Component } from 'react';
 // import { connect } from 'dva';
@@ -10,7 +11,7 @@ import { DatePicker, Input, Select, Button, Table } from 'antd';
 import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './ResourceSub.less';
+import styles from './CarouselManagement.less';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -19,12 +20,11 @@ const { Option } = Select;
 //   overviewLogging,
 //   loading: loading.models.overviewLogging,
 // }))
-export default class ResourceSub extends Component {
+export default class CarouselManagement extends Component {
   state = {
     name: '',
-    theme: '',
-    organization: -1,
-    subscription: -1,
+    resource: '',
+    page: -1,
     date: [],
     isChanged: false,
   };
@@ -56,25 +56,18 @@ export default class ResourceSub extends Component {
     });
   };
 
-  handleThemeChange = e => {
+  handleResourceChange = e => {
     this.setState({
       isChanged: true,
     })
     this.setState({
-      theme: e.target.value.trim(),
+      resource: e.target.value.trim(),
     });
   };
 
-  handleOriginChange = e => {
+  handlePageChange = e => {
     this.setState({
-      theme: e.target.value.trim(),
-      isChanged: true,
-    });
-  };
-
-  handleDataBaseChange = e => {
-    this.setState({
-      theme: e.target.value.trim(),
+      page: e,
       isChanged: true,
     });
   };
@@ -132,7 +125,7 @@ export default class ResourceSub extends Component {
   };
 
   render() {
-    const { name, date, theme, organization, subscription } = this.state
+    const { name, date, resource, page } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const data = []
@@ -140,41 +133,27 @@ export default class ResourceSub extends Component {
     for(let i = 0; i < 120; i ++) {
       data.push({
         id: i,
-        name: '数据名' + i, // eslint-disable-line
-        count: Math.ceil(Math.random() * 2000) + 100, // eslint-disable-line
+        name: '类型' + i, // eslint-disable-line
+        // count: Math.ceil(Math.random() * 2000) + 100, // eslint-disable-line
         time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-        theme: '主题' + i, // eslint-disable-line
-        origin: '数据源' + i, // eslint-disable-line
-        dataBase: '数据库' + i, // eslint-disable-line
+        column: '主题' + i, // eslint-disable-line
+        sort: i, // eslint-disable-line
+        resource: '资源' + i, // eslint-disable-line
       })
     }
 
-    const subscriptionList = [
+    const pageList = [
       {
         value: -1,
-        label: '全部状态',
+        label: '全部页面',
       },
       {
         value: 0,
-        label: '已订阅',
+        label: '首页',
       },
       {
         value: 1,
-        label: '未订阅',
-      },
-    ]
-    const organizationList = [
-      {
-        value: -1,
-        label: '所有发布机构',
-      },
-      {
-        value: 10001,
-        label: '省档案局',
-      },
-      {
-        value: 10002,
-        label: '省公安厅',
+        label: '开放动态',
       },
     ]
 
@@ -184,40 +163,24 @@ export default class ResourceSub extends Component {
         dataIndex: 'id',
       },
       {
-        title: '目录名称',
+        title: '名称',
         dataIndex: 'name',
       },
       {
-        title: '目录资源',
+        title: '栏目',
+        dataIndex: 'column',
+      },
+      {
+        title: '排序',
+        dataIndex: 'sort',
+      },
+      {
+        title: '资源名称',
         dataIndex: 'resource',
       },
       {
-        title: '所属主题',
-        dataIndex: 'theme',
-      },
-      {
-        title: '所属分类2',
-        dataIndex: 'class2',
-      },
-      {
-        title: '所属分类3',
-        dataIndex: 'class3',
-      },
-      {
-        title: '数据类型',
-        dataIndex: 'type',
-      },
-      {
-        title: '发布时间',
+        title: '操作时间',
         dataIndex: 'time',
-      },
-      {
-        title: '是否审核',
-        dataIndex: 'audit',
-      },
-      {
-        title: '是否已订阅',
-        dataIndex: 'subscribe',
       },
       {
         title: '操作',
@@ -229,10 +192,7 @@ export default class ResourceSub extends Component {
       item.align = 'center'
     })
 
-    const subscriptionComs = subscriptionList.map(item => { // eslint-disable-line
-      return <Option value={item.value} key={item.value}>{item.label}</Option>
-    })
-    const organizationComs = organizationList.map(item => { // eslint-disable-line
+    const pageComs = pageList.map(item => { // eslint-disable-line
       return <Option value={item.value} key={item.value}>{item.label}</Option>
     })
 
@@ -241,33 +201,30 @@ export default class ResourceSub extends Component {
         <div className={styles.layout}>
           <div className={styles.search}>
             <Input
-              placeholder="请输入发布名称"
+              placeholder="类型名称"
               value={name}
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
             />
             <Input
-              className={styles.theme}
-              placeholder="请输入主题"
-              value={theme}
+              placeholder="资源名称"
+              value={resource}
               onPressEnter={this.handleSearch}
-              onChange={this.handleThemeChange}
+              onChange={this.handleResourceChange}
+              className={styles.name}
             />
-            <Select value={organization} onChange={this.handleOrganizationChange} className={styles.select} >
-              {organizationComs}
-            </Select>
-            <Select value={subscription} onChange={this.handleSubscriptionChange} className={styles.select} >
-              {subscriptionComs}
+            <Select value={page} onChange={this.handlePageChange} className={styles.select} >
+              {pageComs}
             </Select>
             <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
             </Button>
           </div>
-          {/* <div className={styles.bar}>
-            <Button type='primary' className={styles.button}>导出</Button>
-          </div> */}
+          <div className={styles.bar}>
+            <Button type='primary' className={styles.button}>新增</Button>
+          </div>
           <div>
             <Table
               bordered
