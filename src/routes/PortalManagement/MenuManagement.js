@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 15:46:01
+ * @Last Modified time: 2018-07-04 17:25:58
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
 */
 import React, { Component } from 'react';
@@ -27,6 +27,7 @@ export default class MenuManagement extends Component {
     type: -1,
     date: [],
     isChanged: false,
+    selectedRowKeys: [],
   };
 
   componentDidMount () {
@@ -125,7 +126,7 @@ export default class MenuManagement extends Component {
   };
 
   render() {
-    const { name, date, operator, type } = this.state
+    const { name, date, operator, type, selectedRowKeys } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const data = []
@@ -182,7 +183,15 @@ export default class MenuManagement extends Component {
         title: '操作',
         dataIndex: 'operation',
       },
-    ];
+    ]
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: (rowKeys) => {
+        this.setState({
+          selectedRowKeys: rowKeys,
+        })
+      },
+    }
 
     columns.forEach(item => {
       item.align = 'center'
@@ -226,6 +235,7 @@ export default class MenuManagement extends Component {
               bordered
               columns={columns}
               dataSource={data}
+              rowSelection={rowSelection}
               // pagination={pagination}
               // loading={loading}
               rowKey="id"

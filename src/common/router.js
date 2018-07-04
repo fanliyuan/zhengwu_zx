@@ -201,21 +201,6 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/AllSub')
       ),
     },
-    // '/dataExchange/resourceSub': {
-    //   component: dynamicWrapper(app, [], () =>
-    //     import('../routes/DataExchange/ResourceSub')
-    //   ),
-    // },
-    // '/dataExchange/allSub': {
-    //   component: dynamicWrapper(app, [], () =>
-    //     import('../routes/DataExchange/AllSub')
-    //   ),
-    // },
-    // '/dataExchange/dataManagement': {
-    //   component: dynamicWrapper(app, [], () =>
-    //     import('../routes/DataExchange/DataManagement')
-    //   ),
-    // },
     '/portalManagement/newsManagement': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/PortalManagement/NewsManagement')
@@ -224,6 +209,11 @@ export const getRouterData = app => {
     '/portalManagement/publicationManagement': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/PortalManagement/PublicationManagement')
+      ),
+    },
+    '/portalManagement/publication': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/Publication')
       ),
     },
     '/portalManagement/newsLibrary': {

@@ -2,13 +2,14 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 15:08:21
+ * @Last Modified time: 2018-07-04 18:23:47
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component } from 'react';
 // import { connect } from 'dva';
 import { DatePicker, Input, Select, Button, Table } from 'antd';
 import moment from 'moment'
+import { routerRedux } from 'dva/router'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './PublicationManagement.less';
@@ -145,6 +146,10 @@ export default class PublicationManagement extends Component {
     //   payload: { query: {...query, date: dateRange}, pagination },
     // });
   };
+
+  goPublication = () => {
+    routerRedux.push('/portalManagement/publication')
+  }
 
   render() {
     const { name, date, audit, subscribe, type, system } = this.state
@@ -283,7 +288,7 @@ export default class PublicationManagement extends Component {
             </Button>
           </div>
           <div className={styles.bar}>
-            <Button type='primary' className={styles.button}>发布</Button>
+            <Button type='primary' className={styles.button} onClick={this.goPublication} >发布</Button>
           </div>
           <div>
             <Table
