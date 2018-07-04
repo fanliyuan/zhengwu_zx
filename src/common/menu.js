@@ -152,25 +152,6 @@ const menuData = [
       },
     ],
   },
-  // {
-  //   name: '数据交换处理',
-  //   icon: 'dashboard',
-  //   path: 'dataExchange',
-  //   children: [
-  //     {
-  //       name: '资源订阅',
-  //       path: 'resourceSub',
-  //     },
-      // {
-      //   name: '所有订阅',
-      //   path: 'allSub',
-      // },
-      // {
-      //   name: '数据管理',
-      //   path: 'dataManagement',
-      // },
-  //   ],
-  // },
   {
     name: '开放门户管理',
     icon: 'dashboard',
@@ -183,6 +164,11 @@ const menuData = [
       {
         name: '发布管理',
         path: 'publicationManagement',
+        hideInMenu: true,
+      },
+      {
+        name: '发布',
+        path: 'publication',
         hideInMenu: true,
       },
       {
