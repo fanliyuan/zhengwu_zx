@@ -21,6 +21,7 @@ const menuData = [
       {
         name: '通知详情',
         path: 'noticeDetail',
+        hideInMenu: true,
       },
       // {
       //   name: '工作台',
@@ -55,6 +56,91 @@ const menuData = [
       {
         name: '节点管理',
         path: 'node',
+      },
+      {
+        name: '通道管理',
+        path: 'pass',
+      },
+      {
+        name: '交换域管理',
+        path: 'switch',
+      },
+    ],
+  },
+  {
+    name:'机构用户管理',
+    icon:'dashboard',
+    path:'institutionalUserManage',
+    children: [
+      {
+        name:'机构管理',
+        path:'institutionalManage',
+      },
+      {
+        name:'用户管理',
+        path:'userManage',
+      },
+      {
+        name:'角色权限',
+        path:'roleLimit',
+      },
+      {
+        name:'分配角色',
+        path:'assignRole',
+      },
+    ],
+  },
+  {
+    name:'数据资源管理',
+    icon:'dashboard',
+    path:'dataSourceManagement',
+    children:[
+      {
+        name:'接入管理',
+        path:'accessManagement',
+      },
+      {
+        name:'接入审核',
+        path:'accessAudit',
+      },
+      {
+        name:'资源管理',
+        path:'sourceManagement',
+      },
+      {
+        name:'文件资源',
+        path:'fileSource',
+      },
+      {
+        name:'资源审核',
+        path:'sourceAudit',
+      },
+      {
+        name:'目录管理',
+        path:'catalogManagement',
+      },
+      {
+        name:'目录审核',
+        path:'catalogAudit',
+      },
+      {
+        name:'订阅审核',
+        path:'subscriptionAudit',
+      },
+    ],
+  },
+  {
+    name:'数据交换管理',
+    icon:'dashboard',
+    path:'dataSwitchManagement',
+    children:[
+      {
+        name:'资源订阅',
+        path:'sourceSubscription',
+      },
+      {
+        name:'订阅审核',
+        path:'subscriptionAudit',
       },
     ],
   },

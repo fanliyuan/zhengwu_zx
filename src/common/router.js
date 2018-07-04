@@ -111,6 +111,86 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/NodeManagement')
       ),
     },
+    '/infrastructure/pass': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InfrastructureManagement/PassManagement')
+      ),
+    },
+    '/infrastructure/switch': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InfrastructureManagement/SwitchManagement')
+      ),
+    },
+    '/institutionalUserManage/institutionalManage': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InstitutionalUserManage/InstitutionalManage')
+      ),
+    },
+    '/institutionalUserManage/userManage': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InstitutionalUserManage/UserManage')
+      ),
+    },
+    '/institutionalUserManage/roleLimit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InstitutionalUserManage/RoleLimit')
+      ),
+    },
+    '/institutionalUserManage/assignRole': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InstitutionalUserManage/AssignRole')
+      ),
+    },
+    '/dataSourceManagement/accessManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/AccessManagement')
+      ),
+    },
+    '/dataSourceManagement/accessAudit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/AccessAudit')
+      ),
+    },
+    '/dataSourceManagement/sourceManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/SourceManagement')
+      ),
+    },
+    '/dataSourceManagement/fileSource': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/FileSource')
+      ),
+    },
+    '/dataSourceManagement/sourceAudit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/SourceAudit')
+      ),
+    },
+    '/dataSourceManagement/catalogManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/CatalogManagement')
+      ),
+    },
+    '/dataSourceManagement/catalogAudit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/CatalogAudit')
+      ),
+    },
+    '/dataSourceManagement/subscriptionAudit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/SubscriptionAudit')
+      ),
+    },
+    '/dataSwitchManagement/subscriptionAudit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSwitchManagement/SubscriptionAudit')
+      ),
+    },
+    '/dataSwitchManagement/sourceSubscription': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSwitchManagement/SourceSubscription')
+      ),
+    },
     '/dataExchange/resourceSub': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataExchange/ResourceSub')

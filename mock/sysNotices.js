@@ -18,10 +18,10 @@ const getSysNotices = (req, res) => {
     return item.state.indexOf(queryState) !== -1;
   });
   const total = queryDataList.length;
-  const resultDataList = queryDataList.splice((current - 1) * pageSize, pageSize);
+  // const resultDataList = queryDataList.splice((current - 1) * pageSize, pageSize);
 
   res.send({
-    data: resultDataList,
+    data: queryDataList,
     pagination: {
       pageSize,
       current,
@@ -36,7 +36,7 @@ const getDeleteInfo = (req, res) => {
 
   dataList.forEach((item, index) => {
     idList.forEach(id => {
-      if (item.id === id) {
+      if (+item.id === +id) {
         delete dataList[index];
         backInfo = '删除成功';
       }
@@ -53,7 +53,7 @@ const getChangeInfo = (req, res) => {
 
   dataList.forEach((items, index) => {
     changeIds.forEach(cId => {
-      if (items.id === cId) {
+      if (+items.id === +cId) {
         dataList[index].state = 'isR';
         changeBack = '已更改为已读';
       }

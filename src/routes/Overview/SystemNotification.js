@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
+
 import { Button, Table, Card, message, Badge } from 'antd';
 
 import styles from './SystemNotification.less';
@@ -20,11 +22,18 @@ export default class SystemNotification extends PureComponent {
     this.handleInfo();
   };
 
-  // componentDidUpdate = () => {
-  //   // this.handleInfo();
-  // }
-
-  componentDidUpdate = () => {};
+  componentDidUpdate = () => {
+    const {
+      SystemNotification: {backInfo, changeBack },
+    } = this.props;
+    const { state, changeState } = this.state;
+    if(state && backInfo.backInfo){
+      this.deleteSuccess('删除成功');
+    } 
+    if(changeState && changeBack.changeBack) { 
+     this.changeSuccess('修改成功')
+    }
+  }
 
   handleInfo = () => {
     const { dispatch } = this.props;
@@ -103,20 +112,19 @@ export default class SystemNotification extends PureComponent {
 
   render() {
     const {
-      SystemNotification: { data, pagination, backInfo, changeBack },
+      SystemNotification: { data, pagination },
       loading,
     } = this.props;
-    const { state, changeState } = this.state;
     const columns = [
       {
         title: '通知标题',
         dataIndex: 'noteTitle',
         align: 'center',
         render: (val, row) => (
-          <a href={`/overview/noticeDetail/${row.id}`}>
+          <Link to={`/overview/noticeDetail/${row.id}`}>
             {row.state === 'noR' && <Badge dot />}
             {val}
-          </a>
+          </Link>
         ),
       },
       {
@@ -138,10 +146,10 @@ export default class SystemNotification extends PureComponent {
     };
     return (
       <PageHeaderLayout>
-        <div>
+        {/* <div>
           {state && backInfo && this.deleteSuccess('删除成功')}
           {changeState && changeBack && this.changeSuccess('修改成功')}
-        </div>
+        </div> */}
         <Card>
           <div className={styles.tableBtns}>
             <Button onClick={this.handleState.bind(null, '')}>全部通知</Button>
