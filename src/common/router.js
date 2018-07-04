@@ -191,21 +191,31 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/SourceSubscription')
       ),
     },
-    '/dataExchange/resourceSub': {
+    '/dataSwitchManagement/dataManagement': {
       component: dynamicWrapper(app, [], () =>
-        import('../routes/DataExchange/ResourceSub')
+        import('../routes/DataSwitchManagement/DataManagement')
       ),
     },
-    '/dataExchange/allSub': {
+    '/dataSwitchManagement/allSub': {
       component: dynamicWrapper(app, [], () =>
-        import('../routes/DataExchange/AllSub')
+        import('../routes/DataSwitchManagement/AllSub')
       ),
     },
-    '/dataExchange/dataManagement': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataExchange/DataManagement')
-      ),
-    },
+    // '/dataExchange/resourceSub': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataExchange/ResourceSub')
+    //   ),
+    // },
+    // '/dataExchange/allSub': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataExchange/AllSub')
+    //   ),
+    // },
+    // '/dataExchange/dataManagement': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataExchange/DataManagement')
+    //   ),
+    // },
     '/portalManagement/newsManagement': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/PortalManagement/NewsManagement')
