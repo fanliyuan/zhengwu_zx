@@ -6,6 +6,7 @@ import styles from './SourceSubscription.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 export default class SourceSubscription extends Component {
   render(){
     const data=[
@@ -147,7 +148,8 @@ export default class SourceSubscription extends Component {
             <Select style={{marginRight:20,width:120}} value="0">
               {selectData1}
             </Select>
-            <DatePicker style={{marginRight:20,width:250}} placeholder="发布时间"/>
+            <RangePicker style={{marginRight:20,width:250}} />
+            {/* <DatePicker style={{marginRight:20,width:250}} placeholder="发布时间"/> */}
             <Button type="primary">搜索</Button>
           </div>
           <div>

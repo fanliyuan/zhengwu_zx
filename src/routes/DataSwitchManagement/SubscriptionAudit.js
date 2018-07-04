@@ -5,6 +5,7 @@ import moment from 'moment';
 import styles from './SubscriptionAudit.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
+const { RangePicker } = DatePicker;
 export default class SubscriptionAudit extends Component {
   render(){
     const pagination = { pageSize:10,current:1 };
@@ -103,7 +104,7 @@ export default class SubscriptionAudit extends Component {
           <div className={styles.form}>
             <Input placeholder="发布名称" style={{width:150,marginRight:20}}/>
             <Input placeholder="订阅申请人" style={{width:150,marginRight:20}}/>
-            <DatePicker style={{marginRight:20,width:250}} placeholder="订阅申请时间"/>
+            <RangePicker style={{marginRight:20,width:250}} />
             <Button type="primary">搜索</Button>
           </div>
           <div>
