@@ -190,7 +190,7 @@ export default class NodeManagement extends Component {
     // });
     const stateComs = stateList.map(item => {
       return (
-        <Select.Option value={item.value} key={item.value} title={item.label}>
+        <Select.Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Select.Option>
       );
