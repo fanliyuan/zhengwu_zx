@@ -156,6 +156,36 @@ export const getRouterData = app => {
         import('../routes/Monitor/Node')
       ),
     },
+    '/monitor/pass': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/Pass')
+      ),
+    },
+    '/monitor/insert': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/Insert')
+      ),
+    },
+    '/monitor/insertDetail/:params': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/InsertDetail')
+      ),
+    },
+    '/monitor/task': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/Task')
+      ),
+    },
+    '/monitor/warningOption': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/WarningOption')
+      ),
+    },
+    '/monitor/warningQuery': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/WarningQuery')
+      ),
+    },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
     },

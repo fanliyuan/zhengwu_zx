@@ -1,21 +1,23 @@
 /*
  * @Author: ChouEric
- * @Date: 2018-07-04 09:25:26
+ * @Date: 2018-07-04 10:16:31
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-04 10:12:28
- * @描述: 监控告警 -- 通道监控
+ * @Last Modified time: 2018-07-04 11:25:58
+ * @描述: 监控告警 -- 接入监控
 */
 import React, { Component } from 'react'
-import { Form, Input, Select, Table, Button } from 'antd'
+import { Form, Input, Select, Table, Button, Cascader } from 'antd'
+import { Link } from 'dva/router'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-import styles from './Pass.less'
+import styles from './Insert.less'
 
-export default class Pass extends Component {
+export default class Insert extends Component {
   state = {
     query: {
       name: '',
-      state: -1,
+      library: '',
+      node: [],
       link: -1,
     },
     isChanged: false,
@@ -32,12 +34,23 @@ export default class Pass extends Component {
     })
   }
 
-  stateChange = (value) => {
+  libraryChange = (e) => {
     const { query } = this.state
     this.setState({
       query: {
         ...query,
-        state: value,
+        library: e.target.value,
+      },
+      isChanged: true,
+    })
+  }
+
+  nodeChange = (value) => {
+    const { query } = this.state
+    this.setState({
+      query: {
+        ...query,
+        node: value,
       },
       isChanged: true,
     })
@@ -61,20 +74,40 @@ export default class Pass extends Component {
   }
 
   render() {
-    const { query: { name, state, link } } = this.state
+    const { query: { name, library, node, link } } = this.state
 
-    const stateList = [
+    const nodeList = [
       {
         value: -1,
-        label: '全部状态',
+        label: '所有节点',
       },
       {
-        value: 0,
-        label: '启用',
+        value: 101,
+        label: '省直属',
+        children: [
+          {
+            value: 101001,
+            label: '省公安厅',
+          },
+          {
+            value: 101002,
+            label: '省检察院',
+          },
+        ],
       },
       {
-        value: 1,
-        label: '停用',
+        value: 102,
+        label: '青岛市',
+        children: [
+          {
+            value: 102001,
+            label: '市公安局',
+          },
+          {
+            value: 102002,
+            label: '市财政局',
+          },
+        ],
       },
     ]
     const linkList = [
@@ -93,36 +126,31 @@ export default class Pass extends Component {
     ]
     const columns = [
       {
-        title: '通道名',
+        title: '序号',
+        dataIndex: 'id',
+      },
+      {
+        title: '接入名称',
         dataIndex: 'name',
+        render(text, row) {
+          return <Link to={`/monitor/insertDetail/${row.id}`} >{text}</Link>
+        },
       },
       {
-        title: '源节点',
-        dataIndex: 'origin',
+        title: '接入所属节点',
+        dataIndex: 'node',
       },
       {
-        title: '目标节点',
-        dataIndex: 'target',
-      },
-      {
-        title: '状态',
-        dataIndex: 'state',
+        title: '接入所属机构',
+        dataIndex: 'organization',
       },
       {
         title: '连通性',
         dataIndex: 'link',
       },
       {
-        title: '最大带宽',
-        dataIndex: 'bandwidthMax',
-      },
-      {
-        title: '当前带宽',
-        dataIndex: 'bandwidthCur',
-      },
-      {
-        title: '当前宽带利用率',
-        dataIndex: 'bandwidthUsage',
+        title: '操作',
+        dataIndex: 'operation',
       },
     ]
     columns.forEach(item => {
@@ -133,20 +161,16 @@ export default class Pass extends Component {
     for(let i = 0; i < 144; i ++) {
       data.push({
         id: i,
-        name: `通道${i}`,
-        origin: `源节点${i}`,
-        target: `目标节点${i}`,
-        state: i % 7 === 0 ? '单向' : '双向',
+        name: `接入名称${i}`,
+        node: `接入节点${i}`,
+        organization: `接入机构${i}`,
         link: i % 3 === 0 ? '断开' : '连接',
-        bandwidthMax: '10Mbps',
-        bandwidthCur: '10Mbps',
-        bandwidthUsage: '100%',
       })
     }
 
-    const stateComs = stateList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
-    })
+    // const stateComs = stateList.map(item => {
+    //   return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+    // })
     const LinkComs = linkList.map(item => {
       return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
     })
@@ -156,9 +180,8 @@ export default class Pass extends Component {
         <div className={styles.layout} >
           <Form className={styles.search} >
             <Input value={name} onChange={this.nameChange} className={styles.input} placeholder='通道名称' />
-            <Select value={state} onChange={this.stateChange} className={styles.select} >
-              {stateComs}
-            </Select>
+            <Input value={library} onChange={this.libraryChange} className={styles.input} placeholder='通道名称' />
+            <Cascader options={nodeList} value={node} onChange={this.nodeChange} className={styles.cascader} placeholder='请选择接入所属节点' />
             <Select value={link} onChange={this.linkChange} className={styles.select} >
               {LinkComs}
             </Select>

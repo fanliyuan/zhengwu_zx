@@ -2,8 +2,9 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 16:54:02
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 18:04:20
- * @描述: 监控告警 -- 节点系统监控
+ * @Last Modified time: 2018-07-04 13:21:09
+ * @描述: 监控告警 -- 节点系统监控  -- 系统告警 和 -- 系统告警设置
+
 */
 import React, { Component } from 'react'
 import { Tabs, Table, Input, Select, Cascader, Button, DatePicker, Form, message } from 'antd'
@@ -100,7 +101,6 @@ export default class Node extends Component {
   }
 
   searchOption = () => {
-    console.log(this.state.query2)
     if (!this.state.isChanged2) {
       return false
     }

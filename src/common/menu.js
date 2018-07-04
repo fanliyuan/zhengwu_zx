@@ -124,6 +124,15 @@ const menuData = [
         path: 'pass',
       },
       {
+        name: '接入监控',
+        path: 'insert',
+      },
+      {
+        name: '接入源数据监控',
+        path: 'insertDetail',
+        hideInMenu: true,
+      },
+      {
         name: '任务监控',
         path: 'task',
       },
