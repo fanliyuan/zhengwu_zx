@@ -22,6 +22,12 @@ export default class Step1 extends PureComponent {
     },
   }
 
+  onChange = (val) => {
+    this.setState({
+      data: val,
+    })
+  }
+
   methodChange = (e) => {
     this.setState({
       data: {
@@ -29,6 +35,7 @@ export default class Step1 extends PureComponent {
       },
     })
   }
+
 
   render() {
     const { form: { getFieldDecorator, validateFields }, dispatch } = this.props
@@ -38,6 +45,7 @@ export default class Step1 extends PureComponent {
     const tableData = [
       {
         infoCode: '00001',
+        key: '1',
       },
     ]
 
@@ -51,7 +59,7 @@ export default class Step1 extends PureComponent {
             </Radio.Group>
           </Item>
           <Item label='信息项' >
-            <TableForm value={tableData} />
+            <TableForm value={tableData} onChange={val => this.onChange(val)} />
           </Item>
         </Form>
       </Fragment>

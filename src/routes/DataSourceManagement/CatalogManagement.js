@@ -169,9 +169,9 @@ export default class CatalogManagement extends Component {
             <Button type="primary">搜索</Button>
           </div>
           <div className={styles.createBtn}>
-            <Button icon="plus" type="primary">
-              <Link to='/dataSourceManagement/newMenu' style={{color: 'white'}} >新建</Link>
-            </Button>
+            <Link to='/dataSourceManagement/newMenu' style={{color: 'white'}} >
+              <Button icon="plus" type="primary">新建</Button>
+            </Link>
             <Button type="primary">导入</Button>
           </div>
           <div>
