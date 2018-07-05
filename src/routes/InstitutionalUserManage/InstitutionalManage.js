@@ -8,7 +8,18 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 export default class InstitutionalManage extends Component {
+  state = {
+    province:'0',
+  }
+
+  provinceSelectChange = (val) => {
+    this.setState({
+      province:val,
+    })
+  }
+
   render(){
+    const { province } = this.state;
     const data=[
       {value:'0',id:0,label:'山东省'},
       {value:'1',id:1,label:'山西省'},
@@ -114,7 +125,7 @@ export default class InstitutionalManage extends Component {
         <Card>
           <div className={styles.form}>
             <Input placeholder="机构名称" style={{width:150,marginRight:20}}/>
-            <Select style={{marginRight:20,width:150}} value="0">
+            <Select style={{marginRight:20,width:150}} value={province} onChange={this.provinceSelectChange}>
               {selectData}
             </Select>
             <RangePicker style={{marginRight:20}}/>

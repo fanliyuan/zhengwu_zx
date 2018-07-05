@@ -12,7 +12,25 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 export default class PassManagement extends Component {
+  state = {
+    startNode:'0',
+    endNode:'0',
+  }
+
+  selectStartChange = (val) => {
+    this.setState({
+      startNode:val,
+    })
+  }
+
+  selectEndChange = (val) => {
+    this.setState({
+      endNode:val,
+    })
+  }
+
   render () {
+    const { startNode, endNode } = this.state;
     const data1= [{value:'0',label:'起始节点1',id:1},{value:'1',label:'起始节点2',id:2}];
     const data2= [{value:'0',label:'目标节点1',id:1},{value:'1',label:'目标节点2',id:2}];
     const selectData1 = data1.map(item => {
@@ -90,10 +108,10 @@ export default class PassManagement extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.forms}>
-            <Select value="1" style={{marginRight:20}}>
+            <Select value={startNode} style={{marginRight:20}} onChange={this.selectStartChange}>
               {selectData1}
             </Select>
-            <Select value="0" style={{marginRight:20}}>
+            <Select value={endNode} style={{marginRight:20}} onChange={this.selectEndChange}>
               {selectData2}
             </Select>
             <Button type="primary">搜索</Button>

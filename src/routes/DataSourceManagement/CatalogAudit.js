@@ -8,7 +8,25 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 export default class CatalogAudit extends Component {
+  state = {
+    provider:'0',
+    status:'0',
+  }
+
+  providerChange = (val) => {
+    this.setState({
+      provider:val,
+    })
+  }
+
+  statusChange = (val) => {
+    this.setState({
+      status:val,
+    })
+  }
+
   render(){
+    const { provider, status } = this.state;
     const data=[
       {value:'0',id:0,label:'提供方'},
       {value:'1',id:1,label:'提供方1'},
@@ -142,11 +160,11 @@ export default class CatalogAudit extends Component {
           <div className={styles.form}>
             <Input placeholder="目录编码" style={{width:150,marginRight:20}}/>
             <Input placeholder="名称" style={{width:150,marginRight:20}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={provider} onChange={this.providerChange}>
               {selectData}
             </Select>
             <RangePicker style={{marginRight:20,width:250}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={status} onChange={this.statusChange}>
               {selectData1}
             </Select>
             <Checkbox style={{marginRight:10}}>已挂接资源</Checkbox>

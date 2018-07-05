@@ -8,7 +8,46 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 export default class AccessManagement extends Component {
+  state = {
+    dataType:'0',
+    nodeName:'0',
+    owingJg:'0',
+    creater:'0',
+    status:'0',
+  }
+  
+  selectDataTypeChange = (val) => {
+    this.setState({
+      dataType:val,
+    })
+  }
+
+  selectNodeChange = (val) => {
+    this.setState({
+      nodeName:val,
+    })
+  }
+
+  selectOwingJgChange = (val) => {
+    this.setState({
+      owingJg:val,
+    })
+  }
+
+  selectCreaterChange = (val) => {
+    this.setState({
+      creater:val,
+    })
+  }
+
+  selectStatusChange = (val) => {
+    this.setState({
+      status:val,
+    })
+  }
+
   render(){
+    const { dataType, nodeName, owingJg, creater, status } = this.state;
     const data=[
       {value:'0',id:0,label:'数据类型'},
       {value:'1',id:1,label:'数据类型1'},
@@ -152,20 +191,20 @@ export default class AccessManagement extends Component {
         <Card>
           <div className={styles.form}>
             <Input placeholder="名称" style={{width:150,marginRight:20}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={dataType} onChange={this.selectDataTypeChange}>
               {selectData}
             </Select>
-            <Select style={{marginRight:20,width:120}} value="0">
+            <Select style={{marginRight:20,width:120}} value={nodeName} onChange={this.selectNodeChange}>
               {selectData1}
             </Select>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={owingJg} onChange={this.selectOwingJgChange}>
               {selectData2}
             </Select>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={creater} onChange={this.selectCreaterChange}>
               {selectData3}
             </Select>
             <RangePicker style={{marginRight:20,width:250}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={status} onChange={this.selectStatusChange}>
               {selectData4}
             </Select>
             <Button type="primary">搜索</Button>

@@ -8,7 +8,39 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 export default class SourceManagement extends Component {
+  state = {
+    dataType:'0',
+    nodeName:'0',
+    owingJg:'0',
+    status:'0',
+  }
+
+  dataTypeChange = (val) => {
+    this.setState({
+      dataType:val,
+    })
+  }
+
+  nodeNameChange = (val) => {
+    this.setState({
+      nodeName:val,
+    })
+  }
+
+  owingJgChange = (val) => {
+    this.setState({
+      owingJg:val,
+    })
+  }
+
+  statusChange = (val) => {
+    this.setState({
+      status:val,
+    })
+  }
+
   render(){
+    const { dataType, nodeName, owingJg, status } = this.state;
     const data=[
       {value:'0',id:0,label:'数据类型'},
       {value:'1',id:1,label:'数据类型1'},
@@ -158,17 +190,17 @@ export default class SourceManagement extends Component {
           <div className={styles.form}>
             <Input placeholder="资源名称" style={{width:150,marginRight:20}}/>
             <Input placeholder="应用系统名称" style={{width:150,marginRight:20}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={dataType} onChange={this.dataTypeChange}>
               {selectData}
             </Select>
-            <Select style={{marginRight:20,width:120}} value="0">
+            <Select style={{marginRight:20,width:120}} value={nodeName} onChange={this.nodeNameChange}>
               {selectData1}
             </Select>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={owingJg} onChange={this.owingJgChange}>
               {selectData2}
             </Select>
             <RangePicker style={{marginRight:20,width:250}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} value={status} onChange={this.statusChange}>
               {selectData4}
             </Select>
             <Button type="primary">搜索</Button>

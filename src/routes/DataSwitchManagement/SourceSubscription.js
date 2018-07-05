@@ -8,7 +8,25 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 export default class SourceSubscription extends Component {
+  state = {
+    selectJg:'0',
+    selectDy:'0',
+  }
+
+  handleSelectChangejg = (val) => {
+    this.setState({
+      selectJg:val,
+    })
+  }
+
+  handleSelectChangedy = (val) => {
+    this.setState({
+      selectDy:val,
+    })
+  }
+
   render(){
+    const { selectJg, selectDy} = this.state;
     const data=[
       {value:'0',id:0,label:'发布机构'},
       {value:'1',id:1,label:'发布机构1'},
@@ -19,7 +37,7 @@ export default class SourceSubscription extends Component {
     const data1=[
       {value:'0',id:0,label:'是否订阅'},
       {value:'1',id:1,label:'是'},
-      {value:'1',id:1,label:'否'},
+      {value:'2',id:2,label:'否'},
     ];
     const selectData1 = data1.map(item => {
       return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
@@ -142,10 +160,10 @@ export default class SourceSubscription extends Component {
           <div className={styles.form}>
             <Input placeholder="发布名称" style={{width:150,marginRight:20}}/>
             <Input placeholder="发布主题" style={{width:150,marginRight:20}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:120}} onChange={this.handleSelectChangejg} value={selectJg}>
               {selectData}
             </Select>
-            <Select style={{marginRight:20,width:120}} value="0">
+            <Select style={{marginRight:20,width:120}} onChange={this.handleSelectChangedy} value={selectDy}>
               {selectData1}
             </Select>
             <RangePicker style={{marginRight:20,width:250}} />

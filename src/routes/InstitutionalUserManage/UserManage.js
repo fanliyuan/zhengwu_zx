@@ -8,7 +8,32 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 export default class UserManage extends Component {
+  state = {
+    owingJg:'0',
+    role:'0',
+    isEnable:'0',
+  }
+  
+  selectOwingJg = (val) => {
+    this.setState({
+      owingJg:val,
+    })
+  }
+
+  selectrole = (val) => {
+    this.setState({
+      role:val,
+    })
+  }
+
+  selectIsEnable = (val) => {
+    this.setState({
+      isEnable:val,
+    })
+  }
+
   render(){
+    const { owingJg, role, isEnable } = this.state;
     const data=[
       {value:'0',id:0,label:'所属机构'},
       {value:'1',id:1,label:'XXX机构'},
@@ -135,13 +160,13 @@ export default class UserManage extends Component {
             <Input placeholder="姓名" style={{width:100,marginRight:20}}/>
             <InputNumber value="0" style={{marginRight:20}}/>
             <RangePicker style={{marginRight:20,width:250}}/>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:100}} value={owingJg} onChange={this.selectOwingJg}>
               {selectData}
             </Select>
-            <Select style={{marginRight:20,width:120}} value="0">
+            <Select style={{marginRight:20,width:120}} value={role} onChange={this.selectrole}>
               {selectData1}
             </Select>
-            <Select style={{marginRight:20,width:100}} value="0">
+            <Select style={{marginRight:20,width:100}} value={isEnable} onChange={this.selectIsEnable}>
               {selectData2}
             </Select>
             <Button type="primary">搜索</Button>

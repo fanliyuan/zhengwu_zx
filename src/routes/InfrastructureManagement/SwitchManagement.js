@@ -7,7 +7,18 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 export default class SwitchManagement extends Component {
+  state = {
+    isEnable:'0',
+  }
+
+  isEnableChange = (val) => {
+    this.setState({
+      isEnable:val,
+    })
+  }
+
   render(){
+    const { isEnable } = this.state;
     const data1=[
       {value:"1001",label:'机构1',children:[{value:"101",label:'机构1.1'},{value:"102",label:'机构1.2'}]},
       {value:"2001",label:'机构2',children:[{value:"201",label:'机构1.2'},{value:"202",label:'机构2.2'}]},
@@ -102,7 +113,7 @@ export default class SwitchManagement extends Component {
             <Input placeholder="域名称" style={{marginRight:20,width:150}}/>
             <Cascader options={data1} placeholder="交换范围机构" style={{marginRight:20}}/>,
             <Cascader options={data2} placeholder="交换范围节点" style={{marginRight:20}}/>,
-            <Select value="0" style={{marginRight:20}}>
+            <Select value={isEnable} style={{marginRight:20}} onChange={this.isEnableChange}>
               {selectData3}
             </Select>
             <Button type="primary">搜索</Button>
