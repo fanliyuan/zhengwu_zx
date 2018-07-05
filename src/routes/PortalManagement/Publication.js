@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-04 18:15:32
+ * @Last Modified time: 2018-07-05 09:37:42
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -148,7 +148,7 @@ export default class Publication extends Component {
 
     return (
       <PageHeaderLayout>
-        <div className={styles.layout} >
+        <div className='my-table-layout' >
           <Form className={styles.search} >
             <Input value={title} onChange={this.titleChange} className={styles.input} />
             <Input value={operator} onChange={this.operatorChange} className={styles.input} />
