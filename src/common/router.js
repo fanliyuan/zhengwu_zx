@@ -181,6 +181,26 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/SubscriptionAudit')
       ),
     },
+    '/dataSourceManagement/newMenu': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu')
+      ),
+    },
+    '/dataSourceManagement/newMenu/one': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step1')
+      ),
+    },
+    '/dataSourceManagement/newMenu/two': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step2')
+      ),
+    },
+    '/dataSourceManagement/newMenu/three': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step3')
+      ),
+    },
     '/dataSwitchManagement/subscriptionAudit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/SubscriptionAudit')

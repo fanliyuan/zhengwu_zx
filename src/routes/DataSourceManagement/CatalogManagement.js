@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'dva/router'
 import { Table, Button, Input, Select, Card, DatePicker, Checkbox } from 'antd';
 import moment from 'moment';
 
@@ -168,7 +169,9 @@ export default class CatalogManagement extends Component {
             <Button type="primary">搜索</Button>
           </div>
           <div className={styles.createBtn}>
-            <Button icon="plus" type="primary">新建</Button>
+            <Button icon="plus" type="primary">
+              <Link to='/dataSourceManagement/newMenu' style={{color: 'white'}} >新建</Link>
+            </Button>
             <Button type="primary">导入</Button>
           </div>
           <div>
