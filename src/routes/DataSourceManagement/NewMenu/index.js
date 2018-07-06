@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-05 14:01:01
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-05 16:30:07
+ * @Last Modified time: 2018-07-06 10:57:22
 */
 import  React, { PureComponent, Fragment } from 'react'
 import { Route, Redirect, Switch } from 'dva/router'
@@ -18,9 +18,8 @@ export default class NewMenu extends PureComponent {
 
   getCurrentStep() {
     const { location: { pathname } } = this.props
-    // // const pathList = pathname.split('/')
-    // console.log(pathname)
-    switch (pathname) {
+    const pathList = pathname.split('/')
+    switch (pathList[pathList.length-1]) {
       case 'one':
         return 0
       case 'two':

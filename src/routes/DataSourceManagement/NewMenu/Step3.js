@@ -1,49 +1,24 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-07-06 17:49:38
+ * @Last Modified by:   ChouEric
+ * @Last Modified time: 2018-07-06 17:49:38
+*/
 import React, { PureComponent, Fragment } from 'react'
-import { routerRedux } from 'dva/router'
-import { Form, Input, Button, Select } from 'antd'
+// import { routerRedux } from 'dva/router'
+import Result from 'components/Result'
 
-import styles from './index.less'
+// import styles from './index.less'
 
-const { Item } = Form
+// const { Item } = Form
 
-@Form.create()
-export default class Step1 extends PureComponent {
+export default class Step3 extends PureComponent {
   render() {
-    const { form: { getFieldDecorator, validateFields }, dispatch, data } = this.props // eslint-disable-line
 
     return (
-      <Form>
-        <Item label='名称' >
-          {
-            getFieldDecorator('menuName',{
-              initialValue: data.menuName,
-              rules: [{ required: true, message: '请输入名称' }],
-            })(<Input placeholder='请输入名称' />)
-          }
-        </Item>
-        <Item label='描述' >
-          {
-            getFieldDecorator('desc',{
-              initialValue: data.desc,
-              rules: [{ required: true, message: '请输入名称' }],
-            })(<Input.TextArea placeholder='请输入名称' />)
-          }
-        </Item>
-        <Item label='分类' >
-          {
-            getFieldDecorator('classify',{
-              initialValue: data.classify,
-              rules: [{ required: true, message: '请输入名称' }],
-            })(
-              <Select>
-                <Option value="classify1">分类1</Option>
-                <Option value="classify2">分类2</Option>
-                <Option value="classify21">分类21</Option>
-              </Select>
-            )
-          }
-        </Item>
-      </Form>
+      <Fragment>
+        <Result type='success' title='提交成功' />
+      </Fragment>
     )
   }
 }

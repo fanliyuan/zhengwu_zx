@@ -1,3 +1,9 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-07-06 17:49:30
+ * @Last Modified by:   ChouEric
+ * @Last Modified time: 2018-07-06 17:49:30
+*/
 import React, { PureComponent } from 'react'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'

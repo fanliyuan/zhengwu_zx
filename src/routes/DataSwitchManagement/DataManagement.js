@@ -2,12 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 13:24:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 13:51:35
+ * @Last Modified time: 2018-07-06 13:41:16
  * @描述: 数据管理
 */
 import React, { Component } from 'react';
 // import { connect } from 'dva';
-import { DatePicker, Input, Select, Button, Table } from 'antd';
+import { DatePicker, Input, Select, Button, Table, message } from 'antd';
 import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -28,6 +28,7 @@ export default class DataManagement extends Component {
     dataBase: '',
     date: [],
     isChanged: false,
+    selectedRowKeys: [],
   };
 
   componentDidMount () {
@@ -132,8 +133,18 @@ export default class DataManagement extends Component {
     // });
   };
 
+  downloadFun = (val) => {
+    try {
+      message.success(`选择了${val.join(',')}`)
+    } catch (error) {console.log(error)} finally {}// eslint-disable-line
+  }
+
+  downloadTpl = () => {
+    message.info('下载模板')
+  }
+
   render() {
-    const { name, date, theme, origin, dataBase } = this.state
+    const { name, date, theme, origin, dataBase, selectedRowKeys } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const data = []
@@ -200,6 +211,15 @@ export default class DataManagement extends Component {
       },
     ];
 
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: (val) => {
+        this.setState({
+          selectedRowKeys: val,
+        })
+      },
+    }
+
     columns.forEach(item => {
       item.align = 'center'
     })
@@ -246,13 +266,14 @@ export default class DataManagement extends Component {
             </Button>
           </div>
           <div className={styles.bar}>
-            <Button type='primary' className={styles.button}>导出</Button>
+            <Button type='primary' icon='download' className={styles.button} onClick={() => this.downloadFun(selectedRowKeys)} >导出</Button>
           </div>
           <div>
             <Table
               bordered
               columns={columns}
               dataSource={data}
+              rowSelection={rowSelection}
               // pagination={pagination}
               // loading={loading}
               rowKey="id"

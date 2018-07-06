@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-05 17:20:24
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-05 18:25:59
+ * @Last Modified time: 2018-07-06 10:35:47
 */
 import React, { PureComponent, Fragment } from 'react'
 import { Table, Button, Input, message, Popconfirm, Divider, Tooltip } from 'antd'
@@ -45,6 +45,18 @@ export default class TableForm extends PureComponent {
       })
     }
   }
+
+  addNew = () => {
+    const newData = this.state.data.map(item => ({ ...item }));
+    newData.push({
+      key: `NEW_TEMP_ID_${this.index}`,
+      infoCode: '',
+      editable: true,
+      isNew: true,
+    });
+    this.index += 1;
+    this.setState({ data: newData });
+  };
 
   toggleEditable = (e, key) => {
     e.preventDefault();
@@ -91,7 +103,7 @@ export default class TableForm extends PureComponent {
   cancel(e, key) {
     this.clickedCancel = true;
     e.preventDefault();
-    const newData = this.state.data.map(item => ({ ...item }));
+    const newData = this.state.data.map(item => ({ ...item }));// eslint-disable-line
     const target = this.getRowByKey(key, newData);
     if (this.cacheOriginData[key]) {
       Object.assign(target, this.cacheOriginData[key]);
@@ -100,6 +112,13 @@ export default class TableForm extends PureComponent {
     }
     this.setState({ data: newData });
     this.clickedCancel = false;
+  }
+
+  remove(key) {
+    const newData = this.state.data.filter(item => item.key !== key);// eslint-disable-line
+    // console.log(newData)
+    this.setState({ data: newData });
+    this.props.onChange(newData);
   }
 
   render() {
@@ -119,7 +138,7 @@ export default class TableForm extends PureComponent {
                   onChange={e => this.handleFieldChang(e, 'infoCode', row.key)}
                 />
               </Tooltip>
-              
+
             )
           }
           return text
@@ -336,9 +355,16 @@ export default class TableForm extends PureComponent {
           dataSource={this.state.data}
           loading={this.state.loading}
           bordered
+          pagination={false}
         />
-        <Button>上一步</Button>
-        <Button>提交</Button>
+        <Button
+          style={{ width: '100%', marginTop: 8, marginBottom: 16 }}
+          type="dashed"
+          onClick={this.addNew}
+          icon="plus"
+        >
+          新增数据
+        </Button>
       </Fragment>
     )
   }

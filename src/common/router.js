@@ -161,6 +161,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/FileSource')
       ),
     },
+    '/dataSourceManagement/fileSourceDetail/:id': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/FileSourceDetail')
+      ),
+    },
     '/dataSourceManagement/sourceAudit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/SourceAudit')
@@ -199,6 +204,11 @@ export const getRouterData = app => {
     '/dataSourceManagement/newMenu/three': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/NewMenu/Step3')
+      ),
+    },
+    '/dataSourceManagement/auditLog': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/AuditLog')
       ),
     },
     '/dataSwitchManagement/subscriptionAudit': {

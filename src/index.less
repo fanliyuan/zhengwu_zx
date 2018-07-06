@@ -29,11 +29,29 @@ body {
     overflow: visible !important;
   }
   // 这里可以定义全局样式,在后面引用只需要在对应 元素 className='my-table-layout' 即可;
-  .my-table-layout{
+  .my-table-layout {
     margin: 0 auto;
     margin-top: 10px;
     background: white;
     padding: 20px;
     min-width: 1300px;
+  }
+  .common-layout{
+    margin: 0 auto;
+    margin-top: 16px;
+    padding: 16px;
+    background: white;
+  }
+  .clearfix {
+    &::before {
+      content: '';
+      display: table;
+      clear: both;
+    }
+    &::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
   }
 }

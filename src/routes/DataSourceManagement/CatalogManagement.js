@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'dva/router'
-import { Table, Button, Input, Select, Card, DatePicker, Checkbox } from 'antd';
+import { Table, Button, Input, Select, Card, DatePicker, Checkbox, Upload, message } from 'antd';
 import moment from 'moment';
 
 import styles from './CatalogManagement.less';
@@ -12,6 +12,8 @@ export default class CatalogManagement extends Component {
   state = {
     provider:'0',
     status:'0',
+    isHover: false,
+    loading: false,
   }
 
   providerChange = (val) => {
@@ -26,8 +28,33 @@ export default class CatalogManagement extends Component {
     })
   }
 
+  hoverFun = () => {
+    const { isHover } = this.state
+    this.setState({
+      isHover: !isHover,
+    })
+  }
+
+  downTpl = () => {
+    message.info('下载模板')
+  }
+
+  uploadFun = ( { event } ) => {
+    if (event) {
+      this.setState({
+        loading: true,
+      })
+      setTimeout(() => {
+        this.setState({
+          loading: false,
+        })
+        message.success('上传成功,不过这个只是假的')
+      }, 1000);
+    }
+  }
+
   render(){
-    const { provider, status } = this.state;
+    const { provider, status, isHover } = this.state;
     const data=[
       {value:'0',id:0,label:'提供方'},
       {value:'1',id:1,label:'提供方1'},
@@ -172,7 +199,12 @@ export default class CatalogManagement extends Component {
             <Link to='/dataSourceManagement/newMenu' style={{color: 'white'}} >
               <Button icon="plus" type="primary">新建</Button>
             </Link>
-            <Button type="primary">导入</Button>
+            <span onMouseEnter={this.hoverFun} onMouseLeave={this.hoverFun}  >
+              <Upload name='file' action='//jsonplaceholder.typicode.com/posts/' showUploadList={false} onChange={this.uploadFun} >
+                <Button icon='upload' >导入</Button>
+              </Upload>
+              { isHover && <a onClick={this.downTpl} >下载模板</a>  }
+            </span>
           </div>
           <div>
             <Table
@@ -181,6 +213,7 @@ export default class CatalogManagement extends Component {
               pagination={pagination}
               rowKey="id"
               rowSelection={rowSelection}
+              loading={this.state.loading}
               bordered
             />
           </div>
