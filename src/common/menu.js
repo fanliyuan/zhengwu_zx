@@ -110,6 +110,11 @@ const menuData = [
         hideInMenu:true,
       },
       {
+        name:'权限设置',
+        path:'limitSet',
+        hideInMenu:false,
+      },
+      {
         name:'分配角色',
         path:'assignRole',
       },

@@ -16,12 +16,18 @@ export default class RoleLimit extends Component {
 
   }
 
+  setLimit = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/institutionalUserManage/limitSet'));
+  }
+
   handleAdd = () => {
     const { dispatch } =this.props;
     dispatch(routerRedux.push('/institutionalUserManage/addRole'));
   }
 
   render(){
+    const that = this;
     const pagination = { pageSize:10,current:1 };
     const columns = [
       {
@@ -52,7 +58,8 @@ export default class RoleLimit extends Component {
         render(){
             return (
               <div>
-                <a>查看</a>
+                <a style={{marginRight:20}}>查看</a>
+                <span style={{color:'#1890FF',cursor:'pointer'}} onClick={that.setLimit}>权限</span>
               </div>
             )
         },
