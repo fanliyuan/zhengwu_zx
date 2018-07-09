@@ -266,6 +266,16 @@ export const getRouterData = app => {
         import('../routes/PortalManagement/CarouselManagement')
       ),
     },
+    '/portalManagement/addArticle': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/AddArticle')
+      ),
+    },
+    '/portalManagement/addCarousel': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/AddCarousel')
+      ),
+    },
     '/monitor/node': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/Monitor/Node')
@@ -294,6 +304,11 @@ export const getRouterData = app => {
     '/monitor/warningOption': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/Monitor/WarningOption')
+      ),
+    },
+    '/monitor/editWarningOption': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/EditWarningOption')
       ),
     },
     '/monitor/warningQuery': {
