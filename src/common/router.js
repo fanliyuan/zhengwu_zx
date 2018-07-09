@@ -191,6 +191,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/FileSource')
       ),
     },
+    '/dataSourceManagement/fileSourceDetail/:id': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/FileSourceDetail')
+      ),
+    },
     '/dataSourceManagement/sourceAudit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/SourceAudit')
@@ -209,6 +214,36 @@ export const getRouterData = app => {
     '/dataSourceManagement/subscriptionAudit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/SubscriptionAudit')
+      ),
+    },
+    '/dataSourceManagement/newMenu': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu')
+      ),
+    },
+    '/dataSourceManagement/newMenu/one': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step1')
+      ),
+    },
+    '/dataSourceManagement/newMenu/two': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step2')
+      ),
+    },
+    '/dataSourceManagement/newMenu/three': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step3')
+      ),
+    },
+    '/dataSourceManagement/auditLog': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/AuditLog')
+      ),
+    },
+    '/dataSourceManagement/checkAudit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/CheckAudit')
       ),
     },
     '/dataSwitchManagement/subscriptionAudit': {
@@ -261,6 +296,16 @@ export const getRouterData = app => {
         import('../routes/PortalManagement/CarouselManagement')
       ),
     },
+    '/portalManagement/addArticle': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/AddArticle')
+      ),
+    },
+    '/portalManagement/addCarousel': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/PortalManagement/AddCarousel')
+      ),
+    },
     '/monitor/node': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/Monitor/Node')
@@ -289,6 +334,11 @@ export const getRouterData = app => {
     '/monitor/warningOption': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/Monitor/WarningOption')
+      ),
+    },
+    '/monitor/editWarningOption': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/EditWarningOption')
       ),
     },
     '/monitor/warningQuery': {

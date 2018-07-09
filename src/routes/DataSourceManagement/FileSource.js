@@ -1,17 +1,35 @@
 import React, { Component } from 'react';
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 import { Table, Button, Card, Divider } from 'antd';
 import moment from 'moment';
 
 import styles from './FileSource.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
+@connect()
 export default class FileSource extends Component {
+
+  goToDetail = (row) => {
+    this.props.dispatch(
+      routerRedux.push({
+        pathname: `/dataSourceManagement/fileSourceDetail/${row.id}`,
+        state: row,
+      })
+    )
+  }
+
   render(){
     const pagination = { pageSize:10,current:1 };
     const columns = [
       {
         title:'文件名称',
         dataIndex:'name',
+        render: (text, row) => {
+          return (
+            <a onClick={() => this.goToDetail(row)} >{text}</a>
+          )
+        },
       },
       {
         title:'类型',

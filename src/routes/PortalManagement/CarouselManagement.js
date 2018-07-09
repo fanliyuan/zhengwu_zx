@@ -2,11 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:42:31
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 15:54:55
+ * @Last Modified time: 2018-07-09 15:31:58
  * @描述: 开放门户管理--资讯管理--轮播图管理
 */
 import React, { Component } from 'react';
-// import { connect } from 'dva';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router'
 import { DatePicker, Input, Select, Button, Table } from 'antd';
 import moment from 'moment'
 
@@ -16,10 +17,7 @@ import styles from './CarouselManagement.less';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-// @connect(({ overviewLogging, loading }) => ({
-//   overviewLogging,
-//   loading: loading.models.overviewLogging,
-// }))
+@connect()
 export default class CarouselManagement extends Component {
   state = {
     name: '',
@@ -124,6 +122,12 @@ export default class CarouselManagement extends Component {
     // });
   };
 
+  goAddCarouse = () => {
+    this.props.dispatch(
+      routerRedux.push('/portalManagement/addCarousel')
+    )
+  }
+
   render() {
     const { name, date, resource, page } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
@@ -223,7 +227,7 @@ export default class CarouselManagement extends Component {
             </Button>
           </div>
           <div className={styles.bar}>
-            <Button type='primary' className={styles.button}>新增</Button>
+            <Button type='primary' className={styles.button} onClick={this.goAddCarouse} >新增</Button>
           </div>
           <div>
             <Table
