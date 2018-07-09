@@ -20,7 +20,7 @@ export default class AddCarousel extends Component {
   state = {
     name: '',
     column: [],
-    sort: 0,
+    sort: 1,
     urlType: '',
     url: '',
     image: '',
@@ -157,10 +157,10 @@ export default class AddCarousel extends Component {
                 )
               }
             </Item>
-            <Item label='排序' {...itemLayout} >initialValue
+            <Item label='排序' {...itemLayout} >
               {
                 getFieldDecorator('sort', {
-                  initValue: sort,
+                  initialValue: sort,
                   rules: [
                     {
                       required: true,

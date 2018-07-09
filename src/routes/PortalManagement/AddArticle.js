@@ -185,10 +185,10 @@ export default class AddArticle extends Component {
                   }],
                 })(
                   <Fragment>
-                    <Select className={styles.input} >
+                    <Select className={styles.select1} >
                       {classifyComs}
                     </Select>
-                    <Select className={styles.input} >
+                    <Select className={styles.select2} >
                       {columnComs}
                     </Select>
                   </Fragment>
