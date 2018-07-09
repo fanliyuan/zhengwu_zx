@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { Table, Button, Input, Select, Card, DatePicker, InputNumber } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
 import styles from './UserManage.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+@connect(({userManage}) => ({
+  userManage,
+}))
 export default class UserManage extends Component {
   state = {
     owingJg:'0',
@@ -30,6 +35,11 @@ export default class UserManage extends Component {
     this.setState({
       isEnable:val,
     })
+  }
+
+  handleAdd = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/institutionalUserManage/addUser'));
   }
 
   render(){
@@ -172,7 +182,7 @@ export default class UserManage extends Component {
             <Button type="primary">搜索</Button>
           </div>
           <div className={styles.createBtn}>
-            <Button icon="plus" type="primary">新建</Button>
+            <Button icon="plus" type="primary" onClick={this.handleAdd}>新建</Button>
           </div>
           <div>
             <Table

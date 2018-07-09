@@ -65,6 +65,16 @@ const menuData = [
         name: '交换域管理',
         path: 'switch',
       },
+      {
+        name: '修改通道',
+        path: 'editPass',
+        hideInMenu:true,
+      },
+      {
+        name: '新建交换域',
+        path: 'addSwitch',
+        hideInMenu:true,
+      },
     ],
   },
   {
@@ -77,12 +87,27 @@ const menuData = [
         path:'institutionalManage',
       },
       {
+        name:'新建机构',
+        path:'addInstitution',
+        hideInMenu:true,
+      },
+      {
         name:'用户管理',
         path:'userManage',
       },
       {
+        name:'新建用户',
+        path:'addUser',
+        hideInMenu:true,
+      },
+      {
         name:'角色权限',
         path:'roleLimit',
+      },
+      {
+        name:'新建角色',
+        path:'addRole',
+        hideInMenu:true,
       },
       {
         name:'分配角色',

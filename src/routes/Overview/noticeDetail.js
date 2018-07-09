@@ -51,11 +51,11 @@ export default class noticeDetail extends Component {
     }
   }
 
-  handleBack = () => {
-    // const {router} = this.props;
-    // router.push('/overview/SystemNotification')
-    routerRedux.push('/overview/SystemNotification');
-  };
+  // handleBack = () => {
+  //   // const {router} = this.props;
+  //   // router.push('/overview/SystemNotification')
+  //   routerRedux.push('/overview/SystemNotification');
+  // };
 
   handleDelete = () => {
     const { layId } = this.state;
@@ -72,11 +72,14 @@ export default class noticeDetail extends Component {
   };
 
   deleteSuccess = text => {
+    const { dispatch } = this.props
     this.setState({
       state: false,
     });
     message.info(text);
-    routerRedux.push('/overview/SystemNotification');
+    dispatch(
+      routerRedux.push('/overview/SystemNotification')
+    )
   };
 
   render() {

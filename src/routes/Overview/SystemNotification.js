@@ -15,6 +15,7 @@ export default class SystemNotification extends PureComponent {
   state = {
     selectedRowIds: [],
     state: false,
+    params:'',
     changeState: false,
   };
 
@@ -45,17 +46,21 @@ export default class SystemNotification extends PureComponent {
 
   handleTableChange = pagination => {
     const { dispatch } = this.props;
+    const { params } = this.state;
     dispatch({
       type: 'SystemNotification/getIntros',
-      payload: { query: { state: '' }, pagination },
+      payload: { query: { state: params }, pagination },
     });
   };
 
-  handleState = params => {
+  handleState = par => {
     const { dispatch } = this.props;
+    this.setState({
+      params:par,
+    })
     dispatch({
       type: 'SystemNotification/getIntros',
-      payload: { query: { state: params }, pagination: { pageSize: 10, current: 1 } },
+      payload: { query: { state: par }, pagination: { pageSize: 10, current: 1 } },
     });
   };
 

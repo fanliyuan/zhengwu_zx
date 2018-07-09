@@ -4,14 +4,16 @@
  * @Last Modified by: fly
  * @Last Modified time: 2018-07-03 
 */
-import React, { Component } from 'react';
+import React from 'react';
 import { Select, Button, Table, Card } from 'antd';
+import { routerRedux } from 'dva/router';
+import { connect } from 'dva';
 
 import styles from './PassManagement.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
-export default class PassManagement extends Component {
+class PassManagement extends React.PureComponent {
   state = {
     startNode:'0',
     endNode:'0',
@@ -29,10 +31,22 @@ export default class PassManagement extends Component {
     })
   }
 
+  editHandle = (row) => {
+    const { dispatch } = this.props;
+    const { startCode, targetCode, isTwoWay, isCompress, isEncrypt } = row;
+    dispatch({
+      type:'passOperation/saveRowInfo',
+      payload:{ startCode, targetCode, isTwoWay, isCompress, isEncrypt },
+    })
+
+    dispatch(routerRedux.push('/infrastructure/editPass'));
+  }
+
   render () {
+    const that = this;
     const { startNode, endNode } = this.state;
-    const data1= [{value:'0',label:'起始节点1',id:1},{value:'1',label:'起始节点2',id:2}];
-    const data2= [{value:'0',label:'目标节点1',id:1},{value:'1',label:'目标节点2',id:2}];
+    const data1= [{value:'0',label:'石家庄市发展改革委',id:1},{value:'1',label:'北京发展改革委',id:2}];
+    const data2= [{value:'0',label:'石家庄市民政部',id:1},{value:'1',label:'北京民政部',id:2}];
     const selectData1 = data1.map(item => {
       return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
     })
@@ -88,8 +102,8 @@ export default class PassManagement extends Component {
         render(text,row){
           return (
             <div>
-              <a href={`#${row.id}`} style={{ marginRight:10 }}>修改</a>
-              <a href={`#${row.id}`} style={{ marginRight:10 }}>监控</a>
+              <span onClick={that.editHandle.bind(null,row)} style={{ marginRight:10, color:'#1991FF', cursor:'pointer' }}>修改</span>
+              <a href={`#${row.id}`} style={{ marginRight:10 }}>监控</a> 
               <a href={`#${row.id}`} style={{ marginRight:10 }}>统计</a>
               <a href={`#${row.id}`} style={{ marginRight:10 }}>任务</a>
             </div>
@@ -101,8 +115,8 @@ export default class PassManagement extends Component {
       item.align = 'center';
     });
     const list = [
-      {id:0,startNode:'石家庄市发展改革委',targetNode:'石家庄市民政部',isTwoWay:0,isCompress:1,isEncrypt:0,passStatus:'联通',taskStatus:'运行中'},
-      {id:1,startNode:'石家庄市发展改革委',targetNode:'石家庄市民政部',isTwoWay:0,isCompress:1,isEncrypt:0,passStatus:'联通',taskStatus:'运行中'},
+      {id:0,startCode:'0',startNode:'石家庄市发展改革委',targetCode:'0',targetNode:'石家庄市民政部',isTwoWay:"0",isCompress:"1",isEncrypt:"0",passStatus:'联通',taskStatus:'运行中'},
+      {id:1,startCode:'1',startNode:'北京发展改革委',targetCode:'1',targetNode:'北京民政部',isTwoWay:"1",isCompress:"1",isEncrypt:"0",passStatus:'联通',taskStatus:'运行中'},
     ]
     return (
       <PageHeaderLayout>
@@ -132,3 +146,7 @@ export default class PassManagement extends Component {
     )
   }
 }
+
+export default connect(({ passOperation }) => ({
+  data : passOperation.params,
+}))(PassManagement);
