@@ -1,10 +1,11 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-06 17:49:10
- * @Last Modified by:   ChouEric
- * @Last Modified time: 2018-07-06 17:49:10
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-08 15:31:08
 */
 import React, { Component } from 'react'
+import { Link } from 'dva/router'
 import { Card, Button, Row, Col } from 'antd'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -33,7 +34,9 @@ export default class AuditLog extends Component {
       <PageHeaderLayout>
         <div className='common-layout' >
           <div className='clearfix' >
-            <Button type='primary' style={{float: 'right'}} >返回</Button>
+            <Link to='/dataSourceManagement/catalogAudit' style={{float: 'right'}} >
+              <Button type='primary'>返回</Button>
+            </Link>
           </div>
           <Card loading={loading} bordered={false} className={styles.card} >
             <Row type="flex" justify="center" >

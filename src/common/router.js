@@ -211,6 +211,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/AuditLog')
       ),
     },
+    '/dataSourceManagement/checkAudit': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/CheckAudit')
+      ),
+    },
     '/dataSwitchManagement/subscriptionAudit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/SubscriptionAudit')
