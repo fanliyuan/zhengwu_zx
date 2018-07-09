@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
 import styles from './InstitutionalManage.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+@connect(({Institution}) => ({
+  Institution,
+}))
 export default class InstitutionalManage extends Component {
   state = {
     province:'0',
@@ -16,6 +21,11 @@ export default class InstitutionalManage extends Component {
     this.setState({
       province:val,
     })
+  }
+
+  handleAdd = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/institutionalUserManage/addInstitution'));
   }
 
   render(){
@@ -132,7 +142,7 @@ export default class InstitutionalManage extends Component {
             <Button type="primary">搜索</Button>
           </div>
           <div className={styles.createBtn}>
-            <Button icon="plus" type="primary">新建</Button>
+            <Button icon="plus" type="primary" onClick={this.handleAdd}>新建</Button>
           </div>
           <div>
             <Table

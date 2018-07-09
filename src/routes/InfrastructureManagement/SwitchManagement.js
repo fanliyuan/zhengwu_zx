@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { Table, Button, Input, Select, Card, Cascader } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
 import styles from './SwitchManagement.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
+@connect(({switchManage}) => ({
+  switchManage,
+}))
 export default class SwitchManagement extends Component {
   state = {
     isEnable:'0',
@@ -15,6 +20,11 @@ export default class SwitchManagement extends Component {
     this.setState({
       isEnable:val,
     })
+  }
+
+  handleAdd = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/infrastructure/addSwitch'));
   }
 
   render(){
@@ -117,6 +127,9 @@ export default class SwitchManagement extends Component {
               {selectData3}
             </Select>
             <Button type="primary">搜索</Button>
+          </div>
+          <div className={styles.createBtn}>
+            <Button type="primary" onClick={this.handleAdd}>新建</Button>
           </div>
           <div>
             <Table

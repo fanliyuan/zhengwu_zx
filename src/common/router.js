@@ -112,8 +112,13 @@ export const getRouterData = app => {
       ),
     },
     '/infrastructure/pass': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['passOperation'], () =>
         import('../routes/InfrastructureManagement/PassManagement')
+      ),
+    },
+    '/infrastructure/editPass': {
+      component: dynamicWrapper(app, ['passOperation'], () =>
+        import('../routes/InfrastructureManagement/EditPass')
       ),
     },
     '/infrastructure/switch': {
@@ -121,9 +126,19 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/SwitchManagement')
       ),
     },
+    '/infrastructure/addSwitch': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InfrastructureManagement/AddSwitch')
+      ),
+    },
     '/institutionalUserManage/institutionalManage': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/InstitutionalUserManage/InstitutionalManage')
+      ),
+    },
+    '/institutionalUserManage/addInstitution': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InstitutionalUserManage/AddInstitution')
       ),
     },
     '/institutionalUserManage/userManage': {
@@ -131,9 +146,19 @@ export const getRouterData = app => {
         import('../routes/InstitutionalUserManage/UserManage')
       ),
     },
+    '/institutionalUserManage/addUser': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InstitutionalUserManage/AddUser')
+      ),
+    },
     '/institutionalUserManage/roleLimit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/InstitutionalUserManage/RoleLimit')
+      ),
+    },
+    '/institutionalUserManage/addRole': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InstitutionalUserManage/AddRole')
       ),
     },
     '/institutionalUserManage/assignRole': {

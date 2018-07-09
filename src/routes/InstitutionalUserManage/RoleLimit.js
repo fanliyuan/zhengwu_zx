@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
 import { Table, Button, Input, Card, DatePicker } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router'
 
 import styles from './RoleLimit.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { RangePicker } = DatePicker;
+@connect(({roleLimit}) => ({
+  roleLimit,
+}))
 export default class RoleLimit extends Component {
+  state = {
+
+  }
+
+  handleAdd = () => {
+    const { dispatch } =this.props;
+    dispatch(routerRedux.push('/institutionalUserManage/addRole'));
+  }
+
   render(){
     const pagination = { pageSize:10,current:1 };
     const columns = [
@@ -86,7 +100,7 @@ export default class RoleLimit extends Component {
             <Button type="primary">搜索</Button>
           </div>
           <div className={styles.createBtn}>
-            <Button icon="plus" type="primary">新建</Button>
+            <Button icon="plus" type="primary" onClick={this.handleAdd}>新建</Button>
           </div>
           <div>
             <Table
