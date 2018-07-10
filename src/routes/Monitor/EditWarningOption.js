@@ -1,3 +1,10 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-07-10 10:04:02
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-10 11:20:51
+ * @描述: 监控告警 -- 系统告警设置 -- 告警页面
+*/
 import React, { Component, Fragment } from 'react'
 import { Form, Input, Select, Checkbox, InputNumber, Button } from 'antd'
 
@@ -28,7 +35,7 @@ export default class EditWarningOption extends Component {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values);// eslint-disable-line
       }
     })
   }

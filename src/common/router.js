@@ -321,9 +321,24 @@ export const getRouterData = app => {
         import('../routes/Monitor/InsertDetail')
       ),
     },
+    '/monitor/insertResource': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/InsertResource')
+      ),
+    },
     '/monitor/task': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/Monitor/Task')
+      ),
+    },
+    '/monitor/pubDetail': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/PubDetail')
+      ),
+    },
+    '/monitor/subDetail': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/SubDetail')
       ),
     },
     '/monitor/warningOption': {
@@ -334,6 +349,11 @@ export const getRouterData = app => {
     '/monitor/editWarningOption': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/Monitor/EditWarningOption')
+      ),
+    },
+    '/monitor/addWarningOption': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/Monitor/AddWarningOption')
       ),
     },
     '/monitor/warningQuery': {
