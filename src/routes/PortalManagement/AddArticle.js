@@ -237,7 +237,7 @@ export default class AddArticle extends Component {
               </Upload>
             </Item>
           </Form>
-          <Modal visible={saveVisible} onCancel={this.saveCancel} title='保存' >
+          <Modal visible={saveVisible} onCancel={this.saveCancel} title='保存' className={styles.box}  >
             {/* <div>
               <span>保存类型</span>
               <Radio.Group value >
