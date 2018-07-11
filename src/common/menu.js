@@ -112,7 +112,7 @@ const menuData = [
       {
         name:'权限设置',
         path:'limitSet',
-        hideInMenu:false,
+        hideInMenu:true,
       },
       {
         name:'分配角色',
@@ -128,6 +128,11 @@ const menuData = [
       {
         name:'接入管理',
         path:'accessManagement',
+      },
+      {
+        name:'新建接入',
+        path:'addAccess',
+        hideInMenu:true,
       },
       {
         name:'接入审核',
@@ -156,6 +161,30 @@ const menuData = [
       {
         name:'订阅审核',
         path:'subscriptionAudit',
+      },
+      {
+        name:'录入数据库信息',
+        path:'inputDataInfo',
+      },
+      {
+        name:'设置同步计划',
+        path:'setPlan',
+      },
+      {
+        name:'上传本地文件',
+        path:'updataFile',
+      },
+      {
+        name:'ftp设置同步计划',
+        path:'ftpSetPlan',
+      },
+      {
+        name:'目录',
+        path:'catalog',
+      },
+      {
+        name:'任务',
+        path:'task',
       },
     ],
   },
