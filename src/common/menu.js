@@ -58,6 +58,11 @@ const menuData = [
         path: 'node',
       },
       {
+        name: '新建节点',
+        path: 'addNode',
+        hideInMenu:true,
+      },
+      {
         name: '通道管理',
         path: 'pass',
       },
@@ -173,6 +178,10 @@ const menuData = [
       {
         name:'上传本地文件',
         path:'updataFile',
+      },
+      {
+        name:'ftp',
+        path:'ftp',
       },
       {
         name:'ftp设置同步计划',

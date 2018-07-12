@@ -111,6 +111,11 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/NodeManagement')
       ),
     },
+    '/infrastructure/addNode': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InfrastructureManagement/AddNode')
+      ),
+    },
     '/infrastructure/pass': {
       component: dynamicWrapper(app, ['passOperation'], () =>
         import('../routes/InfrastructureManagement/PassManagement')
@@ -152,7 +157,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/roleLimit': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['roleLimit'], () =>
         import('../routes/InstitutionalUserManage/RoleLimit')
       ),
     },
@@ -162,7 +167,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/limitSet': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['roleLimit'], () =>
         import('../routes/InstitutionalUserManage/LimitSet')
       ),
     },
@@ -194,6 +199,11 @@ export const getRouterData = app => {
     '/dataSourceManagement/updataFile': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/UpdataFile')
+      ),
+    },
+    '/dataSourceManagement/ftp': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/Ftp')
       ),
     },
     '/dataSourceManagement/ftpSetPlan': {

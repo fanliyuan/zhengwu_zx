@@ -137,7 +137,7 @@ class PassManagement extends React.PureComponent {
               pagination={pagination}
               // onChange={}
               // loading={loading}
-              rowKey="id"
+              rowKey="id" 
               bordered
             />
           </div>

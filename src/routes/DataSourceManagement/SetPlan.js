@@ -18,11 +18,12 @@ export default class SetPlan extends Component {
     week:'',
   }
 
-  setInputs = () => {
-    const { setFieldValue } = this.props.form;
-    const { minutes, hours, day, month, week } = this.state;
-    const timeInfo = [minutes, hours, day, month, week];
-    setFieldValue('setTime',timeInfo);
+  setInputs1 = (val) => {
+    // const { minutes, hours, day, month, week } = this.state;
+    this.setState({
+      minutes:val,
+    })
+    
   }
 
   handleSubmit = () => {

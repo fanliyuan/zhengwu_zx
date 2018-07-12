@@ -8,16 +8,18 @@ import styles from './RoleLimit.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { RangePicker } = DatePicker;
-@connect(({roleLimit}) => ({
-  roleLimit,
-}))
-export default class RoleLimit extends Component {
+class RoleLimit extends Component {
   state = {
 
   }
 
-  setLimit = () => {
+  setLimit = (row) => {
     const { dispatch } = this.props;
+    const { roleName, roleDescription  } = row;
+    dispatch({
+      type:'roleLimit/saveRowInfo',
+      payload:{roleName, roleDescription},
+    })
     dispatch(routerRedux.push('/institutionalUserManage/limitSet'));
   }
 
@@ -55,11 +57,11 @@ export default class RoleLimit extends Component {
       },
       {
         title:'操作',
-        render(){
+        render(text,row){
             return (
               <div>
                 <a style={{marginRight:20}}>查看</a>
-                <span style={{color:'#1890FF',cursor:'pointer'}} onClick={that.setLimit}>权限</span>
+                <span style={{color:'#1890FF',cursor:'pointer'}} onClick={that.setLimit.bind(null,row)}>权限</span>
               </div>
             )
         },
@@ -123,3 +125,6 @@ export default class RoleLimit extends Component {
     )
   }
 }
+export default connect (({roleLimit}) => ({
+  data:roleLimit,
+}))(RoleLimit)

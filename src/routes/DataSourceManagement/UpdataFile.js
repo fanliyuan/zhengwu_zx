@@ -4,8 +4,8 @@ import { Card, Button, Steps, Upload, Icon, Message } from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './UpdataFile.less';
 
+const { Dragger } = Upload;
 const { Step } = Steps;
-const Dragger = Upload.Dragger;
 export default class UpdataFile extends Component {
   state = {
     stepNum:0,
@@ -18,16 +18,16 @@ export default class UpdataFile extends Component {
       multiple:true,
       action:'//jsonplaceholder.typicode.com/posts/',
       onChange(info){
-        const state = info.file.status;
-        if(status !== 'uploading'){
-
+        const statuss = info.file.status;
+        if(statuss !== 'uploading'){
+          // console.log()
         }
-        if(status === 'done'){
+        if(statuss === 'done'){
           Message.success(`${info.file.name} file upload successfully`)
         } else if(status === 'error'){
           Message.error(`${info.file.name} file upload failed`)
         }
-      }
+      },
     }
     return(
       <PageHeaderLayout>

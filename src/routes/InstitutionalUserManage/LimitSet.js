@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Form, Button, Input, TreeSelect } from 'antd';
+import { connect } from 'dva';
 
 // import styles from './LimitSet.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -7,7 +8,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 const FormItem = Form.Item;
 const { SHOW_PARENT }= TreeSelect;
 @Form.create()
-export default class LimitSet extends Component {
+class LimitSet extends Component {
   state = {
 
   }
@@ -18,6 +19,7 @@ export default class LimitSet extends Component {
 
   render (){
     const { getFieldDecorator } = this.props.form;
+    const { data } = this.props;
     const formItemLayout = {
       labelCol:{
         xs:{span:24},
@@ -76,14 +78,25 @@ export default class LimitSet extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="角色名称" {...formItemLayout}>
               {
-                getFieldDecorator('roleName')(
+                getFieldDecorator('roleName',{
+                  initialValue:data.roleName,
+                })(
+                  <Input readonly/>
+                )
+              }
+            </FormItem>
+            <FormItem label="角色类型" {...formItemLayout}>
+              {
+                getFieldDecorator('roleType')(
                   <Input readonly/>
                 )
               }
             </FormItem>
             <FormItem label="角色说明" {...formItemLayout}>
               {
-                getFieldDecorator('roleIntro')(
+                getFieldDecorator('roleIntro',{
+                  initialValue:data.roleDescription,
+                })(
                   <Input readonly/>
                 )
               }
@@ -112,4 +125,7 @@ export default class LimitSet extends Component {
     )
   }
 }
+export default connect(({roleLimit}) => ({
+  data:roleLimit.params,
+}))(LimitSet)
 
