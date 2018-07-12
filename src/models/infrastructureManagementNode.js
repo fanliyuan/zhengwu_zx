@@ -4,7 +4,7 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-12 18:09:50
 */
-import { message } from 'antd'
+import { message } from 'antd';
 
 import {
   getNodeList,
@@ -12,6 +12,7 @@ import {
   getState,
   getInfrastructureManagementNode,
   deleteInfrastructureManagementNode,
+  deleteInfrastructureManagementNodeSome,
 } from '../services/api';
 
 export default {
@@ -133,10 +134,24 @@ export default {
         // eslint-disable-line
       } // eslint-disable-line
     },
-    *delete({ payload: {row} }, { call }) {
+    *delete(
+      {
+        payload: { row },
+      },
+      { call }
+    ) {
       // 这里可以调用删除接口
-      yield call(deleteInfrastructureManagementNode, row)
-      yield message.success(`成功删除${row.id}`)
+      yield call(deleteInfrastructureManagementNode, row);
+      yield message.success(`成功删除${row.id}`);
+    },
+    *deleteSome(
+      {
+        payload: { ids },
+      },
+      { call }
+    ) {
+      yield call(deleteInfrastructureManagementNodeSome, ids);
+      yield message.success('删除成功');
     },
   },
   reducers: {

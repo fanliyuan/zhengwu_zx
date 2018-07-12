@@ -140,22 +140,29 @@ export async function getOperationList() {
 }
 
 export async function getNodeList() {
-  return request('/api/node/list')
+  return request('/api/node/list');
 }
 
 export async function getState() {
-  return request('/api/state/list')
+  return request('/api/state/list');
 }
 
 export async function getInfrastructureManagementNode(params) {
   return request('/api/infrastructure/node', {
     method: 'POST',
     body: params,
-  })
+  });
 }
 
 export async function deleteInfrastructureManagementNode(params) {
   return request(`/api/infrastructure/delnode/${params.id}`, {
     method: 'DELETE',
-  })
+  });
+}
+
+export async function deleteInfrastructureManagementNodeSome(params) {
+  return request('/api/infrastructure/delnodes', {
+    method: 'POST',
+    body: params,
+  });
 }

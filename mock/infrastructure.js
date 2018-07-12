@@ -129,15 +129,38 @@ const getNodeList = (req, res) => {
 };
 
 const deleteNode = (req, res) => {
-  InfrastructureNodeData = InfrastructureNodeData.filter(item => item.id !== +req.params.id)
+  InfrastructureNodeData = InfrastructureNodeData.filter(item => item.id !== +req.params.id);
   res.send({
     status: 200,
     data: '删除成功',
-  })
-}
+  });
+};
+
+const deleteNodes = (req, res) => {
+  const ids = req.body;
+  const result = [];
+  // 这里两层循环,应该有优化的方案
+  InfrastructureNodeData.forEach(item => {
+    const flag = ids.some(sub => {
+      if (sub === item.id) {
+        return true;
+      }
+      return false;
+    });
+    if (!flag) {
+      result.push(item);
+    }
+  });
+  InfrastructureNodeData = result;
+  res.send({
+    status: 200,
+    data: '删除成功',
+  });
+};
 
 export default {
   getInfrastructureNode,
   getNodeList,
   deleteNode,
+  deleteNodes,
 };
