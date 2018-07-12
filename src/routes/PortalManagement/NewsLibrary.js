@@ -2,11 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:07:52
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 15:45:39
+ * @Last Modified time: 2018-07-12 10:36:51
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
 import React, { Component } from 'react';
 // import { connect } from 'dva';
+import { Link } from 'dva/router'
 import { DatePicker, Input, Select, Button, Table } from 'antd';
 import moment from 'moment'
 
@@ -283,7 +284,9 @@ export default class NewsLibrary extends Component {
             </Button>
           </div>
           <div className={styles.bar}>
-            <Button type='primary' className={styles.button}>新增</Button>
+            <Link to='/portalManagement/AddArticle' >
+              <Button type='primary' className={styles.button}>新增</Button>
+            </Link>
           </div>
           <div>
             <Table

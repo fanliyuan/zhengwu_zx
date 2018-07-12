@@ -153,3 +153,10 @@ export async function getInfrastructureManagementNode(params) {
     body: params,
   })
 }
+
+export async function deleteInfrastructureManagementNode(params) {
+  return request({
+    method: 'DELETE',
+    body: params,
+  })
+}

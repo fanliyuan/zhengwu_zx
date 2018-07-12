@@ -2,8 +2,10 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:26:50
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-02 18:00:23
+ * @Last Modified time: 2018-07-12 16:52:42
 */
+import { message } from 'antd'
+
 import {
   getNodeList,
   getOrganization,
@@ -129,6 +131,10 @@ export default {
       } finally {
         // eslint-disable-line
       } // eslint-disable-line
+    },
+    *delete({ payload: {row} }, { call, put }) {
+      // 这里可以调用删除接口
+      yield message.success(`成功删除${row.id}`)
     },
   },
   reducers: {

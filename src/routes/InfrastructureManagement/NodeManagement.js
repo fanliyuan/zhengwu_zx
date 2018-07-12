@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-03 10:01:45
+ * @Last Modified time: 2018-07-12 16:48:14
 */
 import React, { Component } from 'react';
 import { connect } from 'dva';
@@ -117,8 +117,13 @@ export default class NodeManagement extends Component {
     });
   };
 
-  handleDelete = () => {
-    message.success('确认删除')
+  handleDelete = (row) => {
+    this.props.dispatch({
+      type: 'infrastructureManagementNode/delete',
+      payload: {
+        row,
+      },
+    })
   }
 
   handleCancel = () => {
@@ -173,7 +178,7 @@ export default class NodeManagement extends Component {
               <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
                 修改
               </Link>
-              <Popconfirm title='确认删除?' onConfirm={this.handleDelete} onCancel={this.handleCancel} okText='确定' cancelText='取消' >
+              <Popconfirm title='确认删除?' onConfirm={() => this.handleDelete(row)} onCancel={this.handleCancel} okText='确定' cancelText='取消' >
                 <Link to={`#${row.id}`} style={{ marginRight: 10 }}>删除</Link>
               </Popconfirm>
               <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
@@ -195,7 +200,7 @@ export default class NodeManagement extends Component {
     });
     const stateComs = stateList.map(item => {
       return (
-        <Select.Option value={item.value} key={item.id} title={item.label}>
+        <Select.Option value={item.value} key={item.value} title={item.label}>
           {item.label}
         </Select.Option>
       );
@@ -247,7 +252,7 @@ export default class NodeManagement extends Component {
             pagination={pagination}
             onChange={this.handleTableChange}
             loading={loading}
-            rowKey="id"
+            rowKey='id'
             bordered
           />
         </div>

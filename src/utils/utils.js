@@ -168,6 +168,11 @@ export function isUrl(path) {
   return reg.test(path);
 }
 
+/**
+ * 根据当前时间戳可以获取到当前时间戳的0点0分的时间戳
+ * @param {number} time 时间戳,毫秒
+ * @return {number} 返回时间戳
+ */
 export function format0(time) {
   if (typeof time === 'number') {
     const date = new Date(time)
@@ -179,6 +184,11 @@ export function format0(time) {
   }
 }
 
+/**
+ * 根据当前时间戳可以获取到当前时间戳的23点59分的时间戳
+ * @param {number} time 时间戳,毫秒
+ * @return {number} 返回时间戳
+ */
 export function format24(time) {
   if (typeof time === 'number') {
     const date = new Date(time)

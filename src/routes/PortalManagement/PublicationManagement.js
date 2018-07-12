@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-05 13:19:57
+ * @Last Modified time: 2018-07-12 10:40:54
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component } from 'react';
@@ -30,6 +30,7 @@ export default class PublicationManagement extends Component {
     audit: -1,
     date: [],
     isChanged: false,
+    selectKeys: [],
   };
 
   componentDidMount () {
@@ -155,7 +156,7 @@ export default class PublicationManagement extends Component {
   // }
 
   render() {
-    const { name, date, audit, subscribe, type, system } = this.state
+    const { name, date, audit, subscribe, type, system, selectKeys } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const data = []
@@ -216,6 +217,14 @@ export default class PublicationManagement extends Component {
         label: '待审核',
       },
     ]
+    const rowSelection = {
+      selectKeys,
+      onChange: (select) => {
+        this.setState({
+          selectKeys: select,
+        })
+      },
+    }
 
     const columns = [
       {
@@ -298,6 +307,7 @@ export default class PublicationManagement extends Component {
               bordered
               columns={columns}
               dataSource={data}
+              rowSelection={rowSelection}
               // pagination={pagination}
               // loading={loading}
               rowKey="id"

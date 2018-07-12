@@ -2,13 +2,13 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:42:31
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-09 15:31:58
+ * @Last Modified time: 2018-07-12 16:28:42
  * @描述: 开放门户管理--资讯管理--轮播图管理
 */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router'
-import { DatePicker, Input, Select, Button, Table } from 'antd';
+import { DatePicker, Input, Select, Button, Table, Popconfirm } from 'antd';
 import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -137,12 +137,13 @@ export default class CarouselManagement extends Component {
     for(let i = 0; i < 120; i ++) {
       data.push({
         id: i,
-        name: '类型' + i, // eslint-disable-line
-        // count: Math.ceil(Math.random() * 2000) + 100, // eslint-disable-line
+        name: `类型${i}`,
+        // count: Math.ceil(Math.random() * 2000) + 100,
         time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-        column: '主题' + i, // eslint-disable-line
-        sort: i, // eslint-disable-line
-        resource: '资源' + i, // eslint-disable-line
+        column: `主题${i}`,
+        sort: i,
+        resource: `资源${i}`,
+        state: Math.round(Math.random()),
       })
     }
 
@@ -160,6 +161,21 @@ export default class CarouselManagement extends Component {
         label: '开放动态',
       },
     ]
+
+    const state1Coms = (row) => {
+      return <a onClick={() => this.endCaroulse(row)} style={{marginRight: 8}} >启用</a>
+    }
+    const state0Coms = (row) => {
+      return (
+        <Fragment>
+          <a onClick={() => this.endCaroulse(row)} style={{marginRight: 8, color: 'red'}} >停用</a>
+          <a onClick={() => this.endCaroulse(row)} style={{marginRight: 8}} >修改</a>
+          <Popconfirm type='primary' onConfirm={() => this.endCaroulse(row)} title='确定删除此轮播图' okText='确定' okType='danger' cancelText='取消' >
+            <a style={{marginRight: 8}} >删除</a>
+          </Popconfirm>
+        </Fragment>
+      )
+    }
 
     const columns = [
       {
@@ -188,7 +204,12 @@ export default class CarouselManagement extends Component {
       },
       {
         title: '操作',
-        dataIndex: 'operation',
+        dataIndex: 'state',
+        render: (state, row) => {
+          return (
+            state === 0 ? state0Coms(row) : state1Coms(row)
+          )
+        },
       },
     ];
 

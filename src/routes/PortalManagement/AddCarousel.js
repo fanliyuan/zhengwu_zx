@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'dva/router'
-import { Form, Input, Select, Radio, Upload, Button, InputNumber, Icon, Modal } from 'antd'
+import { Form, Input, Select, Radio, Upload, Button, InputNumber, Icon, Modal, message } from 'antd'
+// import copy from 'copy-to-clipboard' //复制到剪切板
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './AddCarousel.less'
@@ -15,18 +16,138 @@ const itemLayout = {
   },
 }
 
-@Form.create()
+function hasErrors(fieldErrors) {
+  return Object.keys(fieldErrors).some(item => fieldErrors[item])
+}
+
+class Column extends Component {
+  state = {
+    first: 1,
+    second: 11,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ('value' in nextProps) {
+      this.setState(nextProps.value)
+    }
+  }
+
+  firstChange = (val) => {
+    this.setState({
+      first: val,
+    }, () => this.props.onChange({...this.state}))
+  }
+
+  secondChange = (val) => {
+    this.setState({
+      second: val,
+    }, () => this.props.onChange({...this.state}))
+  }
+
+  render() {
+    const { first, second } = this.state
+    const {firstList=[], secondList=[] } = this.props
+    const firstComs = firstList.map(item => (
+      <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+    ))
+    const secondComs = secondList.map(item => (
+      <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+    ))
+    return (
+      <Fragment>
+        <Select value={first} onChange={this.firstChange} className={styles.select1} >
+          {firstComs}
+        </Select>
+        <Select value={second} onChange={this.secondChange} className={styles.select2} >
+          {secondComs}
+        </Select>
+      </Fragment>
+    )
+  }
+}
+
+@Form.create() // eslint-disable-line
 export default class AddCarousel extends Component {
   state = {
     name: '',
-    column: [],
+    column: { first: 1, second: 11 },
     sort: 1,
-    urlType: '',
+    urlType: 0,
     url: '',
-    image: '',
+    image: false,
     previewVisible: false,
     previewUrl: '',
     fileList: [],
+    columnList: [
+      {
+        value: 1,
+        label: '首页',
+        children: [
+          {
+            value: 11,
+            label: '最新动态',
+          },
+          {
+            value: 12,
+            label: '重要新闻',
+          },
+          {
+            value: 13,
+            label: '通知公告',
+          },
+          {
+            value: 14,
+            label: '最新政策',
+          },
+          {
+            value: 15,
+            label: '政策解读',
+          },
+          {
+            value: 16,
+            label: '热门政题',
+          },
+        ],
+      },
+      {
+        value: 2,
+        label: '开发动态',
+        children: [
+          {
+            value: 21,
+            label: '动态1',
+          },
+          {
+            value: 22,
+            label: '动态2',
+          },
+        ],
+      },
+      {
+        value: 3,
+        label: '目录',
+        children: [
+          {
+            value: 31,
+            label: '目录1',
+          },
+          {
+            value: 32,
+            label: '目录2',
+          },
+        ],
+      },
+    ],
+    sColList: [],
+  }
+
+  componentDidMount() {
+    if (!this.state.sColList.length) {
+      this.setState({
+        sColList: this.state.columnList[0].children, // eslint-disable-line
+      })
+    }
+    this.props.form.validateFields()
   }
 
   uploadChange = ({fileList}) => {
@@ -48,61 +169,66 @@ export default class AddCarousel extends Component {
     })
   }
 
-  render() {
-    const { name, column, sort, urlType, url, image, fileList, previewUrl, previewVisible } = this.state
-    const { getFieldDecorator } = this.props.form
-    const fColList = [
-      {
-        value: 0,
-        label: '首页',
-      },
-      {
-        value: 1,
-        label: '开发动态',
-      },
-      {
-        value: 2,
-        label: '目录',
-      },
-    ]
-    const sColList = [
-      {
-        value: 0,
-        label: '最新动态',
-      },
-      {
-        value: 1,
-        label: '重要新闻',
-      },
-      {
-        value: 2,
-        label: '通知公告',
-      },
-      {
-        value: 3,
-        label: '最新政策',
-      },
-      {
-        value: 4,
-        label: '政策解读',
-      },
-      {
-        value: 5,
-        label: '热门政题',
-      },
-    ]
+  columnChange = (value) => {
+    this.state.columnList.some(item => {
+      if (item.value === value.first) {
+        value.second = item.children[0].value
+        this.setState({
+          sColList: item.children,
+        })
+        return true
+      } else {
+        return false
+      }
+    })
+  }
 
-    const fColComs = fColList.map(item => (
-      <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
-    ))
-    const sColComs = sColList.map(item => (
-      <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
-    ))
+  normFile = (e) => {
+    if (e && e.fileList && e.fileList[0]) {
+      if (e.fileList[0].status === 'error') {
+        this.setState({
+          image: true,
+        })
+      }
+      return e.fileList[0].status === 'error' ? null : '成功'
+    } else {
+      console.log('上传失败') // eslint-disable-line
+      this.setState({
+        image: false,
+      })
+      return null
+    }
+
+  }
+
+  handleSave = () => {
+    this.props.form.validateFieldsAndScroll((errors, values) => {
+      if (!errors) {
+        message.success('通过表单验证,可以提交,控制台将打印表单值')
+        console.log(values) // eslint-disable-line
+      } else {
+        console.log('表单未通过验证', values) // eslint-disable-line
+      }
+    })
+  }
+
+  render() {
+    const { name, column, sort, urlType, url, image, fileList, previewUrl, previewVisible, sColList, columnList } = this.state
+    const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched } = this.props.form
+
+    const fColList = columnList.map(item => ({ value: item.value, label: item.label }))
+
+    const nameError = isFieldTouched('name') && getFieldError('name')
+    const columnError = isFieldTouched('column') && getFieldError('column')
+    const sortError = isFieldTouched('sort') && getFieldError('sort')
+    const urlTypeError = isFieldTouched('urlType') && getFieldError('urlType')
+    const urlError = isFieldTouched('url') && getFieldError('url')
+    const imageError = isFieldTouched('image') && getFieldError('image')
 
     const btnComs = (
       <Fragment>
         <Link to='/portalManagement/carouselManagement' className={styles.fr} ><Button type='primary' >返回</Button></Link>
-        <Button type='primary' className={styles.fr} >保存</Button>
+        <Button type='primary' className={styles.fr} disabled={hasErrors(getFieldsError())} onClick={this.handleSave} >保存</Button>
       </Fragment>
     )
     const uploadBtn = (
@@ -119,7 +245,7 @@ export default class AddCarousel extends Component {
             {btnComs}
           </div>
           <Form>
-            <Item label='名称' {...itemLayout} >
+            <Item label='名称' {...itemLayout} validateStatus={nameError?'error': ''} help={nameError?'请输入名称':''} >
               {
                 getFieldDecorator('name', {
                   initialValue: name,
@@ -134,7 +260,7 @@ export default class AddCarousel extends Component {
                 )
               }
             </Item>
-            <Item label='栏目' {...itemLayout} >
+            <Item label='栏目' {...itemLayout} validateStatus={columnError?'error': ''} help={columnError?'选择栏目':''} >
               {
                 getFieldDecorator('column', {
                   initialValue: column,
@@ -146,18 +272,11 @@ export default class AddCarousel extends Component {
                   ],
                 })(
                   // 这里类似级联
-                  <Fragment>
-                    <Select className={styles.select1}>
-                      {fColComs}
-                    </Select>
-                    <Select className={styles.select2}>
-                      {sColComs}
-                    </Select>
-                  </Fragment>
+                  <Column firstList={fColList} secondList={sColList} onChange={this.columnChange} />
                 )
               }
             </Item>
-            <Item label='排序' {...itemLayout} >
+            <Item label='排序' {...itemLayout} validateStatus={sortError?'error': ''} help={sortError?'请输入排序':''} >
               {
                 getFieldDecorator('sort', {
                   initialValue: sort,
@@ -172,7 +291,7 @@ export default class AddCarousel extends Component {
                 )
               }
             </Item>
-            <Item label='资源地址类型' {...itemLayout} >
+            <Item label='资源地址类型' {...itemLayout} validateStatus={urlTypeError?'error': ''} help={urlTypeError?'请选择链接类型':''} >
               {
                 getFieldDecorator('urlType', {
                   initialValue: urlType,
@@ -184,13 +303,13 @@ export default class AddCarousel extends Component {
                   ],
                 })(
                   <Radio.Group>
-                    <Radio value='0' >绝对路径</Radio>
-                    <Radio value='1' >相对路径</Radio>
+                    <Radio value={0} >绝对路径</Radio>
+                    <Radio value={1} >相对路径</Radio>
                   </Radio.Group>
                 )
               }
             </Item>
-            <Item label='资源地址' {...itemLayout} >
+            <Item label='资源地址' {...itemLayout} validateStatus={urlError?'error': ''} help={urlError?'请输入链接地址':''} >
               {
                 getFieldDecorator('url', {
                   initialValue: url,
@@ -205,9 +324,10 @@ export default class AddCarousel extends Component {
                 )
               }
             </Item>
-            <Item label='封面图' {...itemLayout} >
+            <Item label='封面图' {...itemLayout} validateStatus={imageError?'error': ''} help={imageError?'请上传封面图':''} extra={image?'网络或者服务器错误,上传图片失败':''} >
               {
                 getFieldDecorator('image', {
+                  getValueFromEvent: this.normFile,
                   rules: [
                     {
                       required: true,
@@ -230,6 +350,7 @@ export default class AddCarousel extends Component {
           <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel} >
             <img src={previewUrl} alt='图片预览' style={{width: '100%'}} />
           </Modal>
+          {/* <Button onClick={this.getFieldStates} >获取验证状态</Button> */}
         </div>
       </PageHeaderLayout>
     )
