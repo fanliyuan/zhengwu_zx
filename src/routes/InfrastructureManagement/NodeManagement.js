@@ -6,7 +6,7 @@
 */
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { Link } from 'dva/router';
+import { Link, routerRedux } from 'dva/router';
 import { Form, Input, Select, Button, Table, Cascader, Badge, Popconfirm, message } from 'antd';
 
 import styles from './NodeManagement.less';
@@ -130,6 +130,11 @@ export default class NodeManagement extends Component {
     message.info('删除取消')
   }
 
+  addNode = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/infrastructure/addNode'));
+  }
+
   render() {
     const {
       infrastructureManagementNode: { list, pagination, nodeList, organizationList, stateList },
@@ -246,6 +251,9 @@ export default class NodeManagement extends Component {
               搜索
             </Button>
           </Form>
+          <div style={{marginBottom:20}}>
+            <Button type="primary" onClick={this.addNode}>新建</Button>
+          </div>
           <Table
             columns={columns}
             dataSource={list}

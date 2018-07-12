@@ -111,6 +111,11 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/NodeManagement')
       ),
     },
+    '/infrastructure/addNode': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InfrastructureManagement/AddNode')
+      ),
+    },
     '/infrastructure/pass': {
       component: dynamicWrapper(app, ['passOperation'], () =>
         import('../routes/InfrastructureManagement/PassManagement')
@@ -152,13 +157,18 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/roleLimit': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['roleLimit'], () =>
         import('../routes/InstitutionalUserManage/RoleLimit')
       ),
     },
     '/institutionalUserManage/addRole': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/InstitutionalUserManage/AddRole')
+      ),
+    },
+    '/institutionalUserManage/limitSet': {
+      component: dynamicWrapper(app, ['roleLimit'], () =>
+        import('../routes/InstitutionalUserManage/LimitSet')
       ),
     },
     '/institutionalUserManage/assignRole': {
@@ -169,6 +179,46 @@ export const getRouterData = app => {
     '/dataSourceManagement/accessManagement': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/AccessManagement')
+      ),
+    },
+    '/dataSourceManagement/addAccess': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/AddAccess')
+      ),
+    },
+    '/dataSourceManagement/inputDataInfo': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/InputDataInfo')
+      ),
+    },
+    '/dataSourceManagement/setPlan': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/SetPlan')
+      ),
+    },
+    '/dataSourceManagement/updataFile': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/UpdataFile')
+      ),
+    },
+    '/dataSourceManagement/ftp': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/Ftp')
+      ),
+    },
+    '/dataSourceManagement/ftpSetPlan': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/FtpSetPlan')
+      ),
+    },
+    '/dataSourceManagement/task': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/Task')
+      ),
+    },
+    '/dataSourceManagement/catalog': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/Catalog')
       ),
     },
     '/dataSourceManagement/accessAudit': {

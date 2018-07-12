@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
 import styles from './AccessManagement.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+@connect(({accessManagement}) => ({
+  accessManagement,
+}))
 export default class AccessManagement extends Component {
   state = {
     dataType:'0',
@@ -44,6 +49,11 @@ export default class AccessManagement extends Component {
     this.setState({
       status:val,
     })
+  }
+
+  handleAdd = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/addAccess'));
   }
 
   render(){
@@ -210,7 +220,7 @@ export default class AccessManagement extends Component {
             <Button type="primary">搜索</Button>
           </div>
           <div className={styles.createBtn}>
-            <Button icon="plus" type="primary">新建</Button>
+            <Button icon="plus" type="primary" onClick={this.handleAdd}>新建</Button>
           </div>
           <div>
             <Table
