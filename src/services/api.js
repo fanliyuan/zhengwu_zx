@@ -155,8 +155,7 @@ export async function getInfrastructureManagementNode(params) {
 }
 
 export async function deleteInfrastructureManagementNode(params) {
-  return request({
+  return request(`/api/infrastructure/delnode/${params.id}`, {
     method: 'DELETE',
-    body: params,
   })
 }

@@ -84,7 +84,7 @@ nodeList.forEach(item => {
     nodeArr = [...nodeArr, ...item.children];
   }
 });
-const InfrastructureNodeData = [];
+let InfrastructureNodeData = [];
 for (let i = 0; i < 255; i++) {
   const random = Math.ceil(Math.random() * (nodeArr.length - 1));
   InfrastructureNodeData.push({
@@ -128,7 +128,16 @@ const getNodeList = (req, res) => {
   });
 };
 
+const deleteNode = (req, res) => {
+  InfrastructureNodeData = InfrastructureNodeData.filter(item => item.id !== +req.params.id)
+  res.send({
+    status: 200,
+    data: '删除成功',
+  })
+}
+
 export default {
   getInfrastructureNode,
   getNodeList,
+  deleteNode,
 };

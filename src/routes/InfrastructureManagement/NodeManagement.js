@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-12 16:48:14
+ * @Last Modified time: 2018-07-12 18:12:02
 */
 import React, { Component } from 'react';
 import { connect } from 'dva';
@@ -117,13 +117,17 @@ export default class NodeManagement extends Component {
     });
   };
 
-  handleDelete = (row) => {
-    this.props.dispatch({
+  handleDelete = async (row) => {
+    await this.props.dispatch({
       type: 'infrastructureManagementNode/delete',
       payload: {
         row,
       },
     })
+    await this.setState({
+      isChanged: true,
+    })
+    await this.handleSearch()
   }
 
   handleCancel = () => {

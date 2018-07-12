@@ -9,7 +9,7 @@ import { format, delay } from 'roadhog-api-doc';
 import { getLog, getState } from './mock/log';
 import { getSysNotices, getDeleteInfo, getChangeInfo, selectRowInfo } from './mock/sysNotices';
 import { organizationData, getAuditOperation, getAuditLog } from './mock/audit';
-import { getInfrastructureNode, getNodeList } from './mock/infrastructure'
+import { getInfrastructureNode, getNodeList, deleteNode } from './mock/infrastructure'
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -155,6 +155,7 @@ const proxy = {
     )
   },
   'POST /api/infrastructure/node': getInfrastructureNode,
+  'DELETE /api/infrastructure/delnode/:id': deleteNode,
   'GET /api/500': (req, res) => {
     res.status(500).send({
       timestamp: 1513932555104,

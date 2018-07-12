@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:26:50
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-12 16:52:42
+ * @Last Modified time: 2018-07-12 18:09:50
 */
 import { message } from 'antd'
 
@@ -11,6 +11,7 @@ import {
   getOrganization,
   getState,
   getInfrastructureManagementNode,
+  deleteInfrastructureManagementNode,
 } from '../services/api';
 
 export default {
@@ -132,8 +133,9 @@ export default {
         // eslint-disable-line
       } // eslint-disable-line
     },
-    *delete({ payload: {row} }, { call, put }) {
+    *delete({ payload: {row} }, { call }) {
       // 这里可以调用删除接口
+      yield call(deleteInfrastructureManagementNode, row)
       yield message.success(`成功删除${row.id}`)
     },
   },
