@@ -27,7 +27,7 @@ export default class FileSource extends Component {
         dataIndex:'name',
         render: (text, row) => {
           return (
-            <a onClick={() => this.goToDetail(row)} >{text}</a>
+            <a onClick={() => this.goToDetail(row)} title='目前链接有误' >{text}</a>
           )
         },
       },

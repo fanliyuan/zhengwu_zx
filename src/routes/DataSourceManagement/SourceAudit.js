@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'dva/router'
 import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
 import moment from 'moment';
 
@@ -115,7 +116,8 @@ export default class SourceAudit extends Component {
             if(row.status === '2'){
               return (
                 <div>
-                  <a>查看</a>
+                  {/* <a>查看</a> */}
+                  <Link to={`/dataSourceManagement/auditLog/${row.id}`} >查看</Link>
                 </div>
               )
             }
@@ -124,7 +126,7 @@ export default class SourceAudit extends Component {
                 <div>
                   <a style={{marginRight:10}}>资源</a>
                   <a style={{marginRight:10}}>同步计划</a>
-                  <a>查看</a>
+                  <Link to={`/dataSourceManagement/auditLog/${row.id}`} >查看</Link>
                 </div>
               )
             }

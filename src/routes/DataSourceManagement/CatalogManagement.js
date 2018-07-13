@@ -120,16 +120,18 @@ export default class CatalogManagement extends Component {
       },
       {
         title:'操作',
-        render(){
-              return (
-                <div>
-                  <a style={{marginRight:10}}>信息项</a>
-                  <a style={{marginRight:10}}>资源挂接</a>
-                  <a style={{marginRight:10}}>开放设置</a>
-                  <a style={{marginRight:10}}>修改</a>
-                  <a>删除</a>
-                </div>
-              )
+        dataIndex: 'catalogEncoding',
+        render(catalogEncoding, row) {
+          return (
+            <div>
+              <a style={{marginRight:10}}>信息项</a>
+              {/* <a style={{marginRight:10}}>资源挂接</a> */}
+              <Link to={`/dataSourceManagement/fileSourceDetail/${row.catalogEncoding}`} style={{marginRight:10}} >资源挂接</Link>
+              <a style={{marginRight:10}}>开放设置</a>
+              <a style={{marginRight:10}}>修改</a>
+              <a>删除</a>
+            </div>
+          )
         },
       },
     ]
@@ -139,7 +141,7 @@ export default class CatalogManagement extends Component {
     const list = [
       {
         id:0,
-        catalogEncoding:'330003130681126/0001',
+        catalogEncoding:'330003130681126-0001',
         name:'花名册信息',
         provider:'规划局',
         createTime:344344242,
@@ -150,7 +152,7 @@ export default class CatalogManagement extends Component {
       },
       {
         id:1,
-        catalogEncoding:'330003130681126/0002',
+        catalogEncoding:'330003130681126-0002',
         name:'资产负债表信息',
         provider:'规划局',
         createTime:344344242,
@@ -161,7 +163,7 @@ export default class CatalogManagement extends Component {
       },
       {
         id:2,
-        catalogEncoding:'330003130681126/0003',
+        catalogEncoding:'330003130681126-0003',
         name:'资产总值表',
         provider:'规划局',
         createTime:344344242,

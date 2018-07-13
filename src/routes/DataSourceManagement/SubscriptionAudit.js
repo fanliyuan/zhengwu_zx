@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'dva/router'
 import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
 import moment from 'moment';
 
@@ -111,14 +112,16 @@ export default class SubscriptionAudit extends Component {
             if(row.status === '1'){
               return (
                 <div>
-                  <a>查看</a>
+                  {/* <a>查看</a> */}
+                  <Link to={`/dataSourceManagement/checkAudit/${row.id}`} >查看</Link>
                 </div>
               )
             }
             else{
               return (
                 <div>
-                  <a style={{marginRight:10}}>查看</a>
+                  {/* <a style={{marginRight:10}}>查看</a> */}
+                  <Link to={`/dataSourceManagement/checkAudit/${row.id}`} style={{marginRight:10}} >查看</Link>
                   <a>审核</a>
                 </div>
               )
