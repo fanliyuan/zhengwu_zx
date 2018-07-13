@@ -2,12 +2,25 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-12 16:48:14
+ * @Last Modified time: 2018-07-12 18:12:02
 */
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Link, routerRedux } from 'dva/router';
-import { Form, Input, Select, Button, Table, Cascader, Badge, Popconfirm, message } from 'antd';
+import {
+  Form,
+  Input,
+  Select,
+  Button,
+  Table,
+  Cascader,
+  Badge,
+  Popconfirm,
+  message,
+  Dropdown,
+  Menu,
+  Icon,
+} from 'antd';
 
 import styles from './NodeManagement.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -31,6 +44,7 @@ export default class NodeManagement extends Component {
       pageSize: 10,
     },
     isChanged: false,
+    selectKeys: [],
   };
 
   componentWillMount() {
@@ -117,29 +131,67 @@ export default class NodeManagement extends Component {
     });
   };
 
-  handleDelete = (row) => {
-    this.props.dispatch({
+  handleDelete = async row => {
+    await this.props.dispatch({
       type: 'infrastructureManagementNode/delete',
       payload: {
         row,
       },
-    })
-  }
+    });
+    await this.setState({
+      isChanged: true,
+    });
+    await this.handleSearch();
+  };
 
   handleCancel = () => {
-    message.info('删除取消')
-  }
+    message.info('删除取消');
+  };
 
   addNode = () => {
     const { dispatch } = this.props;
     dispatch(routerRedux.push('/infrastructure/addNode'));
-  }
+  };
+
+  handleMenuClick = async (e, selectKeys) => {
+    switch (e.key) {
+      case '1':
+        console.log('批量启动', selectKeys); // eslint-disable-line
+        break;
+      case '2':
+        console.log('批量停止', selectKeys); // eslint-disable-line
+        break;
+      case '3':
+        console.log('批量删除', selectKeys); // eslint-disable-line
+        await this.props.dispatch({
+          type: 'infrastructureManagementNode/deleteSome',
+          payload: { ids: selectKeys },
+        });
+        await this.setState({
+          isChanged: true,
+        });
+        await this.handleSearch();
+        break;
+      default:
+        break;
+    }
+  };
 
   render() {
     const {
       infrastructureManagementNode: { list, pagination, nodeList, organizationList, stateList },
       loading,
     } = this.props;
+    const { selectKeys } = this.state;
+    const rowSelection = {
+      selectKeys,
+      onChange: Keys => {
+        this.setState({
+          selectKeys: Keys,
+        });
+      },
+    };
+
     const columns = [
       {
         title: 'ID',
@@ -183,8 +235,16 @@ export default class NodeManagement extends Component {
               <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
                 修改
               </Link>
-              <Popconfirm title='确认删除?' onConfirm={() => this.handleDelete(row)} onCancel={this.handleCancel} okText='确定' cancelText='取消' >
-                <Link to={`#${row.id}`} style={{ marginRight: 10 }}>删除</Link>
+              <Popconfirm
+                title="确认删除?"
+                onConfirm={() => this.handleDelete(row)}
+                onCancel={this.handleCancel}
+                okText="确定"
+                cancelText="取消"
+              >
+                <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
+                  删除
+                </Link>
               </Popconfirm>
               <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
                 监控
@@ -210,6 +270,14 @@ export default class NodeManagement extends Component {
         </Select.Option>
       );
     });
+    const MenuComs = (
+      <Menu onClick={e => this.handleMenuClick(e, selectKeys)}>
+        <Menu.Item key="1">启动</Menu.Item>
+        <Menu.Item key="2">停止</Menu.Item>
+        <Menu.Item key="3">删除</Menu.Item>
+      </Menu>
+    );
+
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
@@ -251,16 +319,24 @@ export default class NodeManagement extends Component {
               搜索
             </Button>
           </Form>
-          <div style={{marginBottom:20}}>
-            <Button type="primary" onClick={this.addNode}>新建</Button>
+          <div style={{ marginBottom: 20 }}>
+            <Button type="primary" onClick={this.addNode} className="mr16">
+              新建
+            </Button>
+            <Dropdown overlay={MenuComs}>
+              <Button>
+                批量操作<Icon type="down" />
+              </Button>
+            </Dropdown>
           </div>
           <Table
             columns={columns}
             dataSource={list}
             pagination={pagination}
             onChange={this.handleTableChange}
+            rowSelection={rowSelection}
             loading={loading}
-            rowKey='id'
+            rowKey="id"
             bordered
           />
         </div>

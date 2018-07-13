@@ -84,7 +84,7 @@ nodeList.forEach(item => {
     nodeArr = [...nodeArr, ...item.children];
   }
 });
-const InfrastructureNodeData = [];
+let InfrastructureNodeData = [];
 for (let i = 0; i < 255; i++) {
   const random = Math.ceil(Math.random() * (nodeArr.length - 1));
   InfrastructureNodeData.push({
@@ -128,7 +128,48 @@ const getNodeList = (req, res) => {
   });
 };
 
+const deleteNode = (req, res) => {
+  InfrastructureNodeData = InfrastructureNodeData.filter(item => item.id !== +req.params.id);
+  res.send({
+    status: 200,
+    data: '删除成功',
+  });
+};
+
+const deleteNodes = (req, res) => {
+  const ids = req.body;
+  // 这是优化方案
+  const result = InfrastructureNodeData.reduce((pre, cur) => {
+    pre[cur.id] = cur
+    return pre
+  }, {})
+  ids.forEach(item => {
+    delete result[item]
+  })
+  InfrastructureNodeData = Object.values(result)
+  // 这里两层循环,应该有优化的方案
+  // const result = [];
+  // InfrastructureNodeData.forEach(item => {
+  //   const flag = ids.some(sub => {
+  //     if (sub === item.id) {
+  //       return true;
+  //     }
+  //     return false;
+  //   });
+  //   if (!flag) {
+  //     result.push(item);
+  //   }
+  // });
+  // InfrastructureNodeData = result;
+  res.send({
+    status: 200,
+    data: '删除成功',
+  });
+};
+
 export default {
   getInfrastructureNode,
   getNodeList,
+  deleteNode,
+  deleteNodes,
 };
