@@ -8,6 +8,7 @@ const FormItem = Form.Item;
 const { Step } = Steps;
 const { Option } = Select;
 const InputGroup = Input.Group;
+
 @Form.create()
 export default class SetPlan extends Component {
   state = {
@@ -147,5 +148,16 @@ export default class SetPlan extends Component {
         </Card>
       </PageHeaderLayout>
     )
+  }
+}
+
+class InputList extends Component {
+  state = {
+    first:1,
+    second:2,
+  }
+
+  componentWillReceiveProps(){
+    
   }
 }
