@@ -140,13 +140,13 @@ const deleteNodes = (req, res) => {
   const ids = req.body;
   // 这是优化方案
   const InfrastructureNodeDataObject = InfrastructureNodeData.reduce((pre, cur) => {
-    pre[cur.id] = cur
-    return pre
-  }, {})
+    pre[cur.id] = cur;
+    return pre;
+  }, {});
   ids.forEach(item => {
-    delete InfrastructureNodeDataObject[item]
-  })
-  InfrastructureNodeData = Object.values(InfrastructureNodeDataObject)
+    delete InfrastructureNodeDataObject[item];
+  });
+  InfrastructureNodeData = Object.values(InfrastructureNodeDataObject);
   // 这里两层循环,应该有优化的方案
   // const result = [];
   // InfrastructureNodeData.forEach(item => {
@@ -170,6 +170,6 @@ const deleteNodes = (req, res) => {
 export default {
   getInfrastructureNode,
   getNodeList,
-  deleteNode,// 命名有误
-  deleteNodes,// 命名有误
+  deleteNode, // 命名有误
+  deleteNodes, // 命名有误
 };
