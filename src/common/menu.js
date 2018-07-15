@@ -60,7 +60,7 @@ const menuData = [
       {
         name: '新建节点',
         path: 'addNode',
-        hideInMenu:true,
+        hideInMenu: true,
       },
       {
         name: '通道管理',
@@ -73,142 +73,142 @@ const menuData = [
       {
         name: '修改通道',
         path: 'editPass',
-        hideInMenu:true,
+        hideInMenu: true,
       },
       {
         name: '新建交换域',
         path: 'addSwitch',
-        hideInMenu:true,
+        hideInMenu: true,
       },
     ],
   },
   {
-    name:'机构用户管理',
-    icon:'dashboard',
-    path:'institutionalUserManage',
+    name: '机构用户管理',
+    icon: 'dashboard',
+    path: 'institutionalUserManage',
     children: [
       {
-        name:'机构管理',
-        path:'institutionalManage',
+        name: '机构管理',
+        path: 'institutionalManage',
       },
       {
-        name:'新建机构',
-        path:'addInstitution',
-        hideInMenu:true,
+        name: '新建机构',
+        path: 'addInstitution',
+        hideInMenu: true,
       },
       {
-        name:'用户管理',
-        path:'userManage',
+        name: '用户管理',
+        path: 'userManage',
       },
       {
-        name:'新建用户',
-        path:'addUser',
-        hideInMenu:true,
+        name: '新建用户',
+        path: 'addUser',
+        hideInMenu: true,
       },
       {
-        name:'角色权限',
-        path:'roleLimit',
+        name: '角色权限',
+        path: 'roleLimit',
       },
       {
-        name:'新建角色',
-        path:'addRole',
-        hideInMenu:true,
+        name: '新建角色',
+        path: 'addRole',
+        hideInMenu: true,
       },
       {
-        name:'权限设置',
-        path:'limitSet',
-        hideInMenu:true,
+        name: '权限设置',
+        path: 'limitSet',
+        hideInMenu: true,
       },
       {
-        name:'分配角色',
-        path:'assignRole',
-      },
-    ],
-  },
-  {
-    name:'数据资源管理',
-    icon:'dashboard',
-    path:'dataSourceManagement',
-    children:[
-      {
-        name:'接入管理',
-        path:'accessManagement',
-      },
-      {
-        name:'新建接入',
-        path:'addAccess',
-        hideInMenu:true,
-      },
-      {
-        name:'接入审核',
-        path:'accessAudit',
-      },
-      {
-        name:'资源管理',
-        path:'sourceManagement',
-      },
-      {
-        name:'文件资源',
-        path:'fileSource',
-      },
-      {
-        name:'资源审核',
-        path:'sourceAudit',
-      },
-      {
-        name:'目录管理',
-        path:'catalogManagement',
-      },
-      {
-        name:'目录审核',
-        path:'catalogAudit',
-      },
-      {
-        name:'订阅审核',
-        path:'subscriptionAudit',
-      },
-      {
-        name:'录入数据库信息',
-        path:'inputDataInfo',
-      },
-      {
-        name:'设置同步计划',
-        path:'setPlan',
-      },
-      {
-        name:'上传本地文件',
-        path:'updataFile',
-      },
-      {
-        name:'ftp',
-        path:'ftp',
-      },
-      {
-        name:'ftp设置同步计划',
-        path:'ftpSetPlan',
-      },
-      {
-        name:'目录',
-        path:'catalog',
-      },
-      {
-        name:'任务',
-        path:'task',
+        name: '分配角色',
+        path: 'assignRole',
       },
     ],
   },
   {
-    name:'数据交换管理',
-    icon:'dashboard',
-    path:'dataSwitchManagement',
-    children:[
+    name: '数据资源管理',
+    icon: 'dashboard',
+    path: 'dataSourceManagement',
+    children: [
       {
-        name:'资源订阅',
-        path:'sourceSubscription',
+        name: '接入管理',
+        path: 'accessManagement',
       },
       {
-        name:'订阅审核',
-        path:'subscriptionAudit',
+        name: '新建接入',
+        path: 'addAccess',
+        hideInMenu: true,
+      },
+      {
+        name: '接入审核',
+        path: 'accessAudit',
+      },
+      {
+        name: '资源管理',
+        path: 'sourceManagement',
+      },
+      {
+        name: '文件资源',
+        path: 'fileSource',
+      },
+      {
+        name: '资源审核',
+        path: 'sourceAudit',
+      },
+      {
+        name: '目录管理',
+        path: 'catalogManagement',
+      },
+      {
+        name: '目录审核',
+        path: 'catalogAudit',
+      },
+      {
+        name: '订阅审核',
+        path: 'subscriptionAudit',
+      },
+      {
+        name: '录入数据库信息',
+        path: 'inputDataInfo',
+      },
+      {
+        name: '设置同步计划',
+        path: 'setPlan',
+      },
+      {
+        name: '上传本地文件',
+        path: 'updataFile',
+      },
+      {
+        name: 'ftp',
+        path: 'ftp',
+      },
+      {
+        name: 'ftp设置同步计划',
+        path: 'ftpSetPlan',
+      },
+      {
+        name: '目录',
+        path: 'catalog',
+      },
+      {
+        name: '任务',
+        path: 'task',
+      },
+    ],
+  },
+  {
+    name: '数据交换管理',
+    icon: 'dashboard',
+    path: 'dataSwitchManagement',
+    children: [
+      {
+        name: '资源订阅',
+        path: 'sourceSubscription',
+      },
+      {
+        name: '订阅审核',
+        path: 'subscriptionAudit',
       },
       {
         name: '所有订阅',
@@ -288,6 +288,17 @@ const menuData = [
         name: '告警查询',
         path: 'warningQuery',
         // hideInMenu: true,
+      },
+    ],
+  },
+  {
+    name: '统计分析',
+    path: 'statistics',
+    icon: 'dashboard',
+    children: [
+      {
+        name: '数据接入分析',
+        path: 'dataInsert',
       },
     ],
   },
