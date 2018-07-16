@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-16 13:28:04
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-16 16:00:09
+ * @Last Modified time: 2018-07-16 17:42:32
 */
 import React, { Component } from 'react';
 import { Chart, Axis, Tooltip, Geom, Legend, Label, Coord } from 'bizcharts';
@@ -69,32 +69,40 @@ class Bars extends Component {
       // 数据格式
       data = [
         {
-          name: 'London',
-          'Jan.': 18.9,
-          'Feb.': 28.8,
-          'Mar.': 39.3,
-          'Apr.': 81.4,
-          May: 47,
-          'Jun.': 20.3,
-          'Jul.': 24,
-          'Aug.': 35.6,
+          x: '2018-05-24',
+          y1: 123,
+          y2: 67,
         },
         {
-          name: 'Berlin',
-          'Jan.': 12.4,
-          'Feb.': 23.2,
-          'Mar.': 34.5,
-          'Apr.': 99.7,
-          May: 52.6,
-          'Jun.': 35.5,
-          'Jul.': 37.4,
-          'Aug.': 42.4,
+          x: '2018-05-25',
+          y1: 62,
+          y2: 13,
+        },
+        {
+          x: '2018-05-26',
+          y1: 96,
+          y2: 135,
+        },
+        {
+          x: '2018-05-27',
+          y1: 235,
+          y2: 94,
+        },
+        {
+          x: '2018-05-28',
+          y1: 231,
+          y2: 159,
         },
       ],
+      titleMap = {
+        y1: 'y1',
+        y2: 'y2',
+      },
       hasLegend = true,
       padding,
-      color = 'name',
+      color = 'key',
       isVertical = false,
+      adjustType = 'dodge',
     } = this.props;
 
     // const { autoHideXLabels } = this.state;
@@ -110,14 +118,21 @@ class Bars extends Component {
 
     const ds = new DataSet();
     const dv = ds.createView().source(data);
-    const key = 'key';
     const value = 'value';
-    const fields = Object.keys(data[0]).filter(item => item !== 'name');
+
     dv.transform({
+      type: 'map',
+      callback(row) {
+        const newRow = { ...row };
+        newRow[titleMap.y1] = row.y1;
+        newRow[titleMap.y2] = row.y2;
+        return newRow;
+      },
+    }).transform({
       type: 'fold',
-      fields, // 展开字段集
-      key, // key字段
-      value, // value字段
+      fields: [titleMap.y1, titleMap.y2], //
+      key: 'key', // key字段
+      value: 'value', // value字段
     });
 
     return (
@@ -134,15 +149,15 @@ class Bars extends Component {
             {isVertical && <Coord transpose />}
             <Axis name="key" />
             <Axis name="value" />
-            {hasLegend && <Legend />}
+            {hasLegend && <Legend name="key" />}
             <Tooltip />
             <Geom
               type="interval"
-              position={`${key}*${value}`}
+              position="x*value"
               color={color}
-              adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]}
+              adjust={[{ type: adjustType, marginRatio: 1 / 32 }]}
             >
-              <Label content={value} />
+              <Label content={value} offset={8} />
             </Geom>
           </Chart>
         </div>
