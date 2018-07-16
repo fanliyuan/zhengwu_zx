@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Chart, Tooltip, Geom, Coord } from 'bizcharts';
+import { Chart, Tooltip, Geom, Coord, Label } from 'bizcharts';
 import { DataView } from '@antv/data-set';
 import { Divider } from 'antd';
 import classNames from 'classnames';
@@ -130,6 +130,8 @@ export default class Pie extends Component {
       animate = true,
       colors,
       lineWidth = 1,
+      showPercent = true,
+      showValue = true,
     } = this.props;
 
     const { legendData, legendBlock } = this.state;
@@ -186,14 +188,36 @@ export default class Pie extends Component {
         },
       ];
     }
-
+    // 提示格式化
     const tooltipFormat = [
-      'x*percent',
-      (x, p) => ({
+      // 这是百分比
+      // 'x*percent',
+      // (x, p) => ({
+      //   name: x,
+      //   value: `${(p * 100).toFixed(2)}%`,
+      // }),
+      // 这里是y
+      'x*y',
+      (x, y) => ({
         name: x,
-        value: `${(p * 100).toFixed(2)}%`,
+        value: y,
       }),
     ];
+
+    // const labelFormat = [
+    //   // 这是百分比
+    //   // 'x*percent',
+    //   // (x, p) => ({
+    //   //   name: x,
+    //   //   value: `${(p * 100).toFixed(2)}%`,
+    //   // }),
+    //   // 这里是y
+    //   'y',
+    //   (x, y) => ({
+    //     name: x,
+    //     value: y,
+    //   }),
+    // ];
 
     const padding = [12, 0, 12, 0];
 
@@ -217,6 +241,9 @@ export default class Pie extends Component {
               padding={padding}
               animate={animate}
               onGetG2Instance={this.getG2Instance}
+              // 以下事件可以触发,但是暂时不清楚参数ev
+              // onIntervalMouseenter={(ev) => {console.log(ev)}}
+              // onIntervalMouseleave={(ev) => {console.log(ev)}}
             >
               {!!tooltip && <Tooltip showTitle={false} />}
               <Coord type="theta" innerRadius={inner} />
@@ -227,7 +254,10 @@ export default class Pie extends Component {
                 position="percent"
                 color={['x', percent ? formatColor : defaultColors]}
                 selected={selected}
-              />
+              >
+                {/* 这里是label */}
+                <Label content="y" offset={-40} textStyle={{ fontSize: 18 }} />
+              </Geom>
             </Chart>
 
             {(subTitle || total) && (
@@ -254,10 +284,15 @@ export default class Pie extends Component {
                 />
                 <span className={styles.legendTitle}>{item.x}</span>
                 <Divider type="vertical" />
-                <span className={styles.percent}>
-                  {`${(isNaN(item.percent) ? 0 : item.percent * 100).toFixed(2)}%`}
-                </span>
-                <span className={styles.value}>{valueFormat ? valueFormat(item.y) : item.y}</span>
+                {showPercent && (
+                  <span className={styles.percent}>
+                    {`${(isNaN(item.percent) ? 0 : item.percent * 100).toFixed(2)}%`}
+                  </span>
+                )}
+                {showValue && (
+                  // 这里是样式,需要重新定义
+                  <span className={styles.value}>{valueFormat ? valueFormat(item.y) : item.y}</span>
+                )}
               </li>
             ))}
           </ul>

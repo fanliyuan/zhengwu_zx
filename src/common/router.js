@@ -262,10 +262,10 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/NewMenu/Step3')
       ),
     },
-    '/dataSourceManagement/auditLog': {
+    '/dataSourceManagement/auditLog/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/AuditLog')),
     },
-    '/dataSourceManagement/checkAudit': {
+    '/dataSourceManagement/checkAudit/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/CheckAudit')),
     },
     '/dataSwitchManagement/subscriptionAudit': {
@@ -276,6 +276,11 @@ export const getRouterData = app => {
     '/dataSwitchManagement/sourceSubscription': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/SourceSubscription')
+      ),
+    },
+    '/dataSwitchManagement/subscriptionFile': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSwitchManagement/SubscriptionFile')
       ),
     },
     '/dataSwitchManagement/dataManagement': {
@@ -349,6 +354,9 @@ export const getRouterData = app => {
     },
     '/monitor/warningQuery': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/WarningQuery')),
+    },
+    '/statistics/DataInsert': {
+      component: dynamicWrapper(app, [], () => import('../routes/Statistics/DataInsert')),
     },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
