@@ -80,6 +80,9 @@ export const getRouterData = app => {
         import('../routes/Overview/Logging')
       ),
     },
+    '/overview/platformOverview': {
+      component: dynamicWrapper(app, [], () => import('../routes/Overview/PlatformOverview')),
+    },
     // '/overview/workplace': {
     //   component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
     //     import('../routes/Dashboard/Workplace')

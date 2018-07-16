@@ -15,6 +15,10 @@ const menuData = [
         path: 'logging',
       },
       {
+        name: '平台概览',
+        path: 'platformOverview',
+      },
+      {
         name: '系统通知',
         path: 'systemNotification',
       },
