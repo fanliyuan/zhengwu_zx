@@ -138,20 +138,29 @@ const deleteNode = (req, res) => {
 
 const deleteNodes = (req, res) => {
   const ids = req.body;
-  const result = [];
-  // 这里两层循环,应该有优化的方案
-  InfrastructureNodeData.forEach(item => {
-    const flag = ids.some(sub => {
-      if (sub === item.id) {
-        return true;
-      }
-      return false;
-    });
-    if (!flag) {
-      result.push(item);
-    }
+  // 这是优化方案
+  const InfrastructureNodeDataObject = InfrastructureNodeData.reduce((pre, cur) => {
+    pre[cur.id] = cur;
+    return pre;
+  }, {});
+  ids.forEach(item => {
+    delete InfrastructureNodeDataObject[item];
   });
-  InfrastructureNodeData = result;
+  InfrastructureNodeData = Object.values(InfrastructureNodeDataObject);
+  // 这里两层循环,应该有优化的方案
+  // const result = [];
+  // InfrastructureNodeData.forEach(item => {
+  //   const flag = ids.some(sub => {
+  //     if (sub === item.id) {
+  //       return true;
+  //     }
+  //     return false;
+  //   });
+  //   if (!flag) {
+  //     result.push(item);
+  //   }
+  // });
+  // InfrastructureNodeData = result;
   res.send({
     status: 200,
     data: '删除成功',
@@ -161,6 +170,6 @@ const deleteNodes = (req, res) => {
 export default {
   getInfrastructureNode,
   getNodeList,
-  deleteNode,
-  deleteNodes,
+  deleteNode, // 命名有误
+  deleteNodes, // 命名有误
 };

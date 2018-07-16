@@ -80,6 +80,9 @@ export const getRouterData = app => {
         import('../routes/Overview/Logging')
       ),
     },
+    '/overview/platformOverview': {
+      component: dynamicWrapper(app, [], () => import('../routes/Overview/PlatformOverview')),
+    },
     // '/overview/workplace': {
     //   component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
     //     import('../routes/Dashboard/Workplace')
@@ -152,9 +155,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/addUser': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/InstitutionalUserManage/AddUser')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/InstitutionalUserManage/AddUser')),
     },
     '/institutionalUserManage/roleLimit': {
       component: dynamicWrapper(app, ['roleLimit'], () =>
@@ -162,9 +163,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/addRole': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/InstitutionalUserManage/AddRole')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/InstitutionalUserManage/AddRole')),
     },
     '/institutionalUserManage/limitSet': {
       component: dynamicWrapper(app, ['roleLimit'], () =>
@@ -182,9 +181,7 @@ export const getRouterData = app => {
       ),
     },
     '/dataSourceManagement/addAccess': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/AddAccess')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/AddAccess')),
     },
     '/dataSourceManagement/inputDataInfo': {
       component: dynamicWrapper(app, [], () =>
@@ -192,34 +189,22 @@ export const getRouterData = app => {
       ),
     },
     '/dataSourceManagement/setPlan': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/SetPlan')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/SetPlan')),
     },
     '/dataSourceManagement/updataFile': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/UpdataFile')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/UpdataFile')),
     },
     '/dataSourceManagement/ftp': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/Ftp')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Ftp')),
     },
     '/dataSourceManagement/ftpSetPlan': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/FtpSetPlan')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/FtpSetPlan')),
     },
     '/dataSourceManagement/task': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/Task')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Task')),
     },
     '/dataSourceManagement/catalog': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/Catalog')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Catalog')),
     },
     '/dataSourceManagement/accessAudit': {
       component: dynamicWrapper(app, [], () =>
@@ -232,9 +217,7 @@ export const getRouterData = app => {
       ),
     },
     '/dataSourceManagement/fileSource': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/FileSource')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/FileSource')),
     },
     '/dataSourceManagement/fileSourceDetail/:id': {
       component: dynamicWrapper(app, [], () =>
@@ -262,9 +245,7 @@ export const getRouterData = app => {
       ),
     },
     '/dataSourceManagement/newMenu': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/NewMenu')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/NewMenu')),
     },
     '/dataSourceManagement/newMenu/one': {
       component: dynamicWrapper(app, [], () =>
@@ -281,15 +262,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/NewMenu/Step3')
       ),
     },
-    '/dataSourceManagement/auditLog': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/AuditLog')
-      ),
+    '/dataSourceManagement/auditLog/:id': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/AuditLog')),
     },
-    '/dataSourceManagement/checkAudit': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/CheckAudit')
-      ),
+    '/dataSourceManagement/checkAudit/:id': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/CheckAudit')),
     },
     '/dataSwitchManagement/subscriptionAudit': {
       component: dynamicWrapper(app, [], () =>
@@ -301,20 +278,21 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/SourceSubscription')
       ),
     },
+    '/dataSwitchManagement/subscriptionFile': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSwitchManagement/SubscriptionFile')
+      ),
+    },
     '/dataSwitchManagement/dataManagement': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/DataManagement')
       ),
     },
     '/dataSwitchManagement/allSub': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSwitchManagement/AllSub')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/AllSub')),
     },
     '/portalManagement/newsManagement': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/PortalManagement/NewsManagement')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/NewsManagement')),
     },
     '/portalManagement/publicationManagement': {
       component: dynamicWrapper(app, [], () =>
@@ -322,19 +300,13 @@ export const getRouterData = app => {
       ),
     },
     '/portalManagement/publication': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/PortalManagement/Publication')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/Publication')),
     },
     '/portalManagement/newsLibrary': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/PortalManagement/NewsLibrary')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/NewsLibrary')),
     },
     '/portalManagement/menuManagement': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/PortalManagement/MenuManagement')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/MenuManagement')),
     },
     '/portalManagement/carouselManagement': {
       component: dynamicWrapper(app, [], () =>
@@ -342,74 +314,49 @@ export const getRouterData = app => {
       ),
     },
     '/portalManagement/addArticle': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/PortalManagement/AddArticle')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddArticle')),
     },
     '/portalManagement/addCarousel': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/PortalManagement/AddCarousel')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddCarousel')),
     },
     '/monitor/node': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/Node')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/Node')),
     },
     '/monitor/pass': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/Pass')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/Pass')),
     },
     '/monitor/insert': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/Insert')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/Insert')),
     },
     '/monitor/insertDetail/:params': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/InsertDetail')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/InsertDetail')),
     },
     '/monitor/insertResource': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/InsertResource')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/InsertResource')),
     },
     '/monitor/task': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/Task')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/Task')),
     },
     '/monitor/pubDetail': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/PubDetail')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/PubDetail')),
     },
     '/monitor/subDetail': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/SubDetail')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/SubDetail')),
     },
     '/monitor/warningOption': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/WarningOption')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/WarningOption')),
     },
     '/monitor/editWarningOption': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/EditWarningOption')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/EditWarningOption')),
     },
     '/monitor/addWarningOption': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/AddWarningOption')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/AddWarningOption')),
     },
     '/monitor/warningQuery': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/Monitor/WarningQuery')
-      ),
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/WarningQuery')),
+    },
+    '/statistics/DataInsert': {
+      component: dynamicWrapper(app, [], () => import('../routes/Statistics/DataInsert')),
     },
     '/result/success': {
       component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),

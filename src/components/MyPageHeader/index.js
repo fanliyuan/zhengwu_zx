@@ -12,7 +12,7 @@ export function getBreadcrumb(breadcrumbNameMap, url) {
   if (!breadcrumb) {
     Object.keys(breadcrumbNameMap).forEach(item => {
       if (pathToRegexp(item).test(url)) {
-        console.log(item); // eslint-disable-line
+        // console.log(item); // eslint-disable-line
         breadcrumb = breadcrumbNameMap[item];
       }
     });
