@@ -11,7 +11,7 @@ export default class PlatformOverview extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <div className={styles.sp}>3434</div>
+          <div className={styles.sp}>6544</div>
         </Card>
       </PageHeaderLayout>
     );
