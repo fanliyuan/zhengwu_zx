@@ -494,6 +494,7 @@ export default class Analysis extends Component {
                     height={400}
                     data={offlineChartData}
                     titleMap={{ y1: '客流量', y2: '支付笔数' }}
+                    showArea
                   />
                 </div>
               </TabPane>

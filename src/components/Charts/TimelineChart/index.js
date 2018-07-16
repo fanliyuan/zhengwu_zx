@@ -24,6 +24,7 @@ export default class TimelineChart extends React.Component {
           y2: 0,
         },
       ],
+      showArea = false,
     } = this.props;
 
     data.sort((a, b) => a.x - b.x);
@@ -111,6 +112,7 @@ export default class TimelineChart extends React.Component {
             <Tooltip />
             <Legend name="key" position="top" />
             <Geom type="line" position="x*value" size={borderWidth} color="key" />
+            {showArea && <Geom type="area" position="x*value" size={borderWidth} color="key" />}
           </Chart>
           <div style={{ marginRight: -20 }}>
             <SliderGen />
