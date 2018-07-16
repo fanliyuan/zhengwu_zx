@@ -2,6 +2,7 @@ import numeral from 'numeral';
 import './g2';
 import ChartCard from './ChartCard';
 import Bar from './Bar';
+import Bars from './Bars';
 import Pie from './Pie';
 import Radar from './Radar';
 import Gauge from './Gauge';
@@ -46,4 +47,5 @@ export {
   WaterWave,
   TagCloud,
   TimelineChart,
+  Bars,
 };
