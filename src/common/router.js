@@ -291,6 +291,17 @@ export const getRouterData = app => {
     '/dataSwitchManagement/allSub': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/AllSub')),
     },
+    '/dataSwitchManagement/source': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/Source')),
+    },
+    '/dataSwitchManagement/logAudit': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/LogAudit')),
+    },
+    '/dataSwitchManagement/sourceManagement': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSwitchManagement/SourceManagement')
+      ),
+    },
     '/portalManagement/newsManagement': {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/NewsManagement')),
     },

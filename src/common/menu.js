@@ -219,7 +219,19 @@ const menuData = [
         path: 'allSub',
       },
       {
+        name: '审核日志',
+        path: 'logAudit',
+      },
+      {
+        name: '资源',
+        path: 'source',
+      },
+      {
         name: '资源管理',
+        path: 'sourceManagement',
+      },
+      {
+        name: '数据管理',
         path: 'dataManagement',
       },
     ],
