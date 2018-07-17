@@ -7,15 +7,13 @@ import styles from './Task.less';
 
 const { TabPane } = Tabs;
 export default class Task extends Component {
-  state = {
-    
-  }
+  state = {};
 
-  render () {
+  render() {
     const pagination = {
-      pageSize:10,
-      current:1,
-    }
+      pageSize: 10,
+      current: 1,
+    };
     const columns = [
       {
         title: 'ID',
@@ -26,32 +24,32 @@ export default class Task extends Component {
         title: '操作',
         dataIndex: 'operation',
         align: 'center',
-        render (text){
-          return(+text === 0 ?'启动':'停止')
+        render(text) {
+          return +text === 0 ? '启动' : '停止';
         },
       },
       {
         title: '操作方式',
         dataIndex: 'operationStyle',
         align: 'center',
-        render (text){
-          return(+text === 0 ?'自动':(+text === 1 ? '手动' :'实时'))
+        render(text) {
+          return +text === 0 ? '自动' : +text === 1 ? '手动' : '实时';
         },
       },
       {
         title: '登录结果',
         dataIndex: 'result',
         align: 'center',
-        render (text){
-          return(+text === 0 ?'启动成功':'停止成功')
+        render(text) {
+          return +text === 0 ? '启动成功' : '停止成功';
         },
       },
       {
         title: '时间',
         dataIndex: 'times',
         align: 'center',
-        render (text) {
-          return (moment(text).format('lll'))
+        render(text) {
+          return moment(text).format('lll');
         },
       },
     ];
@@ -110,55 +108,55 @@ export default class Task extends Component {
         title: '时间',
         dataIndex: 'times',
         align: 'center',
-        render (text) {
-          return (moment(text).format('lll'))
+        render(text) {
+          return moment(text).format('lll');
         },
       },
-    ]
+    ];
     const data = [
       {
-        id:0,
-        operation:0,
-        operationStyle:0,
-        result:1,
-        times:43333922,
+        id: 0,
+        operation: 0,
+        operationStyle: 0,
+        result: 1,
+        times: 43333922,
       },
       {
-        id:1,
-        operation:1,
-        operationStyle:2,
-        result:0,
-        times:43333922,
+        id: 1,
+        operation: 1,
+        operationStyle: 2,
+        result: 0,
+        times: 43333922,
       },
-    ]
+    ];
     const data1 = [
       {
-        id:0,
-        recordNum:23,
-        transfer:21,
-        addRecord:1,
-        uploadRecord:21,
-        deleteRecord:3,
-        addToUpload:23,
-        uploadToAdd:4,
-        ignoreRecord:5,
-        errRecord:6,
-        tiems:34343433,
+        id: 0,
+        recordNum: 23,
+        transfer: 21,
+        addRecord: 1,
+        uploadRecord: 21,
+        deleteRecord: 3,
+        addToUpload: 23,
+        uploadToAdd: 4,
+        ignoreRecord: 5,
+        errRecord: 6,
+        tiems: 34343433,
       },
       {
-        id:1,
-        recordNum:8,
-        transfer:9,
-        addRecord:5,
-        uploadRecord:7,
-        deleteRecord:1,
-        addToUpload:40,
-        uploadToAdd:9,
-        ignoreRecord:9,
-        errRecord:5,
-        tiems:34343433,
+        id: 1,
+        recordNum: 8,
+        transfer: 9,
+        addRecord: 5,
+        uploadRecord: 7,
+        deleteRecord: 1,
+        addToUpload: 40,
+        uploadToAdd: 9,
+        ignoreRecord: 9,
+        errRecord: 5,
+        tiems: 34343433,
       },
-    ]
+    ];
     return (
       <PageHeaderLayout>
         <Card>
@@ -216,11 +214,10 @@ export default class Task extends Component {
                   rowKey="id"
                 />
               </TabPane>
-
             </Tabs>
           </div>
         </Card>
       </PageHeaderLayout>
-    )
+    );
   }
 }
