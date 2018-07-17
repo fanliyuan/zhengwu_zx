@@ -132,6 +132,8 @@ export default class Pie extends Component {
       lineWidth = 1,
       showPercent = true,
       showValue = true,
+      offset = -40,
+      textStyle = { fontSize: 18 },
     } = this.props;
 
     const { legendData, legendBlock } = this.state;
@@ -256,7 +258,7 @@ export default class Pie extends Component {
                 selected={selected}
               >
                 {/* 这里是label */}
-                <Label content="y" offset={-40} textStyle={{ fontSize: 18 }} />
+                <Label content="y" offset={offset} textStyle={textStyle} />
               </Geom>
             </Chart>
 
