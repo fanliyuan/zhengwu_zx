@@ -319,6 +319,9 @@ export const getRouterData = app => {
     '/portalManagement/addCarousel': {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddCarousel')),
     },
+    '/portalManagement/columnPosition': {
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/ColumnPosition')),
+    },
     '/monitor/node': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/Node')),
     },
@@ -328,10 +331,10 @@ export const getRouterData = app => {
     '/monitor/insert': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/Insert')),
     },
-    '/monitor/insertDetail/:params': {
+    '/monitor/insertDetail/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/InsertDetail')),
     },
-    '/monitor/insertResource': {
+    '/monitor/insertResource/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/InsertResource')),
     },
     '/monitor/task': {

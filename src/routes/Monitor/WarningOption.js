@@ -2,13 +2,14 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 14:05:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-04 14:30:37
+ * @Last Modified time: 2018-07-17 11:01:48
 */
-import React, { Component } from 'react'
-import { Form, Input, Select, Cascader, Button, Table } from 'antd'
+import React, { Component } from 'react';
+import { Link } from 'dva/router';
+import { Form, Input, Select, Cascader, Button, Table } from 'antd';
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-import styles from './WarningOption.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './WarningOption.less';
 
 export default class WarningOption extends Component {
   state = {
@@ -16,73 +17,75 @@ export default class WarningOption extends Component {
       name: '',
       target: '',
       method: -1,
-      node:[],
+      node: [],
       state: -1,
     },
     isChanged: false,
-  }
+  };
 
-  nameChange = (e) => {
-    const { query } = this.state
+  nameChange = e => {
+    const { query } = this.state;
     this.setState({
       query: {
         ...query,
         name: e.target.value,
       },
       isChanged: true,
-    })
-  }
+    });
+  };
 
-  targetChange = (e) => {
-    const { query } = this.state
+  targetChange = e => {
+    const { query } = this.state;
     this.setState({
       query: {
         ...query,
         target: e.target.value,
       },
       isChanged: true,
-    })
-  }
+    });
+  };
 
-  methodChange= (value) => {
-    const { query } = this.state
+  methodChange = value => {
+    const { query } = this.state;
     this.setState({
       query: {
         ...query,
         method: value,
       },
       isChanged: true,
-    })
-  }
+    });
+  };
 
-  nodeChange= (value) => {
-    const { query } = this.state
+  nodeChange = value => {
+    const { query } = this.state;
     this.setState({
       query: {
         ...query,
         node: value,
       },
       isChanged: true,
-    })
-  }
+    });
+  };
 
-  stateChange= (value) => {
-    const { query } = this.state
+  stateChange = value => {
+    const { query } = this.state;
     this.setState({
       query: {
         ...query,
         state: value,
       },
       isChanged: true,
-    })
-  }
+    });
+  };
 
   search = () => {
-    if (!this.state.isChanged) return false
-  }
+    if (!this.state.isChanged) return false;
+  };
 
   render() {
-    const { query: { name, target, method, node, state } } = this.state
+    const {
+      query: { name, target, method, node, state },
+    } = this.state;
     const nodeList = [
       {
         value: -1,
@@ -116,7 +119,7 @@ export default class WarningOption extends Component {
           },
         ],
       },
-    ]
+    ];
     const methodList = [
       {
         value: -1,
@@ -130,8 +133,8 @@ export default class WarningOption extends Component {
         value: 1,
         label: '邮件告警',
       },
-    ]
-    const stateList= [
+    ];
+    const stateList = [
       {
         value: -1,
         label: '全部状态',
@@ -144,7 +147,7 @@ export default class WarningOption extends Component {
         value: 1,
         label: '已停止',
       },
-    ]
+    ];
 
     const columns = [
       {
@@ -179,49 +182,80 @@ export default class WarningOption extends Component {
         title: '操作',
         dataIndex: 'operation',
       },
-    ]
+    ];
     columns.forEach(item => {
-      item.align = 'center'
-    })
-    const data = []
-    for(let i = 0; i < 120; i ++) {
-      const random = Math.round(Math.random())
+      item.align = 'center';
+    });
+    const data = [];
+    for (let i = 0; i < 120; i++) {
+      const random = Math.round(Math.random());
       data.push({
         id: i,
         name: `告警名称${i}`,
         method: random === 1 ? '邮件' : '短信',
         target: random === 1 ? 'qq.@qq.com' : '13512345678',
         node: `节点${i}`,
-        IP: `192.168${255-i}.${i}`,
+        IP: `192.168${255 - i}.${i}`,
         state: i % 3 === 0 ? '已停止' : '运行中',
-      })
+      });
     }
 
     const methodComs = methodList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
-    })
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      );
+    });
     const stateComs = stateList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
-    })
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      );
+    });
 
     return (
       <PageHeaderLayout>
-        <div className={styles.layout} >
-          <Form className={styles.search} >
-            <Input value={name} onChange={this.nameChange} className={styles.input} placeholder='告警名称' />
-            <Input value={target} onChange={this.targetChange} className={styles.input} placeholder='告警目标' />
-            <Select value={method} onChange={this.methodChange} className={styles.select} >
+        <div className={styles.layout}>
+          <Form className={styles.search}>
+            <Input
+              value={name}
+              onChange={this.nameChange}
+              className={styles.input}
+              placeholder="告警名称"
+            />
+            <Input
+              value={target}
+              onChange={this.targetChange}
+              className={styles.input}
+              placeholder="告警目标"
+            />
+            <Select value={method} onChange={this.methodChange} className={styles.select}>
               {methodComs}
             </Select>
-            <Cascader options={nodeList} value={node} onChange={this.nodeChange} className={styles.cascader} placeholder='请选择告警节点' />
-            <Select value={state} onChange={this.stateChange} className={styles.select} >
+            <Cascader
+              options={nodeList}
+              value={node}
+              onChange={this.nodeChange}
+              className={styles.cascader}
+              placeholder="请选择告警节点"
+            />
+            <Select value={state} onChange={this.stateChange} className={styles.select}>
               {stateComs}
             </Select>
-            <Button type='primary' icon='search' onClick={this.search} >搜索</Button>
+            <Button type="primary" icon="search" onClick={this.search}>
+              搜索
+            </Button>
           </Form>
-          <Table columns={columns} dataSource={data} rowKey='id' bordered />
+          <div className="mt8 mb8">
+            <Link to="/monitor/addWarningOption">
+              <Button type="primary">新增</Button>
+            </Link>
+          </div>
+          <Table columns={columns} dataSource={data} rowKey="id" bordered />
         </div>
       </PageHeaderLayout>
-    )
+    );
   }
 }

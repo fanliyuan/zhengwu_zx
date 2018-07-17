@@ -219,7 +219,7 @@ const menuData = [
         path: 'allSub',
       },
       {
-        name: '数据管理',
+        name: '资源管理',
         path: 'dataManagement',
       },
     ],
@@ -244,7 +244,7 @@ const menuData = [
         hideInMenu: true,
       },
       {
-        name: '资讯库',
+        name: '文章库',
         path: 'newsLibrary',
         hideInMenu: true,
       },
@@ -255,6 +255,10 @@ const menuData = [
       {
         name: '轮播图管理',
         path: 'carouselManagement',
+      },
+      {
+        name: '栏目管理',
+        path: 'columnPosition',
       },
     ],
   },
