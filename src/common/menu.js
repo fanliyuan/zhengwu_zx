@@ -223,7 +223,7 @@ const menuData = [
     path: 'dataSwitchManagement',
     children: [
       {
-        name: '资源订阅',
+        name: '资源集市',
         path: 'sourceSubscription',
       },
       {
