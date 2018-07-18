@@ -278,9 +278,14 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/SourceSubscription')
       ),
     },
-    '/dataSwitchManagement/subscriptionFile': {
+    '/dataSwitchManagement/subscriptionFile/:id': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/SubscriptionFile')
+      ),
+    },
+    '/dataSwitchManagement/subscriptionTable/:id': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSwitchManagement/SubscriptionTable')
       ),
     },
     '/dataSwitchManagement/dataManagement': {

@@ -2,8 +2,8 @@
  * @Author: ChouEric
  * @Date: 2018-07-06 17:49:10
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-18 17:46:29
- * @描述: 数据资源管理 -- 审核日志
+ * @Last Modified time: 2018-07-18 17:45:19
+ * @描述: 数据交换管理 -- 订阅审核 -- 审核日志
 */
 import React, { Component } from 'react';
 import { Link } from 'dva/router';
