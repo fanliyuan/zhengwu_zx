@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, List } from 'antd';
+import { Card, List, Button } from 'antd';
 
 // import styles from './LogAudit.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -20,15 +20,15 @@ export default class LogAudit extends Component {
         content: '',
       },
       {
+        title: '审核时间',
+        content: '',
+      },
+      {
         title: '审核结果',
         content: '',
       },
       {
         title: '拒绝理由',
-        content: '',
-      },
-      {
-        title: '审核时间',
         content: '',
       },
     ];
@@ -46,6 +46,10 @@ export default class LogAudit extends Component {
         content: '',
       },
       {
+        title: '审核时间',
+        content: '',
+      },
+      {
         title: '审核结果',
         content: '',
       },
@@ -53,14 +57,13 @@ export default class LogAudit extends Component {
         title: '拒绝理由',
         content: '',
       },
-      {
-        title: '审核时间',
-        content: '',
-      },
     ];
     return (
       <PageHeaderLayout>
         <Card>
+          <div style={{ textAlign: 'right' }}>
+            <Button type="primary">返回</Button>
+          </div>
           <Card style={{ width: 800, margin: '0 auto' }}>
             <List
               grid={{ gutter: 16, column: 2 }}

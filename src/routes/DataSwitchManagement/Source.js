@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Row, Col, Button, Divider, Table } from 'antd';
 import moment from 'moment';
 
-// import styles from './Source.less';
+import styles from './Source.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 export default class Source extends Component {
@@ -12,7 +12,6 @@ export default class Source extends Component {
       pageSize: 10,
     };
     const rowSelection = {
-      // selectedRowKeys,
       onChange: () => {},
     };
     const columns = [
@@ -25,15 +24,8 @@ export default class Source extends Component {
         dataIndex: 'tableName',
       },
       {
-        title: '数据条数',
-        dataIndex: 'count',
-      },
-      {
-        title: '更新时间',
-        dataIndex: 'upTime',
-        render(text) {
-          return moment(text).format('lll');
-        },
+        title: '中文标注',
+        dataIndex: 'chineseLabel',
       },
       {
         title: '操作',
@@ -50,21 +42,66 @@ export default class Source extends Component {
     const list = [
       {
         id: 0,
-        catalog: 'Dtable',
-        count: 5000,
-        oweZt: '国土数据',
-        oweJg: '',
-        storeDataL: '',
-        upTime: '1323131',
+        tableName: 'dig_user',
+        chineseLabel: '用户表',
       },
       {
         id: 1,
-        catalog: 'Dtable',
-        count: 5000,
-        oweZt: '国土数据',
-        oweJg: '',
-        storeDataL: '',
-        upTime: '3132141',
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+    ];
+    const columns1 = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+      },
+      {
+        title: 'blog_id',
+        dataIndex: 'blog_id',
+      },
+      {
+        title: 'public',
+        dataIndex: 'public',
+      },
+      {
+        title: 'last_updated',
+        dataIndex: 'last_updated',
+        render(text) {
+          return moment(text).format('lll');
+        },
+      },
+      {
+        title: 'post_title',
+        dataIndex: 'post_title',
+      },
+      {
+        title: 'post_content',
+        dataIndex: 'post_content',
+        render(text) {
+          return <span className={styles.colSpan}>{text}</span>;
+        },
+        width: 250,
+      },
+    ];
+    const list1 = [
+      {
+        id: 0,
+        blog_id: 1,
+        public: 1,
+        last_updated: 21111277,
+        post_title: 'Hello World!',
+        post_content:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
+      },
+      {
+        id: 1,
+        blog_id: 2,
+        public: 2,
+        last_updated: 21111277,
+        post_title: 'Hello World!',
+        post_content:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
       },
     ];
     return (
@@ -105,8 +142,9 @@ export default class Source extends Component {
               </h3>
             </Col>
           </Row>
+          <Divider />
           <Row>
-            <Col>
+            <Col span={8}>
               <h3>
                 数据表 共<span>32</span>张
               </h3>
@@ -119,13 +157,13 @@ export default class Source extends Component {
                 bordered
               />
             </Col>
-            <Col>
+            <Col span={15} offset={1}>
               <h3>
                 数据 共<span>32</span>行
               </h3>
               <Table
-                columns={columns}
-                dataSource={list}
+                columns={columns1}
+                dataSource={list1}
                 pagination={pagination}
                 rowSelection={rowSelection}
                 rowKey="id"
@@ -133,7 +171,6 @@ export default class Source extends Component {
               />
             </Col>
           </Row>
-          <Divider />
         </Card>
       </PageHeaderLayout>
     );

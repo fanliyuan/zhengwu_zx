@@ -168,12 +168,24 @@ const menuData = [
         path: 'catalogAudit',
       },
       {
+        name: '新建目录',
+        path: 'addDirectory',
+      },
+      {
+        name: '导入目录',
+        path: 'inputDirectory',
+      },
+      {
         name: '订阅审核',
         path: 'subscriptionAudit',
       },
       {
         name: '录入数据库信息',
         path: 'inputDataInfo',
+      },
+      {
+        name: '检索关系设置',
+        path: 'searchRelationship',
       },
       {
         name: '设置同步计划',
@@ -198,6 +210,10 @@ const menuData = [
       {
         name: '任务',
         path: 'task',
+      },
+      {
+        name: '查看目录',
+        path: 'viewDirectory',
       },
     ],
   },

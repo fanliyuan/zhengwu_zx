@@ -211,9 +211,29 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/AccessAudit')
       ),
     },
+    '/dataSourceManagement/addDirectory': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/AddDirectory')
+      ),
+    },
+    '/dataSourceManagement/searchRelationship': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/SearchRelationship')
+      ),
+    },
+    '/dataSourceManagement/inputDirectory': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/InputDirectory')
+      ),
+    },
     '/dataSourceManagement/sourceManagement': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/SourceManagement')
+      ),
+    },
+    '/dataSourceManagement/viewDirectory': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/ViewDirectory')
       ),
     },
     '/dataSourceManagement/fileSource': {
