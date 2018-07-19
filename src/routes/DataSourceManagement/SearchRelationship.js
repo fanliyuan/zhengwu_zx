@@ -1,28 +1,40 @@
 import React, { Component } from 'react';
-import { Card, Row, Col, Button, Divider, Table, Input, Form } from 'antd'; // Select,  Popconfirm
+import { Card, Row, Col, Button, Divider, Table, Input, Form, Select } from 'antd'; // Select,  Popconfirm
 
-// import styles from './SearchRelationship.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SearchRelationship.less';
 
 // const { Option } = Select;
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (
-  <EditableContext.provider value={form}>
+  <EditableContext.Provider value={form}>
     <tr {...props} />
-  </EditableContext.provider>
+  </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
   getInput = () => {
-    return <Input />;
+    if (this.props.filedType === 'select') {
+      return (
+        <Select>
+          <Select.Option value={1} key={1}>
+            是
+          </Select.Option>
+          <Select.Option value={0} key={0}>
+            否
+          </Select.Option>
+        </Select>
+      );
+    }
+    return <Input className={styles.input} />;
   };
 
   render() {
-    const { editing, dataIndex, title, inputType, record, index, ...restProps } = this.props;
+    const { editing, dataIndex, title, filedType, record, index, ...restProps } = this.props;
 
     return (
-      <EditableContext.consumer>
+      <EditableContext.Consumer>
         {form => {
           const { getFieldDecorator } = form;
           return (
@@ -33,10 +45,10 @@ class EditableCell extends React.Component {
                     rules: [
                       {
                         required: true,
-                        message: `please input ${title}`,
+                        message: `${title}必填!`,
                       },
                     ],
-                    initialValue: record[dataIndex],
+                    initialValue: record[dataIndex] || 1,
                   })(this.getInput())}
                 </FormItem>
               ) : (
@@ -45,7 +57,7 @@ class EditableCell extends React.Component {
             </td>
           );
         }}
-      </EditableContext.consumer>
+      </EditableContext.Consumer>
     );
   }
 }
@@ -55,6 +67,10 @@ export default class SearchRelationship extends Component {
     // tableKey:'',
     // fieldKey:'',
     // editingKey:'',
+  };
+
+  isEditing = record => {
+    return record.key === this.state.editingKey;
   };
 
   render() {
@@ -129,43 +145,60 @@ export default class SearchRelationship extends Component {
       {
         title: '是否作为检索主键',
         dataIndex: 'isMainKey',
+        editable: true,
+        isSelect: true,
+        width: 96,
       },
       {
         title: '是否作为检索主键',
-        dataIndex: 'isMainKey',
+        dataIndex: 'isQueryKey',
+        editable: true,
+        isSelect: true,
+        width: 96,
       },
       {
         title: '外键所表',
         dataIndex: 'tableKey',
+        editable: true,
+        width: 157,
       },
       {
         title: '外键对应字段',
         dataIndex: 'fieldKey',
+        editable: true,
+        width: 157,
       },
     ];
+    const columns2 = columns1.map(item => {
+      if (!item.editable) {
+        return item;
+      }
+      return {
+        ...item,
+        onCell: record => ({
+          record,
+          dataIndex: item.dataIndex,
+          title: item.title,
+          filedType: item.isSelect ? 'select' : 'input',
+          editing: this.isEditing(record),
+        }),
+      };
+    });
     const list1 = [
       {
         id: 0,
-        blog_id: 1,
-        public: 1,
-        last_updated: 21111277,
-        post_title: 'Hello World!',
-        post_content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
+        chineseLabel: '标注1',
+        isMainKey: 1,
       },
       {
         id: 1,
-        blog_id: 2,
-        public: 2,
-        last_updated: 21111277,
-        post_title: 'Hello World!',
-        post_content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
+        chineseLabel: '标注2',
+        isMainKey: 0,
       },
     ];
     return (
       <PageHeaderLayout>
-        <Card>
+        <Card className={styles.card}>
           <div style={{ textAlign: 'right' }}>
             <Button type="primary" className="mr8">
               保存
@@ -173,7 +206,7 @@ export default class SearchRelationship extends Component {
             <Button type="primary">上一步</Button>
           </div>
           <Row>
-            <Col span={4}>
+            <Col span={6}>
               <h3>
                 目录编码:
                 <span>3300031306381126/00001</span>
@@ -191,7 +224,7 @@ export default class SearchRelationship extends Component {
                 <span>规划局</span>
               </h3>
             </Col>
-            <Col span={8}>
+            <Col span={6}>
               <h3>
                 创建时间
                 <span>2018-06-20 15:08:08</span>
@@ -217,12 +250,13 @@ export default class SearchRelationship extends Component {
                 数据 共<span>32</span>行
               </h3>
               <Table
-                columns={columns1}
+                columns={columns2}
                 dataSource={list1}
                 pagination={pagination}
                 rowKey="id"
                 bordered
                 components={components}
+                className={styles.table}
               />
             </Col>
           </Row>
