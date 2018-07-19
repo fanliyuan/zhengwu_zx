@@ -1,3 +1,10 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-07-19 15:37:20
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-19 15:37:51
+ * @Description: 删除底部蚂蚁金服相关信息
+ */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Layout, Icon, message } from 'antd';
@@ -257,26 +264,28 @@ class BasicLayout extends React.PureComponent {
           </Content>
           <Footer style={{ padding: 0 }}>
             <GlobalFooter
-              links={[
-                {
-                  key: 'Pro 首页',
-                  title: 'Pro 首页',
-                  href: 'http://pro.ant.design',
-                  blankTarget: true,
-                },
-                {
-                  key: 'github',
-                  title: <Icon type="github" />,
-                  href: 'https://github.com/ant-design/ant-design-pro',
-                  blankTarget: true,
-                },
-                {
-                  key: 'Ant Design',
-                  title: 'Ant Design',
-                  href: 'http://ant.design',
-                  blankTarget: true,
-                },
-              ]}
+              links={
+                [
+                  // {
+                  //   key: 'Pro 首页',
+                  //   title: 'Pro 首页',
+                  //   href: 'http://pro.ant.design',
+                  //   blankTarget: true,
+                  // },
+                  // {
+                  //   key: 'github',
+                  //   title: <Icon type="github" />,
+                  //   href: 'https://github.com/ant-design/ant-design-pro',
+                  //   blankTarget: true,
+                  // },
+                  // {
+                  //   key: 'Ant Design',
+                  //   title: 'Ant Design',
+                  //   href: 'http://ant.design',
+                  //   blankTarget: true,
+                  // },
+                ]
+              }
               copyright={
                 <Fragment>
                   Copyright <Icon type="copyright" /> 2018 国信优易

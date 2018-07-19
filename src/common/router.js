@@ -407,6 +407,9 @@ export const getRouterData = app => {
     '/monitor/addWarningOption': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/AddWarningOption')),
     },
+    '/monitor/addWarningOption/:id': {
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/AddWarningOption')),
+    },
     '/monitor/warningQuery': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/WarningQuery')),
     },

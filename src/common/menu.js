@@ -54,7 +54,7 @@ const menuData = [
   },
   {
     name: '基础设施管理',
-    icon: 'dashboard',
+    icon: 'calculator',
     path: 'infrastructure',
     children: [
       {
@@ -88,7 +88,7 @@ const menuData = [
   },
   {
     name: '机构用户管理',
-    icon: 'dashboard',
+    icon: 'idcard',
     path: 'institutionalUserManage',
     children: [
       {
@@ -131,7 +131,7 @@ const menuData = [
   },
   {
     name: '数据资源管理',
-    icon: 'dashboard',
+    icon: 'database',
     path: 'dataSourceManagement',
     children: [
       {
@@ -231,7 +231,7 @@ const menuData = [
   },
   {
     name: '数据交换管理',
-    icon: 'dashboard',
+    icon: 'sync',
     path: 'dataSwitchManagement',
     children: [
       {
@@ -266,7 +266,7 @@ const menuData = [
   },
   {
     name: '开放门户管理',
-    icon: 'dashboard',
+    icon: 'compass',
     path: 'portalManagement',
     children: [
       {
@@ -304,7 +304,7 @@ const menuData = [
   },
   {
     name: '监控告警',
-    icon: 'dashboard',
+    icon: 'bell',
     path: 'monitor',
     children: [
       {
@@ -342,7 +342,7 @@ const menuData = [
   {
     name: '统计分析',
     path: 'statistics',
-    icon: 'dashboard',
+    icon: 'line-chart',
     children: [
       {
         name: '数据接入分析',
