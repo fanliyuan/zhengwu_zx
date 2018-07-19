@@ -60,11 +60,12 @@ module.exports = {
     'function-paren-newline': [0],
     'no-restricted-globals': [0],
     'require-yield': [1],
-    "linebreak-style": ["error", process.env.NODE_ENV === 'prod' ? "unix" : "windows"],
-    "no-plusplus": [0],
-    "react/destructuring-assignment": [0],
-    "no-param-reassign": [0],
-    "react/jsx-tag-spacing": [0],
+    'linebreak-style': ['error', process.env.NODE_ENV === 'prod' ? 'unix' : 'windows'],
+    'no-plusplus': [0],
+    'react/destructuring-assignment': [0],
+    'no-param-reassign': [0],
+    'react/jsx-tag-spacing': [0],
+    'react/no-multi-comp': [0],
   },
   parserOptions: {
     ecmaFeatures: {

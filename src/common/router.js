@@ -188,6 +188,16 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/InputDataInfo')
       ),
     },
+    '/dataSourceManagement/resourceConnection': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/ResourceConnection')
+      ),
+    },
+    '/dataSourceManagement/resourceConnectionData': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/ResourceConnectionData')
+      ),
+    },
     '/dataSourceManagement/setPlan': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/SetPlan')),
     },
@@ -220,6 +230,9 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/SearchRelationship')
       ),
+    },
+    '/dataSourceManagement/source': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Source')),
     },
     '/dataSourceManagement/inputDirectory': {
       component: dynamicWrapper(app, [], () =>

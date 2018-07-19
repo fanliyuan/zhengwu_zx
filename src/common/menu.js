@@ -168,6 +168,18 @@ const menuData = [
         path: 'catalogAudit',
       },
       {
+        name: '资源',
+        path: 'source',
+      },
+      {
+        name: '资源挂接文件',
+        path: 'resourceConnection',
+      },
+      {
+        name: '资源挂接数据',
+        path: 'resourceConnectionData',
+      },
+      {
         name: '新建目录',
         path: 'addDirectory',
       },
