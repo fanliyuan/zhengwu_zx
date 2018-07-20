@@ -2,9 +2,9 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-19 17:20:04
+ * @Last Modified time: 2018-07-20 10:00:21
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
- *  有bug,是否推荐无法初始化.
+ *  
 */
 import React, { Component, Fragment } from 'react';
 // import { connect } from 'dva';
@@ -153,6 +153,12 @@ export default class MenuManagement extends Component {
       showModal: true,
       modalTitle,
       defaultValue: row.recommend,
+    });
+  };
+
+  handleReccomend = e => {
+    this.setState({
+      defaultValue: e.target.value,
     });
   };
 
@@ -321,7 +327,7 @@ export default class MenuManagement extends Component {
               <Fragment>
                 <span className={styles.label}>是否推荐</span>
                 <span>
-                  <Radio.Group defaultValue={defaultValue}>
+                  <Radio.Group value={defaultValue} onChange={this.handleReccomend}>
                     <Radio value="是">是</Radio>
                     <Radio value="否">否</Radio>
                   </Radio.Group>
@@ -337,7 +343,7 @@ export default class MenuManagement extends Component {
               <Fragment>
                 <span className={styles.label}>是否推荐</span>
                 <span>
-                  <Radio.Group defaultValue={defaultValue}>
+                  <Radio.Group value={defaultValue} onChange={this.handleReccomend}>
                     <Radio value="是">是</Radio>
                     <Radio value="否">否</Radio>
                   </Radio.Group>

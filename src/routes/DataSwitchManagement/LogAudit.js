@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, List, Button } from 'antd';
 
 // import styles from './LogAudit.less';
+import { Link } from 'dva/router';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 export default class LogAudit extends Component {
@@ -62,7 +63,9 @@ export default class LogAudit extends Component {
       <PageHeaderLayout>
         <Card>
           <div style={{ textAlign: 'right' }}>
-            <Button type="primary">返回</Button>
+            <Link to="/dataSwitchManagement/allSub">
+              <Button type="primary">返回</Button>
+            </Link>
           </div>
           <Card style={{ width: 800, margin: '0 auto' }}>
             <List
