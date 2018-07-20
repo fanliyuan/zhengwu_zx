@@ -8,6 +8,7 @@ export default {
 
   state: {
     status: undefined,
+    currentAuthority: '',
   },
 
   effects: {
@@ -20,6 +21,10 @@ export default {
       // Login successfully
       if (response.status === 'ok') {
         reloadAuthorized();
+        yield put({
+          type: 'saveRole',
+          payload: response,
+        });
         yield put(routerRedux.push('/'));
       }
     },
@@ -40,6 +45,12 @@ export default {
           },
         });
         reloadAuthorized();
+        yield put({
+          type: 'saveRole',
+          payload: {
+            currentAuthority: '',
+          },
+        });
         yield put(routerRedux.push('/user/login'));
       }
     },
@@ -52,6 +63,12 @@ export default {
         ...state,
         status: payload.status,
         type: payload.type,
+      };
+    },
+    saveRole(state, { payload }) {
+      return {
+        ...state,
+        currentAuthority: payload.currentAuthority,
       };
     },
   },

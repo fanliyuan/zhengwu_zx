@@ -77,7 +77,7 @@ export default class LoginPage extends Component {
               login.type === 'account' &&
               !submitting &&
               isError &&
-              this.renderMessage('账户或密码错误（admin/888888）')}
+              this.renderMessage('账户或密码错误(密码: 123youe)')}
             {/* <UserName name="userName" placeholder="admin/user" />
             <Password name="password" placeholder="888888/123456" /> */}
             {isEmpty && this.renderMessage('账号或密码不能为空')}

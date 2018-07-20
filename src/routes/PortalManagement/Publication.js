@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-17 17:21:14
+ * @Last Modified time: 2018-07-20 17:21:45
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react';
@@ -156,7 +156,7 @@ export default class Publication extends Component {
 
     return (
       <PageHeaderLayout>
-        <div className="my-table-layout">
+        <div className="common-layout">
           <div className="clearfix mb8">
             <Link to="/portalManagement/publicationManagement" className="fr">
               <Button>返回</Button>

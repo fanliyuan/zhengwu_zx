@@ -327,7 +327,7 @@ export const getRouterData = app => {
     '/dataSwitchManagement/source': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/Source')),
     },
-    '/dataSwitchManagement/logAudit': {
+    '/dataSwitchManagement/logAudit/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/LogAudit')),
     },
     '/dataSwitchManagement/auditLog': {

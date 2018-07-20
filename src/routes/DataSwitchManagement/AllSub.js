@@ -2,20 +2,23 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 09:28:41
+ * @Last Modified time: 2018-07-20 16:48:11
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react';
-// import { connect } from 'dva';
-import { DatePicker, Input, Select, Button, Table, Tabs } from 'antd';
+import { connect } from 'dva';
+import { Link } from 'dva/router';
+import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal } from 'antd';
 import moment from 'moment';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { getName, getAddress, getDepartment } from '../../utils/faker';
 import styles from './AllSub.less';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 const { TabPane } = Tabs;
+const { confirm } = Modal;
 
 function getData1() {
   const data = [];
@@ -23,13 +26,14 @@ function getData1() {
     data.push({
       id: i,
       name: `订阅名${i}`,
-      person: `订阅人${i}`,
-      organization: `订阅机构${i}`,
+      person: getName(),
+      organization: getAddress() + getDepartment(),
       menuName: `目录名称${i}`,
       menuOrganization: `目录发布机构${i}`,
       state: i % 3 === 0 ? '运行中' : '已停止',
       time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
       menu: `目录名${i}`,
+      type: Math.round(Math.random()) === 1 ? 'file' : 'table',
     });
   }
   return data;
@@ -73,6 +77,7 @@ const data3 = getData3();
 //   overviewLogging,
 //   loading: loading.models.overviewLogging,
 // }))
+@connect(({ login }) => ({ login }))
 export default class AllSub extends Component {
   state = {
     name: '',
@@ -134,6 +139,10 @@ export default class AllSub extends Component {
 
   render() {
     const { name, date, state, theme, selectKeys, organization } = this.state;
+
+    const {
+      login: { currentAuthority },
+    } = this.props;
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const stateList = [
@@ -194,15 +203,49 @@ export default class AllSub extends Component {
         render: (text, row) => {
           return row.state === '运行中' ? (
             <Fragment>
-              <a className="mr16">停止</a>
-              <a className="mr16">审核日志</a>
+              <Popconfirm
+                title={
+                  <div>
+                    <div>您是否确定停用？</div>
+                    <div>停用后将暂停采集数据！</div>
+                  </div>
+                }
+                onConfirm={() => message.success('已停止')}
+              >
+                <a className="mr16">停止</a>
+              </Popconfirm>
+              <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
             </Fragment>
           ) : (
             <Fragment>
-              <a className="mr8">运行</a>
-              <a className="mr8">设置</a>
-              <a className="mr8">取消订阅</a>
-              <a>审核日志</a>
+              <Popconfirm
+                title={
+                  <div>
+                    <div>您是否确定启动？</div>
+                    <div>启动后可进行采集数据！</div>
+                  </div>
+                }
+                onConfirm={() => message.success('已启动')}
+              >
+                <a className="mr8">运行</a>
+              </Popconfirm>
+              {currentAuthority === 'operator' ? (
+                <Link
+                  to={`/dataSwitchManagement/${
+                    row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
+                  }/${row.id}`}
+                  className="mr8"
+                >
+                  查看
+                </Link>
+              ) : null}
+              <Popconfirm
+                title={`是否取消${row.name}的订阅`}
+                onConfirm={() => message.success('取消成功')}
+              >
+                <a className="mr8">取消订阅</a>
+              </Popconfirm>
+              <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
             </Fragment>
           );
         },
@@ -360,8 +403,39 @@ export default class AllSub extends Component {
                 </Button>
               </div>
               <div className={styles.bar}>
-                <Button className={styles.button}>启动</Button>
-                <Button className={styles.button}>停止</Button>
+                {/* 这里含有模态框的确认 */}
+                <Button
+                  className={styles.button}
+                  onClick={() =>
+                    confirm({
+                      title: '是否确定?',
+                      content: '此操作将启动所有已选择项',
+                      onOk() {
+                        message.success(`${selectKeys.join(',')}已经启动`);
+                      },
+                      okText: '确定',
+                      cancelText: '取消',
+                    })
+                  }
+                >
+                  启动
+                </Button>
+                <Button
+                  className={styles.button}
+                  onClick={() =>
+                    confirm({
+                      title: '是否确定?',
+                      content: '此操作将停止所有已选择项',
+                      onOk() {
+                        message.success(`${selectKeys.join(',')}已经停止`);
+                      },
+                      okText: '确定',
+                      cancelText: '取消',
+                    })
+                  }
+                >
+                  停止
+                </Button>
               </div>
               <div>
                 <Table

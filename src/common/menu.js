@@ -21,11 +21,13 @@ const menuData = [
       {
         name: '系统通知',
         path: 'systemNotification',
+        authority: ['operator'],
       },
       {
         name: '通知详情',
         path: 'noticeDetail',
         hideInMenu: true,
+        authority: ['operator'],
       },
       // {
       //   name: '工作台',
@@ -34,7 +36,7 @@ const menuData = [
       //   // hideInMenu: true,
       // },
     ],
-    authority: ['user', 'admin'],
+    authority: ['admin', 'security', 'auditor', 'operator'],
   },
   {
     name: '审计管理',
@@ -50,7 +52,7 @@ const menuData = [
         path: 'operation',
       },
     ],
-    authority: ['user'],
+    authority: ['auditor'],
   },
   {
     name: '基础设施管理',
@@ -85,6 +87,7 @@ const menuData = [
         hideInMenu: true,
       },
     ],
+    authority: ['operator'],
   },
   {
     name: '机构用户管理',
@@ -94,6 +97,7 @@ const menuData = [
       {
         name: '机构管理',
         path: 'institutionalManage',
+        authority: ['operator'],
       },
       {
         name: '新建机构',
@@ -103,6 +107,7 @@ const menuData = [
       {
         name: '用户管理',
         path: 'userManage',
+        authority: ['admin'],
       },
       {
         name: '新建用户',
@@ -112,6 +117,7 @@ const menuData = [
       {
         name: '角色权限',
         path: 'roleLimit',
+        authority: ['security'],
       },
       {
         name: '新建角色',
@@ -126,8 +132,10 @@ const menuData = [
       {
         name: '分配角色',
         path: 'assignRole',
+        authority: ['security'],
       },
     ],
+    authority: ['admin', 'security'],
   },
   {
     name: '数据资源管理',
@@ -228,6 +236,7 @@ const menuData = [
         path: 'viewDirectory',
       },
     ],
+    authority: ['operator'],
   },
   {
     name: '数据交换管理',
@@ -249,6 +258,7 @@ const menuData = [
       {
         name: '审核日志',
         path: 'logAudit',
+        hideInMenu: true,
       },
       {
         name: '资源',
@@ -258,7 +268,18 @@ const menuData = [
         name: '资源管理',
         path: 'sourceManagement',
       },
+      {
+        name: '订阅(表)',
+        path: 'subscriptionTable',
+        hideInMenu: true,
+      },
+      {
+        name: '订阅(文件)',
+        path: 'subscriptionFile',
+        hideInMenu: true,
+      },
     ],
+    authority: ['operator'],
   },
   {
     name: '开放门户管理',
@@ -297,6 +318,7 @@ const menuData = [
         path: 'columnPosition',
       },
     ],
+    authority: ['operator'],
   },
   {
     name: '监控告警',
@@ -334,6 +356,7 @@ const menuData = [
         // hideInMenu: true,
       },
     ],
+    authority: ['operator'],
   },
   {
     name: '统计分析',
@@ -345,6 +368,7 @@ const menuData = [
         path: 'dataInsert',
       },
     ],
+    authority: ['operator'],
   },
   // {
   //   name: '结果页',
