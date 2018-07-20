@@ -1,8 +1,16 @@
+/*
+ * @Author: 樊丽园
+ * @Date: 2018-07-19 17:59:46
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-20 09:22:19
+ * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接 https://github.com/ShinyChang/React-Text-Truncate
+ */
 import React, { Component } from 'react';
-import { Card, Row, Col, Button, Divider, Table } from 'antd';
+import { Card, Row, Col, Button, Divider, Table, Tooltip } from 'antd';
 import moment from 'moment';
+import TextTruncate from 'react-text-truncate';
 
-import styles from './Source.less';
+// import styles from './Source.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 export default class Source extends Component {
@@ -79,7 +87,16 @@ export default class Source extends Component {
         title: 'post_content',
         dataIndex: 'post_content',
         render(text) {
-          return <span className={styles.colSpan}>{text}</span>;
+          return (
+            <Tooltip title={text}>
+              <TextTruncate
+                line={1}
+                truncateText="..."
+                textTruncateChild={<a href="#">read more</a>}
+                text={text}
+              />
+            </Tooltip>
+          );
         },
         width: 250,
       },
@@ -92,7 +109,7 @@ export default class Source extends Component {
         last_updated: 21111277,
         post_title: 'Hello World!',
         post_content:
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravidaLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravidaLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravidaLorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravidaLorem ipsum dolor sit amet, consectetur adipiscing elit.',
       },
       {
         id: 1,

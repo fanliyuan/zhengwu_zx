@@ -2,19 +2,18 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 13:24:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-06 13:41:16
- * @描述: 数据管理
+ * @Last Modified time: 2018-07-20 09:40:51
+ * @描述: 数据管理 -- 此文件就是资源管理
 */
 import React, { Component } from 'react';
 // import { connect } from 'dva';
-import { DatePicker, Input, Select, Button, Table, message } from 'antd';
-import moment from 'moment'
+import { DatePicker, Input, Button, Table, message } from 'antd';
+import moment from 'moment';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './DataManagement.less';
 
 const { RangePicker } = DatePicker;
-const { Option } = Select;
 
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
@@ -31,10 +30,9 @@ export default class DataManagement extends Component {
     selectedRowKeys: [],
   };
 
-  componentDidMount () {
+  componentDidMount() {
     // const { dispatch } = this.props
     // const { date } = this.state
-
     // const dateRange = date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -42,7 +40,6 @@ export default class DataManagement extends Component {
     //     return 0
     //   }
     // })
-
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: {query: {...this.state, date: dateRange}, pagination: {pageSize: 10, current: 1}},
@@ -52,7 +49,7 @@ export default class DataManagement extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    })
+    });
     this.setState({
       name: e.target.value.trim(),
     });
@@ -61,7 +58,7 @@ export default class DataManagement extends Component {
   handleThemeChange = e => {
     this.setState({
       isChanged: true,
-    })
+    });
     this.setState({
       theme: e.target.value.trim(),
     });
@@ -81,17 +78,17 @@ export default class DataManagement extends Component {
     });
   };
 
-  handlePick = (val) => {
+  handlePick = val => {
     this.setState({
       isChanged: true,
-    })
+    });
     this.setState({
       date: val,
-    })
-  }
+    });
+  };
 
   handleSearch = () => {
-    if (!this.state.isChanged) return // eslint-disable-line
+    if (!this.state.isChanged) return; // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -107,18 +104,18 @@ export default class DataManagement extends Component {
     // })
     this.setState({
       isChanged: false,
-    })
+    });
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
   };
 
-  handleStandardTableChange = (pagination) => {
+  handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination) // eslint-disable-line
+    console.log(pagination); // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -133,23 +130,27 @@ export default class DataManagement extends Component {
     // });
   };
 
-  downloadFun = (val) => {
+  downloadFun = val => {
     try {
-      message.success(`选择了${val.join(',')}`)
-    } catch (error) {console.log(error)} finally {}// eslint-disable-line
-  }
+      message.success(`选择了${val.join(',')}`);
+    } catch (error) {
+      console.log(error); // eslint-disable-line
+    } finally {
+      // eslint-disable-line
+    }
+  };
 
   downloadTpl = () => {
-    message.info('下载模板')
-  }
+    message.info('下载模板');
+  };
 
   render() {
-    const { name, date, theme, origin, dataBase, selectedRowKeys } = this.state
+    const { name, date, theme, origin, dataBase, selectedRowKeys } = this.state;
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
-    const data = []
+    const data = [];
 
-    for(let i = 0; i < 120; i ++) {
+    for (let i = 0; i < 120; i++) {
       data.push({
         id: i,
         name: '数据名' + i, // eslint-disable-line
@@ -158,23 +159,8 @@ export default class DataManagement extends Component {
         theme: '主题' + i, // eslint-disable-line
         origin: '数据源' + i, // eslint-disable-line
         dataBase: '数据库' + i, // eslint-disable-line
-      })
+      });
     }
-
-    const stateList = [
-      {
-        value: -1,
-        label: '全部状态',
-      },
-      {
-        value: 0,
-        label: '运行中',
-      },
-      {
-        value: 1,
-        label: '已停止',
-      },
-    ]
 
     const columns = [
       {
@@ -213,20 +199,16 @@ export default class DataManagement extends Component {
 
     const rowSelection = {
       selectedRowKeys,
-      onChange: (val) => {
+      onChange: val => {
         this.setState({
           selectedRowKeys: val,
-        })
+        });
       },
-    }
+    };
 
     columns.forEach(item => {
-      item.align = 'center'
-    })
-
-    const optionList = stateList.map(item => { // eslint-disable-line
-      return <Option value={item.value} key={item.value}>{item.label}</Option>
-    })
+      item.align = 'center';
+    });
 
     return (
       <PageHeaderLayout>
@@ -266,7 +248,14 @@ export default class DataManagement extends Component {
             </Button>
           </div>
           <div className={styles.bar}>
-            <Button type='primary' icon='download' className={styles.button} onClick={() => this.downloadFun(selectedRowKeys)} >导出</Button>
+            <Button
+              type="primary"
+              icon="download"
+              className={styles.button}
+              onClick={() => this.downloadFun(selectedRowKeys)}
+            >
+              导出
+            </Button>
           </div>
           <div>
             <Table

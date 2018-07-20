@@ -321,11 +321,6 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/SubscriptionTable')
       ),
     },
-    '/dataSwitchManagement/dataManagement': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSwitchManagement/DataManagement')
-      ),
-    },
     '/dataSwitchManagement/allSub': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/AllSub')),
     },
@@ -392,10 +387,10 @@ export const getRouterData = app => {
     '/monitor/task': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/Task')),
     },
-    '/monitor/pubDetail': {
+    '/monitor/pubDetail/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/PubDetail')),
     },
-    '/monitor/subDetail': {
+    '/monitor/subDetail/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/SubDetail')),
     },
     '/monitor/warningOption': {
