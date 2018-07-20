@@ -187,8 +187,17 @@ export default class ResourceConnection extends Component {
             confirmLoading={confirmLoading}
             onOK={this.handleNameOk}
             onCancel={this.handleNameCancel}
+            width={850}
           >
-            123
+            <div>
+              <Table
+                columns={columns}
+                dataSource={list}
+                pagination={pagination}
+                rowKey="id"
+                bordered
+              />
+            </div>
           </Modal>
           <Modal
             title="选择要挂接的资源文件"
