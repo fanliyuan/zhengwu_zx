@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-18 17:41:29
+ * @Last Modified time: 2018-07-20 09:28:41
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react';
@@ -194,14 +194,14 @@ export default class AllSub extends Component {
         render: (text, row) => {
           return row.state === '运行中' ? (
             <Fragment>
-              <a>停止</a>
-              <a>审核日志</a>
+              <a className="mr16">停止</a>
+              <a className="mr16">审核日志</a>
             </Fragment>
           ) : (
             <Fragment>
-              <a>运行</a>
-              <a>设置</a>
-              <a>取消订阅</a>
+              <a className="mr8">运行</a>
+              <a className="mr8">设置</a>
+              <a className="mr8">取消订阅</a>
               <a>审核日志</a>
             </Fragment>
           );
@@ -243,7 +243,7 @@ export default class AllSub extends Component {
         render: () => {
           return (
             <Fragment>
-              <a>设置</a>
+              <a className="mr16">设置</a>
               <a>审核日志</a>
             </Fragment>
           );
@@ -398,7 +398,7 @@ export default class AllSub extends Component {
                   搜索
                 </Button>
               </div>
-              <Table columns={willAuditColumns} dataSource={data3} bordered />
+              <Table columns={willAuditColumns} dataSource={data3} bordered rowKey="id" />
             </TabPane>
             <TabPane tab="订阅失败" key="failSubcribed">
               <div className={styles.search}>
@@ -424,7 +424,7 @@ export default class AllSub extends Component {
                   搜索
                 </Button>
               </div>
-              <Table columns={failSubcribedColumns} dataSource={data2} bordered />
+              <Table columns={failSubcribedColumns} dataSource={data2} bordered rowKey="id" />
             </TabPane>
           </Tabs>
         </div>

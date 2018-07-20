@@ -2,19 +2,33 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-04 17:25:58
+ * @Last Modified time: 2018-07-19 17:20:04
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
+ *  有bug,是否推荐无法初始化.
 */
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 // import { connect } from 'dva';
-import { DatePicker, Input, Select, Button, Table } from 'antd';
-import moment from 'moment'
+import { Modal, DatePicker, Input, Select, Button, Table, Radio } from 'antd';
+import moment from 'moment';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './MenuManagement.less';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
+
+const data = [];
+
+for (let i = 0; i < 120; i++) {
+  data.push({
+    id: i,
+    name: `类型${i}`,
+    state: Math.round(Math.random()) === 1 ? '未发布' : '已发布',
+    recommend: Math.round(Math.random()) === 1 ? '是' : '否',
+    time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
+    operator: `操作人${i}`,
+  });
+}
 
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
@@ -24,16 +38,19 @@ export default class MenuManagement extends Component {
   state = {
     name: '',
     operator: '',
-    type: -1,
+    state: -1,
+    recommend: -1,
     date: [],
     isChanged: false,
-    selectedRowKeys: [],
+    showModal: false,
+    modalTitle: '',
+    // selectedRowKeys: [],
+    defaultValue: '是',
   };
 
-  componentDidMount () {
+  componentDidMount() {
     // const { dispatch } = this.props
     // const { date } = this.state
-
     // const dateRange = date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -41,7 +58,6 @@ export default class MenuManagement extends Component {
     //     return 0
     //   }
     // })
-
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: {query: {...this.state, date: dateRange}, pagination: {pageSize: 10, current: 1}},
@@ -51,7 +67,7 @@ export default class MenuManagement extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    })
+    });
     this.setState({
       name: e.target.value.trim(),
     });
@@ -60,30 +76,37 @@ export default class MenuManagement extends Component {
   handleOperatorChange = e => {
     this.setState({
       isChanged: true,
-    })
+    });
     this.setState({
       operator: e.target.value.trim(),
     });
   };
 
-  handleTypeChange = e => {
+  handleStateChange = value => {
     this.setState({
-      type: e,
+      state: value,
       isChanged: true,
     });
   };
 
-  handlePick = (val) => {
+  recommendChange = value => {
+    this.setState({
+      recommend: value,
+      isChanged: true,
+    });
+  };
+
+  handlePick = val => {
     this.setState({
       isChanged: true,
-    })
+    });
     this.setState({
       date: val,
-    })
-  }
+    });
+  };
 
   handleSearch = () => {
-    if (!this.state.isChanged) return // eslint-disable-line
+    if (!this.state.isChanged) return; // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -99,18 +122,18 @@ export default class MenuManagement extends Component {
     // })
     this.setState({
       isChanged: false,
-    })
+    });
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
   };
 
-  handleStandardTableChange = (pagination) => {
+  handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination) // eslint-disable-line
+    console.log(pagination); // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -125,42 +148,55 @@ export default class MenuManagement extends Component {
     // });
   };
 
+  handleModal = (row, modalTitle) => {
+    this.setState({
+      showModal: true,
+      modalTitle,
+      defaultValue: row.recommend,
+    });
+  };
+
   render() {
-    const { name, date, operator, type, selectedRowKeys } = this.state
+    const {
+      name,
+      date,
+      operator,
+      state,
+      recommend,
+      showModal,
+      modalTitle,
+      defaultValue,
+    } = this.state;
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
-    const data = []
-
-    for(let i = 0; i < 120; i ++) {
-      data.push({
-        id: i,
-        name: '类型' + i, // eslint-disable-line
-        // count: Math.ceil(Math.random() * 2000) + 100, // eslint-disable-line
-        time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-        operator: '操作人' + i, // eslint-disable-line
-        // origin: '数据源' + i, // eslint-disable-line
-        // dataBase: '数据库' + i, // eslint-disable-line
-      })
-    }
-
-    const typeList = [
+    const stateList = [
       {
         value: -1,
         label: '全部状态',
       },
       {
         value: 0,
-        label: '主题分类',
+        label: '已发布',
       },
       {
         value: 1,
-        label: '应用分类',
+        label: '未发布',
+      },
+    ];
+    const recommendList = [
+      {
+        value: -1,
+        label: '是否推荐',
       },
       {
-        value: 2,
-        label: '行业分类',
+        value: 0,
+        label: '是',
       },
-    ]
+      {
+        value: 1,
+        label: '否',
+      },
+    ];
 
     const columns = [
       {
@@ -168,8 +204,16 @@ export default class MenuManagement extends Component {
         dataIndex: 'id',
       },
       {
-        title: '数据名',
+        title: '分类名称',
         dataIndex: 'name',
+      },
+      {
+        title: '发布状态',
+        dataIndex: 'state',
+      },
+      {
+        title: '是否推荐',
+        dataIndex: 'recommend',
       },
       {
         title: '操作人',
@@ -182,39 +226,65 @@ export default class MenuManagement extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
+        render: (text, row) => {
+          if (row.state === '未发布') {
+            return <a onClick={() => this.handleModal(row, '发布')}>发布</a>;
+          }
+          return (
+            <Fragment>
+              <a className="mr16" onClick={() => this.handleModal(row, '取消发布')}>
+                取消发布
+              </a>
+              <a onClick={() => this.handleModal(row, '设置')}>设置</a>
+            </Fragment>
+          );
+        },
       },
-    ]
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: (rowKeys) => {
-        this.setState({
-          selectedRowKeys: rowKeys,
-        })
-      },
-    }
+    ];
+    // const rowSelection = {
+    //   selectedRowKeys,
+    //   onChange: (rowKeys) => {
+    //     this.setState({
+    //       selectedRowKeys: rowKeys,
+    //     })
+    //   },
+    // }
 
     columns.forEach(item => {
-      item.align = 'center'
-    })
+      item.align = 'center';
+    });
 
-    const typeComs = typeList.map(item => { // eslint-disable-line
-      return <Option value={item.value} key={item.value}>{item.label}</Option>
-    })
+    // const typeComs = stateList.map(item => { // eslint-disable-line
+    //   return <Option value={item.value} key={item.value}>{item.label}</Option>
+    // })
+    // 封装方法
+    const getSelectOptions = (list = []) => {
+      return list.map(item => {
+        return (
+          <Option value={item.value} key={item.value}>
+            {item.label}
+          </Option>
+        );
+      });
+    };
 
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
           <div className={styles.search}>
-            <Select value={type} onChange={this.handleTypeChange} className={styles.select} >
-              {typeComs}
-            </Select>
             <Input
-              placeholder="类型名称"
+              placeholder="分类名称"
               value={name}
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
             />
+            <Select value={state} onChange={this.handleStateChange} className={styles.select}>
+              {getSelectOptions(stateList)}
+            </Select>
+            <Select value={recommend} onChange={this.recommendChange} className={styles.select}>
+              {getSelectOptions(recommendList)}
+            </Select>
             <Input
               placeholder="操作人"
               value={operator}
@@ -235,13 +305,46 @@ export default class MenuManagement extends Component {
               bordered
               columns={columns}
               dataSource={data}
-              rowSelection={rowSelection}
+              // rowSelection={rowSelection}
               // pagination={pagination}
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
             />
           </div>
+          <Modal
+            visible={showModal}
+            title={modalTitle || '确认执行此操作?'}
+            onCancel={() => this.setState({ showModal: false })}
+          >
+            {modalTitle === '发布' ? (
+              <Fragment>
+                <span className={styles.label}>是否推荐</span>
+                <span>
+                  <Radio.Group defaultValue={defaultValue}>
+                    <Radio value="是">是</Radio>
+                    <Radio value="否">否</Radio>
+                  </Radio.Group>
+                </span>
+              </Fragment>
+            ) : null}
+            {modalTitle === '取消发布' ? (
+              <Fragment>
+                <span>取消发布后将不在开放门户展示，请确认是否取消发布？</span>
+              </Fragment>
+            ) : null}
+            {modalTitle === '设置' ? (
+              <Fragment>
+                <span className={styles.label}>是否推荐</span>
+                <span>
+                  <Radio.Group defaultValue={defaultValue}>
+                    <Radio value="是">是</Radio>
+                    <Radio value="否">否</Radio>
+                  </Radio.Group>
+                </span>
+              </Fragment>
+            ) : null}
+          </Modal>
         </div>
       </PageHeaderLayout>
     );

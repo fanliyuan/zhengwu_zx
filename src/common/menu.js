@@ -258,10 +258,6 @@ const menuData = [
         name: '资源管理',
         path: 'sourceManagement',
       },
-      {
-        name: '数据管理',
-        path: 'dataManagement',
-      },
     ],
   },
   {
