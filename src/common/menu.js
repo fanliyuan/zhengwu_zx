@@ -178,10 +178,16 @@ const menuData = [
       {
         name: '文件资源',
         path: 'fileSource',
+        hideInMenu: true,
       },
       {
         name: '资源审核',
         path: 'sourceAudit',
+      },
+      {
+        name: '数据库资源',
+        path: 'dataBaseSource',
+        hideInMenu: true,
       },
       {
         name: '目录管理',
@@ -261,15 +267,17 @@ const menuData = [
       {
         name: '目录',
         path: 'catalog',
-        // hideInMenu:true,
+        hideInMenu: true,
       },
       {
         name: '任务',
         path: 'task',
+        hideInMenu: true,
       },
       {
         name: '查看目录',
         path: 'viewDirectory',
+        hideInMenu: true,
       },
     ],
     authority: ['operator', 'assessor-n'],

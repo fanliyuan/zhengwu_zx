@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'dva/router';
+import { routerRedux } from 'dva/router';
+import { connect } from 'dva';
 import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
 import moment from 'moment';
 
@@ -8,6 +9,9 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+@connect(({ sourceAudit }) => ({
+  sourceAudit,
+}))
 export default class SourceAudit extends Component {
   state = {
     dataType: '0',
@@ -40,7 +44,13 @@ export default class SourceAudit extends Component {
     });
   };
 
+  handleSource = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource'));
+  };
+
   render() {
+    const that = this;
     const { dataType, nodeName, owingJg, status } = this.state;
     const data = [
       { value: '0', id: 0, label: '数据类型' },
@@ -130,23 +140,31 @@ export default class SourceAudit extends Component {
             return (
               <div>
                 {/* <a>查看</a> */}
-                <Link to={`/dataSourceManagement/auditLog/${row.id}`}>查看</Link>
+                {/* <Link to={`/dataSourceManagement/auditLog/${row.id}`} className="mr8">查看</Link> */}
+                <span className={styles.clickBtn}>查看</span>
+                <span className={styles.clickBtn}>审核日志</span>
               </div>
             );
           } else if (row.status === '1') {
             return (
               <div>
-                <a style={{ marginRight: 10 }}>资源</a>
-                <a style={{ marginRight: 10 }}>同步计划</a>
-                <Link to={`/dataSourceManagement/auditLog/${row.id}`}>查看</Link>
+                <span onClick={that.handleSource} className={styles.clickBtn}>
+                  资源
+                </span>
+                <span className={styles.clickBtn}>同步计划</span>
+                {/* <Link to={`/dataSourceManagement/auditLog/${row.id}`} className="mr8">查看</Link> */}
+                <span className={styles.clickBtn}>查看</span>
+                <span className={styles.clickBtn}>审核日志</span>
               </div>
             );
           } else {
             return (
               <div>
-                <a style={{ marginRight: 10 }}>资源</a>
-                <a style={{ marginRight: 10 }}>同步计划</a>
-                <a>审核</a>
+                <span onClick={that.handleSource} className={styles.clickBtn}>
+                  资源
+                </span>
+                <span className={styles.clickBtn}>同步计划</span>
+                <span className={styles.clickBtn}>审核</span>
               </div>
             );
           }

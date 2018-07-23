@@ -277,6 +277,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/SubscriptionAudit')
       ),
     },
+    '/dataSourceManagement/dataBaseSource': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/DataBaseSource')
+      ),
+    },
     '/dataSourceManagement/newMenu': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/NewMenu')),
     },

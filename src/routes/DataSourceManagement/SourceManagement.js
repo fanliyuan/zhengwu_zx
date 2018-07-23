@@ -44,6 +44,26 @@ export default class SourceManagement extends Component {
     });
   };
 
+  handleSource = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource'));
+  };
+
+  handleSource1 = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/fileSource'));
+  };
+
+  handleTask = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/task'));
+  };
+
+  handleEdit = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'));
+  };
+
   handleCatalog = () => {
     const { dispatch } = this.props;
     dispatch(routerRedux.push('/dataSourceManagement/catalog'));
@@ -152,15 +172,21 @@ export default class SourceManagement extends Component {
       {
         title: '操作',
         render(text, row) {
-          if (+row.id === 0) {
+          if (+row.id === 2) {
             return (
               <div>
                 <span className={styles.clickBtn} onClick={that.handleCatalog}>
                   目录
                 </span>
-                <a className={styles.clickBtn}>资源</a>
-                <a className={styles.clickBtn}>任务</a>
-                <a className={styles.clickBtn}>修改</a>
+                <span className={styles.clickBtn} onClick={that.handleSource1}>
+                  资源
+                </span>
+                <span className={styles.clickBtn} onClick={that.handleTask}>
+                  任务
+                </span>
+                <span className={styles.clickBtn} onClick={that.handleEdit}>
+                  修改
+                </span>
                 <a>删除</a>
               </div>
             );
@@ -170,9 +196,15 @@ export default class SourceManagement extends Component {
                 <span className={styles.clickBtn} onClick={that.handleCatalog1}>
                   目录
                 </span>
-                <a className={styles.clickBtn}>资源</a>
-                <a className={styles.clickBtn}>任务</a>
-                <a className={styles.clickBtn}>修改</a>
+                <span className={styles.clickBtn} onClick={that.handleSource}>
+                  资源
+                </span>
+                <span className={styles.clickBtn} onClick={that.handleTask}>
+                  任务
+                </span>
+                <span className={styles.clickBtn} onClick={that.handleEdit}>
+                  修改
+                </span>
                 <a>删除</a>
               </div>
             );

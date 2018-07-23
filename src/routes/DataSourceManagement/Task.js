@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
-import { Card, Tabs, Table } from 'antd';
+import { Card, Tabs, Table, Button } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './Task.less';
 
 const { TabPane } = Tabs;
+@connect(({ task }) => ({
+  task,
+}))
 export default class Task extends Component {
   state = {};
+
+  handleBack = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
+  };
 
   render() {
     const pagination = {
@@ -160,6 +170,11 @@ export default class Task extends Component {
     return (
       <PageHeaderLayout>
         <Card>
+          <div style={{ textAlign: 'right' }}>
+            <Button type="primary" onClick={this.handleBack}>
+              返回
+            </Button>
+          </div>
           <p className={styles.titleName}>
             &nbsp;数据库: &nbsp;<span>Youedata_dig</span>
             &nbsp;&nbsp;数据类型: &nbsp;<span>Mysql</span>
