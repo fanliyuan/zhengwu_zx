@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
+import { Table, Button, Input, Select, Card, DatePicker, Row, Col } from 'antd';
 import moment from 'moment';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
@@ -9,183 +9,251 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
-@connect(({accessManagement}) => ({
+@connect(({ accessManagement }) => ({
   accessManagement,
 }))
 export default class AccessManagement extends Component {
   state = {
-    dataType:'0',
-    nodeName:'0',
-    owingJg:'0',
-    creater:'0',
-    status:'0',
-  }
-  
-  selectDataTypeChange = (val) => {
-    this.setState({
-      dataType:val,
-    })
-  }
+    dataType: '0',
+    // nodeName:'0',
+    owingJg: '0',
+    creater: '0',
+    // status:'0',
+  };
 
-  selectNodeChange = (val) => {
+  selectDataTypeChange = val => {
     this.setState({
-      nodeName:val,
-    })
-  }
+      dataType: val,
+    });
+  };
 
-  selectOwingJgChange = (val) => {
-    this.setState({
-      owingJg:val,
-    })
-  }
+  selectNodeChange = () => {
+    // this.setState({
+    //   nodeName:val,
+    // })
+  };
 
-  selectCreaterChange = (val) => {
+  selectOwingJgChange = val => {
     this.setState({
-      creater:val,
-    })
-  }
+      owingJg: val,
+    });
+  };
 
-  selectStatusChange = (val) => {
+  selectCreaterChange = val => {
     this.setState({
-      status:val,
-    })
-  }
+      creater: val,
+    });
+  };
+
+  selectStatusChange = () => {
+    // this.setState({
+    //   status:val,
+    // })
+  };
 
   handleAdd = () => {
     const { dispatch } = this.props;
     dispatch(routerRedux.push('/dataSourceManagement/addAccess'));
-  }
+  };
 
-  render(){
-    const { dataType, nodeName, owingJg, creater, status } = this.state;
-    const data=[
-      {value:'0',id:0,label:'数据类型'},
-      {value:'1',id:1,label:'数据类型1'},
+  handleEdit = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/addAccess'));
+  };
+
+  handleRegister = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'));
+  };
+
+  handleRegister1 = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/updataFile'));
+  };
+
+  handleRegister2 = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/ftp'));
+  };
+
+  render() {
+    const that = this;
+    const { dataType, owingJg, creater } = this.state;
+    const data = [
+      { value: '0', id: 0, label: '数据类型' },
+      { value: '1', id: 1, label: '数据类型1' },
     ];
     const selectData = data.map(item => {
-      return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
-    })
-    const data1=[
-      {value:'0',id:0,label:'节点'},
-      {value:'1',id:1,label:'节点1'},
-    ];
-    const selectData1 = data1.map(item => {
-      return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
-    })
-    const data2=[
-      {value:'0',id:0,label:'所属机构'},
-      {value:'1',id:1,label:'XXX机构'},
+      return (
+        <Option value={item.value} key={item.id} title={item.label}>
+          {item.label}
+        </Option>
+      );
+    });
+    // const data1=[
+    //   {value:'0',id:0,label:'节点'},
+    //   {value:'1',id:1,label:'节点1'},
+    // ];
+    // const selectData1 = data1.map(item => {
+    //   return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
+    // })
+    const data2 = [
+      { value: '0', id: 0, label: '所属机构' },
+      { value: '1', id: 1, label: 'XXX机构' },
     ];
     const selectData2 = data2.map(item => {
-      return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
-    })
-    const data3=[
-      {value:'0',id:0,label:'创建人'},
-      {value:'1',id:1,label:'创建人1'},
-    ];
+      return (
+        <Option value={item.value} key={item.id} title={item.label}>
+          {item.label}
+        </Option>
+      );
+    });
+    const data3 = [{ value: '0', id: 0, label: '创建人' }, { value: '1', id: 1, label: '创建人1' }];
     const selectData3 = data3.map(item => {
-      return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
-    })
-    const data4=[
-      {value:'0',id:0,label:'审核状态'},
-      {value:'1',id:1,label:'审核状态1'},
-    ];
-    const selectData4 = data4.map(item => {
-      return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
-    })
-    const pagination = { pageSize:10,current:1 };
+      return (
+        <Option value={item.value} key={item.id} title={item.label}>
+          {item.label}
+        </Option>
+      );
+    });
+    // const data4=[
+    //   {value:'0',id:0,label:'审核状态'},
+    //   {value:'1',id:1,label:'审核状态1'},
+    // ];
+    // const selectData4 = data4.map(item => {
+    //   return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
+    // })
+    const pagination = { pageSize: 10, current: 1 };
     const columns = [
       {
-        title:'名称',
-        dataIndex:'name',
+        title: '名称',
+        dataIndex: 'name',
       },
       {
-        title:'数据类型',
-        dataIndex:'dataType',
+        title: '数据类型',
+        dataIndex: 'dataType',
       },
       {
-        title:'节点',
-        dataIndex:'node',
+        title: '节点',
+        dataIndex: 'node',
       },
       {
-        title:'所属机构',
-        dataIndex:'institution',
+        title: '所属机构',
+        dataIndex: 'institution',
       },
       {
-        title:'创建人',
-        dataIndex:'creater',
+        title: '创建人',
+        dataIndex: 'creater',
       },
       {
-        title:'建立时间',
-        dataIndex:'createTime',
-        render (text){
-          return (moment(text).format('YYYY-MM-DD HH:mm:ss'))
+        title: '建立时间',
+        dataIndex: 'createTime',
+        render(text) {
+          return moment(text).format('YYYY-MM-DD HH:mm:ss');
         },
       },
       {
-        title:'审核状态',
-        dataIndex:'status',
-        render(text){
-          return ( +text === 0 ?'待审核':(+text === 1 ? '已通过':'已拒绝'))
+        title: '审核状态',
+        dataIndex: 'status',
+        render(text) {
+          return +text === 0 ? '待审核' : +text === 1 ? '已通过' : '已拒绝';
         },
       },
       {
-        title:'操作',
-        render(text,row){
-          if(row.status === '0'){
+        title: '操作',
+        render(text, row) {
+          if (row.status === '0') {
             return (
               <div>
-                <a style={{marginRight:20}}>修改</a>
+                <span className={styles.editBtn} onClick={that.handleEdit}>
+                  修改
+                </span>
                 <a>删除</a>
               </div>
-            )
-          }
-          else{
+            );
+          } else if (+row.id === 1) {
             return (
               <div>
-                <a style={{marginRight:20}}>修改</a>
-                <a style={{marginRight:20}}>删除</a>
-                <a>资源注册</a>
+                <span className={styles.editBtn} onClick={that.handleEdit}>
+                  修改
+                </span>
+                <a style={{ marginRight: 20 }}>删除</a>
+                <span className={styles.editBtn} onClick={that.handleRegister}>
+                  资源注册
+                </span>
               </div>
-            )
+            );
+          } else if (+row.id === 2) {
+            return (
+              <div>
+                <span className={styles.editBtn} onClick={that.handleEdit}>
+                  修改
+                </span>
+                <a style={{ marginRight: 20 }}>删除</a>
+                <span className={styles.editBtn} onClick={that.handleRegister1}>
+                  资源注册
+                </span>
+              </div>
+            );
+          } else if (+row.id === 3) {
+            return (
+              <div>
+                <span className={styles.editBtn} onClick={that.handleEdit}>
+                  修改
+                </span>
+                <a style={{ marginRight: 20 }}>删除</a>
+                <span className={styles.editBtn} onClick={that.handleRegister2}>
+                  资源注册
+                </span>
+              </div>
+            );
           }
         },
       },
-    ]
+    ];
     columns.forEach(item => {
       item.align = 'center';
     });
     const list = [
       {
-        id:0,
-        name:'城市低保标准表(各市第1季度)',
-        dataType:'Mysql',
-        node:'石家庄民政部',
-        institution:'石家庄民政部',
-        creater:'张三',
-        createTime:233435354,
-        status:'0',
-
+        id: 0,
+        name: '城市低保标准表(各市第1季度)',
+        dataType: 'Mysql',
+        node: '石家庄民政部',
+        institution: '石家庄民政部',
+        creater: '张三',
+        createTime: 233435354,
+        status: '0',
       },
       {
-        id:1,
-        name:'农村低保标准表(各市第1季度)',
-        dataType:'Mysql',
-        node:'石家庄民政部',
-        institution:'石家庄民政部',
-        creater:'李四',
-        createTime:233435354,
-        status:'1',
+        id: 1,
+        name: '农村低保标准表(各市第1季度)',
+        dataType: 'Mysql',
+        node: '石家庄民政部',
+        institution: '石家庄民政部',
+        creater: '李四',
+        createTime: 233435354,
+        status: '1',
       },
       {
-        id:2,
-        name:'人口普查数据',
-        dataType:'文件',
-        node:'石家庄民政部',
-        institution:'石家庄民政部',
-        creater:'王五',
-        createTime:233435354,
-        status:'2',
+        id: 2,
+        name: '人口普查数据',
+        dataType: '文件',
+        node: '石家庄民政部',
+        institution: '石家庄民政部',
+        creater: '王五',
+        createTime: 233435354,
+        status: '2',
+      },
+      {
+        id: 3,
+        name: '人口普查数据',
+        dataType: '文件',
+        node: '石家庄民政部',
+        institution: '石家庄民政部',
+        creater: '王五',
+        createTime: 233435354,
+        status: '2',
       },
     ];
     const rowSelection = {
@@ -199,28 +267,46 @@ export default class AccessManagement extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <div className={styles.form}>
-            <Input placeholder="名称" style={{width:150,marginRight:20}}/>
-            <Select style={{marginRight:20,width:120}} value={dataType} onChange={this.selectDataTypeChange}>
-              {selectData}
-            </Select>
-            <Select style={{marginRight:20,width:120}} value={nodeName} onChange={this.selectNodeChange}>
-              {selectData1}
-            </Select>
-            <Select style={{marginRight:20,width:120}} value={owingJg} onChange={this.selectOwingJgChange}>
-              {selectData2}
-            </Select>
-            <Select style={{marginRight:20,width:120}} value={creater} onChange={this.selectCreaterChange}>
-              {selectData3}
-            </Select>
-            <RangePicker style={{marginRight:20,width:250}}/>
-            <Select style={{marginRight:20,width:120}} value={status} onChange={this.selectStatusChange}>
-              {selectData4}
-            </Select>
-            <Button type="primary">搜索</Button>
-          </div>
+          <Row className={styles.form} gutter={16}>
+            <Col span={3}>
+              <Input placeholder="名称" />
+            </Col>
+            <Col xl={{ span: 3 }} lg={{ span: 4 }} sm={{ span: 24 }}>
+              <Select value={dataType} onChange={this.selectDataTypeChange}>
+                {selectData}
+              </Select>
+            </Col>
+            {/* <Col span={4}>
+              <Select value={nodeName} onChange={this.selectNodeChange}>
+                {selectData1}
+              </Select>
+            </Col> */}
+            <Col xl={{ span: 3 }} lg={{ span: 4 }} sm={{ span: 24 }}>
+              <Select value={owingJg} onChange={this.selectOwingJgChange}>
+                {selectData2}
+              </Select>
+            </Col>
+            <Col xl={{ span: 3 }} lg={{ span: 4 }} sm={{ span: 24 }}>
+              <Select value={creater} onChange={this.selectCreaterChange}>
+                {selectData3}
+              </Select>
+            </Col>
+            <Col xl={{ span: 4 }} lg={{ span: 5 }} sm={{ span: 24 }}>
+              <RangePicker />
+            </Col>
+            {/* <Col span={3}>
+              <Select value={status} onChange={this.selectStatusChange}>
+                {selectData4}
+              </Select>
+            </Col> */}
+            <Col span={2} offset={1}>
+              <Button type="primary">搜索</Button>
+            </Col>
+          </Row>
           <div className={styles.createBtn}>
-            <Button icon="plus" type="primary" onClick={this.handleAdd}>新建</Button>
+            <Button icon="plus" type="primary" onClick={this.handleAdd}>
+              新建
+            </Button>
           </div>
           <div>
             <Table
@@ -232,11 +318,11 @@ export default class AccessManagement extends Component {
               rowSelection={rowSelection}
             />
           </div>
-          <div>
+          {/* <div>
             <Button type="primary">删除</Button>
-          </div>
+          </div> */}
         </Card>
       </PageHeaderLayout>
-    )
+    );
   }
 }

@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
+import { Link } from 'dva/router';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './Catalog.less';
 
 export default class Catalog extends Component {
-  state = {
-    
-  }
+  state = {};
 
-  render () {
+  render() {
     return (
       <PageHeaderLayout>
         <Card>
@@ -22,11 +21,12 @@ export default class Catalog extends Component {
           </p>
           <div className={styles.contentInfo}>
             <p>
-              该数据资源的目录还未创建, <a href="">立即创建</a> 或 <a href="">导入</a>
+              该数据资源的目录还未创建, <Link to="/dataSourceManagement/newMenu/one">立即创建</Link>{' '}
+              或 <Link to="/dataSourceManagement/inputDirectory">导入</Link>
             </p>
           </div>
         </Card>
       </PageHeaderLayout>
-    )
+    );
   }
 }

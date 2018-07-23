@@ -49,6 +49,11 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/catalog'));
   };
 
+  handleCatalog1 = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'));
+  };
+
   render() {
     const that = this;
     const { dataType, nodeName, owingJg, status } = this.state;
@@ -146,18 +151,32 @@ export default class SourceManagement extends Component {
       },
       {
         title: '操作',
-        render() {
-          return (
-            <div>
-              <span className={styles.clickBtn} onClick={that.handleCatalog}>
-                目录
-              </span>
-              <a className={styles.clickBtn}>资源</a>
-              <a className={styles.clickBtn}>任务</a>
-              <a className={styles.clickBtn}>修改</a>
-              <a>删除</a>
-            </div>
-          );
+        render(text, row) {
+          if (+row.id === 0) {
+            return (
+              <div>
+                <span className={styles.clickBtn} onClick={that.handleCatalog}>
+                  目录
+                </span>
+                <a className={styles.clickBtn}>资源</a>
+                <a className={styles.clickBtn}>任务</a>
+                <a className={styles.clickBtn}>修改</a>
+                <a>删除</a>
+              </div>
+            );
+          } else {
+            return (
+              <div>
+                <span className={styles.clickBtn} onClick={that.handleCatalog1}>
+                  目录
+                </span>
+                <a className={styles.clickBtn}>资源</a>
+                <a className={styles.clickBtn}>任务</a>
+                <a className={styles.clickBtn}>修改</a>
+                <a>删除</a>
+              </div>
+            );
+          }
         },
       },
     ];
