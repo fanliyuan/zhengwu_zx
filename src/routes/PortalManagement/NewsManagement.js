@@ -2,11 +2,11 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:16:35
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-17 17:58:58
+ * @Last Modified time: 2018-07-23 18:10:32
  * @描述: 开放门户管理--资讯管理--类型管理
 */
 import React, { Component, Fragment } from 'react';
-import { Link } from 'dva/router';
+// import { Link } from 'dva/router';
 // import { connect } from 'dva';
 import { DatePicker, Input, Button, Table, Modal, Form, message, Popconfirm } from 'antd';
 import moment from 'moment';
@@ -130,10 +130,20 @@ export default class NewsManagement extends Component {
     });
   };
 
+  handleAdd = () => {
+    // eslint-disable-line
+    this.setState({
+      modalShow: true,
+      classifyName: '',
+    });
+    this.props.form.setFieldsValue({ name: '' });
+  };
+
   handleEdit = row => {
     // eslint-disable-line
     this.setState({
       modalShow: true,
+      classifyName: row.name,
     });
     this.props.form.setFieldsValue({ name: row.name });
   };
@@ -245,17 +255,9 @@ export default class NewsManagement extends Component {
             </Button>
           </div>
           <div className={styles.bar}>
-            <Button
-              type="primary"
-              onClick={() => this.setState({ modalShow: true })}
-              className={styles.button}
-            >
+            <Button type="primary" onClick={this.handleAdd} icon="plus" className={styles.button}>
               新增
             </Button>
-            <Link to="/portalManagement/publicationManagement" style={{ marginRight: 20 }}>
-              发布管理
-            </Link>
-            <Link to="/portalManagement/newsLibrary">文章库</Link>
           </div>
           <div>
             <Table
@@ -270,7 +272,7 @@ export default class NewsManagement extends Component {
           </div>
           <Modal
             visible={modalShow}
-            title={classifyName ? '新增文章分类' : '修改文章分类'}
+            title={classifyName ? '修改文章分类' : '新增文章分类'}
             onOk={this.handleSubmit}
             onCancel={() => this.setState({ modalShow: false })}
           >

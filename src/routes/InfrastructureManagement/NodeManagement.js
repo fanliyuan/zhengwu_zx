@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-12 18:12:02
+ * @Last Modified time: 2018-07-23 10:35:45
 */
 import React, { Component } from 'react';
 import { connect } from 'dva';
@@ -232,7 +232,7 @@ export default class NodeManagement extends Component {
         render: (text, row) => {
           return (
             <div>
-              <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
+              <Link to={`/infrastructure/editNode/${row.id}`} style={{ marginRight: 10 }}>
                 修改
               </Link>
               <Popconfirm
@@ -246,7 +246,7 @@ export default class NodeManagement extends Component {
                   删除
                 </Link>
               </Popconfirm>
-              <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
+              {/* <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
                 监控
               </Link>
               <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
@@ -254,7 +254,7 @@ export default class NodeManagement extends Component {
               </Link>
               <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
                 任务
-              </Link>
+              </Link> */}
             </div>
           );
         },

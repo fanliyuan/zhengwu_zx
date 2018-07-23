@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 14:05:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-19 15:30:40
+ * @Last Modified time: 2018-07-23 16:27:35
 */
 import React, { Component } from 'react';
 import { Link } from 'dva/router';
@@ -178,7 +178,7 @@ export default class WarningOption extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          return <Link to={`/monitor/addWarningOption/${row.id}`}>修改</Link>;
+          return <Link to={`/monitor/editWarningOption/${row.id}`}>修改</Link>;
         },
       },
     ];

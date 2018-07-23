@@ -79,6 +79,11 @@ const menuData = [
         hideInMenu: true,
       },
       {
+        name: '修改节点',
+        path: 'editNode',
+        hideInMenu: true,
+      },
+      {
         name: '通道管理',
         path: 'pass',
       },
@@ -339,11 +344,24 @@ const menuData = [
       {
         name: '发布管理',
         path: 'publicationManagement',
-        hideInMenu: true,
       },
       {
         name: '发布',
         path: 'publication',
+        hideInMenu: true,
+      },
+      {
+        name: '文章库',
+        path: 'newsLibrary',
+      },
+      {
+        name: '新建文章',
+        path: 'addArticle',
+        hideInMenu: true,
+      },
+      {
+        name: '修改文章',
+        path: 'editArticle',
         hideInMenu: true,
       },
       {
@@ -379,6 +397,16 @@ const menuData = [
       {
         name: '告警配置',
         path: 'warningOption',
+      },
+      {
+        name: '新增告警配置',
+        path: 'addWarningOption',
+        hideInMenu: true,
+      },
+      {
+        name: '编辑告警配置',
+        path: 'editWarningOption',
+        hideInMenu: true,
       },
       {
         name: '节点监控',

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 16:48:11
+ * @Last Modified time: 2018-07-23 15:08:59
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react';
@@ -44,10 +44,13 @@ function getData2() {
     data.push({
       id: i,
       name: `订阅名${i}`,
-      person: `订阅人${i}`,
-      state: i % 3 === 0 ? '运行中' : '已停止',
+      operator: getName(),
+      publicationName: `${getAddress()}发布${i}`,
+      theme: `主题${i}`,
+      state: i % 3 === 0 ? '上级待审核' : '发布方待审核',
       time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
       menu: `目录名${i}`,
+      dataType: Math.round(Math.random()) ? 'file' : 'table',
     });
   }
   return data;
@@ -58,13 +61,16 @@ function getData3() {
     data.push({
       id: i,
       name: `订阅名${i}`,
-      person: `订阅人${i}`,
+      operator: getName(),
       organization: `订阅机构${i}`,
+      publicationName: `${getAddress()}发布${i}`,
+      theme: `主题${i}`,
       menuName: `目录名称${i}`,
       munuOrganization: `目录发布机构${i}`,
-      state: i % 3 === 0 ? '运行中' : '已停止',
+      state: i % 3 === 0 ? '上级审核拒绝' : '发布方审核拒绝',
       time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
       menu: `目录名${i}`,
+      dataType: Math.round(Math.random()) ? 'file' : 'table',
     });
   }
   return data;
@@ -87,8 +93,6 @@ export default class AllSub extends Component {
     isChanged: false,
     selectKeys: [],
   };
-
-  componentDidMount() {}
 
   handleNameChange = e => {
     this.setState({
@@ -140,9 +144,7 @@ export default class AllSub extends Component {
   render() {
     const { name, date, state, theme, selectKeys, organization } = this.state;
 
-    const {
-      login: { currentAuthority },
-    } = this.props;
+    const currentAuthority = localStorage.getItem('antd-pro-authority');
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const stateList = [
@@ -283,11 +285,19 @@ export default class AllSub extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
-        render: () => {
+        render: (text, row) => {
           return (
             <Fragment>
-              <a className="mr16">设置</a>
-              <a>审核日志</a>
+              {row.dataType === 'file' ? (
+                <Link to={`subscriptionFile/${row.id}`} className="mr16">
+                  设置
+                </Link>
+              ) : (
+                <Link to={`subscriptionTable/${row.id}`} className="mr16">
+                  设置
+                </Link>
+              )}
+              <Link to={`logAudit/${row.id}`}>审核日志</Link>
             </Fragment>
           );
         },
@@ -325,8 +335,20 @@ export default class AllSub extends Component {
       {
         title: '操作',
         dataIndex: 'operation',
-        render: () => {
-          return <a>查看</a>;
+        render: (text, row) => {
+          return (
+            <Fragment>
+              {row.dataType === 'file' ? (
+                <Link to={`subscriptionFile/${row.id}`} className="mr16">
+                  查看
+                </Link>
+              ) : (
+                <Link to={`subscriptionTable/${row.id}`} className="mr16">
+                  查看
+                </Link>
+              )}
+            </Fragment>
+          );
         },
       },
     ];
@@ -472,7 +494,7 @@ export default class AllSub extends Component {
                   搜索
                 </Button>
               </div>
-              <Table columns={willAuditColumns} dataSource={data3} bordered rowKey="id" />
+              <Table columns={willAuditColumns} dataSource={data2} bordered rowKey="id" />
             </TabPane>
             <TabPane tab="订阅失败" key="failSubcribed">
               <div className={styles.search}>
@@ -498,7 +520,7 @@ export default class AllSub extends Component {
                   搜索
                 </Button>
               </div>
-              <Table columns={failSubcribedColumns} dataSource={data2} bordered rowKey="id" />
+              <Table columns={failSubcribedColumns} dataSource={data3} bordered rowKey="id" />
             </TabPane>
           </Tabs>
         </div>
