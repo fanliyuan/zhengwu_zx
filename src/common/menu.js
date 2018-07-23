@@ -36,7 +36,17 @@ const menuData = [
       //   // hideInMenu: true,
       // },
     ],
-    authority: ['admin', 'security', 'auditor', 'operator'],
+    authority: [
+      'admin',
+      'security',
+      'auditor',
+      'operator',
+      'admin-n',
+      'security-n',
+      'auditor-n',
+      'assessor-n',
+      'operator-n',
+    ],
   },
   {
     name: '审计管理',
@@ -52,7 +62,7 @@ const menuData = [
         path: 'operation',
       },
     ],
-    authority: ['auditor'],
+    authority: ['auditor', 'auditor-n'],
   },
   {
     name: '基础设施管理',
@@ -103,39 +113,43 @@ const menuData = [
         name: '新建机构',
         path: 'addInstitution',
         hideInMenu: true,
+        authority: ['operator'],
       },
       {
         name: '用户管理',
         path: 'userManage',
-        authority: ['admin'],
+        authority: ['admin', 'admin-n'],
       },
       {
         name: '新建用户',
         path: 'addUser',
         hideInMenu: true,
+        authority: ['admin', 'admin-n'],
       },
       {
         name: '角色权限',
         path: 'roleLimit',
-        authority: ['security'],
+        authority: ['security', 'security-n'],
       },
       {
         name: '新建角色',
         path: 'addRole',
         hideInMenu: true,
+        authority: ['security', 'security-n'],
       },
       {
         name: '权限设置',
         path: 'limitSet',
         hideInMenu: true,
+        authority: ['security', 'security-n'],
       },
       {
         name: '分配角色',
         path: 'assignRole',
-        authority: ['security'],
+        authority: ['security', 'security-n'],
       },
     ],
-    authority: ['admin', 'security'],
+    authority: ['admin', 'security', 'admin-n', 'security-n'],
   },
   {
     name: '数据资源管理',
@@ -145,6 +159,7 @@ const menuData = [
       {
         name: '接入管理',
         path: 'accessManagement',
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '新建接入',
@@ -158,6 +173,7 @@ const menuData = [
       {
         name: '资源管理',
         path: 'sourceManagement',
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '文件资源',
@@ -170,6 +186,7 @@ const menuData = [
       {
         name: '目录管理',
         path: 'catalogManagement',
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '目录审核',
@@ -198,6 +215,7 @@ const menuData = [
       {
         name: '订阅审核',
         path: 'subscriptionAudit',
+        authority: ['assessor-n', 'operator-n'],
       },
       {
         name: '录入数据库信息',
@@ -236,7 +254,7 @@ const menuData = [
         path: 'viewDirectory',
       },
     ],
-    authority: ['operator'],
+    authority: ['operator', 'assessor-n'],
   },
   {
     name: '数据交换管理',
@@ -246,6 +264,7 @@ const menuData = [
       {
         name: '资源集市',
         path: 'sourceSubscription',
+        authority: ['operator'],
       },
       {
         name: '订阅审核',
@@ -254,6 +273,7 @@ const menuData = [
       {
         name: '所有订阅',
         path: 'allSub',
+        authority: ['operator'],
       },
       {
         name: '审核日志',
@@ -312,6 +332,11 @@ const menuData = [
       {
         name: '轮播图管理',
         path: 'carouselManagement',
+      },
+      {
+        name: '新增轮播图',
+        path: 'addCarousel',
+        hideInMenu: true,
       },
       {
         name: '栏目管理',
