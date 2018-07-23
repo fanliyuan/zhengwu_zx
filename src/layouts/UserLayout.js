@@ -39,6 +39,11 @@ class UserLayout extends React.PureComponent {
                   <div>安全员 : security</div>
                   <div>审计员 : auditor</div>
                   <div>操作员 : operator</div>
+                  <div>节点管理员 : admin-n</div>
+                  <div>节点安全员 : security-n</div>
+                  <div>节点审核员 : auditor-n</div>
+                  <div>节点审计员 : assessor-n</div>
+                  <div>节点操作员 : operator-n</div>
                 </div>
               }
             >

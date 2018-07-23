@@ -109,6 +109,46 @@ const proxy = {
       });
       return;
     }
+    if (password === '123youe' && userName === 'admin-n') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'admin-n',
+      });
+      return;
+    }
+    if (password === '123youe' && userName === 'security-n') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'security-n',
+      });
+      return;
+    }
+    if (password === '123youe' && userName === 'auditor-n') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'auditor-n',
+      });
+      return;
+    }
+    if (password === '123youe' && userName === 'assessor-n') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'assessor-n',
+      });
+      return;
+    }
+    if (password === '123youe' && userName === 'operator-n') {
+      res.send({
+        status: 'ok',
+        type,
+        currentAuthority: 'operator-n',
+      });
+      return;
+    }
     res.send({
       status: 'error',
       type,
