@@ -413,6 +413,11 @@ const menuData = [
         path: 'node',
       },
       {
+        name: '告警设置',
+        path: 'editOption',
+        hideInMenu: true,
+      },
+      {
         name: '通道监控',
         path: 'pass',
       },

@@ -409,14 +409,14 @@ export const getRouterData = app => {
     '/monitor/warningOption': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/WarningOption')),
     },
-    // '/monitor/editWarningOption': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/Monitor/EditWarningOption')),
-    // },
     '/monitor/addWarningOption': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/AddWarningOption')),
     },
     '/monitor/editWarningOption/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/AddWarningOption')),
+    },
+    '/monitor/editOption/:id': {
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/EditWarningOption')),
     },
     '/monitor/warningQuery': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/WarningQuery')),
