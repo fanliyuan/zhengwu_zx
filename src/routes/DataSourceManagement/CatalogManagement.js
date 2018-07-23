@@ -125,7 +125,7 @@ export default class CatalogManagement extends Component {
       },
       {
         title: '操作',
-        dataIndex: 'catalogEncoding',
+        dataIndex: 'operate',
         render(catalogEncoding, row) {
           return (
             <div>

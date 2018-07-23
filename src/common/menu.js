@@ -171,10 +171,10 @@ const menuData = [
         path: 'addAccess',
         hideInMenu: true,
       },
-      {
-        name: '接入审核',
-        path: 'accessAudit',
-      },
+      // {
+      //   name: '接入审核',
+      //   path: 'accessAudit', //这个原型里边删除了
+      // },
       {
         name: '资源管理',
         path: 'sourceManagement',
@@ -194,6 +194,17 @@ const menuData = [
         authority: ['operator', 'operator-n'],
       },
       {
+        name: '新建目录',
+        path: 'newMenu',
+        children: [
+          {
+            name: '新建目录',
+            path: 'one',
+          },
+        ],
+        hideInMenu: true,
+      },
+      {
         name: '目录审核',
         path: 'catalogAudit',
       },
@@ -209,13 +220,15 @@ const menuData = [
         name: '资源挂接数据',
         path: 'resourceConnectionData',
       },
-      {
-        name: '新建目录',
-        path: 'addDirectory',
-      },
+      // {
+      //   name: '新建目录',
+      //   path: 'addDirectory',
+      //   hideInMenu:true,  //这个页面及路由是重复的,不用了
+      // },
       {
         name: '导入目录',
         path: 'inputDirectory',
+        hideInMenu: true,
       },
       {
         name: '订阅审核',
@@ -225,6 +238,7 @@ const menuData = [
       {
         name: '录入数据库信息',
         path: 'inputDataInfo',
+        hideInMenu: true,
       },
       {
         name: '检索关系设置',
@@ -233,14 +247,17 @@ const menuData = [
       {
         name: '设置同步计划',
         path: 'setPlan',
+        hideInMenu: true,
       },
       {
         name: '上传本地文件',
         path: 'updataFile',
+        hideInMenu: true,
       },
       {
         name: 'ftp',
         path: 'ftp',
+        hideInMenu: true,
       },
       {
         name: 'ftp设置同步计划',
@@ -249,6 +266,7 @@ const menuData = [
       {
         name: '目录',
         path: 'catalog',
+        // hideInMenu:true,
       },
       {
         name: '任务',

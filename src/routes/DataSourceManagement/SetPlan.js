@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber } from 'antd';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import styles from './SetPlan.less';
@@ -8,12 +10,19 @@ const FormItem = Form.Item;
 const { Step } = Steps;
 const { Option } = Select;
 const InputGroup = Input.Group;
-
+@connect(({ setPlan }) => ({
+  setPlan,
+}))
 @Form.create() // eslint-disable-line
 export default class SetPlan extends Component {
   state = {};
 
   handleSubmit = () => {};
+
+  handlePre = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'));
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -120,7 +129,7 @@ export default class SetPlan extends Component {
               <span> 次后自动停止服务</span>
             </FormItem>
             <FormItem {...submitLayout}>
-              <Button type="primary" style={{ marginRight: 20 }}>
+              <Button type="primary" style={{ marginRight: 20 }} onClick={this.handlePre}>
                 上一步
               </Button>
               <Button type="primary" htmlType="submit">
