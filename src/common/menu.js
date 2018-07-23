@@ -336,7 +336,6 @@ const menuData = [
       {
         name: '发布管理',
         path: 'publicationManagement',
-        hideInMenu: true,
       },
       {
         name: '发布',
@@ -346,7 +345,6 @@ const menuData = [
       {
         name: '文章库',
         path: 'newsLibrary',
-        hideInMenu: true,
       },
       {
         name: '新建文章',

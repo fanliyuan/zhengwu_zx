@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-10 13:22:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-23 16:10:20
+ * @Last Modified time: 2018-07-23 18:07:40
 */
 import React, { Component, Fragment } from 'react';
 import { Link } from 'dva/router';
@@ -17,6 +17,7 @@ import {
   Button,
   Row,
   Col,
+  Modal,
 } from 'antd';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -31,10 +32,20 @@ const itemLayout = {
     span: 22,
   },
 };
+const modalLayout = {
+  labelCol: {
+    span: 6,
+  },
+  wrapperCol: {
+    span: 14,
+  },
+};
 
 @Form.create()
 export default class AddWarningOption extends Component {
-  state = {};
+  state = {
+    modalVisibility: false,
+  };
 
   submit = e => {
     e.preventDefault();
@@ -45,7 +56,14 @@ export default class AddWarningOption extends Component {
     });
   };
 
+  methodChange = e => {
+    this.setState({
+      modalVisibility: e.target.value === 1,
+    });
+  };
+
   render() {
+    const { modalVisibility } = this.state;
     const { getFieldDecorator } = this.props.form;
     const nodeOptions = [
       {
@@ -98,7 +116,7 @@ export default class AddWarningOption extends Component {
                 initialValue: 0,
                 rules: [{ required: true, message: '请选择方式' }],
               })(
-                <Radio.Group>
+                <Radio.Group onChange={this.methodChange}>
                   <Radio value={0}>短信</Radio>
                   <Radio value={1}>邮件</Radio>
                 </Radio.Group>
@@ -179,11 +197,47 @@ export default class AddWarningOption extends Component {
               <Button type="primary" htmlType="submit" className="mr64">
                 提交
               </Button>
-              <Link to="warningOption">
+              <Link to="/monitor/warningOption">
                 <Button>取消</Button>
               </Link>
             </Item>
           </Form>
+          <Modal
+            title="编辑邮箱服务器"
+            visible={modalVisibility}
+            onCancel={() => this.setState({ modalVisibility: false })}
+          >
+            <Form>
+              <Item label="邮箱服务器" {...modalLayout}>
+                {getFieldDecorator('emailServer', {
+                  rules: [{ required: true, message: '请输入服务器地址' }],
+                })(<Input />)}
+              </Item>
+              <Item label="端口" {...modalLayout}>
+                {getFieldDecorator('emailAno', {
+                  rules: [
+                    { required: true, message: '请输入端口' },
+                    { pattern: /^\d{1,}$/, message: '请输入正确端口号' },
+                  ],
+                })(<Input />)}
+              </Item>
+              <Item label="用户名" {...modalLayout}>
+                {getFieldDecorator('emailUser', {
+                  rules: [{ required: true, message: '请输入用户名' }],
+                })(<Input />)}
+              </Item>
+              <Item label="用户密码" {...modalLayout}>
+                {getFieldDecorator('emailPassword', {
+                  rules: [{ required: true, message: '请输入用户密码' }],
+                })(<Input />)}
+              </Item>
+              <Item label="邮件接收地址" {...modalLayout}>
+                {getFieldDecorator('receiveServer', {
+                  rules: [{ required: true, message: '请输入邮件接收地址' }],
+                })(<Input />)}
+              </Item>
+            </Form>
+          </Modal>
         </div>
       </PageHeaderLayout>
     );
