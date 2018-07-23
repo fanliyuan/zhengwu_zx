@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-17 16:50:56
+ * @Last Modified time: 2018-07-23 11:16:26
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react';
@@ -33,6 +33,22 @@ const { Option } = Select;
 //   overviewLogging,
 //   loading: loading.models.overviewLogging,
 // }))
+
+const data = [];
+
+for (let i = 0; i < 120; i++) {
+  data.push({
+    id: i,
+    title: '标题' + i, // eslint-disable-line
+    column: '栏目' + i, // eslint-disable-line
+    top: i % 3 === 0 ? '是' : '否', // eslint-disable-line
+    recommend: i % 2 === 0 ? '是' : '否', // eslint-disable-line
+    operator: `操作人${i}`,
+    time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
+    state: Math.round(Math.random()),
+  });
+}
+
 @Form.create()
 export default class PublicationManagement extends Component {
   state = {
@@ -188,20 +204,6 @@ export default class PublicationManagement extends Component {
     const { getFieldDecorator } = this.props.form;
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
-    const data = [];
-
-    for (let i = 0; i < 120; i++) {
-      data.push({
-        id: i,
-        title: '标题' + i, // eslint-disable-line
-        column: '栏目' + i, // eslint-disable-line
-        top: i % 3 === 0 ? '是' : '否', // eslint-disable-line
-        recommend: i % 2 === 0 ? '是' : '否', // eslint-disable-line
-        operator: `操作人${i}`,
-        time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-      });
-    }
-
     const typeList = [
       {
         value: 0,
@@ -278,18 +280,30 @@ export default class PublicationManagement extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
+          if (row.state === 1) {
+            return (
+              <Fragment>
+                <Popconfirm
+                  title="取消后开放门户将无法看到此篇文章，您是否确认取消发布?"
+                  onConfirm={() => this.publishCancel(row)}
+                >
+                  <a className="mr16">取消发布</a>
+                </Popconfirm>
+                <a onClick={() => this.handleSet(row)} className="mr16">
+                  设置
+                </a>
+                <a onClick={() => this.copyUrl(row)}>复制地址</a>
+              </Fragment>
+            );
+          }
           return (
             <Fragment>
-              <Popconfirm
-                title="取消后开放门户将无法看到此篇文章，您是否确认取消发布?"
-                onConfirm={() => this.publishCancel(row)}
-              >
-                <a className="mr16">取消发布</a>
-              </Popconfirm>
+              <a className="mr16" onClick={() => message.success(`${row.title}发布成功`)}>
+                发布
+              </a>
               <a onClick={() => this.handleSet(row)} className="mr16">
                 设置
               </a>
-              <a onClick={() => this.copyUrl(row)}>复制地址</a>
             </Fragment>
           );
         },

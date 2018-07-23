@@ -119,6 +119,11 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/AddNode')
       ),
     },
+    '/infrastructure/editNode/:id': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InfrastructureManagement/AddNode')
+      ),
+    },
     '/infrastructure/pass': {
       component: dynamicWrapper(app, ['passOperation'], () =>
         import('../routes/InfrastructureManagement/PassManagement')
@@ -363,6 +368,9 @@ export const getRouterData = app => {
     '/portalManagement/addArticle': {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddArticle')),
     },
+    '/portalManagement/editArticle/:id': {
+      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddArticle')),
+    },
     '/portalManagement/addCarousel': {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddCarousel')),
     },
@@ -402,7 +410,7 @@ export const getRouterData = app => {
     '/monitor/addWarningOption': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/AddWarningOption')),
     },
-    '/monitor/addWarningOption/:id': {
+    '/monitor/editWarningOption/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/AddWarningOption')),
     },
     '/monitor/warningQuery': {

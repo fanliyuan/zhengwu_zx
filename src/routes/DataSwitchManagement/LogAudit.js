@@ -61,37 +61,39 @@ export default class LogAudit extends Component {
     ];
     return (
       <PageHeaderLayout>
-        <Card>
-          <div style={{ textAlign: 'right' }}>
-            <Link to="/dataSwitchManagement/allSub">
+        <div className="common-layout">
+          <div className="btncls">
+            <Link to="/dataSwitchManagement/allSub" className="fr mr40">
               <Button type="primary">返回</Button>
             </Link>
           </div>
-          <Card style={{ width: 800, margin: '0 auto' }}>
-            <List
-              grid={{ gutter: 16, column: 2 }}
-              dataSource={data}
-              renderItem={item => (
-                <List.Item>
-                  <span>{item.title}</span> :
-                  <span>{item.content}</span>
-                </List.Item>
-              )}
-            />
+          <Card>
+            <Card style={{ width: 800, margin: '0 auto' }}>
+              <List
+                grid={{ gutter: 16, column: 2 }}
+                dataSource={data}
+                renderItem={item => (
+                  <List.Item>
+                    <span>{item.title}</span> :
+                    <span>{item.content}</span>
+                  </List.Item>
+                )}
+              />
+            </Card>
+            <Card style={{ width: 800, margin: '60px auto 0' }}>
+              <List
+                grid={{ gutter: 16, column: 2 }}
+                dataSource={data1}
+                renderItem={item => (
+                  <List.Item>
+                    <span>{item.title}</span> :
+                    <span>{item.content}</span>
+                  </List.Item>
+                )}
+              />
+            </Card>
           </Card>
-          <Card style={{ width: 800, margin: '60px auto 0' }}>
-            <List
-              grid={{ gutter: 16, column: 2 }}
-              dataSource={data1}
-              renderItem={item => (
-                <List.Item>
-                  <span>{item.title}</span> :
-                  <span>{item.content}</span>
-                </List.Item>
-              )}
-            />
-          </Card>
-        </Card>
+        </div>
       </PageHeaderLayout>
     );
   }
