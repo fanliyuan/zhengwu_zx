@@ -1,3 +1,10 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-07-24 18:12:55
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-24 18:13:18
+ * @Description: 新增文章
+ */
 import React, { Component, Fragment } from 'react';
 import { Link } from 'dva/router';
 import { Form, Input, Select, Upload, Modal, Button, Icon, Radio } from 'antd';
@@ -241,12 +248,6 @@ export default class AddArticle extends Component {
             title="保存"
             className={styles.box}
           >
-            {/* <div>
-              <span>保存类型</span>
-              <Radio.Group value >
-                <Radio value='' ></Radio>
-              </Radio.Group>
-            </div> */}
             <Form>
               <Item label="保存类型" {...savaLayout}>
                 {getFieldDecorator('saveType', {

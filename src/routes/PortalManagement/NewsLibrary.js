@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:07:52
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-23 11:32:03
+ * @Last Modified time: 2018-07-24 15:37:05
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
 import React, { Component, Fragment } from 'react';
@@ -317,7 +317,7 @@ export default class NewsLibrary extends Component {
           </div>
           <div className={styles.bar}>
             <Link to="/portalManagement/AddArticle">
-              <Button type="primary" className={styles.button}>
+              <Button type="primary" icon="plus" className={styles.button}>
                 新增
               </Button>
             </Link>

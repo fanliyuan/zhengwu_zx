@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-06 17:49:30
- * @Last Modified by:   ChouEric
- * @Last Modified time: 2018-07-06 17:49:30
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-24 15:35:11
 */
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
@@ -124,12 +124,12 @@ export default class Step1 extends PureComponent {
           )}
         </Item>
         <Item style={{ textAlign: 'center' }}>
-          <Button type="primary" size="large" onClick={onValidateForm} className="mr16">
+          <Button type="primary" onClick={onValidateForm} className="mr64">
             下一步
           </Button>
-          <Button type="primary" size="large" onClick={this.handleBack}>
+          {/* <Button onClick={this.handleBack}>
             返回
-          </Button>
+          </Button> */}
         </Item>
       </Form>
     );

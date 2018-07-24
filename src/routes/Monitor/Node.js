@@ -2,8 +2,8 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 16:54:02
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-24 10:58:05
- * @描述: 监控告警 -- 节点系统监控  -- 系统告警 和 -- 系统告警设置
+ * @Last Modified time: 2018-07-24 18:12:04
+ * @描述: 监控告警 -- 节点系统监控  -- 统称监控详情 ( 系统告警 和 -- 系统告警设置 ) 
 
 */
 import React, { Component } from 'react';
