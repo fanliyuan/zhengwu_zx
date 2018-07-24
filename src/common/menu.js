@@ -410,7 +410,12 @@ const menuData = [
       },
       {
         name: '节点监控',
+        path: 'nodeMonitor',
+      },
+      {
+        name: '监控详情',
         path: 'node',
+        hideInMenu: true,
       },
       {
         name: '告警设置',

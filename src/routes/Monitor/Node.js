@@ -2,17 +2,75 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 16:54:02
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-23 23:25:06
+ * @Last Modified time: 2018-07-24 10:58:05
  * @描述: 监控告警 -- 节点系统监控  -- 系统告警 和 -- 系统告警设置
 
 */
 import React, { Component } from 'react';
 import { Link } from 'dva/router';
-import { Tabs, Table, Input, Select, Cascader, Button, DatePicker, Form, message } from 'antd';
+import {
+  Tabs,
+  Table,
+  Input,
+  Select,
+  Cascader,
+  Button,
+  DatePicker,
+  Form,
+  message,
+  Card,
+} from 'antd';
 import moment from 'moment';
 
+import { TimelineChart } from 'components/Charts';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { getRandom } from '../../utils/faker';
 import styles from './Node.less';
+
+const usageType = ['CPU利用率', '内存利用率', '硬盘利用率', '网络利用率'];
+const dataOption = [];
+for (let i = 0; i < 178; i++) {
+  dataOption.push({
+    id: i,
+    name: usageType[Math.floor(Math.random() * 4)] + i,
+    target: usageType[Math.floor(Math.random() * 4)].replace('利用率', ''),
+    threshold: Math.floor(Math.random() * 60 + 40),
+    period: '5分钟',
+    boolean: Math.round(Math.random()) === 1 ? '有效' : '无效',
+  });
+}
+const dataWarning = [];
+for (let i = 0; i < 145; i++) {
+  dataWarning.push({
+    id: i,
+    time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
+    name: usageType[Math.floor(Math.random() * 4)],
+    value: Math.floor(Math.random() * 30 + 40),
+  });
+}
+
+const CPUData = [];
+const memoryData = [];
+const diskData = [];
+const newworkData = [];
+for (let i = 0; i < 50; i++) {
+  CPUData.push({
+    x: +Date.now() + 5000 * i - 5000 * 365,
+    y1: getRandom(10, 2),
+  });
+  memoryData.push({
+    x: +Date.now() + 5000 * i - 5000 * 365,
+    y1: getRandom(8, 2),
+  });
+  diskData.push({
+    x: +Date.now() + 5000 * i - 5000 * 365,
+    y1: Math.round(Math.random()) + getRandom(9, 0) * 0.1,
+  });
+  newworkData.push({
+    x: +Date.now() + 5000 * i - 5000 * 365,
+    y1: getRandom(20, 0),
+  });
+}
 
 export default class Node extends Component {
   state = {
@@ -29,12 +87,19 @@ export default class Node extends Component {
     isChanged1: false,
     isChanged2: false,
     defaultActiveKey: 'system',
+    loading: false,
   };
 
   componentWillMount = () => {
     this.setState({
       defaultActiveKey: this.props.location.state || 'system',
+      loading: true,
     });
+    setTimeout(() => {
+      this.setState({
+        loading: false,
+      });
+    }, 300);
   };
 
   warningNameChange = e => {
@@ -120,8 +185,8 @@ export default class Node extends Component {
       query1: { warningName, warningTime },
       query2: { dataOriginName, serverAddress, organization, state },
       defaultActiveKey,
+      loading,
     } = this.state;
-
     const stateList = [
       {
         value: -1,
@@ -187,16 +252,6 @@ export default class Node extends Component {
     columnsWarning.forEach(item => {
       item.align = 'center';
     });
-    const dataWarning = [];
-    const usageType = ['CPU利用率', '内存利用率', '硬盘利用率', '网络利用率'];
-    for (let i = 0; i < 145; i++) {
-      dataWarning.push({
-        id: i,
-        time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
-        name: usageType[Math.floor(Math.random() * 4)],
-        value: Math.floor(Math.random() * 30 + 40),
-      });
-    }
     const columnsOption = [
       {
         title: '告警名称',
@@ -229,17 +284,6 @@ export default class Node extends Component {
     columnsOption.forEach(item => {
       item.align = 'center';
     });
-    const dataOption = [];
-    for (let i = 0; i < 178; i++) {
-      dataOption.push({
-        id: i,
-        name: usageType[Math.floor(Math.random() * 4)] + i,
-        target: usageType[Math.floor(Math.random() * 4)].replace('利用率', ''),
-        threshold: Math.floor(Math.random() * 60 + 40),
-        period: '5分钟',
-        boolean: Math.round(Math.random()) === 1 ? '有效' : '无效',
-      });
-    }
 
     const stateComs = stateList.map(item => {
       return (
@@ -253,7 +297,58 @@ export default class Node extends Component {
       <PageHeaderLayout>
         <Tabs defaultActiveKey={defaultActiveKey}>
           <Tabs.TabPane tab="系统监控" key="system">
-            系统监控页
+            <div style={{ textAlign: 'center' }}>
+              <Card
+                loading={loading}
+                title="CPU利用率(当前值4%)"
+                style={{ width: 600, display: 'inline-block', marginRight: 100 }}
+              >
+                <TimelineChart
+                  data={CPUData}
+                  titleMap={{ y1: 'CPU利用率' }}
+                  height={300}
+                  showArea
+                />
+              </Card>
+              <Card
+                loading={loading}
+                title="内存使用(当前值0.5G，6.3%，峰值1G，12%)"
+                style={{ width: 600, display: 'inline-block' }}
+              >
+                <TimelineChart
+                  data={memoryData}
+                  titleMap={{ y1: '内存使用' }}
+                  height={300}
+                  showArea
+                />
+              </Card>
+            </div>
+            <div style={{ textAlign: 'center', marginTop: 40 }}>
+              <Card
+                loading={loading}
+                title="硬盘使用(当前值30T，6%；峰值40T，8%)"
+                style={{ width: 600, display: 'inline-block', marginRight: 100 }}
+              >
+                <TimelineChart
+                  data={diskData}
+                  titleMap={{ y1: '硬盘使用' }}
+                  height={300}
+                  showArea
+                />
+              </Card>
+              <Card
+                loading={loading}
+                title="网络利用率(当前值8%)"
+                style={{ width: 600, display: 'inline-block' }}
+              >
+                <TimelineChart
+                  data={newworkData}
+                  titleMap={{ y1: '网络利用率' }}
+                  height={300}
+                  showArea
+                />
+              </Card>
+            </div>
           </Tabs.TabPane>
           <Tabs.TabPane tab="系统告警" key="warning">
             <div className={styles.layout}>

@@ -382,6 +382,9 @@ export const getRouterData = app => {
     '/portalManagement/columnPosition': {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/ColumnPosition')),
     },
+    '/monitor/nodeMonitor': {
+      component: dynamicWrapper(app, [], () => import('../routes/Monitor/NodeMonitor')),
+    },
     '/monitor/node': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/Node')),
     },

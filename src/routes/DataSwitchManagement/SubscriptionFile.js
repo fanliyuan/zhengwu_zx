@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-13 16:15:18
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-13 17:53:55
+ * @Last Modified time: 2018-07-24 13:36:36
  * @描述: 数据交换管理 -- 资源订阅 -- 资源集市 -- 订阅(文件)
 */
 import React, { Component } from 'react';
@@ -25,7 +25,7 @@ const itemLayout = {
 function ButtonList(props) {
   const { onClick = () => {}, disabled = false } = props;
   return (
-    <div className="clearfix">
+    <div className="btncls clearfix">
       <Link to="/dataSwitchManagement/sourceSubscription" className="fr">
         <Button type="primary">返回</Button>
       </Link>
@@ -67,9 +67,7 @@ export default class SubscriptionFile extends Component {
     return (
       <PageHeaderLayout>
         <div className="common-layout">
-          <div>
-            <ButtonList onClick={this.handleSave} disabled={hasErrors(getFieldsError())} />
-          </div>
+          <ButtonList onClick={this.handleSave} disabled={hasErrors(getFieldsError())} />
           <Form>
             <Item
               {...itemLayout}

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-18 16:11:04
+ * @Last Modified time: 2018-07-24 13:36:58
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component } from 'react';
@@ -17,7 +17,7 @@ const { Option } = Select;
 function ButtonList(props) {
   const { onClick = () => {}, disabled = false } = props;
   return (
-    <div className="clearfix">
+    <div className="btncls clearfix">
       <Link to="/dataSwitchManagement/sourceSubscription" className="fr">
         <Button type="primary">返回</Button>
       </Link>
