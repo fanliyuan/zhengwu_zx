@@ -209,7 +209,19 @@ export const getRouterData = app => {
     '/dataSourceManagement/updataFile': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/UpdataFile')),
     },
-    '/dataSourceManagement/ftp': {
+    '/dataSourceManagement/FTP': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/FTP/index')),
+    },
+    '/dataSourceManagement/FTP/one': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/FTP/Step1')),
+    },
+    '/dataSourceManagement/FTP/two': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/FTP/Step2')),
+    },
+    '/dataSourceManagement/FTP/three': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/FTP/Step3')),
+    },
+    '/dataSourceManagement/ftp1': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Ftp')),
     },
     '/dataSourceManagement/ftpSetPlan': {
