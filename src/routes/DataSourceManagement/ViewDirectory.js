@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, Row, Col, Tag } from 'antd';
+import { Table, Button, Input, Select, Card, Row, Col } from 'antd';
 
 import styles from './ViewDirectory.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -171,7 +171,7 @@ export default class ViewDirectory extends Component {
                 摘要: <span>国土局国土局国土局国土局国土局</span>
               </Col>
             </Row>
-            <Row>
+            {/* <Row>
               <Col span={24}>
                 <span className={styles.labels}>标签:</span>
                 <Tag>标签1</Tag>
@@ -181,7 +181,7 @@ export default class ViewDirectory extends Component {
                 <Tag>标签5</Tag>
                 <Tag>标签6</Tag>
               </Col>
-            </Row>
+            </Row> */}
           </Card>
           <div className={styles.form}>
             <Input placeholder="信息项编码" style={{ width: 150, marginRight: 20 }} />
