@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { routerRedux } from 'dva/router';
+import { routerRedux, Link } from 'dva/router';
 import { connect } from 'dva';
-import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
+import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio } from 'antd';
 import moment from 'moment';
 
 import styles from './SourceAudit.less';
@@ -9,6 +9,8 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+const RadioGroup = Radio.Group;
+const { TextArea } = Input;
 @connect(({ sourceAudit }) => ({
   sourceAudit,
 }))
@@ -18,6 +20,8 @@ export default class SourceAudit extends Component {
     nodeName: '0',
     owingJg: '0',
     status: '0',
+    visible: false,
+    isPass: 1,
   };
 
   dataTypeChange = val => {
@@ -44,14 +48,48 @@ export default class SourceAudit extends Component {
     });
   };
 
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleView = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'));
+  };
+
   handleSource = () => {
     const { dispatch } = this.props;
     dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource'));
   };
 
+  handlePlan = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/setPlan'));
+  };
+
+  handlePass = e => {
+    this.setState({
+      isPass: e.target.value,
+    });
+  };
+
   render() {
     const that = this;
-    const { dataType, nodeName, owingJg, status } = this.state;
+    const { dataType, nodeName, owingJg, status, visible, isPass } = this.state;
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
@@ -141,8 +179,12 @@ export default class SourceAudit extends Component {
               <div>
                 {/* <a>查看</a> */}
                 {/* <Link to={`/dataSourceManagement/auditLog/${row.id}`} className="mr8">查看</Link> */}
-                <span className={styles.clickBtn}>查看</span>
-                <span className={styles.clickBtn}>审核日志</span>
+                <span className={styles.clickBtn} onClick={that.handleView}>
+                  查看
+                </span>
+                <Link to={`/dataSourceManagement/auditLog/${row.id}`} className="mr8">
+                  审核日志
+                </Link>
               </div>
             );
           } else if (row.status === '1') {
@@ -151,10 +193,15 @@ export default class SourceAudit extends Component {
                 <span onClick={that.handleSource} className={styles.clickBtn}>
                   资源
                 </span>
-                <span className={styles.clickBtn}>同步计划</span>
-                {/* <Link to={`/dataSourceManagement/auditLog/${row.id}`} className="mr8">查看</Link> */}
-                <span className={styles.clickBtn}>查看</span>
-                <span className={styles.clickBtn}>审核日志</span>
+                <span className={styles.clickBtn} onClick={that.handlePlan}>
+                  同步计划
+                </span>
+                <span className={styles.clickBtn} onClick={that.handleView}>
+                  查看
+                </span>
+                <Link to={`/dataSourceManagement/auditLog/${row.id}`} className="mr8">
+                  审核日志
+                </Link>
               </div>
             );
           } else {
@@ -163,8 +210,12 @@ export default class SourceAudit extends Component {
                 <span onClick={that.handleSource} className={styles.clickBtn}>
                   资源
                 </span>
-                <span className={styles.clickBtn}>同步计划</span>
-                <span className={styles.clickBtn}>审核</span>
+                <span className={styles.clickBtn} onClick={that.handlePlan}>
+                  同步计划
+                </span>
+                <span className={styles.clickBtn} onClick={that.showModal}>
+                  审核
+                </span>
               </div>
             );
           }
@@ -270,6 +321,23 @@ export default class SourceAudit extends Component {
           <div>
             <Button type="primary">删除</Button>
           </div>
+          <Modal title="审核" visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}>
+            <div className={styles.modals}>
+              <div>
+                <RadioGroup value={isPass} onChange={this.handlePass}>
+                  <Radio value={1}>通过</Radio>
+                  <Radio value={2}>拒绝</Radio>
+                </RadioGroup>
+              </div>
+              <div style={{ display: +isPass === 1 ? 'block' : 'none' }}>
+                您是否确定通过此次审核?
+              </div>
+              <div style={{ display: +isPass === 2 ? 'block' : 'none' }}>
+                <div style={{ marginBottom: '10px' }}>请输入拒绝理由</div>
+                <TextArea row={5} />
+              </div>
+            </div>
+          </Modal>
         </Card>
       </PageHeaderLayout>
     );

@@ -12,7 +12,7 @@ import TextTruncate from 'react-text-truncate';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
-// import styles from './DataBaseSource.less';
+import styles from './DataBaseSource.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 @connect(({ dataBaseSource }) => ({
@@ -26,7 +26,12 @@ export default class DataBaseSource extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
   };
 
+  handleView = () => {};
+
+  handleAgency = () => {};
+
   render() {
+    const that = this;
     const pagination = {
       current: 1,
       pageSize: 10,
@@ -52,8 +57,12 @@ export default class DataBaseSource extends Component {
         render() {
           return (
             <div>
-              <a className="mr8">浏览</a>
-              <a>结构</a>
+              <span className={styles.clickBtn} onClick={that.handleView}>
+                浏览
+              </span>
+              <span className={styles.clickBtn} onClick={that.handleAgency}>
+                结构
+              </span>
             </div>
           );
         },
@@ -133,6 +142,51 @@ export default class DataBaseSource extends Component {
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
       },
     ];
+    const columns2 = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+      },
+      {
+        title: '主键',
+        dataIndex: 'blog_id',
+      },
+      {
+        title: '字段名称',
+        dataIndex: 'fieldName',
+      },
+      {
+        title: '数据类型',
+        dataIndex: 'dataType',
+      },
+      {
+        title: '中文标注',
+        dataIndex: 'chineseLabel',
+      },
+    ];
+    const list2 = [
+      {
+        id: 0,
+        blog_id: '',
+        fieldName: 'blog_id',
+        dataType: 'bigint(20)',
+        chineseLabel: '',
+      },
+      {
+        id: 1,
+        blog_id: '',
+        fieldName: 'public',
+        dataType: 'tinyint(2)',
+        chineseLabel: '',
+      },
+      {
+        id: 2,
+        blog_id: '',
+        fieldName: 'last_updated',
+        dataType: 'datetime',
+        chineseLabel: '',
+      },
+    ];
     return (
       <PageHeaderLayout>
         <Card>
@@ -175,7 +229,7 @@ export default class DataBaseSource extends Component {
           </Row>
           <Divider />
           <Row>
-            <Col span={8}>
+            <Col span={24}>
               <h3>
                 数据表 共<span>32</span>张
               </h3>
@@ -188,13 +242,26 @@ export default class DataBaseSource extends Component {
                 bordered
               />
             </Col>
-            <Col span={15} offset={1}>
+            <Col span={24}>
               <h3>
                 数据 共<span>32</span>行
               </h3>
               <Table
                 columns={columns1}
                 dataSource={list1}
+                pagination={pagination}
+                rowSelection={rowSelection}
+                rowKey="id"
+                bordered
+              />
+            </Col>
+            <Col span={24}>
+              <h3>
+                数据项 共<span>6</span>行
+              </h3>
+              <Table
+                columns={columns2}
+                dataSource={list2}
                 pagination={pagination}
                 rowSelection={rowSelection}
                 rowKey="id"
