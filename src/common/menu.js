@@ -204,12 +204,6 @@ const menuData = [
       {
         name: '新建目录',
         path: 'newMenu',
-        children: [
-          {
-            name: '新建目录',
-            path: 'one',
-          },
-        ],
         hideInMenu: true,
       },
       {
@@ -217,10 +211,12 @@ const menuData = [
         path: 'catalogAudit',
         authority: 'assessor-n',
       },
-      {
-        name: '订阅授权',
-        path: 'SubscriptionLicense',
-      },
+      // 这里应该是订阅审核
+      // {
+      //   name: '订阅授权',
+      //   path: 'SubscriptionLicense',
+      //   authority: ['assessor-n', 'operator-n'],
+      // },
       {
         name: '开放共享',
         path: 'openShare',
@@ -265,11 +261,6 @@ const menuData = [
         name: '录入数据库信息',
         path: 'inputDataInfo',
         hideInMenu: true,
-      },
-      {
-        name: '检索关系设置',
-        path: 'searchRelationship',
-        // hideInMenu: true,
       },
       {
         name: '设置同步计划',
