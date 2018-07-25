@@ -215,6 +215,10 @@ const menuData = [
         path: 'catalogAudit',
       },
       {
+        name: '开放共享',
+        path: 'openShare',
+      },
+      {
         name: '资源',
         path: 'source',
       },

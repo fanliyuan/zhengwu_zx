@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import { Link } from 'dva/router';
+import { Link, routerRedux } from 'dva/router';
 import { Table, Button, Input, Select, Card, DatePicker, Checkbox, Upload, message } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
 
 import styles from './CatalogManagement.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
+@connect(({ catalogManagement }) => ({
+  catalogManagement,
+}))
 export default class CatalogManagement extends Component {
   state = {
     provider: '0',
@@ -53,7 +57,13 @@ export default class CatalogManagement extends Component {
     }
   };
 
+  handleInfoItem = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'));
+  };
+
   render() {
+    const that = this;
     const { provider, status, isHover } = this.state;
     const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }];
     const selectData = data.map(item => {
@@ -129,7 +139,9 @@ export default class CatalogManagement extends Component {
         render(catalogEncoding, row) {
           return (
             <div>
-              <a style={{ marginRight: 10 }}>信息项</a>
+              <span className={styles.clickBtn} onClick={that.handleInfoItem}>
+                信息项
+              </span>
               {/* <a style={{marginRight:10}}>资源挂接</a> */}
               <Link
                 to={`/dataSourceManagement/fileSourceDetail/${row.catalogEncoding}`}
@@ -137,8 +149,10 @@ export default class CatalogManagement extends Component {
               >
                 资源挂接
               </Link>
-              <a style={{ marginRight: 10 }}>开放设置</a>
-              <a style={{ marginRight: 10 }}>修改</a>
+              <span className={styles.clickBtn}>开放设置</span>
+              <Link to="/dataSourceManagement/newMenu/one" className={styles.clickBtn}>
+                修改
+              </Link>
               <a>删除</a>
             </div>
           );
