@@ -17,6 +17,7 @@ const menuData = [
       {
         name: '平台概览',
         path: 'platformOverview',
+        authority: 'operator',
       },
       {
         name: '系统通知',
@@ -463,7 +464,7 @@ const menuData = [
         // hideInMenu: true,
       },
     ],
-    authority: ['operator'],
+    authority: ['operator', 'operator-n'],
   },
   {
     name: '统计分析',
@@ -475,7 +476,7 @@ const menuData = [
         path: 'dataInsert',
       },
     ],
-    authority: ['operator'],
+    authority: ['operator', 'operator-n'],
   },
   // {
   //   name: '结果页',

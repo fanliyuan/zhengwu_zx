@@ -2,7 +2,7 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 13:23:19
+ * @Last Modified time: 2018-07-25 16:29:39
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react';
@@ -71,10 +71,18 @@ export default class DataBaseSource extends Component {
         render() {
           return (
             <div>
-              <span className={styles.clickBtn} onClick={that.handleView}>
+              <span
+                className={styles.clickBtn}
+                onClick={that.handleView}
+                style={view ? { cursor: 'default', color: 'silver' } : {}}
+              >
                 浏览
               </span>
-              <span className={styles.clickBtn} onClick={that.handleAgency}>
+              <span
+                className={styles.clickBtn}
+                onClick={that.handleAgency}
+                style={agency ? { cursor: 'default', color: 'silver' } : {}}
+              >
                 结构
               </span>
             </div>
@@ -155,6 +163,15 @@ export default class DataBaseSource extends Component {
         post_content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
       },
+      {
+        id: 2,
+        blog_id: 2,
+        public: 2,
+        last_updated: 21111277,
+        post_title: 'Hello World!',
+        post_content:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
+      },
     ];
     const columns2 = [
       {
@@ -203,12 +220,12 @@ export default class DataBaseSource extends Component {
     ];
     return (
       <PageHeaderLayout>
+        <div className="btncls clearfix">
+          <Button onClick={this.handleBack} className="fr mr40">
+            返回
+          </Button>
+        </div>
         <Card>
-          <div style={{ textAlign: 'right' }}>
-            <Button type="primary" onClick={this.handleBack}>
-              返回
-            </Button>
-          </div>
           <Row>
             <Col span={4}>
               <h2>
@@ -256,32 +273,36 @@ export default class DataBaseSource extends Component {
                 bordered
               />
             </Col>
-            <Col span={24} style={{ display: view ? 'block' : 'none' }}>
-              <h3>
-                数据 共<span>32</span>行
-              </h3>
-              <Table
-                columns={columns1}
-                dataSource={list1}
-                pagination={pagination}
-                rowSelection={rowSelection}
-                rowKey="id"
-                bordered
-              />
-            </Col>
-            <Col span={24} style={{ display: agency ? 'block' : 'none' }}>
-              <h3>
-                数据项 共<span>6</span>行
-              </h3>
-              <Table
-                columns={columns2}
-                dataSource={list2}
-                pagination={pagination}
-                rowSelection={rowSelection}
-                rowKey="id"
-                bordered
-              />
-            </Col>
+            {view && (
+              <Col span={24}>
+                <h3>
+                  数据 共<span>32</span>行
+                </h3>
+                <Table
+                  columns={columns1}
+                  dataSource={list1}
+                  pagination={pagination}
+                  rowSelection={rowSelection}
+                  rowKey="id"
+                  bordered
+                />
+              </Col>
+            )}
+            {agency && (
+              <Col span={24}>
+                <h3>
+                  数据项 共<span>6</span>行
+                </h3>
+                <Table
+                  columns={columns2}
+                  dataSource={list2}
+                  pagination={pagination}
+                  rowSelection={rowSelection}
+                  rowKey="id"
+                  bordered
+                />
+              </Col>
+            )}
           </Row>
         </Card>
       </PageHeaderLayout>

@@ -10,11 +10,7 @@ export default class PlatformOverview extends Component {
 
   render() {
     const offlineChartData = [
-      {
-        x: 1531709122492,
-        y1: 69,
-        y2: 95,
-      },
+      { x: 1531709122492, y1: 69, y2: 95 },
       { x: 1531714522492, y1: 99, y2: 27 },
       { x: 1531712722492, y1: 79, y2: 90 },
       { x: 1531716322492, y1: 19, y2: 105 },
@@ -136,6 +132,8 @@ export default class PlatformOverview extends Component {
                     data={salesPieData}
                     // valueFormat={val => yuan(val)}
                     height={294}
+                    showValue={false}
+                    listyle={{ marginLeft: 80 }}
                   />
                 </Card>
               </div>
