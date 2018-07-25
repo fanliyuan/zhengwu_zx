@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-13 16:15:18
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-24 13:36:36
+ * @Last Modified time: 2018-07-25 14:27:49
  * @描述: 数据交换管理 -- 资源订阅 -- 资源集市 -- 订阅(文件)
 */
 import React, { Component } from 'react';
@@ -26,10 +26,10 @@ function ButtonList(props) {
   const { onClick = () => {}, disabled = false } = props;
   return (
     <div className="btncls clearfix">
-      <Link to="/dataSwitchManagement/sourceSubscription" className="fr">
-        <Button type="primary">返回</Button>
+      <Link to="/dataSwitchManagement/sourceSubscription" className="fr mr40">
+        <Button>返回</Button>
       </Link>
-      <Button type="primary" onClick={onClick} disabled={disabled} className="fr mr16">
+      <Button type="primary" onClick={onClick} disabled={disabled} className="fr mr40">
         确定
       </Button>
     </div>

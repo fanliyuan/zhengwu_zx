@@ -19,7 +19,14 @@ export default class AccessManagement extends Component {
     owingJg: '0',
     creater: '0',
     // status:'0',
+    isNodeOperator: false,
   };
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    });
+  }
 
   selectDataTypeChange = val => {
     this.setState({
@@ -78,7 +85,7 @@ export default class AccessManagement extends Component {
 
   render() {
     const that = this;
-    const { dataType, owingJg, creater } = this.state;
+    const { dataType, owingJg, creater, isNodeOperator } = this.state;
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
@@ -162,6 +169,7 @@ export default class AccessManagement extends Component {
       {
         title: '操作',
         render(text, row) {
+          if (!isNodeOperator) return <span>--</span>;
           if (row.status === '0') {
             return (
               <div>
@@ -256,7 +264,7 @@ export default class AccessManagement extends Component {
         status: '2',
       },
     ];
-    const rowSelection = {
+    let rowSelection = {
       // onChange: selectedRows => {
       // },
       // getCheckboxProps: record => ({
@@ -264,6 +272,9 @@ export default class AccessManagement extends Component {
       //   name: record.name,
       // }),
     };
+    if (!isNodeOperator) {
+      rowSelection = null;
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -303,11 +314,13 @@ export default class AccessManagement extends Component {
               <Button type="primary">搜索</Button>
             </Col>
           </Row>
-          <div className={styles.createBtn}>
-            <Button icon="plus" type="primary" onClick={this.handleAdd}>
-              新建
-            </Button>
-          </div>
+          {isNodeOperator && (
+            <div className={styles.createBtn}>
+              <Button icon="plus" type="primary" onClick={this.handleAdd}>
+                新建
+              </Button>
+            </div>
+          )}
           <div>
             <Table
               columns={columns}

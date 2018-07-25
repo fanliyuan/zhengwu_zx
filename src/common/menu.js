@@ -188,6 +188,7 @@ const menuData = [
       {
         name: '资源审核',
         path: 'sourceAudit',
+        authority: 'assessor-n',
       },
       {
         name: '数据库资源',
@@ -213,6 +214,7 @@ const menuData = [
       {
         name: '目录审核',
         path: 'catalogAudit',
+        authority: 'assessor-n',
       },
       {
         name: '开放共享',
@@ -285,7 +287,7 @@ const menuData = [
         hideInMenu: true,
       },
     ],
-    authority: ['operator', 'assessor-n'],
+    authority: ['operator', 'operator-n', 'assessor-n'],
   },
   {
     name: '数据交换管理',
@@ -295,16 +297,17 @@ const menuData = [
       {
         name: '资源集市',
         path: 'sourceSubscription',
-        authority: ['operator'],
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '订阅审核',
         path: 'subscriptionAudit',
+        authority: 'assessor-n',
       },
       {
         name: '所有订阅',
         path: 'allSub',
-        authority: ['operator'],
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '审核日志',
@@ -318,6 +321,7 @@ const menuData = [
       {
         name: '资源管理',
         path: 'sourceManagement',
+        authority: 'operator-n',
       },
       {
         name: '订阅(表)',
@@ -330,7 +334,7 @@ const menuData = [
         hideInMenu: true,
       },
     ],
-    authority: ['operator'],
+    authority: ['operator', 'operator-n', 'assessor-n'],
   },
   {
     name: '开放门户管理',

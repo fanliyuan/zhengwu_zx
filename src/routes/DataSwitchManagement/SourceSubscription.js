@@ -12,7 +12,14 @@ export default class SourceSubscription extends Component {
   state = {
     selectJg: '0',
     selectDy: '0',
+    isNodeOperator: false,
   };
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    });
+  }
 
   handleSelectChangejg = val => {
     this.setState({
@@ -27,7 +34,7 @@ export default class SourceSubscription extends Component {
   };
 
   render() {
-    const { selectJg, selectDy } = this.state;
+    const { selectJg, selectDy, isNodeOperator } = this.state;
     const data = [
       { value: '0', id: 0, label: '发布机构' },
       { value: '1', id: 1, label: '发布机构1' },
@@ -106,6 +113,9 @@ export default class SourceSubscription extends Component {
         title: '操作',
         render(text, row) {
           if (row.isSubscription === '0') {
+            if (!isNodeOperator) {
+              return <span>--</span>;
+            }
             return (
               <div>
                 {row.dataType === '数据库' ? (
@@ -149,7 +159,7 @@ export default class SourceSubscription extends Component {
       },
       {
         id: 1,
-        name: '',
+        name: '石家庄东城区国土数据1',
         catalogSource: '',
         subject: '',
         category2: '',
@@ -161,12 +171,12 @@ export default class SourceSubscription extends Component {
       },
       {
         id: 2,
-        name: '',
+        name: '石家庄东城区国土数据2',
         catalogSource: '',
         subject: '',
         category2: '',
         category3: '',
-        dataType: '',
+        dataType: '文件',
         publicTime: 334444443,
         isAudit: '0',
         isSubscription: '1',

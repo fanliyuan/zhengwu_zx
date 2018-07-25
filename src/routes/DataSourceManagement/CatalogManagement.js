@@ -18,7 +18,14 @@ export default class CatalogManagement extends Component {
     status: '0',
     isHover: false,
     loading: false,
+    isNodeOperator: false,
   };
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    });
+  }
 
   providerChange = val => {
     this.setState({
@@ -64,7 +71,7 @@ export default class CatalogManagement extends Component {
 
   render() {
     const that = this;
-    const { provider, status, isHover } = this.state;
+    const { provider, status, isHover, isNodeOperator } = this.state;
     const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }];
     const selectData = data.map(item => {
       return (
@@ -85,7 +92,7 @@ export default class CatalogManagement extends Component {
       );
     });
     const pagination = { pageSize: 10, current: 1 };
-    const columns = [
+    let columns = [
       {
         title: '目录编码',
         dataIndex: 'catalogEncoding',
@@ -127,6 +134,10 @@ export default class CatalogManagement extends Component {
         },
       },
       {
+        title: '目录节点',
+        dataIndex: 'node',
+      },
+      {
         title: '审核状态',
         dataIndex: 'status',
         render(text) {
@@ -144,16 +155,26 @@ export default class CatalogManagement extends Component {
               </span>
               {/* <a style={{marginRight:10}}>资源挂接</a> */}
               <Link
-                to={`/dataSourceManagement/fileSourceDetail/${row.catalogEncoding}`}
+                to={
+                  row.type === 'file'
+                    ? `/dataSourceManagement/resourceConnection/${row.catalogEncoding}`
+                    : `/dataSourceManagement/resourceConnectionData/${row.catalogEncoding}`
+                }
                 style={{ marginRight: 10 }}
               >
                 资源挂接
               </Link>
-              <span className={styles.clickBtn}>开放设置</span>
-              <Link to="/dataSourceManagement/newMenu/one" className={styles.clickBtn}>
-                修改
-              </Link>
-              <a>删除</a>
+              {isNodeOperator && <span className={styles.clickBtn}>开放设置</span>}
+              {isNodeOperator ? (
+                <Link to="/dataSourceManagement/newMenu/one" className={styles.clickBtn}>
+                  修改
+                </Link>
+              ) : (
+                <Link to="/dataSourceManagement/newMenu/one" className={styles.clickBtn}>
+                  查看
+                </Link>
+              )}
+              {isNodeOperator && <a>删除</a>}
             </div>
           );
         },
@@ -173,6 +194,8 @@ export default class CatalogManagement extends Component {
         isOpen: 1,
         information: 14,
         status: '0',
+        node: '节点1',
+        type: 'file',
       },
       {
         id: 1,
@@ -184,6 +207,8 @@ export default class CatalogManagement extends Component {
         isOpen: 0,
         information: 6,
         status: '1',
+        node: '节点2',
+        type: 'table',
       },
       {
         id: 2,
@@ -195,9 +220,11 @@ export default class CatalogManagement extends Component {
         isOpen: 0,
         information: 2,
         status: '1',
+        node: '节点3',
+        type: 'file',
       },
     ];
-    const rowSelection = {
+    let rowSelection = {
       // onChange: selectedRows => {
       // },
       // getCheckboxProps: record => ({
@@ -205,12 +232,19 @@ export default class CatalogManagement extends Component {
       //   name: record.name,
       // }),
     };
+    if (!isNodeOperator) {
+      rowSelection = null;
+      columns = columns.filter(item => item.title !== '目录节点');
+    }
     return (
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
             <Input placeholder="目录编码" style={{ width: 150, marginRight: 20 }} />
             <Input placeholder="名称" style={{ width: 150, marginRight: 20 }} />
+            {isNodeOperator && (
+              <Input placeholder="节点名称" style={{ width: 150, marginRight: 20 }} />
+            )}
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={provider}
@@ -229,24 +263,26 @@ export default class CatalogManagement extends Component {
             <Checkbox style={{ marginRight: 10 }}>已挂接资源</Checkbox>
             <Button type="primary">搜索</Button>
           </div>
-          <div className={styles.createBtn}>
-            <Link to="/dataSourceManagement/newMenu" style={{ color: 'white' }}>
-              <Button icon="plus" type="primary">
-                新建
-              </Button>
-            </Link>
-            <span onMouseEnter={this.hoverFun} onMouseLeave={this.hoverFun}>
-              <Upload
-                name="file"
-                action="//jsonplaceholder.typicode.com/posts/"
-                showUploadList={false}
-                onChange={this.uploadFun}
-              >
-                <Button icon="upload">导入</Button>
-              </Upload>
-              {isHover && <a onClick={this.downTpl}>下载模板</a>}
-            </span>
-          </div>
+          {isNodeOperator && (
+            <div className={styles.createBtn}>
+              <Link to="/dataSourceManagement/newMenu" style={{ color: 'white' }}>
+                <Button icon="plus" type="primary">
+                  新建
+                </Button>
+              </Link>
+              <span onMouseEnter={this.hoverFun} onMouseLeave={this.hoverFun}>
+                <Upload
+                  name="file"
+                  action="//jsonplaceholder.typicode.com/posts/"
+                  showUploadList={false}
+                  onChange={this.uploadFun}
+                >
+                  <Button icon="upload">导入</Button>
+                </Upload>
+                {isHover && <a onClick={this.downTpl}>下载模板</a>}
+              </span>
+            </div>
+          )}
           <div>
             <Table
               columns={columns}
@@ -258,9 +294,7 @@ export default class CatalogManagement extends Component {
               bordered
             />
           </div>
-          <div>
-            <Button type="primary">删除</Button>
-          </div>
+          <div>{isNodeOperator && <Button type="primary">删除</Button>}</div>
         </Card>
       </PageHeaderLayout>
     );
