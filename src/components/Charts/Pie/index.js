@@ -134,6 +134,7 @@ export default class Pie extends Component {
       showValue = true,
       offset = -40,
       textStyle = { fontSize: 18 },
+      listyle = {},
     } = this.props;
 
     const { legendData, legendBlock } = this.state;
@@ -277,7 +278,7 @@ export default class Pie extends Component {
         {hasLegend && (
           <ul className={styles.legend}>
             {legendData.map((item, i) => (
-              <li key={item.x} onClick={() => this.handleLegendClick(item, i)}>
+              <li key={item.x} onClick={() => this.handleLegendClick(item, i)} style={listyle}>
                 <span
                   className={styles.dot}
                   style={{
