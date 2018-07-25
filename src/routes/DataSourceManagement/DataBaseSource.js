@@ -19,18 +19,32 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
   dataBaseSource,
 }))
 export default class DataBaseSource extends Component {
-  state = {};
+  state = {
+    view: false,
+    agency: true,
+  };
 
   handleBack = () => {
     const { dispatch } = this.props;
     dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
   };
 
-  handleView = () => {};
+  handleView = () => {
+    this.setState({
+      view: true,
+      agency: false,
+    });
+  };
 
-  handleAgency = () => {};
+  handleAgency = () => {
+    this.setState({
+      view: false,
+      agency: true,
+    });
+  };
 
   render() {
+    const { view, agency } = this.state;
     const that = this;
     const pagination = {
       current: 1,
@@ -242,7 +256,7 @@ export default class DataBaseSource extends Component {
                 bordered
               />
             </Col>
-            <Col span={24}>
+            <Col span={24} style={{ display: view ? 'block' : 'none' }}>
               <h3>
                 数据 共<span>32</span>行
               </h3>
@@ -255,7 +269,7 @@ export default class DataBaseSource extends Component {
                 bordered
               />
             </Col>
-            <Col span={24}>
+            <Col span={24} style={{ display: agency ? 'block' : 'none' }}>
               <h3>
                 数据项 共<span>6</span>行
               </h3>

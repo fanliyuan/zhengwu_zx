@@ -287,6 +287,9 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/DataBaseSource')
       ),
     },
+    '/dataSourceManagement/openShare': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/OpenShare')),
+    },
     '/dataSourceManagement/newMenu': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/NewMenu')),
     },
