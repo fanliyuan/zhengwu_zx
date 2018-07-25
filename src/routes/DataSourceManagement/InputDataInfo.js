@@ -53,12 +53,6 @@ export default class InputDataInfo extends Component {
         md: { span: 10 },
       },
     };
-    const submitLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
-      },
-    };
     return (
       <PageHeaderLayout>
         <Card>
@@ -102,14 +96,12 @@ export default class InputDataInfo extends Component {
             <FormItem label="负责人职位" {...formItemLayout}>
               {getFieldDecorator('headerPosition')(<Input />)}
             </FormItem>
-            <FormItem {...submitLayout}>
-              <Button type="primary" style={{ marginRight: 20 }} onClick={this.handleNext}>
+            <div className="btnclsb">
+              <Button type="primary" className="mr64" onClick={this.handleNext}>
                 下一步
               </Button>
-              <Button type="primary" onClick={this.handleBack}>
-                返回
-              </Button>
-            </FormItem>
+              <Button onClick={this.handleBack}>返回</Button>
+            </div>
           </Form>
         </Card>
       </PageHeaderLayout>

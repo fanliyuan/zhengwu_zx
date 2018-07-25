@@ -137,10 +137,12 @@ export default class ViewDirectory extends Component {
     ];
     return (
       <PageHeaderLayout>
-        <Card>
-          <div className={styles.backBtn}>
-            <Link to="/dataSourceManagement/sourceManagement">返回</Link>
-          </div>
+        <div className="btncls">
+          <Link to="/dataSourceManagement/sourceManagement" className="fr mr40">
+            <Button>返回</Button>
+          </Link>
+        </div>
+        <div>
           <Card className={styles.InfoBlock}>
             <Row style={{ marginBottom: 10 }}>
               <Col span={6}>
@@ -212,7 +214,7 @@ export default class ViewDirectory extends Component {
               bordered
             />
           </div>
-        </Card>
+        </div>
       </PageHeaderLayout>
     );
   }

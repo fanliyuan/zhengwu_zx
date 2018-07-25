@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, DatePicker, Row, Col } from 'antd';
+import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
 import moment from 'moment';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
@@ -278,42 +278,20 @@ export default class AccessManagement extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <Row className={styles.form} gutter={16}>
-            <Col span={3}>
-              <Input placeholder="名称" />
-            </Col>
-            <Col xl={{ span: 3 }} lg={{ span: 4 }} sm={{ span: 24 }}>
-              <Select value={dataType} onChange={this.selectDataTypeChange}>
-                {selectData}
-              </Select>
-            </Col>
-            {/* <Col span={4}>
-              <Select value={nodeName} onChange={this.selectNodeChange}>
-                {selectData1}
-              </Select>
-            </Col> */}
-            <Col xl={{ span: 3 }} lg={{ span: 4 }} sm={{ span: 24 }}>
-              <Select value={owingJg} onChange={this.selectOwingJgChange}>
-                {selectData2}
-              </Select>
-            </Col>
-            <Col xl={{ span: 3 }} lg={{ span: 4 }} sm={{ span: 24 }}>
-              <Select value={creater} onChange={this.selectCreaterChange}>
-                {selectData3}
-              </Select>
-            </Col>
-            <Col xl={{ span: 4 }} lg={{ span: 5 }} sm={{ span: 24 }}>
-              <RangePicker />
-            </Col>
-            {/* <Col span={3}>
-              <Select value={status} onChange={this.selectStatusChange}>
-                {selectData4}
-              </Select>
-            </Col> */}
-            <Col span={2} offset={1}>
-              <Button type="primary">搜索</Button>
-            </Col>
-          </Row>
+          <div className={styles.search}>
+            <Input placeholder="名称" className={styles.input} />
+            <Select value={dataType} onChange={this.selectDataTypeChange} className={styles.select}>
+              {selectData}
+            </Select>
+            <Select value={owingJg} onChange={this.selectOwingJgChange} className={styles.select}>
+              {selectData2}
+            </Select>
+            <Select value={creater} onChange={this.selectCreaterChange} className={styles.select}>
+              {selectData3}
+            </Select>
+            <RangePicker className={styles.picker} />
+            <Button type="primary">搜索</Button>
+          </div>
           {isNodeOperator && (
             <div className={styles.createBtn}>
               <Button icon="plus" type="primary" onClick={this.handleAdd}>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber } from 'antd';
+import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber, message } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
@@ -17,7 +17,13 @@ const InputGroup = Input.Group;
 export default class SetPlan extends Component {
   state = {};
 
-  handleSubmit = () => {};
+  handleSubmit = e => {
+    e.preventDefault();
+    message.success('提交成功, 即将跳转');
+    setTimeout(() => {
+      this.props.dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
+    }, 1000);
+  };
 
   handlePre = () => {
     const { dispatch } = this.props;
@@ -87,12 +93,6 @@ export default class SetPlan extends Component {
         md: { span: 10 },
       },
     };
-    const submitLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
-      },
-    };
     return (
       <PageHeaderLayout>
         <Card>
@@ -110,17 +110,11 @@ export default class SetPlan extends Component {
             </FormItem>
             <FormItem label="定时设置" {...formItemLayout}>
               <InputGroup compact>
-                {getFieldDecorator('setTime')(
-                  <Input style={{ width: '20%' }} placeholder="分钟" />
-                )}
-                {getFieldDecorator('setTime1')(
-                  <Input style={{ width: '20%' }} placeholder="小时" />
-                )}
-                {getFieldDecorator('setTime2')(<Input style={{ width: '20%' }} placeholder="天" />)}
-                {getFieldDecorator('setTime3')(<Input style={{ width: '20%' }} placeholder="月" />)}
-                {getFieldDecorator('setTime4')(
-                  <Input style={{ width: '20%' }} placeholder="星期" />
-                )}
+                <Input style={{ width: '20%' }} placeholder="分钟" />
+                <Input style={{ width: '20%' }} placeholder="小时" />
+                <Input style={{ width: '20%' }} placeholder="天" />
+                <Input style={{ width: '20%' }} placeholder="月" />
+                <Input style={{ width: '20%' }} placeholder="星期" />
               </InputGroup>
             </FormItem>
             <FormItem label="自动停止" extra="0次代表永不停止" {...formItemLayout}>
@@ -128,14 +122,14 @@ export default class SetPlan extends Component {
               {getFieldDecorator('autoStop')(<InputNumber />)}
               <span> 次后自动停止服务</span>
             </FormItem>
-            <FormItem {...submitLayout}>
-              <Button type="primary" style={{ marginRight: 20 }} onClick={this.handlePre}>
+            <div className="btnclsb">
+              <Button className="mr64" onClick={this.handlePre}>
                 上一步
               </Button>
               <Button type="primary" htmlType="submit">
                 提交
               </Button>
-            </FormItem>
+            </div>
           </Form>
         </Card>
       </PageHeaderLayout>
