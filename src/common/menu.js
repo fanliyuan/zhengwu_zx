@@ -215,6 +215,10 @@ const menuData = [
         path: 'catalogAudit',
       },
       {
+        name: '订阅授权',
+        path: 'SubscriptionLicense',
+      },
+      {
         name: '开放共享',
         path: 'openShare',
         hideInMenu: true,
@@ -227,6 +231,7 @@ const menuData = [
       {
         name: '资源',
         path: 'source',
+        hideInMenu: true,
       },
       {
         name: '资源挂接文件',
@@ -261,6 +266,7 @@ const menuData = [
       {
         name: '检索关系设置',
         path: 'searchRelationship',
+        hideInMenu: true,
       },
       {
         name: '设置同步计划',

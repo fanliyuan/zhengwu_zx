@@ -283,6 +283,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/CatalogAudit')
       ),
     },
+    '/dataSourceManagement/subscriptionLicense': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/SubscriptionLicense')
+      ),
+    },
     '/dataSourceManagement/subscriptionAudit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/SubscriptionAudit')
