@@ -5,6 +5,13 @@
 .row {
   max-width: 750px;
   margin: 0 auto 16px;
+  :global {
+    .ant-input-affix-wrapper {
+      .ant-input:not(:first-child) {
+        padding-left: 48px;
+      }
+    }
+  }
 }
 .label {
   display: inline-block;
