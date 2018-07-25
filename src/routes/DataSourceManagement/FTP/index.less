@@ -5,6 +5,13 @@
 .row {
   max-width: 750px;
   margin: 0 auto 16px;
+  :global {
+    .ant-input-affix-wrapper {
+      .ant-input:not(:first-child) {
+        padding-left: 48px;
+      }
+    }
+  }
 }
 .label {
   display: inline-block;
@@ -17,10 +24,40 @@
     margin: 0 4px;
   }
 }
+.required {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-right: 16px;
+  &::before {
+    content: '*';
+    margin-right: 4px;
+    font-family: SimSun, serif, '宋体';
+    line-height: 1;
+    font-size: 14px;
+    color: #f5222d;
+  }
+  &::after {
+    content: ':';
+    display: inline-block;
+    margin: 0 4px;
+  }
+}
 .directory {
   display: inline-block;
   vertical-align: top;
   width: 600px;
   max-height: 200px;
   overflow-y: scroll;
+}
+.input {
+  width: 200px !important;
+}
+.time {
+  width: 80px !important;
+  margin-right: 8px;
+}
+.number {
+  width: 60px !important;
+  margin: 0 4px !important;
 }

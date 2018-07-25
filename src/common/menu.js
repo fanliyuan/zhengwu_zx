@@ -273,13 +273,9 @@ const menuData = [
         hideInMenu: true,
       },
       {
-        name: 'ftp',
+        name: 'ftp设置同步计划',
         path: 'ftp',
         hideInMenu: true,
-      },
-      {
-        name: 'ftp设置同步计划',
-        path: 'ftpSetPlan',
       },
       {
         name: '目录',
