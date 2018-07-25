@@ -248,7 +248,7 @@ export default class AccessManagement extends Component {
       {
         id: 3,
         name: '人口普查数据',
-        dataType: '文件',
+        dataType: 'FTP',
         node: '石家庄民政部',
         institution: '石家庄民政部',
         creater: '王五',

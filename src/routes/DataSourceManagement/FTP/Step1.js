@@ -2,12 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 23:33:06
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-24 23:52:31
+ * @Last Modified time: 2018-07-25 09:35:47
  * @Description: 有几个bug需要解决, 1 双击选择会造成文件夹 闪烁 , 2 选择完成后应该收起文件夹, 3 选择的滚动条可以自动,但是自动会造成闪烁
  */
 import React, { Component, Fragment } from 'react';
 import { Link } from 'dva/router';
-import { Radio, Button, Tree, message, Tooltip, Icon } from 'antd';
+import { Radio, Button, Tree, message, Tooltip, Icon, Input } from 'antd';
 
 import { isArray } from 'util';
 import styles from './index.less';
@@ -98,7 +98,7 @@ export default class Step1 extends Component {
   state = {
     fromServerData: [],
     toServerData: [],
-    optionData: { type: 0 },
+    optionData: {},
   };
 
   typeChange = e => {
@@ -122,7 +122,8 @@ export default class Step1 extends Component {
     const {
       fromServerData,
       toServerData,
-      optionData: { type, fromServer, toServer, isNew = 0 },
+      optionData,
+      optionData: { type = 0, fromServer, toServer, isNew = 0, directoryName = '' },
     } = this.state;
 
     return (
@@ -174,6 +175,18 @@ export default class Step1 extends Component {
             </Radio>
           </Radio.Group>
         </div>
+        {isNew === 1 ? (
+          <div className={styles.row}>
+            <span className={styles.required}>文件夹名</span>
+            <Input
+              value={directoryName}
+              onChange={e =>
+                this.setState({ optionData: { ...optionData, directoryName: e.target.value } })
+              }
+              className={styles.input}
+            />
+          </div>
+        ) : null}
         <div className="btnclsb">
           <Link to="/dataSourceManagement/FTP/two">
             <Button type="primary">下一步</Button>
