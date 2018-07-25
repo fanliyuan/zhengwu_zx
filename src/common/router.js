@@ -302,6 +302,11 @@ export const getRouterData = app => {
     '/dataSourceManagement/openShare': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/OpenShare')),
     },
+    '/dataSourceManagement/openShareFile': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/OpenShareFile')
+      ),
+    },
     '/dataSourceManagement/newMenu': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/NewMenu')),
     },

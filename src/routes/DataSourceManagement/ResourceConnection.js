@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-// import { routerRedux } from 'dva/router';
+import { routerRedux } from 'dva/router';
 import { Table, Button, Card, Divider, Row, Col, Modal } from 'antd';
 import moment from 'moment';
 
 import styles from './ResourceConnection.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
-@connect()
+@connect(({ resourceConnection }) => ({
+  resourceConnection,
+}))
 export default class ResourceConnection extends Component {
   // goToDetail = row => {
   //   this.props.dispatch(
@@ -70,6 +72,16 @@ export default class ResourceConnection extends Component {
     this.setState({
       resourceFileVisible: false,
     });
+  };
+
+  handleSave = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
+  };
+
+  handleBack = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
   };
 
   render() {
@@ -136,10 +148,12 @@ export default class ResourceConnection extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.backBtn}>
-            <Button type="primary" className="mr8">
+            <Button type="primary" className="mr8" onClick={this.handleSave}>
               保存
             </Button>
-            <Button type="primary">返回</Button>
+            <Button type="primary" onClick={this.handleBack}>
+              返回
+            </Button>
           </div>
           <div className={styles.form}>
             <h3>
@@ -164,7 +178,7 @@ export default class ResourceConnection extends Component {
           </Row>
           <Row style={{ marginBottom: 20 }}>
             <Col span={4}>
-              <h3>挂接资源文件:</h3>
+              <h3>挂接资源检索关系设置:</h3>
             </Col>
             <Col span={18}>
               <span className={styles.linkBtn} onClick={this.openModalFile}>

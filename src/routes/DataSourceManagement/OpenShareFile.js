@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Input, Card, Form, Button, Cascader, Radio, Checkbox, Select } from 'antd';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-// import styles from './OpenShare.less';
+// import styles from './OpenShareFile.less';
 
 const FormItem = Form.Item;
 const InputGroup = Input.Group;
@@ -12,10 +10,7 @@ const RadioGroup = Radio.Group;
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
 @Form.create()
-@connect(({ openShare }) => ({
-  openShare,
-}))
-export default class OpenShare extends Component {
+export default class OpenShareFile extends Component {
   state = {};
 
   setInputs = () => {
@@ -26,16 +21,6 @@ export default class OpenShare extends Component {
   };
 
   handleSubmit = () => {};
-
-  handleSave = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
-  };
-
-  handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
-  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -162,11 +147,11 @@ export default class OpenShare extends Component {
               </InputGroup>
             </FormItem>
             <FormItem {...submitLayout}>
-              <Button type="primary" className="mr8" onClick={this.handleSave} htmlType="submit">
-                保存
-              </Button>
-              <Button type="primary" onClick={this.handleBack}>
+              <Button type="primary" style={{ marginRight: 20 }}>
                 返回
+              </Button>
+              <Button type="primary" htmlType="submit">
+                保存
               </Button>
             </FormItem>
           </Form>

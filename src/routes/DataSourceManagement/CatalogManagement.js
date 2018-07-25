@@ -62,6 +62,24 @@ export default class CatalogManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'));
   };
 
+  handleSourceConnect = val => {
+    const { dispatch } = this.props;
+    if (+val === 0) {
+      dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData'));
+    } else {
+      dispatch(routerRedux.push('/dataSourceManagement/resourceConnection'));
+    }
+  };
+
+  handleOpenShare = val => {
+    const { dispatch } = this.props;
+    if (+val === 0) {
+      dispatch(routerRedux.push('/dataSourceManagement/openShare'));
+    } else {
+      dispatch(routerRedux.push('/dataSourceManagement/openShareFile'));
+    }
+  };
+
   render() {
     const that = this;
     const { provider, status, isHover } = this.state;
@@ -136,20 +154,22 @@ export default class CatalogManagement extends Component {
       {
         title: '操作',
         dataIndex: 'operate',
-        render(catalogEncoding, row) {
+        render(text, row) {
           return (
             <div>
               <span className={styles.clickBtn} onClick={that.handleInfoItem}>
                 信息项
               </span>
               {/* <a style={{marginRight:10}}>资源挂接</a> */}
-              <Link
-                to={`/dataSourceManagement/fileSourceDetail/${row.catalogEncoding}`}
-                style={{ marginRight: 10 }}
+              <span
+                className={styles.clickBtn}
+                onClick={that.handleSourceConnect.bind(null, row.id)}
               >
                 资源挂接
-              </Link>
-              <span className={styles.clickBtn}>开放设置</span>
+              </span>
+              <span className={styles.clickBtn} onClick={that.handleOpenShare.bind(null, row.id)}>
+                开放设置
+              </span>
               <Link to="/dataSourceManagement/newMenu/one" className={styles.clickBtn}>
                 修改
               </Link>
