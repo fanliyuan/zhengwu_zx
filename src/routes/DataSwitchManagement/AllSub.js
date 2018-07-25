@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-23 15:08:59
+ * @Last Modified time: 2018-07-25 15:21:32
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react';
@@ -92,7 +92,14 @@ export default class AllSub extends Component {
     date: [],
     isChanged: false,
     selectKeys: [],
+    isNodeOperator: false,
   };
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    });
+  }
 
   handleNameChange = e => {
     this.setState({
@@ -142,9 +149,8 @@ export default class AllSub extends Component {
   };
 
   render() {
-    const { name, date, state, theme, selectKeys, organization } = this.state;
+    const { name, date, state, theme, selectKeys, organization, isNodeOperator } = this.state;
 
-    const currentAuthority = localStorage.getItem('antd-pro-authority');
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const stateList = [
@@ -205,33 +211,20 @@ export default class AllSub extends Component {
         render: (text, row) => {
           return row.state === '运行中' ? (
             <Fragment>
-              <Popconfirm
-                title={
-                  <div>
-                    <div>您是否确定停用？</div>
-                    <div>停用后将暂停采集数据！</div>
-                  </div>
-                }
-                onConfirm={() => message.success('已停止')}
-              >
-                <a className="mr16">停止</a>
-              </Popconfirm>
-              <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Popconfirm
-                title={
-                  <div>
-                    <div>您是否确定启动？</div>
-                    <div>启动后可进行采集数据！</div>
-                  </div>
-                }
-                onConfirm={() => message.success('已启动')}
-              >
-                <a className="mr8">运行</a>
-              </Popconfirm>
-              {currentAuthority === 'operator' ? (
+              {isNodeOperator && (
+                <Popconfirm
+                  title={
+                    <div>
+                      <div>您是否确定停用？</div>
+                      <div>停用后将暂停采集数据！</div>
+                    </div>
+                  }
+                  onConfirm={() => message.success('已停止')}
+                >
+                  <a className="mr16">停止</a>
+                </Popconfirm>
+              )}
+              {!isNodeOperator && (
                 <Link
                   to={`/dataSwitchManagement/${
                     row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
@@ -240,14 +233,47 @@ export default class AllSub extends Component {
                 >
                   查看
                 </Link>
-              ) : null}
-              <Popconfirm
-                title={`是否取消${row.name}的订阅`}
-                onConfirm={() => message.success('取消成功')}
-              >
-                <a className="mr8">取消订阅</a>
-              </Popconfirm>
-              <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
+              )}
+              {isNodeOperator && (
+                <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
+              )}
+            </Fragment>
+          ) : (
+            <Fragment>
+              {isNodeOperator && (
+                <Popconfirm
+                  title={
+                    <div>
+                      <div>您是否确定启动？</div>
+                      <div>启动后可进行采集数据！</div>
+                    </div>
+                  }
+                  onConfirm={() => message.success('已启动')}
+                >
+                  <a className="mr8">运行</a>
+                </Popconfirm>
+              )}
+              {!isNodeOperator && (
+                <Link
+                  to={`/dataSwitchManagement/${
+                    row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
+                  }/${row.id}`}
+                  className="mr8"
+                >
+                  查看
+                </Link>
+              )}
+              {isNodeOperator && (
+                <Popconfirm
+                  title={`是否取消${row.name}的订阅`}
+                  onConfirm={() => message.success('取消成功')}
+                >
+                  <a className="mr8">取消订阅</a>
+                </Popconfirm>
+              )}
+              {isNodeOperator && (
+                <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
+              )}
             </Fragment>
           );
         },
@@ -353,7 +379,7 @@ export default class AllSub extends Component {
       },
     ];
 
-    const rowSelection = {
+    let rowSelection = {
       selectKeys,
       onChange: keys => {
         this.setState({
@@ -361,6 +387,9 @@ export default class AllSub extends Component {
         });
       },
     };
+    if (!isNodeOperator) {
+      rowSelection = null;
+    }
 
     columns.forEach(item => {
       item.align = 'center';
@@ -389,10 +418,12 @@ export default class AllSub extends Component {
       </Option>
     ));
 
+    const tabscls = isNodeOperator ? '' : styles.tabscls;
+
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
-          <Tabs>
+          <Tabs className={tabscls}>
             <TabPane tab="已订阅" key="hasSubscribed">
               <div className={styles.search}>
                 <Input
@@ -424,41 +455,43 @@ export default class AllSub extends Component {
                   搜索
                 </Button>
               </div>
-              <div className={styles.bar}>
-                {/* 这里含有模态框的确认 */}
-                <Button
-                  className={styles.button}
-                  onClick={() =>
-                    confirm({
-                      title: '是否确定?',
-                      content: '此操作将启动所有已选择项',
-                      onOk() {
-                        message.success(`${selectKeys.join(',')}已经启动`);
-                      },
-                      okText: '确定',
-                      cancelText: '取消',
-                    })
-                  }
-                >
-                  启动
-                </Button>
-                <Button
-                  className={styles.button}
-                  onClick={() =>
-                    confirm({
-                      title: '是否确定?',
-                      content: '此操作将停止所有已选择项',
-                      onOk() {
-                        message.success(`${selectKeys.join(',')}已经停止`);
-                      },
-                      okText: '确定',
-                      cancelText: '取消',
-                    })
-                  }
-                >
-                  停止
-                </Button>
-              </div>
+              {isNodeOperator && (
+                <div className={styles.bar}>
+                  {/* 这里含有模态框的确认 */}
+                  <Button
+                    className={styles.button}
+                    onClick={() =>
+                      confirm({
+                        title: '是否确定?',
+                        content: '此操作将启动所有已选择项',
+                        onOk() {
+                          message.success(`${selectKeys.join(',')}已经启动`);
+                        },
+                        okText: '确定',
+                        cancelText: '取消',
+                      })
+                    }
+                  >
+                    启动
+                  </Button>
+                  <Button
+                    className={styles.button}
+                    onClick={() =>
+                      confirm({
+                        title: '是否确定?',
+                        content: '此操作将停止所有已选择项',
+                        onOk() {
+                          message.success(`${selectKeys.join(',')}已经停止`);
+                        },
+                        okText: '确定',
+                        cancelText: '取消',
+                      })
+                    }
+                  >
+                    停止
+                  </Button>
+                </div>
+              )}
               <div>
                 <Table
                   bordered
@@ -470,58 +503,62 @@ export default class AllSub extends Component {
                 />
               </div>
             </TabPane>
-            <TabPane tab="待审核" key="willAudit">
-              <div className={styles.search}>
-                <Input
-                  placeholder="订阅名称/发布名称"
-                  value={name}
-                  onPressEnter={this.handleSearch}
-                  onChange={this.handleNameChange}
-                  className={styles.name}
-                />
-                <Input
-                  className={styles.theme}
-                  placeholder="请输入主题"
-                  value={theme}
-                  onPressEnter={this.handleSearch}
-                  onChange={this.handleThemeChange}
-                />
-                <Select value={state} onChange={this.handSelectChange} className={styles.state}>
-                  {optionComs2}
-                </Select>
-                <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
-                <Button type="primary" onClick={this.handleSearch} icon="search">
-                  搜索
-                </Button>
-              </div>
-              <Table columns={willAuditColumns} dataSource={data2} bordered rowKey="id" />
-            </TabPane>
-            <TabPane tab="订阅失败" key="failSubcribed">
-              <div className={styles.search}>
-                <Input
-                  placeholder="订阅名称/发布名称"
-                  value={name}
-                  onPressEnter={this.handleSearch}
-                  onChange={this.handleNameChange}
-                  className={styles.name}
-                />
-                <Input
-                  className={styles.theme}
-                  placeholder="请输入主题"
-                  value={theme}
-                  onPressEnter={this.handleSearch}
-                  onChange={this.handleThemeChange}
-                />
-                <Select value={state} onChange={this.handSelectChange} className={styles.state}>
-                  {optionComs2}
-                </Select>
-                <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
-                <Button type="primary" onClick={this.handleSearch} icon="search">
-                  搜索
-                </Button>
-              </div>
-              <Table columns={failSubcribedColumns} dataSource={data3} bordered rowKey="id" />
-            </TabPane>
+            {isNodeOperator && (
+              <TabPane tab="待审核" key="willAudit">
+                <div className={styles.search}>
+                  <Input
+                    placeholder="订阅名称/发布名称"
+                    value={name}
+                    onPressEnter={this.handleSearch}
+                    onChange={this.handleNameChange}
+                    className={styles.name}
+                  />
+                  <Input
+                    className={styles.theme}
+                    placeholder="请输入主题"
+                    value={theme}
+                    onPressEnter={this.handleSearch}
+                    onChange={this.handleThemeChange}
+                  />
+                  <Select value={state} onChange={this.handSelectChange} className={styles.state}>
+                    {optionComs2}
+                  </Select>
+                  <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
+                  <Button type="primary" onClick={this.handleSearch} icon="search">
+                    搜索
+                  </Button>
+                </div>
+                <Table columns={willAuditColumns} dataSource={data2} bordered rowKey="id" />
+              </TabPane>
+            )}
+            {isNodeOperator && (
+              <TabPane tab="订阅失败" key="failSubcribed">
+                <div className={styles.search}>
+                  <Input
+                    placeholder="订阅名称/发布名称"
+                    value={name}
+                    onPressEnter={this.handleSearch}
+                    onChange={this.handleNameChange}
+                    className={styles.name}
+                  />
+                  <Input
+                    className={styles.theme}
+                    placeholder="请输入主题"
+                    value={theme}
+                    onPressEnter={this.handleSearch}
+                    onChange={this.handleThemeChange}
+                  />
+                  <Select value={state} onChange={this.handSelectChange} className={styles.state}>
+                    {optionComs2}
+                  </Select>
+                  <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
+                  <Button type="primary" onClick={this.handleSearch} icon="search">
+                    搜索
+                  </Button>
+                </div>
+                <Table columns={failSubcribedColumns} dataSource={data3} bordered rowKey="id" />
+              </TabPane>
+            )}
           </Tabs>
         </div>
       </PageHeaderLayout>

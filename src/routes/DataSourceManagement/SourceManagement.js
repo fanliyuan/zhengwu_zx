@@ -18,7 +18,14 @@ export default class SourceManagement extends Component {
     nodeName: '0',
     owingJg: '0',
     status: '0',
+    isNodeOperator: false,
   };
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage['antd-pro-authority'] === 'operator-n',
+    });
+  }
 
   dataTypeChange = val => {
     this.setState({
@@ -76,7 +83,7 @@ export default class SourceManagement extends Component {
 
   render() {
     const that = this;
-    const { dataType, nodeName, owingJg, status } = this.state;
+    const { dataType, nodeName, owingJg, status, isNodeOperator } = this.state;
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
@@ -184,10 +191,17 @@ export default class SourceManagement extends Component {
                 <span className={styles.clickBtn} onClick={that.handleTask}>
                   任务
                 </span>
-                <span className={styles.clickBtn} onClick={that.handleEdit}>
-                  修改
-                </span>
-                <a>删除</a>
+                {isNodeOperator && (
+                  <span className={styles.clickBtn} onClick={that.handleEdit}>
+                    修改
+                  </span>
+                )}
+                {!isNodeOperator && (
+                  <span className={styles.clickBtn} onClick={that.handleEdit}>
+                    查看
+                  </span>
+                )}
+                {isNodeOperator && <a>删除</a>}
               </div>
             );
           } else {
@@ -202,10 +216,17 @@ export default class SourceManagement extends Component {
                 <span className={styles.clickBtn} onClick={that.handleTask}>
                   任务
                 </span>
-                <span className={styles.clickBtn} onClick={that.handleEdit}>
-                  修改
-                </span>
-                <a>删除</a>
+                {isNodeOperator && (
+                  <span className={styles.clickBtn} onClick={that.handleEdit}>
+                    修改
+                  </span>
+                )}
+                {!isNodeOperator && (
+                  <span className={styles.clickBtn} onClick={that.handleEdit}>
+                    查看
+                  </span>
+                )}
+                {isNodeOperator && <a>删除</a>}
               </div>
             );
           }
@@ -253,7 +274,7 @@ export default class SourceManagement extends Component {
         status: '2',
       },
     ];
-    const rowSelection = {
+    let rowSelection = {
       // onChange: selectedRows => {
       // },
       // getCheckboxProps: record => ({
@@ -261,6 +282,9 @@ export default class SourceManagement extends Component {
       //   name: record.name,
       // }),
     };
+    if (!isNodeOperator) {
+      rowSelection = null;
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -308,9 +332,7 @@ export default class SourceManagement extends Component {
               bordered
             />
           </div>
-          <div>
-            <Button type="primary">删除</Button>
-          </div>
+          <div>{isNodeOperator && <Button type="primary">删除</Button>}</div>
         </Card>
       </PageHeaderLayout>
     );

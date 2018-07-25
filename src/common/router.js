@@ -198,7 +198,17 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/ResourceConnection')
       ),
     },
+    '/dataSourceManagement/resourceConnection/:id': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/ResourceConnection')
+      ),
+    },
     '/dataSourceManagement/resourceConnectionData': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/ResourceConnectionData')
+      ),
+    },
+    '/dataSourceManagement/resourceConnectionData/:id': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/ResourceConnectionData')
       ),

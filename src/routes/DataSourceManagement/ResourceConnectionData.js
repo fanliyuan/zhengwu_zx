@@ -347,7 +347,7 @@ export default class ResourceConnectionData extends Component {
                   <Button onClick={this.handleConnect}>自动映射</Button>
                 </Col>
                 <Col span={11} offset={2}>
-                  <Button onClick={this.handleClearConnect}>清楚映射</Button>
+                  <Button onClick={this.handleClearConnect}>清除映射</Button>
                 </Col>
               </Row>
               <Row
