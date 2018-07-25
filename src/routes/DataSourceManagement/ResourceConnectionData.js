@@ -1,13 +1,83 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
-import { Table, Button, Card, Divider, Row, Col, Modal, Input, DatePicker } from 'antd';
+import {
+  Table,
+  Button,
+  Card,
+  Divider,
+  Row,
+  Col,
+  Modal,
+  Input,
+  DatePicker,
+  Form,
+  Select,
+} from 'antd';
 import moment from 'moment';
 
 import styles from './ResourceConnectionData.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { RangePicker } = DatePicker;
+
+const FormItem = Form.Item;
+const EditableContext = React.createContext();
+const EditableRow = ({ form, index, ...props }) => (
+  <EditableContext.Provider value={form}>
+    <tr {...props} />
+  </EditableContext.Provider>
+);
+const EditableFormRow = Form.create()(EditableRow);
+class EditableCell extends React.Component {
+  getInput = () => {
+    if (this.props.filedType === 'select') {
+      return (
+        <Select>
+          <Select.Option value={1} key={1}>
+            是
+          </Select.Option>
+          <Select.Option value={0} key={0}>
+            否
+          </Select.Option>
+        </Select>
+      );
+    }
+    return <Input className={styles.input} />;
+  };
+
+  render() {
+    const { editing, dataIndex, title, filedType, record, index, ...restProps } = this.props;
+
+    return (
+      <EditableContext.Consumer>
+        {form => {
+          const { getFieldDecorator } = form;
+          return (
+            <td {...restProps}>
+              {editing ? (
+                <FormItem>
+                  {getFieldDecorator(dataIndex, {
+                    rules: [
+                      {
+                        required: true,
+                        message: `${title}必填!`,
+                      },
+                    ],
+                    initialValue: record[dataIndex] || 1,
+                  })(this.getInput())}
+                </FormItem>
+              ) : (
+                restProps.children
+              )}
+            </td>
+          );
+        }}
+      </EditableContext.Consumer>
+    );
+  }
+}
+
 @connect(({ resourceConnectionData }) => ({
   resourceConnectionData,
 }))
@@ -16,6 +86,10 @@ export default class ResourceConnectionData extends Component {
     ItemConnect: true,
     visible1: false,
     visible2: false,
+  };
+
+  isEditing = record => {
+    return record.key === this.state.editingKey;
   };
 
   goToDetail = row => {
@@ -207,31 +281,6 @@ export default class ResourceConnectionData extends Component {
         },
       },
     ];
-    const columnsModal2 = [
-      {
-        title: '文件名称',
-        dataIndex: 'fileName',
-      },
-      {
-        title: '类型',
-        dataIndex: 'type',
-      },
-      {
-        title: '文件大小',
-        dataIndex: 'fileSize',
-      },
-      {
-        title: '上传人',
-        dataIndex: 'uploader',
-      },
-      {
-        title: '上传时间',
-        dataIndex: 'uploadTime',
-        render(text) {
-          return moment(text).format('lll');
-        },
-      },
-    ];
     const listModal1 = [
       {
         id: 0,
@@ -255,40 +304,206 @@ export default class ResourceConnectionData extends Component {
         registerTime: 451233554,
       },
     ];
-    const listModal2 = [
+    const columnsModal2 = [
       {
-        fileName: '城市低保标准表(各市第7季度).xlsx',
-        type: 'Zip',
-        fileSize: '1.38MB',
-        uploader: '张三',
-        uploadTime: 4512211,
+        title: '序号',
+        dataIndex: 'id',
       },
       {
-        fileName: '农村低保标准表(各地第1季度).json',
-        type: 'json',
-        fileSize: '0.12MB',
-        uploader: '李四',
-        uploadTime: 4512211,
+        title: '表名称',
+        dataIndex: 'tableName',
       },
       {
-        fileName: '人口普查数据.xml',
-        type: 'jpeg',
-        fileSize: '1.56MB',
-        uploader: '王五',
-        uploadTime: 4512211,
+        title: '中文标注',
+        dataIndex: 'chineseLabel',
+      },
+      {
+        title: '操作',
+        render() {
+          return (
+            <div>
+              <a>数据项</a>
+            </div>
+          );
+        },
       },
     ];
+    columnsModal2.forEach(item => (item.align = 'center')); // eslint-disable-line
+    const listModal2 = [
+      {
+        id: 0,
+        tableName: 'dig_user',
+        chineseLabel: '用户表',
+      },
+      {
+        id: 1,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 2,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 3,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 4,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 5,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 6,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 7,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 8,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 9,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 10,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 11,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 12,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 13,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+      {
+        id: 14,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+    ];
+    const columns2 = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+      },
+      {
+        title: '主键',
+        dataIndex: 'isMainKey',
+        render: text => {
+          return <span>{text === 1 ? '是' : ''}</span>;
+        },
+      },
+      {
+        title: '字段名称',
+        dataIndex: 'filedName',
+      },
+      {
+        title: '数据类型',
+        dataIndex: 'dataType',
+      },
+      {
+        title: '中文标注',
+        dataIndex: 'chineseLabel',
+      },
+      {
+        title: '是否作为检索主键',
+        dataIndex: 'isQueryKey',
+        editable: true,
+        isSelect: true,
+        width: 96,
+      },
+      {
+        title: '是否是外键',
+        dataIndex: 'isFroginKey',
+        editable: true,
+        isSelect: true,
+        width: 96,
+      },
+      {
+        title: '外键所表',
+        dataIndex: 'tableKey',
+        editable: true,
+        width: 157,
+      },
+      {
+        title: '外键对应字段',
+        dataIndex: 'fieldKey',
+        editable: true,
+        width: 157,
+      },
+    ];
+    columns2.forEach(item => (item.align = 'center')); // eslint-disable-line
+    const columns3 = columns2.map(item => {
+      if (!item.editable) {
+        return item;
+      }
+      return {
+        ...item,
+        onCell: record => ({
+          record,
+          dataIndex: item.dataIndex,
+          title: item.title,
+          filedType: item.isSelect ? 'select' : 'input',
+          editing: this.isEditing(record),
+        }),
+      };
+    });
+    const list3 = [
+      {
+        id: 0,
+        chineseLabel: '标注1',
+        isMainKey: 1,
+      },
+      {
+        id: 1,
+        chineseLabel: '标注2',
+        isMainKey: 0,
+      },
+    ];
+
+    const components = {
+      body: {
+        row: EditableFormRow,
+        cell: EditableCell,
+      },
+    };
+
     return (
       <PageHeaderLayout>
+        <div className="btncls clearfix">
+          <Button onClick={this.handleBack} className="fr mr40">
+            返回
+          </Button>
+          <Button type="primary" className="fr mr40" onClick={this.handleSave}>
+            保存
+          </Button>
+        </div>
         <Card>
-          <div className={styles.backBtn}>
-            <Button type="primary" className="mr8" onClick={this.handleSave}>
-              保存
-            </Button>
-            <Button type="primary" onClick={this.handleBack}>
-              返回
-            </Button>
-          </div>
           <div className={styles.form}>
             <h3>
               目录编码:<span> 3300031306381126/00001</span>
@@ -301,7 +516,7 @@ export default class ResourceConnectionData extends Component {
           <Row style={{ marginBottom: 15 }}>
             <Col span={4}>
               <h3>
-                挂接资源名称:<span>城市低保标准</span>
+                挂接资源名称&nbsp;:&nbsp;<span>城市低保标准</span>
               </h3>
             </Col>
             <Col span={18}>
@@ -312,7 +527,7 @@ export default class ResourceConnectionData extends Component {
           </Row>
           <Row style={{ marginBottom: 20 }}>
             <Col span={4}>
-              <h3>挂接资源文件:</h3>
+              <h3>挂接资源检索关系设置&nbsp;:&nbsp;</h3>
             </Col>
             <Col span={18}>
               <span className={styles.linkBtn} onClick={this.showModal2}>
@@ -424,19 +639,31 @@ export default class ResourceConnectionData extends Component {
             />
           </Modal>
           <Modal
-            title="选择要挂接的资源文件"
+            title="检索关系设置"
             visible={visible2}
             onOk={this.handleOk2}
             onCancel={this.handleCancel2}
             width={900}
           >
-            <Table
-              columns={columnsModal2}
-              dataSource={listModal2}
-              pagination={pagination}
-              rowKey="id"
-              bordered
-            />
+            <div>
+              <h3>
+                数据表 共<span>32</span>张
+              </h3>
+              <Table columns={columnsModal2} dataSource={listModal2} rowKey="id" bordered />
+            </div>
+            <div>
+              <h3>
+                数据 共<span>32</span>行
+              </h3>
+              <Table
+                columns={columns3}
+                dataSource={list3}
+                rowKey="id"
+                bordered
+                components={components}
+                className={styles.table}
+              />
+            </div>
           </Modal>
         </Card>
       </PageHeaderLayout>

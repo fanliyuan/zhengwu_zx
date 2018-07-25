@@ -2,7 +2,7 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 16:31:37
+ * @Last Modified time: 2018-07-25 16:54:26
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react';
@@ -22,6 +22,7 @@ export default class DataBaseSource extends Component {
   state = {
     view: false,
     agency: true,
+    showRow: 0,
   };
 
   handleBack = () => {
@@ -29,22 +30,24 @@ export default class DataBaseSource extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
   };
 
-  handleView = () => {
+  handleView = row => {
     this.setState({
       view: true,
       agency: false,
+      showRow: row.id,
     });
   };
 
-  handleAgency = () => {
+  handleAgency = row => {
     this.setState({
       view: false,
       agency: true,
+      showRow: row.id,
     });
   };
 
   render() {
-    const { view, agency } = this.state;
+    const { view, agency, showRow } = this.state;
     const that = this;
     const pagination = {
       current: 1,
@@ -68,20 +71,20 @@ export default class DataBaseSource extends Component {
       },
       {
         title: '操作',
-        render() {
+        render(text, row) {
           return (
             <div>
               <span
                 className={styles.clickBtn}
-                onClick={that.handleView}
-                style={view ? { cursor: 'default', color: 'silver' } : {}}
+                onClick={() => that.handleView(row)}
+                style={view && row.id === showRow ? { cursor: 'default', color: 'silver' } : {}}
               >
                 浏览
               </span>
               <span
                 className={styles.clickBtn}
-                onClick={that.handleAgency}
-                style={agency ? { cursor: 'default', color: 'silver' } : {}}
+                onClick={() => that.handleAgency(row)}
+                style={agency && row.id === showRow ? { cursor: 'default', color: 'silver' } : {}}
               >
                 结构
               </span>
