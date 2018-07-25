@@ -2,19 +2,50 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 13:23:19
+ * @Last Modified time: 2018-07-25 16:31:37
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react';
 import { Card, Row, Col, Button, Divider, Table, Tooltip } from 'antd';
 import moment from 'moment';
 import TextTruncate from 'react-text-truncate';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
-// import styles from './Source.less';
+import styles from './Source.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
+@connect(({ Source }) => ({
+  Source,
+}))
 export default class Source extends Component {
+  state = {
+    view: false,
+    agency: true,
+  };
+
+  handleBack = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
+  };
+
+  handleView = () => {
+    this.setState({
+      view: true,
+      agency: false,
+    });
+  };
+
+  handleAgency = () => {
+    this.setState({
+      view: false,
+      agency: true,
+    });
+  };
+
   render() {
+    const { view, agency } = this.state;
+    const that = this;
     const pagination = {
       current: 1,
       pageSize: 10,
@@ -40,8 +71,20 @@ export default class Source extends Component {
         render() {
           return (
             <div>
-              <a className="mr8">浏览</a>
-              <a>结构</a>
+              <span
+                className={styles.clickBtn}
+                onClick={that.handleView}
+                style={view ? { cursor: 'default', color: 'silver' } : {}}
+              >
+                浏览
+              </span>
+              <span
+                className={styles.clickBtn}
+                onClick={that.handleAgency}
+                style={agency ? { cursor: 'default', color: 'silver' } : {}}
+              >
+                结构
+              </span>
             </div>
           );
         },
@@ -120,13 +163,69 @@ export default class Source extends Component {
         post_content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
       },
+      {
+        id: 2,
+        blog_id: 2,
+        public: 2,
+        last_updated: 21111277,
+        post_title: 'Hello World!',
+        post_content:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
+      },
+    ];
+    const columns2 = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+      },
+      {
+        title: '主键',
+        dataIndex: 'blog_id',
+      },
+      {
+        title: '字段名称',
+        dataIndex: 'fieldName',
+      },
+      {
+        title: '数据类型',
+        dataIndex: 'dataType',
+      },
+      {
+        title: '中文标注',
+        dataIndex: 'chineseLabel',
+      },
+    ];
+    const list2 = [
+      {
+        id: 0,
+        blog_id: '',
+        fieldName: 'blog_id',
+        dataType: 'bigint(20)',
+        chineseLabel: '',
+      },
+      {
+        id: 1,
+        blog_id: '',
+        fieldName: 'public',
+        dataType: 'tinyint(2)',
+        chineseLabel: '',
+      },
+      {
+        id: 2,
+        blog_id: '',
+        fieldName: 'last_updated',
+        dataType: 'datetime',
+        chineseLabel: '',
+      },
     ];
     return (
       <PageHeaderLayout>
+        <div className="btncls clearfix">
+          <Button onClick={this.handleBack} className="fr mr40">
+            返回
+          </Button>
+        </div>
         <Card>
-          <div style={{ textAlign: 'right' }}>
-            <Button type="primary">返回</Button>
-          </div>
           <Row>
             <Col span={4}>
               <h2>
@@ -161,7 +260,7 @@ export default class Source extends Component {
           </Row>
           <Divider />
           <Row>
-            <Col span={8}>
+            <Col span={24}>
               <h3>
                 数据表 共<span>32</span>张
               </h3>
@@ -174,19 +273,36 @@ export default class Source extends Component {
                 bordered
               />
             </Col>
-            <Col span={15} offset={1}>
-              <h3>
-                数据 共<span>32</span>行
-              </h3>
-              <Table
-                columns={columns1}
-                dataSource={list1}
-                pagination={pagination}
-                rowSelection={rowSelection}
-                rowKey="id"
-                bordered
-              />
-            </Col>
+            {view && (
+              <Col span={24}>
+                <h3>
+                  数据 共<span>32</span>行
+                </h3>
+                <Table
+                  columns={columns1}
+                  dataSource={list1}
+                  pagination={pagination}
+                  rowSelection={rowSelection}
+                  rowKey="id"
+                  bordered
+                />
+              </Col>
+            )}
+            {agency && (
+              <Col span={24}>
+                <h3>
+                  数据项 共<span>6</span>行
+                </h3>
+                <Table
+                  columns={columns2}
+                  dataSource={list2}
+                  pagination={pagination}
+                  rowSelection={rowSelection}
+                  rowKey="id"
+                  bordered
+                />
+              </Col>
+            )}
           </Row>
         </Card>
       </PageHeaderLayout>
