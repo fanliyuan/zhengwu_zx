@@ -1,0 +1,26 @@
+.steps {
+  max-width: 750px;
+  margin: 16px auto;
+}
+.row {
+  max-width: 750px;
+  margin: 0 auto 16px;
+}
+.label {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-right: 16px;
+  &::after {
+    content: ':';
+    display: inline-block;
+    margin: 0 4px;
+  }
+}
+.directory {
+  display: inline-block;
+  vertical-align: top;
+  width: 600px;
+  max-height: 200px;
+  overflow-y: scroll;
+}
