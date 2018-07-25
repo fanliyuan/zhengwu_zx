@@ -107,8 +107,9 @@ export default class PlatformOverview extends Component {
                   </List.Item>
                 )}
               />
-              <div style={{ height: '300px' }}>
-                <span>交换任务</span>
+              <div style={{ height: '300px', textAlign: 'center' }}>
+                <h3 style={{ textAlign: 'left' }}>交换任务</h3>
+                <img src="/src/assets/platOvewview.png" alt="交换任务" />
               </div>
               <div style={{ padding: '0 24px' }}>
                 <h3>实施传输</h3>
