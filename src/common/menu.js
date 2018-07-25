@@ -268,7 +268,7 @@ const menuData = [
       {
         name: '检索关系设置',
         path: 'searchRelationship',
-        hideInMenu: true,
+        // hideInMenu: true,
       },
       {
         name: '设置同步计划',

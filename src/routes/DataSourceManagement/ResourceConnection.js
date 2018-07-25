@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
-import { Table, Button, Card, Divider, Row, Col, Modal } from 'antd';
+import { Table, Button, Card, Divider, Row, Col, Modal, Input, DatePicker } from 'antd';
 import moment from 'moment';
 
 import styles from './ResourceConnection.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
+const { RangePicker } = DatePicker;
 @connect(({ resourceConnection }) => ({
   resourceConnection,
 }))
@@ -20,58 +21,8 @@ export default class ResourceConnection extends Component {
   //   );
   // };
   state = {
-    resourceVisible: false,
-    resourceFileVisible: false,
-    confirmLoading: false,
-    confirmFileLoading: false,
-  };
-
-  openModalName = () => {
-    this.setState({
-      resourceVisible: true,
-    });
-  };
-
-  openModalFile = () => {
-    this.setState({
-      resourceFileVisible: true,
-    });
-  };
-
-  handleNameOk = () => {
-    this.setState({
-      confirmLoading: true,
-    });
-    setTimeout(() => {
-      this.setState({
-        resourceVisible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
-  };
-
-  handleNameCancel = () => {
-    this.setState({
-      resourceVisible: false,
-    });
-  };
-
-  handleFileOk = () => {
-    this.setState({
-      confirmFileLoading: true,
-    });
-    setTimeout(() => {
-      this.setState({
-        resourceFileVisible: false,
-        confirmFileLoading: false,
-      });
-    }, 2000);
-  };
-
-  handleFileCancel = () => {
-    this.setState({
-      resourceFileVisible: false,
-    });
+    visible1: false,
+    visible2: false,
   };
 
   handleSave = () => {
@@ -84,8 +35,45 @@ export default class ResourceConnection extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
   };
 
+  showModal1 = () => {
+    this.setState({
+      visible1: true,
+    });
+  };
+
+  showModal2 = () => {
+    this.setState({
+      visible2: true,
+    });
+  };
+
+  handleOk1 = () => {
+    this.setState({
+      visible1: false,
+    });
+  };
+
+  handleOk2 = () => {
+    this.setState({
+      visible2: false,
+    });
+  };
+
+  handleCancel1 = () => {
+    this.setState({
+      visible1: false,
+    });
+  };
+
+  handleCancel2 = () => {
+    this.setState({
+      visible2: false,
+    });
+  };
+
   render() {
-    const { resourceVisible, resourceFileVisible, confirmLoading, confirmFileLoading } = this.state;
+    // const { resourceVisible, resourceFileVisible, confirmLoading, confirmFileLoading } = this.state;
+    const { visible1, visible2 } = this.state;
     const pagination = { pageSize: 10, current: 1 };
     const columns = [
       {
@@ -144,6 +132,129 @@ export default class ResourceConnection extends Component {
         connectionTime: 34223233,
       },
     ];
+    const columns1 = [
+      {
+        title: '表名称',
+        dataIndex: 'tableName',
+      },
+      {
+        title: '字段',
+        dataIndex: 'field',
+      },
+      {
+        title: '类型',
+        dataIndex: 'types',
+      },
+      {
+        title: '说明',
+        dataIndex: 'intro',
+      },
+      {
+        title: '操作',
+        render() {
+          return <a>删除</a>;
+        },
+      },
+    ];
+    columns1.forEach(item => {
+      item.align = 'center';
+    });
+    const columnsModal1 = [
+      {
+        title: 'ID',
+        dataIndex: 'id',
+      },
+      {
+        title: '资源名称',
+        dataIndex: 'sourceName',
+      },
+      {
+        title: '数据类型',
+        dataIndex: 'dataType',
+      },
+      {
+        title: '应用系统名称',
+        dataIndex: 'systemName',
+      },
+      {
+        title: '注册时间',
+        dataIndex: 'registerTime',
+        render(text) {
+          return moment(text).format('lll');
+        },
+      },
+    ];
+    const columnsModal2 = [
+      {
+        title: '文件名称',
+        dataIndex: 'fileName',
+      },
+      {
+        title: '类型',
+        dataIndex: 'type',
+      },
+      {
+        title: '文件大小',
+        dataIndex: 'fileSize',
+      },
+      {
+        title: '上传人',
+        dataIndex: 'uploader',
+      },
+      {
+        title: '上传时间',
+        dataIndex: 'uploadTime',
+        render(text) {
+          return moment(text).format('lll');
+        },
+      },
+    ];
+    const listModal1 = [
+      {
+        id: 0,
+        sourceName: '城市低保标准',
+        dataType: '文件',
+        systemName: '统计系统',
+        registerTime: 451233554,
+      },
+      {
+        id: 1,
+        sourceName: '农村低保准备',
+        dataType: '文件',
+        systemName: '统计系统',
+        registerTime: 451233554,
+      },
+      {
+        id: 2,
+        sourceName: '人口统计',
+        dataType: '文件',
+        systemName: '统计系统',
+        registerTime: 451233554,
+      },
+    ];
+    const listModal2 = [
+      {
+        fileName: '城市低保标准表(各市第7季度).xlsx',
+        type: 'Zip',
+        fileSize: '1.38MB',
+        uploader: '张三',
+        uploadTime: 4512211,
+      },
+      {
+        fileName: '农村低保标准表(各地第1季度).json',
+        type: 'json',
+        fileSize: '0.12MB',
+        uploader: '李四',
+        uploadTime: 4512211,
+      },
+      {
+        fileName: '人口普查数据.xml',
+        type: 'jpeg',
+        fileSize: '1.56MB',
+        uploader: '王五',
+        uploadTime: 4512211,
+      },
+    ];
     return (
       <PageHeaderLayout>
         <Card>
@@ -171,7 +282,7 @@ export default class ResourceConnection extends Component {
               </h3>
             </Col>
             <Col span={18}>
-              <span className={styles.linkBtn} onClick={this.openModalName}>
+              <span className={styles.linkBtn} onClick={this.showModal1}>
                 去选择
               </span>
             </Col>
@@ -181,7 +292,7 @@ export default class ResourceConnection extends Component {
               <h3>挂接资源检索关系设置:</h3>
             </Col>
             <Col span={18}>
-              <span className={styles.linkBtn} onClick={this.openModalFile}>
+              <span className={styles.linkBtn} onClick={this.showModal2}>
                 去选择
               </span>
             </Col>
@@ -197,30 +308,47 @@ export default class ResourceConnection extends Component {
           </div>
           <Modal
             title="选择要挂接的资源"
-            visible={resourceVisible}
-            confirmLoading={confirmLoading}
-            onOK={this.handleNameOk}
-            onCancel={this.handleNameCancel}
-            width={850}
+            visible={visible1}
+            onOk={this.handleOk1}
+            onCancel={this.handleCancel1}
+            width={900}
           >
-            <div>
-              <Table
-                columns={columns}
-                dataSource={list}
-                pagination={pagination}
-                rowKey="id"
-                bordered
-              />
-            </div>
+            <Row style={{ marginBottom: 20 }}>
+              <Col span={5}>
+                <Input placeholder="资源名称" />
+              </Col>
+              <Col span={5} offset={1}>
+                <Input placeholder="应用系统名称" />
+              </Col>
+              <Col span={5} offset={1}>
+                <RangePicker />
+              </Col>
+              <Col span={5} offset={1}>
+                <Button type="primary">搜索</Button>
+              </Col>
+            </Row>
+            <Table
+              columns={columnsModal1}
+              dataSource={listModal1}
+              pagination={pagination}
+              rowKey="id"
+              bordered
+            />
           </Modal>
           <Modal
             title="选择要挂接的资源文件"
-            visible={resourceFileVisible}
-            confirmLoading={confirmFileLoading}
-            onOK={this.handleFileOk}
-            onCancel={this.handleFileCancel}
+            visible={visible2}
+            onOk={this.handleOk2}
+            onCancel={this.handleCancel2}
+            width={900}
           >
-            789
+            <Table
+              columns={columnsModal2}
+              dataSource={listModal2}
+              pagination={pagination}
+              rowKey="id"
+              bordered
+            />
           </Modal>
         </Card>
       </PageHeaderLayout>
