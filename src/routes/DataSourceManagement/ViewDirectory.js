@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Button, Input, Select, Card, Row, Col } from 'antd';
+import { Link } from 'dva/router';
 
 import styles from './ViewDirectory.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -138,7 +139,7 @@ export default class ViewDirectory extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.backBtn}>
-            <Button type="primary">返回</Button>
+            <Link to="/dataSourceManagement/sourceManagement">返回</Link>
           </div>
           <Card className={styles.InfoBlock}>
             <Row style={{ marginBottom: 10 }}>

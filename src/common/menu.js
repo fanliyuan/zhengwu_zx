@@ -219,6 +219,12 @@ const menuData = [
       {
         name: '开放共享',
         path: 'openShare',
+        hideInMenu: true,
+      },
+      {
+        name: '开放共享文件',
+        path: 'openShareFile',
+        hideInMenu: true,
       },
       {
         name: '资源',
@@ -227,10 +233,12 @@ const menuData = [
       {
         name: '资源挂接文件',
         path: 'resourceConnection',
+        hideInMenu: true,
       },
       {
         name: '资源挂接数据',
         path: 'resourceConnectionData',
+        hideInMenu: true,
       },
       // {
       //   name: '新建目录',
