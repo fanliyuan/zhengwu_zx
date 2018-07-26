@@ -12,6 +12,7 @@ import {
   Tree,
   Icon,
   Tooltip,
+  Popconfirm,
 } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
@@ -274,7 +275,14 @@ export default class CatalogManagement extends Component {
                   查看
                 </Link>
               )}
-              {isNodeOperator && <a>删除</a>}
+              {isNodeOperator && (
+                <Popconfirm
+                  title={`确认删除${row.name}?`}
+                  onConfirm={() => message.info('删除成功!')}
+                >
+                  <a>删除</a>
+                </Popconfirm>
+              )}
             </div>
           )
         },

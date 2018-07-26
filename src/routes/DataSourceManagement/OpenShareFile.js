@@ -1,30 +1,45 @@
-import React, { Component } from 'react';
-import { Input, Card, Form, Button, Cascader, Radio, Checkbox, Select } from 'antd';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Input, Card, Form, Button, Cascader, Radio, Checkbox, Select, message } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 // import styles from './OpenShareFile.less';
 
-const FormItem = Form.Item;
-const InputGroup = Input.Group;
-const RadioGroup = Radio.Group;
-const { Option } = Select;
-const CheckboxGroup = Checkbox.Group;
+const FormItem = Form.Item
+const InputGroup = Input.Group
+const RadioGroup = Radio.Group
+const { Option } = Select
+const CheckboxGroup = Checkbox.Group
+
+@connect()
 @Form.create()
 export default class OpenShareFile extends Component {
-  state = {};
+  state = {}
 
   setInputs = () => {
-    const { setFieldValue } = this.props.form;
-    const { minutes, hours, day, month, week } = this.state;
-    const timeInfo = [minutes, hours, day, month, week];
-    setFieldValue('setTime', timeInfo);
-  };
+    const { setFieldValue } = this.props.form
+    const { minutes, hours, day, month, week } = this.state
+    const timeInfo = [minutes, hours, day, month, week]
+    setFieldValue('setTime', timeInfo)
+  }
 
-  handleSubmit = () => {};
+  handleSubmit = e => {
+    e.preventDefault()
+    message.success('提交成功, 即将跳转')
+    setTimeout(() => {
+      this.props.dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+    }, 1000)
+  }
+
+  handleBack = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const plainOptions = ['交换域1', '交换域2', '交换域3'];
+    const { getFieldDecorator } = this.props.form
+    const plainOptions = ['交换域1', '交换域2', '交换域3']
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -35,25 +50,19 @@ export default class OpenShareFile extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
-    const submitLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
-      },
-    };
+    }
     const optionData = [
       { label: '定时', value: '0', id: 0 },
       { label: '实时', value: '1', id: 1 },
       { label: '手动', value: '2', id: 2 },
-    ];
+    ]
     const optionSelect = optionData.map(item => {
       return (
         <Option value={item.value} key={item.id} label={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const options = [
       {
         value: '0',
@@ -91,7 +100,7 @@ export default class OpenShareFile extends Component {
           },
         ],
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -146,17 +155,15 @@ export default class OpenShareFile extends Component {
                 )}
               </InputGroup>
             </FormItem>
-            <FormItem {...submitLayout}>
-              <Button type="primary" style={{ marginRight: 20 }}>
-                返回
-              </Button>
-              <Button type="primary" htmlType="submit">
+            <div className="btnclsb">
+              <Button type="primary" className="mr64" onClick={this.handleSave} htmlType="submit">
                 保存
               </Button>
-            </FormItem>
+              <Button onClick={this.handleBack}>返回</Button>
+            </div>
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

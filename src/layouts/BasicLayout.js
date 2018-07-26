@@ -2,49 +2,49 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 11:49:49
+ * @Last Modified time: 2018-07-26 17:31:05
  * @Description: 删除底部蚂蚁金服相关信息
  */
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { Layout, Icon, message } from 'antd';
-import DocumentTitle from 'react-document-title';
-import { connect } from 'dva';
-import { Route, Redirect, Switch, routerRedux } from 'dva/router';
-import { ContainerQuery } from 'react-container-query';
-import classNames from 'classnames';
-import pathToRegexp from 'path-to-regexp';
-import { enquireScreen, unenquireScreen } from 'enquire-js';
-import GlobalHeader from '../components/GlobalHeader';
-import GlobalFooter from '../components/GlobalFooter';
-import SiderMenu from '../components/SiderMenu';
-import NotFound from '../routes/Exception/404';
-import { getRoutes } from '../utils/utils';
-import Authorized from '../utils/Authorized';
-import { getMenuData } from '../common/menu';
-import logo from '../assets/logo.svg';
+import React, { Fragment } from 'react'
+import PropTypes from 'prop-types'
+import { Layout, Icon, message } from 'antd'
+import DocumentTitle from 'react-document-title'
+import { connect } from 'dva'
+import { Route, Redirect, Switch, routerRedux } from 'dva/router'
+import { ContainerQuery } from 'react-container-query'
+import classNames from 'classnames'
+import pathToRegexp from 'path-to-regexp'
+import { enquireScreen, unenquireScreen } from 'enquire-js'
+import GlobalHeader from '../components/GlobalHeader'
+import GlobalFooter from '../components/GlobalFooter'
+import SiderMenu from '../components/SiderMenu'
+import NotFound from '../routes/Exception/404'
+import { getRoutes } from '../utils/utils'
+import Authorized from '../utils/Authorized'
+import { getMenuData } from '../common/menu'
+import logo from '../assets/logo.png'
 
-const { Content, Header, Footer } = Layout;
-const { AuthorizedRoute, check } = Authorized;
+const { Content, Header, Footer } = Layout
+const { AuthorizedRoute, check } = Authorized
 
 /**
  * 根据菜单取得重定向地址.
  */
-const redirectData = [];
+const redirectData = []
 const getRedirect = item => {
   if (item && item.children) {
     if (item.children[0] && item.children[0].path) {
       redirectData.push({
         from: `${item.path}`,
         to: `${item.children[0].path}`,
-      });
+      })
       item.children.forEach(children => {
-        getRedirect(children);
-      });
+        getRedirect(children)
+      })
     }
   }
-};
-getMenuData().forEach(getRedirect);
+}
+getMenuData().forEach(getRedirect)
 
 /**
  * 获取面包屑映射
@@ -52,18 +52,18 @@ getMenuData().forEach(getRedirect);
  * @param {Object} routerData 路由配置
  */
 const getBreadcrumbNameMap = (menuData, routerData) => {
-  const result = {};
-  const childResult = {};
+  const result = {}
+  const childResult = {}
   for (const i of menuData) {
     if (!routerData[i.path]) {
-      result[i.path] = i;
+      result[i.path] = i
     }
     if (i.children) {
-      Object.assign(childResult, getBreadcrumbNameMap(i.children, routerData));
+      Object.assign(childResult, getBreadcrumbNameMap(i.children, routerData))
     }
   }
-  return Object.assign({}, routerData, result, childResult);
-};
+  return Object.assign({}, routerData, result, childResult)
+}
 
 const query = {
   'screen-xs': {
@@ -84,123 +84,123 @@ const query = {
   'screen-xl': {
     minWidth: 1200,
   },
-};
+}
 
-let isMobile;
+let isMobile
 enquireScreen(b => {
-  isMobile = b;
-});
+  isMobile = b
+})
 
 class BasicLayout extends React.PureComponent {
   static childContextTypes = {
     location: PropTypes.object,
     breadcrumbNameMap: PropTypes.object,
-  };
+  }
 
   state = {
     isMobile,
-  };
+  }
 
   getChildContext() {
-    const { location, routerData } = this.props;
+    const { location, routerData } = this.props
     return {
       location,
       breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
-    };
+    }
   }
 
   componentDidMount() {
     this.enquireHandler = enquireScreen(mobile => {
       this.setState({
         isMobile: mobile,
-      });
-    });
-    const { dispatch } = this.props;
+      })
+    })
+    const { dispatch } = this.props
     dispatch({
       type: 'user/fetchCurrent',
-    });
+    })
   }
 
   componentWillUnmount() {
-    unenquireScreen(this.enquireHandler);
+    unenquireScreen(this.enquireHandler)
   }
 
   getPageTitle() {
-    const { routerData, location } = this.props;
-    const { pathname } = location;
-    let title = '政务系统';
-    let currRouterData = null;
+    const { routerData, location } = this.props
+    const { pathname } = location
+    let title = '政务数据交换平台'
+    let currRouterData = null
     // match params path
     Object.keys(routerData).forEach(key => {
       if (pathToRegexp(key).test(pathname)) {
-        currRouterData = routerData[key];
+        currRouterData = routerData[key]
       }
-    });
+    })
     if (currRouterData && currRouterData.name) {
-      title = `${currRouterData.name} - 政务系统`;
+      title = `${currRouterData.name} - 政务数据交换平台`
     }
-    return title;
+    return title
   }
 
   getBaseRedirect = () => {
     // According to the url parameter to redirect
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
-    const urlParams = new URL(window.location.href);
+    const urlParams = new URL(window.location.href)
 
-    const redirect = urlParams.searchParams.get('redirect');
+    const redirect = urlParams.searchParams.get('redirect')
     // Remove the parameters in the url
     if (redirect) {
-      urlParams.searchParams.delete('redirect');
-      window.history.replaceState(null, 'redirect', urlParams.href);
+      urlParams.searchParams.delete('redirect')
+      window.history.replaceState(null, 'redirect', urlParams.href)
     } else {
-      const { routerData } = this.props;
+      const { routerData } = this.props
       // get the first authorized route path in routerData
       const authorizedPath = Object.keys(routerData).find(
         item => check(routerData[item].authority, item) && item !== '/'
-      );
-      return authorizedPath;
+      )
+      return authorizedPath
     }
-    return redirect;
-  };
+    return redirect
+  }
 
   handleMenuCollapse = collapsed => {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: 'global/changeLayoutCollapsed',
       payload: collapsed,
-    });
-  };
+    })
+  }
 
   handleNoticeClear = type => {
-    message.success(`清空了${type}`);
-    const { dispatch } = this.props;
+    message.success(`清空了${type}`)
+    const { dispatch } = this.props
     dispatch({
       type: 'global/clearNotices',
       payload: type,
-    });
-  };
+    })
+  }
 
   handleMenuClick = ({ key }) => {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     if (key === 'triggerError') {
-      dispatch(routerRedux.push('/exception/trigger'));
-      return;
+      dispatch(routerRedux.push('/exception/trigger'))
+      return
     }
     if (key === 'logout') {
       dispatch({
         type: 'login/logout',
-      });
+      })
     }
-  };
+  }
 
   handleNoticeVisibleChange = visible => {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     if (visible) {
       dispatch({
         type: 'global/fetchNotices',
-      });
+      })
     }
-  };
+  }
 
   render() {
     const {
@@ -211,9 +211,9 @@ class BasicLayout extends React.PureComponent {
       routerData,
       match,
       location,
-    } = this.props;
-    const { isMobile: mb } = this.state;
-    const bashRedirect = this.getBaseRedirect();
+    } = this.props
+    const { isMobile: mb } = this.state
+    const bashRedirect = this.getBaseRedirect()
     const layout = (
       <Layout>
         <SiderMenu
@@ -295,7 +295,7 @@ class BasicLayout extends React.PureComponent {
           </Footer>
         </Layout>
       </Layout>
-    );
+    )
 
     return (
       <DocumentTitle title={this.getPageTitle()}>
@@ -303,7 +303,7 @@ class BasicLayout extends React.PureComponent {
           {params => <div className={classNames(params)}>{layout}</div>}
         </ContainerQuery>
       </DocumentTitle>
-    );
+    )
   }
 }
 
@@ -312,4 +312,4 @@ export default connect(({ user, global = {}, loading }) => ({
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
-}))(BasicLayout);
+}))(BasicLayout)
