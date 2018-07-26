@@ -4,70 +4,70 @@
  * @Last Modified by: fly
  * @Last Modified time: 2018-07-03 
 */
-import React from 'react';
-import { Select, Button, Table, Card } from 'antd';
-import { routerRedux } from 'dva/router';
-import { connect } from 'dva';
+import React from 'react'
+import { Select, Button, Table, Card } from 'antd'
+import { routerRedux } from 'dva/router'
+import { connect } from 'dva'
 
-import styles from './PassManagement.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './PassManagement.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
+const { Option } = Select
 class PassManagement extends React.PureComponent {
   state = {
-    startNode: '0',
-    endNode: '0',
-  };
+    startNode: '起始节点',
+    endNode: '目标节点',
+  }
 
   selectStartChange = val => {
     this.setState({
       startNode: val,
-    });
-  };
+    })
+  }
 
   selectEndChange = val => {
     this.setState({
       endNode: val,
-    });
-  };
+    })
+  }
 
   editHandle = row => {
-    const { dispatch } = this.props;
-    const { startCode, targetCode, isTwoWay, isCompress, isEncrypt } = row;
+    const { dispatch } = this.props
+    const { startCode, targetCode, isTwoWay, isCompress, isEncrypt } = row
     dispatch({
       type: 'passOperation/saveRowInfo',
       payload: { startCode, targetCode, isTwoWay, isCompress, isEncrypt },
-    });
+    })
 
-    dispatch(routerRedux.push('/infrastructure/editPass'));
-  };
+    dispatch(routerRedux.push('/infrastructure/editPass'))
+  }
 
   render() {
-    const that = this;
-    const { startNode, endNode } = this.state;
+    const that = this
+    const { startNode, endNode } = this.state
     const data1 = [
       { value: '0', label: '石家庄市发展改革委', id: 1 },
       { value: '1', label: '北京发展改革委', id: 2 },
-    ];
+    ]
     const data2 = [
       { value: '0', label: '石家庄市民政部', id: 1 },
       { value: '1', label: '北京民政部', id: 2 },
-    ];
+    ]
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const pagination = { pageSize: 10, current: 1 };
+      )
+    })
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: 'ID',
@@ -85,21 +85,21 @@ class PassManagement extends React.PureComponent {
         title: '是否双向',
         dataIndex: 'isTwoWay',
         render(text) {
-          return +text === 0 ? '否' : '是';
+          return +text === 0 ? '否' : '是'
         },
       },
       {
         title: '是否压缩',
         dataIndex: 'isCompress',
         render(text) {
-          return +text === 0 ? '否' : '是';
+          return +text === 0 ? '否' : '是'
         },
       },
       {
         title: '是否加密',
         dataIndex: 'isEncrypt',
         render(text) {
-          return +text === 0 ? '否' : '是';
+          return +text === 0 ? '否' : '是'
         },
       },
       {
@@ -126,13 +126,13 @@ class PassManagement extends React.PureComponent {
               <a href={`#${row.id}`} style={{ marginRight:10 }}>统计</a>
               <a href={`#${row.id}`} style={{ marginRight:10 }}>任务</a> */}
             </div>
-          );
+          )
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -158,15 +158,23 @@ class PassManagement extends React.PureComponent {
         passStatus: '联通',
         taskStatus: '运行中',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
           <div className={styles.forms}>
-            <Select value={startNode} style={{ marginRight: 20 }} onChange={this.selectStartChange}>
+            <Select
+              value={startNode}
+              style={{ marginRight: 20, width: 200 }}
+              onChange={this.selectStartChange}
+            >
               {selectData1}
             </Select>
-            <Select value={endNode} style={{ marginRight: 20 }} onChange={this.selectEndChange}>
+            <Select
+              value={endNode}
+              style={{ marginRight: 20, width: 200 }}
+              onChange={this.selectEndChange}
+            >
               {selectData2}
             </Select>
             <Button type="primary">搜索</Button>
@@ -184,10 +192,10 @@ class PassManagement extends React.PureComponent {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }
 
 export default connect(({ passOperation }) => ({
   data: passOperation.params,
-}))(PassManagement);
+}))(PassManagement)

@@ -1,79 +1,79 @@
-import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, Cascader, Message } from 'antd';
-import moment from 'moment';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Table, Button, Input, Select, Card, Cascader, Message } from 'antd'
+import moment from 'moment'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import styles from './SwitchManagement.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SwitchManagement.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
+const { Option } = Select
 @connect(({ switchManage }) => ({
   switchManage,
 }))
 export default class SwitchManagement extends Component {
   state = {
-    isEnable: '0',
+    isEnable: '状态',
     isStart: true,
     isStart1: false,
-  };
+  }
 
   isEnableChange = val => {
     this.setState({
       isEnable: val,
-    });
-  };
+    })
+  }
 
   handleAdd = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/infrastructure/addSwitch'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/infrastructure/addSwitch'))
+  }
 
   handleStart = () => {
-    const { isStart } = this.state;
+    const { isStart } = this.state
     if (isStart) {
       this.setState({
         isStart: false,
-      });
-      Message.info('停用成功!');
+      })
+      Message.info('停用成功!')
     } else {
       this.setState({
         isStart: true,
-      });
-      Message.info('启用成功!');
+      })
+      Message.info('启用成功!')
     }
-  };
+  }
 
   handleStart1 = () => {
-    const { isStart1 } = this.state;
+    const { isStart1 } = this.state
     if (isStart1) {
       this.setState({
         isStart1: false,
-      });
-      Message.info('停用成功!');
+      })
+      Message.info('停用成功!')
     } else {
       this.setState({
         isStart1: true,
-      });
-      Message.info('启用成功!');
+      })
+      Message.info('启用成功!')
     }
-  };
+  }
 
   render() {
-    const that = this;
-    const { isEnable, isStart, isStart1 } = this.state;
-    const data1 = [
-      {
-        value: '1001',
-        label: '机构1',
-        children: [{ value: '101', label: '机构1.1' }, { value: '102', label: '机构1.2' }],
-      },
-      {
-        value: '2001',
-        label: '机构2',
-        children: [{ value: '201', label: '机构1.2' }, { value: '202', label: '机构2.2' }],
-      },
-    ];
+    const that = this
+    const { isEnable, isStart, isStart1 } = this.state
+    // const data1 = [
+    //   {
+    //     value: '1001',
+    //     label: '机构1',
+    //     children: [{ value: '101', label: '机构1.1' }, { value: '102', label: '机构1.2' }],
+    //   },
+    //   {
+    //     value: '2001',
+    //     label: '机构2',
+    //     children: [{ value: '201', label: '机构1.2' }, { value: '202', label: '机构2.2' }],
+    //   },
+    // ]
     const data2 = [
       {
         value: '1001',
@@ -85,16 +85,16 @@ export default class SwitchManagement extends Component {
         label: '节点2',
         children: [{ value: '201', label: '节点1.2' }, { value: '202', label: '节点2.2' }],
       },
-    ];
-    const data3 = [{ value: '0', label: '启用', id: 0 }, { value: '1', label: '停用', id: 1 }];
+    ]
+    const data3 = [{ value: '0', label: '启用', id: 0 }, { value: '1', label: '停用', id: 1 }]
     const selectData3 = data3.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const pagination = { pageSize: 10, current: 1 };
+      )
+    })
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: 'ID',
@@ -116,14 +116,14 @@ export default class SwitchManagement extends Component {
         title: '更新时间',
         dataIndex: 'updateTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '状态',
         dataIndex: 'status',
         render(text) {
-          return +text === 0 ? '停用' : '启用';
+          return +text === 0 ? '停用' : '启用'
         },
       },
       {
@@ -140,7 +140,7 @@ export default class SwitchManagement extends Component {
                 </span>
                 <a style={{ marginRight: 10 }}>删除</a>
               </div>
-            );
+            )
           } else {
             return (
               <div>
@@ -148,14 +148,14 @@ export default class SwitchManagement extends Component {
                   {isStart1 ? '启用' : '停用'}
                 </span>
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -173,13 +173,13 @@ export default class SwitchManagement extends Component {
         updateTime: 232742424624,
         status: '1',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
             <Input placeholder="域名称" style={{ marginRight: 20, width: 150 }} />
-            <Cascader options={data1} placeholder="交换范围机构" style={{ marginRight: 20 }} />,
+            {/* <Cascader options={data1} placeholder="交换范围机构" style={{ marginRight: 20 }} />, */}
             <Cascader options={data2} placeholder="交换范围节点" style={{ marginRight: 20 }} />,
             <Select value={isEnable} style={{ marginRight: 20 }} onChange={this.isEnableChange}>
               {selectData3}
@@ -202,6 +202,6 @@ export default class SwitchManagement extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

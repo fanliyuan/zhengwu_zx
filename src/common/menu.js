@@ -155,7 +155,7 @@ const menuData = [
         authority: ['security', 'security-n'],
       },
     ],
-    authority: ['admin', 'security', 'admin-n', 'security-n'],
+    authority: ['admin', 'security', 'admin-n', 'security-n', 'operator'],
   },
   {
     name: '数据资源管理',
