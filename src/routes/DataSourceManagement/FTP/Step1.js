@@ -2,17 +2,17 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 23:33:06
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 09:35:47
+ * @Last Modified time: 2018-07-26 11:54:13
  * @Description: 有几个bug需要解决, 1 双击选择会造成文件夹 闪烁 , 2 选择完成后应该收起文件夹, 3 选择的滚动条可以自动,但是自动会造成闪烁
  */
-import React, { Component, Fragment } from 'react';
-import { Link } from 'dva/router';
-import { Radio, Button, Tree, message, Tooltip, Icon, Input } from 'antd';
+import React, { Component, Fragment } from 'react'
+import { Link } from 'dva/router'
+import { Radio, Button, Tree, message, Tooltip, Icon, Input } from 'antd'
 
-import { isArray } from 'util';
-import styles from './index.less';
+import { isArray } from 'util'
+import styles from './index.less'
 
-const { DirectoryTree, TreeNode } = Tree;
+const { DirectoryTree, TreeNode } = Tree
 
 const fromData = [
   {
@@ -75,23 +75,23 @@ const fromData = [
       },
     ],
   },
-];
+]
 
 function renderTreeNode(renderList) {
   if (!isArray(renderList)) {
-    return null;
+    return null
   }
   return renderList.map(item => {
     if (!isArray(item.children)) {
-      return <TreeNode title={item.title || '佚名'} key={item.key} isLeaf />;
+      return <TreeNode title={item.title || '佚名'} key={item.key} isLeaf />
     } else {
       return (
         <TreeNode title={item.title || '佚名'} key={item.key}>
           {renderTreeNode(item.children)}
         </TreeNode>
-      );
+      )
     }
-  });
+  })
 }
 
 export default class Step1 extends Component {
@@ -99,23 +99,25 @@ export default class Step1 extends Component {
     fromServerData: [],
     toServerData: [],
     optionData: {},
-  };
+  }
 
   typeChange = e => {
     this.setState({
       optionData: { ...this.state.optionData, type: e.target.value }, // eslint-disable-line
-    });
-  };
+    })
+  }
 
   newhange = e => {
     this.setState({
       optionData: { ...this.state.optionData, isNew: e.target.value }, // eslint-disable-line
-    });
-  };
+    })
+  }
 
-  fromChange = (e, node) => {
-    message.success(`选择了${node.props.title}`);
-  };
+  fromChange = e => {
+    if (e && e.node && e.node.props) {
+      message.success(`选择了${e.node.props.title}`)
+    }
+  }
 
   render() {
     /* eslint-disable */
@@ -124,7 +126,7 @@ export default class Step1 extends Component {
       toServerData,
       optionData,
       optionData: { type = 0, fromServer, toServer, isNew = 0, directoryName = '' },
-    } = this.state;
+    } = this.state
 
     return (
       <Fragment>
@@ -146,14 +148,14 @@ export default class Step1 extends Component {
               <Icon type="question-circle-o" />
             </Tooltip>
           </span>
-          <DirectoryTree onDoubleClick={this.fromChange} className={styles.directory}>
+          <DirectoryTree onRightClick={this.fromChange} className={styles.directory}>
             {renderTreeNode(fromData)}
           </DirectoryTree>
         </div>
         <div className={styles.row}>
           <span className={styles.label}>
             注册储存路径
-            <Tooltip title="点击展开目录,双击选择">
+            <Tooltip title="左键点击展开目录,右键单击选择">
               <Icon type="question-circle-o" />
             </Tooltip>
           </span>
@@ -193,6 +195,6 @@ export default class Step1 extends Component {
           </Link>
         </div>
       </Fragment>
-    );
+    )
   }
 }

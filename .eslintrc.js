@@ -66,6 +66,7 @@ module.exports = {
     'no-param-reassign': [0],
     'react/jsx-tag-spacing': [0],
     'react/no-multi-comp': [0],
+    semi: ['error', 'never'],
   },
   parserOptions: {
     ecmaFeatures: {
@@ -75,4 +76,4 @@ module.exports = {
   settings: {
     polyfills: ['fetch', 'promises'],
   },
-};
+}
