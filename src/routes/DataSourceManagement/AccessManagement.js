@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
-import moment from 'moment';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message } from 'antd'
+import moment from 'moment'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import styles from './AccessManagement.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './AccessManagement.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+const { Option } = Select
+const { RangePicker } = DatePicker
 @connect(({ accessManagement }) => ({
   accessManagement,
 }))
@@ -20,83 +20,83 @@ export default class AccessManagement extends Component {
     creater: '0',
     // status:'0',
     isNodeOperator: false,
-  };
+  }
 
   componentDidMount() {
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
-    });
+    })
   }
 
   selectDataTypeChange = val => {
     this.setState({
       dataType: val,
-    });
-  };
+    })
+  }
 
   selectNodeChange = () => {
     // this.setState({
     //   nodeName:val,
     // })
-  };
+  }
 
   selectOwingJgChange = val => {
     this.setState({
       owingJg: val,
-    });
-  };
+    })
+  }
 
   selectCreaterChange = val => {
     this.setState({
       creater: val,
-    });
-  };
+    })
+  }
 
   selectStatusChange = () => {
     // this.setState({
     //   status:val,
     // })
-  };
+  }
 
   handleAdd = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/addAccess'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/addAccess'))
+  }
 
   handleEdit = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/addAccess'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/editAccess'))
+  }
 
   handleRegister = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
+  }
 
   handleRegister1 = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/updataFile'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/updataFile'))
+  }
 
   handleRegister2 = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/ftp'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/ftp'))
+  }
 
   render() {
-    const that = this;
-    const { dataType, owingJg, creater, isNodeOperator } = this.state;
+    const that = this
+    const { dataType, owingJg, creater, isNodeOperator } = this.state
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
-    ];
+    ]
     const selectData = data.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     // const data1=[
     //   {value:'0',id:0,label:'节点'},
     //   {value:'1',id:1,label:'节点1'},
@@ -107,22 +107,22 @@ export default class AccessManagement extends Component {
     const data2 = [
       { value: '0', id: 0, label: '所属机构' },
       { value: '1', id: 1, label: 'XXX机构' },
-    ];
+    ]
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const data3 = [{ value: '0', id: 0, label: '创建人' }, { value: '1', id: 1, label: '创建人1' }];
+      )
+    })
+    const data3 = [{ value: '0', id: 0, label: '创建人' }, { value: '1', id: 1, label: '创建人1' }]
     const selectData3 = data3.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     // const data4=[
     //   {value:'0',id:0,label:'审核状态'},
     //   {value:'1',id:1,label:'审核状态1'},
@@ -130,7 +130,7 @@ export default class AccessManagement extends Component {
     // const selectData4 = data4.map(item => {
     //   return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
     // })
-    const pagination = { pageSize: 10, current: 1 };
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '名称',
@@ -156,72 +156,92 @@ export default class AccessManagement extends Component {
         title: '建立时间',
         dataIndex: 'createTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '审核状态',
         dataIndex: 'status',
         render(text) {
-          return +text === 0 ? '待审核' : +text === 1 ? '已通过' : '已拒绝';
+          return +text === 0 ? '待审核' : +text === 1 ? '已通过' : '已拒绝'
         },
       },
       {
         title: '操作',
         render(text, row) {
-          if (!isNodeOperator) return <span>--</span>;
+          if (!isNodeOperator) return <span>--</span>
           if (row.status === '0') {
             return (
               <div>
                 <span className={styles.editBtn} onClick={that.handleEdit}>
                   修改
                 </span>
-                <a>删除</a>
+                <Popconfirm
+                  title={`此操作将删除${row.name},是否继续?`}
+                  onConfirm={() => message.info('执行了删除操作')}
+                >
+                  <a style={{ marginRight: 20 }}>删除</a>
+                </Popconfirm>
               </div>
-            );
+            )
           } else if (+row.id === 1) {
             return (
               <div>
                 <span className={styles.editBtn} onClick={that.handleEdit}>
                   修改
                 </span>
-                <a style={{ marginRight: 20 }}>删除</a>
+                <Popconfirm
+                  title={`此操作将删除${row.name},是否继续?`}
+                  onConfirm={() => message.info('执行了删除操作')}
+                >
+                  <a style={{ marginRight: 20 }}>删除</a>
+                </Popconfirm>
                 <span className={styles.editBtn} onClick={that.handleRegister}>
                   资源注册
                 </span>
               </div>
-            );
+            )
           } else if (+row.id === 2) {
             return (
               <div>
                 <span className={styles.editBtn} onClick={that.handleEdit}>
                   修改
                 </span>
-                <a style={{ marginRight: 20 }}>删除</a>
+                <Popconfirm
+                  title={`此操作将删除${row.name},是否继续?`}
+                  onConfirm={() => message.info('执行了删除操作')}
+                >
+                  <a style={{ marginRight: 20 }}>删除</a>
+                </Popconfirm>
                 <span className={styles.editBtn} onClick={that.handleRegister1}>
                   资源注册
                 </span>
               </div>
-            );
+            )
           } else if (+row.id === 3) {
             return (
               <div>
                 <span className={styles.editBtn} onClick={that.handleEdit}>
                   修改
                 </span>
-                <a style={{ marginRight: 20 }}>删除</a>
+                <Popconfirm
+                  title={`此操作将删除${row.name},是否继续?`}
+                  onConfirm={() => message.info('执行了删除操作')}
+                >
+                  <a style={{ marginRight: 20 }}>删除</a>
+                </Popconfirm>
                 <span className={styles.editBtn} onClick={that.handleRegister2}>
                   资源注册
                 </span>
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -263,18 +283,18 @@ export default class AccessManagement extends Component {
         createTime: 233435354,
         status: '2',
       },
-    ];
-    let rowSelection = {
-      // onChange: selectedRows => {
-      // },
-      // getCheckboxProps: record => ({
-      //   disabled: record.name === 'Disabled User',
-      //   name: record.name,
-      // }),
-    };
-    if (!isNodeOperator) {
-      rowSelection = null;
-    }
+    ]
+    // let rowSelection = {
+    //   // onChange: selectedRows => {
+    //   // },
+    //   // getCheckboxProps: record => ({
+    //   //   disabled: record.name === 'Disabled User',
+    //   //   name: record.name,
+    //   // }),
+    // }
+    // if (!isNodeOperator) {
+    //   rowSelection = null
+    // }
     return (
       <PageHeaderLayout>
         <Card>
@@ -306,7 +326,7 @@ export default class AccessManagement extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-              rowSelection={rowSelection}
+              // rowSelection={rowSelection}
             />
           </div>
           {/* <div>
@@ -314,6 +334,6 @@ export default class AccessManagement extends Component {
           </div> */}
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

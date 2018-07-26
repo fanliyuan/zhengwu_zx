@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import { Input, Card, Form, Button, Cascader } from 'antd';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Input, Card, Form, Button, Cascader, message } from 'antd'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 // import styles from './AddAccess.less';
 
-const FormItem = Form.Item;
+const FormItem = Form.Item
 @connect(({ addAccess }) => ({
   addAccess,
 }))
 @Form.create()
 export default class AddAccess extends Component {
-  state = {};
+  state = {}
 
-  handleSubmit = () => {};
+  handleSubmit = e => {
+    e.preventDefault()
+    message.success('提交成功, 即将跳转')
+    setTimeout(() => {
+      this.props.dispatch(routerRedux.push('/dataSourceManagement/accessManagement'))
+    }, 1000)
+  }
 
   handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/accessManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/accessManagement'))
+  }
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue } = this.props.form
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -33,13 +39,7 @@ export default class AddAccess extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
-    const submitLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
-      },
-    };
+    }
     const options = [
       {
         label: '半结构化存储',
@@ -85,7 +85,7 @@ export default class AddAccess extends Component {
           },
         ],
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -226,23 +226,21 @@ export default class AddAccess extends Component {
                     : 'block',
               }}
             >
-              <a href="">测试</a>
+              <a onClick={() => message.info('点击了测试')}>测试</a>
             </FormItem>
 
             {/* <FormItem {...submitLayout}>
               <span>选择本地文件后,在资源注册时直接选择本地文件即可</span>
             </FormItem> */}
-            <FormItem {...submitLayout}>
-              <Button type="primary" htmlType="submit" className="mr16">
+            <div className="btnclsb">
+              <Button type="primary" htmlType="submit" className="mr64">
                 保存
               </Button>
-              <Button type="primary" onClick={this.handleBack}>
-                取消
-              </Button>
-            </FormItem>
+              <Button onClick={this.handleBack}>取消</Button>
+            </div>
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

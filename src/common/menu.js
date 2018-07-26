@@ -1,4 +1,4 @@
-import { isUrl } from '../utils/utils';
+import { isUrl } from '../utils/utils'
 
 const menuData = [
   {
@@ -17,18 +17,18 @@ const menuData = [
       {
         name: '平台概览',
         path: 'platformOverview',
-        authority: 'operator',
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '系统通知',
         path: 'systemNotification',
-        authority: ['operator'],
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '通知详情',
         path: 'noticeDetail',
         hideInMenu: true,
-        authority: ['operator'],
+        authority: ['operator', 'operator-n'],
       },
       // {
       //   name: '工作台',
@@ -171,6 +171,13 @@ const menuData = [
         name: '新建接入',
         path: 'addAccess',
         hideInMenu: true,
+        authority: 'operator-n',
+      },
+      {
+        name: '修改接入',
+        path: 'editAccess',
+        hideInMenu: true,
+        authority: 'operator-n',
       },
       // {
       //   name: '接入审核',
@@ -534,24 +541,24 @@ const menuData = [
       },
     ],
   },
-];
+]
 
 function formatter(data, parentPath = '/', parentAuthority) {
   return data.map(item => {
-    let { path } = item;
+    let { path } = item
     if (!isUrl(path)) {
-      path = parentPath + item.path;
+      path = parentPath + item.path
     }
     const result = {
       ...item,
       path,
       authority: item.authority || parentAuthority,
-    };
-    if (item.children) {
-      result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority);
     }
-    return result;
-  });
+    if (item.children) {
+      result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority)
+    }
+    return result
+  })
 }
 
-export const getMenuData = () => formatter(menuData);
+export const getMenuData = () => formatter(menuData)
