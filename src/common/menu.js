@@ -212,27 +212,24 @@ const menuData = [
         name: '新建目录',
         path: 'newMenu',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '目录审核',
         path: 'catalogAudit',
         authority: 'assessor-n',
       },
-      // 这里应该是订阅审核
-      // {
-      //   name: '订阅授权',
-      //   path: 'SubscriptionLicense',
-      //   authority: ['assessor-n', 'operator-n'],
-      // },
       {
         name: '开放共享',
         path: 'openShare',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '开放共享文件',
         path: 'openShareFile',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '资源',
@@ -267,6 +264,7 @@ const menuData = [
       {
         name: '查看授权',
         path: 'checkAudit',
+        hideInMenu: true,
         authority: ['assessor-n', 'operator-n'],
       },
       {
