@@ -257,15 +257,15 @@ export default class ResourceConnection extends Component {
     ];
     return (
       <PageHeaderLayout>
+        <div className="btncls">
+          <Button onClick={this.handleBack} className="fr mr40">
+            返回
+          </Button>
+          <Button type="primary" className="fr mr40" onClick={this.handleSave}>
+            保存
+          </Button>
+        </div>
         <Card>
-          <div className={styles.backBtn}>
-            <Button type="primary" className="mr8" onClick={this.handleSave}>
-              保存
-            </Button>
-            <Button type="primary" onClick={this.handleBack}>
-              返回
-            </Button>
-          </div>
           <div className={styles.form}>
             <h3>
               目录编码:<span> 3300031306381126/00001</span>

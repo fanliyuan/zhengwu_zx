@@ -169,12 +169,12 @@ export default class Task extends Component {
     ];
     return (
       <PageHeaderLayout>
+        <div className="btncls">
+          <Button onClick={this.handleBack} className="fr mr40">
+            返回
+          </Button>
+        </div>
         <Card>
-          <div style={{ textAlign: 'right' }}>
-            <Button type="primary" onClick={this.handleBack}>
-              返回
-            </Button>
-          </div>
           <p className={styles.titleName}>
             &nbsp;数据库: &nbsp;<span>Youedata_dig</span>
             &nbsp;&nbsp;数据类型: &nbsp;<span>Mysql</span>

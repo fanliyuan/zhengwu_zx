@@ -247,11 +247,12 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/AddDirectory')
       ),
     },
-    '/dataSourceManagement/searchRelationship': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/SearchRelationship')
-      ),
-    },
+    // 资源检索关系
+    // '/dataSourceManagement/searchRelationship': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataSourceManagement/SearchRelationship')
+    //   ),
+    // },
     '/dataSourceManagement/source': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Source')),
     },
@@ -293,11 +294,12 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/CatalogAudit')
       ),
     },
-    '/dataSourceManagement/subscriptionLicense': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/SubscriptionLicense')
-      ),
-    },
+    // 订阅授权
+    // '/dataSourceManagement/subscriptionLicense': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataSourceManagement/SubscriptionLicense')
+    //   ),
+    // },
     '/dataSourceManagement/subscriptionAudit': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/SubscriptionAudit')

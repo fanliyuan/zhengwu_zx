@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-13 16:15:18
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 14:27:49
+ * @Last Modified time: 2018-07-25 21:53:49
  * @描述: 数据交换管理 -- 资源订阅 -- 资源集市 -- 订阅(文件)
 */
 import React, { Component } from 'react';
@@ -23,7 +23,7 @@ const itemLayout = {
 };
 
 function ButtonList(props) {
-  const { onClick = () => {}, disabled = false } = props;
+  const { onClick = () => {}, disabled = true } = props;
   return (
     <div className="btncls clearfix">
       <Link to="/dataSwitchManagement/sourceSubscription" className="fr mr40">

@@ -1,17 +1,25 @@
 import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import { Card, Input, Button, Form, Select, TreeSelect } from 'antd';
+import { connect } from 'dva';
+import { Link, routerRedux } from 'dva/router';
+import { Card, Input, Button, Form, Select, TreeSelect, message } from 'antd';
 
 // import styles from './AddNode.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const FormItem = Form.Item;
 const { Option } = Select;
+@connect()
 @Form.create()
 export default class AddNode extends Component {
   state = {};
 
-  handleSubmit = () => {};
+  handleSubmit = e => {
+    e.preventDefault();
+    message.success('新建成功,即将跳转到上级页面');
+    setTimeout(() => {
+      this.props.dispatch(routerRedux.push('/infrastructure/node'));
+    }, 1000);
+  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -21,7 +29,7 @@ export default class AddNode extends Component {
     ];
     const roleData = role.map(item => {
       return (
-        <Option value={item.value} label={item.label} key={item.id}>
+        <Option value={item.value} key={item.id}>
           {item.label}
         </Option>
       );
@@ -45,17 +53,17 @@ export default class AddNode extends Component {
     };
     const treeData = [
       {
-        label: '第一级节点',
+        title: '第一级节点',
         value: '0-0',
         key: '0-0',
         children: [
           {
-            label: '第二级节点1',
+            title: '第二级节点1',
             value: '0-0-0',
             key: '0-0-0',
           },
           {
-            label: '第二级节点2',
+            title: '第二级节点2',
             value: '0-0-1',
             key: '0-0-1',
           },
@@ -88,7 +96,7 @@ export default class AddNode extends Component {
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('parentNode')(
-                <TreeSelect treeData={treeData} placeholder="Please select" treeDefaultExpandAll />
+                <TreeSelect treeData={treeData} placeholder="请选择节点" treeDefaultExpandAll />
               )}
             </FormItem>
             <FormItem label="所属机构" {...formItemLayout}>

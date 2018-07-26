@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { Link, routerRedux } from 'dva/router';
 
-import { Card, Form, Select, Checkbox, Button } from 'antd';
+import { Card, Form, Select, Checkbox, Button, message } from 'antd';
 
 // import styles from './EditPass.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
@@ -17,6 +18,10 @@ class EditPass extends Component {
     this.props.form.validateFieldsAndScroll(err => {
       // values
       if (!err) {
+        message.success('提交成功, 即将返回上一页');
+        setTimeout(() => {
+          this.props.dispatch(routerRedux.push('/infrastructure/pass'));
+        }, 1000);
         // const { dispatch } = this.props;
         // dispatch({
         //   type:'',
@@ -62,12 +67,7 @@ class EditPass extends Component {
         md: { span: 10 },
       },
     };
-    const submitFormLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
-      },
-    };
+
     return (
       <PageHeaderLayout>
         <Card>
@@ -75,42 +75,30 @@ class EditPass extends Component {
             <FormItem label="起始节点" {...formItemLayout}>
               {getFieldDecorator('startNode', {
                 initialValue: data.startCode,
-                // rules:[
-                //   {
-                //     required:true,
-                //     message:'请选择起始节点',
-                //   },
-                // ],
-              })(
-                <Select placeholder="起始节点" disabled>
-                  {startNode}
-                </Select>
-              )}
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择起始节点',
+                  },
+                ],
+              })(<Select placeholder="起始节点">{startNode}</Select>)}
             </FormItem>
             <FormItem label="目标节点" {...formItemLayout}>
               {getFieldDecorator('endNode', {
                 initialValue: data.targetCode,
-                // rules:[
-                //   {
-                //     required:true,
-                //     message:'请选择目标节点',
-                //   },
-                // ],
-              })(
-                <Select placeholder="目标节点" disabled>
-                  {targetNode}
-                </Select>
-              )}
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择目标节点',
+                  },
+                ],
+              })(<Select placeholder="目标节点">{targetNode}</Select>)}
             </FormItem>
             <FormItem label="双向传输" {...formItemLayout}>
               {getFieldDecorator('twoWayTransfer', {
                 valuePropName: 'checked',
-                initialValue: true, // !!+data.isTwoWay
-              })(
-                <Checkbox Checked disabled>
-                  启用
-                </Checkbox>
-              )}
+                initialValue: !!+data.isTwoWay,
+              })(<Checkbox>启用</Checkbox>)}
             </FormItem>
             <FormItem label="压缩传输" {...formItemLayout}>
               {getFieldDecorator('compressTransfer', {
@@ -124,11 +112,14 @@ class EditPass extends Component {
                 initialValue: !!+data.isEncrypt,
               })(<Checkbox>启用</Checkbox>)}
             </FormItem>
-            <FormItem {...submitFormLayout}>
-              <Button type="primary" htmlType="submit">
+            <div className="btnclsb">
+              <Button type="primary" htmlType="submit" className="mr64">
                 提交
               </Button>
-            </FormItem>
+              <Link to="/infrastructure/pass">
+                <Button>取消</Button>
+              </Link>
+            </div>
           </Form>
         </Card>
       </PageHeaderLayout>
