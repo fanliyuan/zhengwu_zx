@@ -196,10 +196,14 @@ export default class AccessManagement extends Component {
           return +text === 0 ? '待审核' : +text === 1 ? '已通过' : '已拒绝'
         },
       },
-      {
+    ]
+    columns.forEach(item => {
+      item.align = 'center'
+    })
+    if (isNodeOperator) {
+      columns.push({
         title: '操作',
         render(text, row) {
-          if (!isNodeOperator) return <span>--</span>
           if (row.status === '0') {
             return (
               <div>
@@ -267,11 +271,8 @@ export default class AccessManagement extends Component {
             )
           }
         },
-      },
-    ]
-    columns.forEach(item => {
-      item.align = 'center'
-    })
+      })
+    }
     const list = [
       {
         id: 0,

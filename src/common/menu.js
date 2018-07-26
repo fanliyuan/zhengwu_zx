@@ -215,6 +215,18 @@ const menuData = [
         authority: 'operator-n',
       },
       {
+        name: '修改目录',
+        path: 'editMenu',
+        hideInMenu: true,
+        authority: 'operator-n',
+      },
+      {
+        name: '查看目录',
+        path: 'checkMenu',
+        hideInMenu: true,
+        authority: 'operator',
+      },
+      {
         name: '目录审核',
         path: 'catalogAudit',
         authority: 'assessor-n',
@@ -283,7 +295,7 @@ const menuData = [
         hideInMenu: true,
       },
       {
-        name: 'ftp设置同步计划',
+        name: '设置同步计划',
         path: 'ftp',
         hideInMenu: true,
       },

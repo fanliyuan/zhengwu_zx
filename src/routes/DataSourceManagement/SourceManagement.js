@@ -71,6 +71,11 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
   }
 
+  handleCheck = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/checkDataInfo'))
+  }
+
   handleCatalog = () => {
     const { dispatch } = this.props
     dispatch(routerRedux.push('/dataSourceManagement/catalog'))
@@ -197,7 +202,7 @@ export default class SourceManagement extends Component {
                   </span>
                 )}
                 {!isNodeOperator && (
-                  <span className={styles.clickBtn} onClick={that.handleEdit}>
+                  <span className={styles.clickBtn} onClick={that.handleCheck}>
                     查看
                   </span>
                 )}
@@ -229,7 +234,7 @@ export default class SourceManagement extends Component {
                   </span>
                 )}
                 {!isNodeOperator && (
-                  <span className={styles.clickBtn} onClick={that.handleEdit}>
+                  <span className={styles.clickBtn} onClick={that.handleCheck}>
                     查看
                   </span>
                 )}

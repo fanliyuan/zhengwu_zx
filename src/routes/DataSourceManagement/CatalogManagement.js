@@ -271,7 +271,7 @@ export default class CatalogManagement extends Component {
                   修改
                 </Link>
               ) : (
-                <Link to="/dataSourceManagement/newMenu/one" className={styles.clickBtn}>
+                <Link to="/dataSourceManagement/checkMenu/one" className={styles.clickBtn}>
                   查看
                 </Link>
               )}

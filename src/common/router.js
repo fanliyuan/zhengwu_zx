@@ -196,6 +196,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/InputDataInfo')
       ),
     },
+    '/dataSourceManagement/checkDataInfo': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/InputDataInfo')
+      ),
+    },
     '/dataSourceManagement/resourceConnection': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/ResourceConnection')
@@ -324,6 +329,12 @@ export const getRouterData = app => {
     '/dataSourceManagement/newMenu': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/NewMenu')),
     },
+    '/dataSourceManagement/editMenu': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/NewMenu')),
+    },
+    '/dataSourceManagement/checkMenu': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/NewMenu')),
+    },
     '/dataSourceManagement/newMenu/one': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/NewMenu/Step1')
@@ -337,6 +348,16 @@ export const getRouterData = app => {
     '/dataSourceManagement/newMenu/three': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/NewMenu/Step3')
+      ),
+    },
+    '/dataSourceManagement/editMenu/one': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step1')
+      ),
+    },
+    '/dataSourceManagement/checkMenu/one': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step1')
       ),
     },
     '/dataSourceManagement/auditLog/:id': {

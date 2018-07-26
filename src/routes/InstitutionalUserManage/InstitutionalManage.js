@@ -105,9 +105,11 @@ export default class InstitutionalManage extends Component {
         },
       },
     ]
-    // columns.forEach(item => {
-    //   item.align = 'center'
-    // })
+    columns.forEach(item => {
+      if (item.title !== '机构名称') {
+        item.align = 'center'
+      }
+    })
     const list = [
       {
         id: 0,
