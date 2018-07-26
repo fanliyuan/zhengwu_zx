@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { Table, Button, Card, Divider } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Table, Card, Divider } from 'antd'
+import moment from 'moment'
 
-import styles from './FileSource.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './FileSource.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 @connect()
 export default class FileSource extends Component {
@@ -15,22 +15,22 @@ export default class FileSource extends Component {
         pathname: `/dataSourceManagement/fileSourceDetail/${row.id}`,
         state: row,
       })
-    );
-  };
+    )
+  }
 
   render() {
-    const pagination = { pageSize: 10, current: 1 };
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '文件名称',
         dataIndex: 'name',
-        render: (text, row) => {
-          return (
-            <a onClick={() => this.goToDetail(row)} title="目前链接有误">
-              {text}
-            </a>
-          );
-        },
+        // render: (text, row) => {
+        //   return (
+        //     <a onClick={() => this.goToDetail(row)} title="目前链接有误">
+        //       {text}
+        //     </a>
+        //   )
+        // },
       },
       {
         title: '类型',
@@ -48,23 +48,23 @@ export default class FileSource extends Component {
         title: '上传时间',
         dataIndex: 'uploadTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
-      {
-        title: '操作',
-        render() {
-          return (
-            <div>
-              <a>删除</a>
-            </div>
-          );
-        },
-      },
-    ];
+      // {
+      //   title: '操作',
+      //   render() {
+      //     return (
+      //       <div>
+      //         <a>删除</a>
+      //       </div>
+      //     )
+      //   },
+      // },
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -90,15 +90,15 @@ export default class FileSource extends Component {
         uploader: '王五',
         uploadTime: 34242342,
       },
-    ];
-    const rowSelection = {
-      // onChange: selectedRows => {
-      // },
-      // getCheckboxProps: record => ({
-      //   disabled: record.name === 'Disabled User',
-      //   name: record.name,
-      // }),
-    };
+    ]
+    // const rowSelection = {
+    //   // onChange: selectedRows => {
+    //   // },
+    //   // getCheckboxProps: record => ({
+    //   //   disabled: record.name === 'Disabled User',
+    //   //   name: record.name,
+    //   // }),
+    // }
     return (
       <PageHeaderLayout>
         <Card>
@@ -116,15 +116,15 @@ export default class FileSource extends Component {
               dataSource={list}
               pagination={pagination}
               rowKey="id"
-              rowSelection={rowSelection}
+              // rowSelection={rowSelection}
               bordered
             />
           </div>
-          <div>
+          {/* <div>
             <Button type="primary">删除</Button>
-          </div>
+          </div> */}
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

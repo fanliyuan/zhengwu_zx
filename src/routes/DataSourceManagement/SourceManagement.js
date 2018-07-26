@@ -16,7 +16,7 @@ export default class SourceManagement extends Component {
   state = {
     dataType: '0',
     nodeName: '0',
-    owingJg: '0',
+    // owingJg: '0',
     status: '0',
     isNodeOperator: false,
   }
@@ -39,10 +39,10 @@ export default class SourceManagement extends Component {
     })
   }
 
-  owingJgChange = val => {
-    this.setState({
-      owingJg: val,
-    })
+  owingJgChange = () => {
+    // this.setState({
+    //   owingJg: val,
+    // })
   }
 
   statusChange = val => {
@@ -83,7 +83,7 @@ export default class SourceManagement extends Component {
 
   render() {
     const that = this
-    const { dataType, nodeName, owingJg, status, isNodeOperator } = this.state
+    const { dataType, nodeName, status, isNodeOperator } = this.state
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
@@ -103,17 +103,17 @@ export default class SourceManagement extends Component {
         </Option>
       )
     })
-    const data2 = [
-      { value: '0', id: 0, label: '所属机构' },
-      { value: '1', id: 1, label: 'XXX机构' },
-    ]
-    const selectData2 = data2.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
+    // const data2 = [
+    //   { value: '0', id: 0, label: '所属机构' },
+    //   { value: '1', id: 1, label: 'XXX机构' },
+    // ]
+    // const selectData2 = data2.map(item => {
+    //   return (
+    //     <Option value={item.value} key={item.id} title={item.label}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
     const data4 = [
       { value: '0', id: 0, label: '审核状态' },
       { value: '1', id: 1, label: '审核状态1' },
@@ -127,10 +127,10 @@ export default class SourceManagement extends Component {
     })
     const pagination = { pageSize: 10, current: 1 }
     const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-      },
+      // {
+      //   title: 'ID',
+      //   dataIndex: 'id',
+      // },
       {
         title: '资源名称',
         dataIndex: 'name',
@@ -143,14 +143,14 @@ export default class SourceManagement extends Component {
         title: '节点',
         dataIndex: 'node',
       },
-      {
-        title: '所属机构',
-        dataIndex: 'institution',
-      },
-      {
-        title: '应用系统名称',
-        dataIndex: 'applicationSystemName',
-      },
+      // {
+      //   title: '所属机构',
+      //   dataIndex: 'institution',
+      // },
+      // {
+      //   title: '应用系统名称',
+      //   dataIndex: 'applicationSystemName',
+      // },
       {
         title: '注册时间',
         dataIndex: 'createTime',
@@ -158,17 +158,17 @@ export default class SourceManagement extends Component {
           return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
-      {
-        title: '数据最后更新时间',
-        dataIndex: 'lastUpdataTime',
-        render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss')
-        },
-      },
-      {
-        title: '订阅数',
-        dataIndex: 'subscription',
-      },
+      // {
+      //   title: '数据最后更新时间',
+      //   dataIndex: 'lastUpdataTime',
+      //   render(text) {
+      // //     return moment(text).format('YYYY-MM-DD HH:mm:ss')
+      // //   },
+      // // },
+      // {
+      //   title: '订阅数',
+      //   dataIndex: 'subscription',
+      // },
       {
         title: '审核状态',
         dataIndex: 'status',
@@ -304,7 +304,7 @@ export default class SourceManagement extends Component {
         <Card>
           <div className={styles.form}>
             <Input placeholder="资源名称" style={{ width: 150, marginRight: 20 }} />
-            <Input placeholder="应用系统名称" style={{ width: 150, marginRight: 20 }} />
+            {/* <Input placeholder="应用系统名称" style={{ width: 150, marginRight: 20 }} /> */}
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={dataType}
@@ -319,13 +319,13 @@ export default class SourceManagement extends Component {
             >
               {selectData1}
             </Select>
-            <Select
+            {/* <Select
               style={{ marginRight: 20, width: 120 }}
               value={owingJg}
               onChange={this.owingJgChange}
             >
               {selectData2}
-            </Select>
+            </Select> */}
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={status}
@@ -333,7 +333,7 @@ export default class SourceManagement extends Component {
             >
               {selectData4}
             </Select>
-            <RangePicker style={{ marginRight: 20, width: 250 }} />
+            <RangePicker style={{ marginRight: 20, width: 210 }} />
             <Button type="primary">搜索</Button>
           </div>
           <div>

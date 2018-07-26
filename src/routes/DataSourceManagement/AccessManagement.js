@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message } from 'antd'
+import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message, Cascader } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -16,7 +16,7 @@ export default class AccessManagement extends Component {
   state = {
     dataType: '0',
     // nodeName:'0',
-    owingJg: '0',
+    // owingJg: '0',
     creater: '0',
     // status:'0',
     isNodeOperator: false,
@@ -40,10 +40,10 @@ export default class AccessManagement extends Component {
     // })
   }
 
-  selectOwingJgChange = val => {
-    this.setState({
-      owingJg: val,
-    })
+  selectOwingJgChange = () => {
+    // this.setState({
+    //   owingJg: val,
+    // })
   }
 
   selectCreaterChange = val => {
@@ -85,7 +85,7 @@ export default class AccessManagement extends Component {
 
   render() {
     const that = this
-    const { dataType, owingJg, creater, isNodeOperator } = this.state
+    const { dataType, creater, isNodeOperator } = this.state
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
@@ -104,17 +104,47 @@ export default class AccessManagement extends Component {
     // const selectData1 = data1.map(item => {
     //   return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
     // })
-    const data2 = [
-      { value: '0', id: 0, label: '所属机构' },
-      { value: '1', id: 1, label: 'XXX机构' },
+    // const data2 = [
+    //   { value: '0', id: 0, label: '所属机构' },
+    //   { value: '1', id: 1, label: 'XXX机构' },
+    // ]
+    // const selectData2 = data2.map(item => {
+    //   return (
+    //     <Option value={item.value} key={item.id} title={item.label}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
+    const options = [
+      {
+        value: '0-0',
+        label: '北京国土局',
+        children: [
+          {
+            value: '0-0-1',
+            label: '海淀国土局',
+            // children: [{
+            //   value: 'xihu',
+            //   label: 'West Lake',
+            // }],
+          },
+        ],
+      },
+      {
+        value: '0-1',
+        label: '河北国土局',
+        children: [
+          {
+            value: '0-1-0',
+            label: '保定国土局',
+            // children: [{
+            //   value: 'zhonghuamen',
+            //   label: 'Zhong Hua Men',
+            // }],
+          },
+        ],
+      },
     ]
-    const selectData2 = data2.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
     const data3 = [{ value: '0', id: 0, label: '创建人' }, { value: '1', id: 1, label: '创建人1' }]
     const selectData3 = data3.map(item => {
       return (
@@ -303,9 +333,7 @@ export default class AccessManagement extends Component {
             <Select value={dataType} onChange={this.selectDataTypeChange} className={styles.select}>
               {selectData}
             </Select>
-            <Select value={owingJg} onChange={this.selectOwingJgChange} className={styles.select}>
-              {selectData2}
-            </Select>
+            <Cascader options={options} placeholder="所属机构" style={{ marginRight: 16 }} />
             <Select value={creater} onChange={this.selectCreaterChange} className={styles.select}>
               {selectData3}
             </Select>

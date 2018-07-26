@@ -5,15 +5,15 @@
  * @Last Modified time: 2018-07-25 16:54:26
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
-import React, { Component } from 'react';
-import { Card, Row, Col, Button, Divider, Table, Tooltip } from 'antd';
-import moment from 'moment';
-import TextTruncate from 'react-text-truncate';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Card, Row, Col, Button, Divider, Table, Tooltip } from 'antd'
+import moment from 'moment'
+import TextTruncate from 'react-text-truncate'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import styles from './DataBaseSource.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './DataBaseSource.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 @connect(({ dataBaseSource }) => ({
   dataBaseSource,
@@ -23,39 +23,39 @@ export default class DataBaseSource extends Component {
     view: false,
     agency: true,
     showRow: 0,
-  };
+  }
 
   handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'))
+  }
 
   handleView = row => {
     this.setState({
       view: true,
       agency: false,
       showRow: row.id,
-    });
-  };
+    })
+  }
 
   handleAgency = row => {
     this.setState({
       view: false,
       agency: true,
       showRow: row.id,
-    });
-  };
+    })
+  }
 
   render() {
-    const { view, agency, showRow } = this.state;
-    const that = this;
+    const { view, agency, showRow } = this.state
+    const that = this
     const pagination = {
       current: 1,
       pageSize: 10,
-    };
+    }
     const rowSelection = {
       onChange: () => {},
-    };
+    }
     const columns = [
       {
         title: '序号',
@@ -89,10 +89,10 @@ export default class DataBaseSource extends Component {
                 结构
               </span>
             </div>
-          );
+          )
         },
       },
-    ];
+    ]
     const list = [
       {
         id: 0,
@@ -104,7 +104,7 @@ export default class DataBaseSource extends Component {
         tableName: 'dig_order',
         chineseLabel: '订单表',
       },
-    ];
+    ]
     const columns1 = [
       {
         title: '序号',
@@ -122,7 +122,7 @@ export default class DataBaseSource extends Component {
         title: 'last_updated',
         dataIndex: 'last_updated',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
       {
@@ -142,11 +142,11 @@ export default class DataBaseSource extends Component {
                 text={text}
               />
             </Tooltip>
-          );
+          )
         },
         width: 250,
       },
-    ];
+    ]
     const list1 = [
       {
         id: 0,
@@ -175,7 +175,7 @@ export default class DataBaseSource extends Component {
         post_content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
       },
-    ];
+    ]
     const columns2 = [
       {
         title: '序号',
@@ -197,7 +197,7 @@ export default class DataBaseSource extends Component {
         title: '中文标注',
         dataIndex: 'chineseLabel',
       },
-    ];
+    ]
     const list2 = [
       {
         id: 0,
@@ -220,7 +220,7 @@ export default class DataBaseSource extends Component {
         dataType: 'datetime',
         chineseLabel: '',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <div className="btncls clearfix">
@@ -265,7 +265,7 @@ export default class DataBaseSource extends Component {
           <Row>
             <Col span={24}>
               <h3>
-                数据表 共<span>32</span>张
+                数据表 共<span className={styles.spe}>32</span>张
               </h3>
               <Table
                 columns={columns}
@@ -279,7 +279,7 @@ export default class DataBaseSource extends Component {
             {view && (
               <Col span={24}>
                 <h3>
-                  数据 共<span>32</span>行
+                  数据 共<span className={styles.spe}>32</span>行
                 </h3>
                 <Table
                   columns={columns1}
@@ -294,7 +294,7 @@ export default class DataBaseSource extends Component {
             {agency && (
               <Col span={24}>
                 <h3>
-                  数据项 共<span>6</span>行
+                  数据项 共<span className={styles.spe}>6</span>行
                 </h3>
                 <Table
                   columns={columns2}
@@ -309,6 +309,6 @@ export default class DataBaseSource extends Component {
           </Row>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

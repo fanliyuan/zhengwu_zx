@@ -1,29 +1,29 @@
-import React, { Component } from 'react';
-import { Card, Tabs, Table, Button } from 'antd';
-import moment from 'moment';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Card, Tabs, Table, Button } from 'antd'
+import moment from 'moment'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './Task.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './Task.less'
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 @connect(({ task }) => ({
   task,
 }))
 export default class Task extends Component {
-  state = {};
+  state = {}
 
   handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'))
+  }
 
   render() {
     const pagination = {
       pageSize: 10,
       current: 1,
-    };
+    }
     const columns = [
       {
         title: 'ID',
@@ -35,7 +35,7 @@ export default class Task extends Component {
         dataIndex: 'operation',
         align: 'center',
         render(text) {
-          return +text === 0 ? '启动' : '停止';
+          return +text === 0 ? '启动' : '停止'
         },
       },
       {
@@ -43,7 +43,7 @@ export default class Task extends Component {
         dataIndex: 'operationStyle',
         align: 'center',
         render(text) {
-          return +text === 0 ? '自动' : +text === 1 ? '手动' : '实时';
+          return +text === 0 ? '自动' : +text === 1 ? '手动' : '实时'
         },
       },
       {
@@ -51,7 +51,7 @@ export default class Task extends Component {
         dataIndex: 'result',
         align: 'center',
         render(text) {
-          return +text === 0 ? '启动成功' : '停止成功';
+          return +text === 0 ? '启动成功' : '停止成功'
         },
       },
       {
@@ -59,10 +59,10 @@ export default class Task extends Component {
         dataIndex: 'times',
         align: 'center',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
-    ];
+    ]
     const columns1 = [
       {
         title: 'ID',
@@ -119,10 +119,10 @@ export default class Task extends Component {
         dataIndex: 'times',
         align: 'center',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
-    ];
+    ]
     const data = [
       {
         id: 0,
@@ -138,7 +138,7 @@ export default class Task extends Component {
         result: 0,
         times: 43333922,
       },
-    ];
+    ]
     const data1 = [
       {
         id: 0,
@@ -166,7 +166,7 @@ export default class Task extends Component {
         errRecord: 5,
         tiems: 34343433,
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <div className="btncls">
@@ -204,9 +204,9 @@ export default class Task extends Component {
                   <li>
                     <span>数据库文件大小:</span>102.34MB
                   </li>
-                  <li>
+                  {/* <li>
                     <span>数据资源:</span> <a href="">查看</a>
-                  </li>
+                  </li> */}
                 </ul>
               </TabPane>
               <TabPane tab="运行日志" key="2">
@@ -233,6 +233,6 @@ export default class Task extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

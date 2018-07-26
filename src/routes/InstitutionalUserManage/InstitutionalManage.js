@@ -40,25 +40,25 @@ export default class InstitutionalManage extends Component {
     // })
     const data2 = [
       {
-        value: '1001',
+        value: '0',
         label: '河北省',
         children: [
           {
-            value: '101',
+            value: '0-0',
             label: '保定市',
-            children: [{ value: '1-0', label: '涞源县' }, { value: '1-1', label: '涞水县' }],
+            children: [{ value: '0-0-0', label: '涞源县' }, { value: '0-0-1', label: '涞水县' }],
           },
           {
-            value: '102',
+            value: '0-1',
             label: '唐山市',
-            children: [{ value: '0-0', label: '滦县' }, { value: '0-1', label: '乐亭县' }],
+            children: [{ value: '0-1-0', label: '滦县' }, { value: '0-1-1', label: '乐亭县' }],
           },
         ],
       },
       {
-        value: '2001',
+        value: '1',
         label: '北京市',
-        children: [{ value: '201', label: '丰台区' }, { value: '202', label: '海淀区' }],
+        children: [{ value: '1-0', label: '丰台区' }, { value: '1-1', label: '海淀区' }],
       },
     ]
     // const pagination = { pageSize:10,current:1 }
@@ -172,13 +172,7 @@ export default class InstitutionalManage extends Component {
             </Button>
           </div>
           <div>
-            <Table
-              columns={columns}
-              dataSource={list}
-              // pagination={pagination}
-              rowKey="id"
-              bordered
-            />
+            <Table columns={columns} dataSource={list} pagination={false} rowKey="id" bordered />
           </div>
         </Card>
       </PageHeaderLayout>
