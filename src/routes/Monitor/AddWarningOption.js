@@ -4,8 +4,8 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-23 18:07:40
 */
-import React, { Component, Fragment } from 'react';
-import { Link } from 'dva/router';
+import React, { Component, Fragment } from 'react'
+import { Link } from 'dva/router'
 import {
   Form,
   Input,
@@ -18,12 +18,12 @@ import {
   Row,
   Col,
   Modal,
-} from 'antd';
+} from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './AddWarningOption.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './AddWarningOption.less'
 
-const { Item } = Form;
+const { Item } = Form
 const itemLayout = {
   labelCol: {
     span: 2,
@@ -31,7 +31,7 @@ const itemLayout = {
   wrapperCol: {
     span: 22,
   },
-};
+}
 const modalLayout = {
   labelCol: {
     span: 6,
@@ -39,32 +39,32 @@ const modalLayout = {
   wrapperCol: {
     span: 14,
   },
-};
+}
 
 @Form.create()
 export default class AddWarningOption extends Component {
   state = {
     modalVisibility: false,
-  };
+  }
 
   submit = e => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, value) => {
       if (!err) {
-        console.log(value); // eslint-disable-line
+        console.log(value) // eslint-disable-line
       }
-    });
-  };
+    })
+  }
 
   methodChange = e => {
     this.setState({
       modalVisibility: e.target.value === 1,
-    });
-  };
+    })
+  }
 
   render() {
-    const { modalVisibility } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const { modalVisibility } = this.state
+    const { getFieldDecorator } = this.props.form
     const nodeOptions = [
       {
         value: 100,
@@ -94,7 +94,7 @@ export default class AddWarningOption extends Component {
           },
         ],
       },
-    ];
+    ]
 
     return (
       <PageHeaderLayout>
@@ -240,6 +240,6 @@ export default class AddWarningOption extends Component {
           </Modal>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

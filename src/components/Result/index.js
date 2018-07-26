@@ -1,7 +1,7 @@
-import React from 'react';
-import classNames from 'classnames';
-import { Icon } from 'antd';
-import styles from './index.less';
+import React from 'react'
+import classNames from 'classnames'
+import { Icon } from 'antd'
+import styles from './index.less'
 
 export default function Result({
   className,
@@ -15,8 +15,8 @@ export default function Result({
   const iconMap = {
     error: <Icon className={styles.error} type="close-circle" />,
     success: <Icon className={styles.success} type="check-circle" />,
-  };
-  const clsString = classNames(styles.result, className);
+  }
+  const clsString = classNames(styles.result, className)
   return (
     <div className={clsString} {...restProps}>
       <div className={styles.icon}>{iconMap[type]}</div>
@@ -25,5 +25,5 @@ export default function Result({
       {extra && <div className={styles.extra}>{extra}</div>}
       {actions && <div className={styles.actions}>{actions}</div>}
     </div>
-  );
+  )
 }

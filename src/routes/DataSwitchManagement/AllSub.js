@@ -5,23 +5,23 @@
  * @Last Modified time: 2018-07-25 15:21:32
  * @描述: 所有订阅
 */
-import React, { Component, Fragment } from 'react';
-import { connect } from 'dva';
-import { Link } from 'dva/router';
-import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal } from 'antd';
-import moment from 'moment';
+import React, { Component, Fragment } from 'react'
+import { connect } from 'dva'
+import { Link } from 'dva/router'
+import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { getName, getAddress, getDepartment } from '../../utils/faker';
-import styles from './AllSub.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import { getName, getAddress, getDepartment } from '../../utils/faker'
+import styles from './AllSub.less'
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
-const { TabPane } = Tabs;
-const { confirm } = Modal;
+const { RangePicker } = DatePicker
+const { Option } = Select
+const { TabPane } = Tabs
+const { confirm } = Modal
 
 function getData1() {
-  const data = [];
+  const data = []
   for (let i = 0; i < 120; i++) {
     data.push({
       id: i,
@@ -34,12 +34,12 @@ function getData1() {
       time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
       menu: `目录名${i}`,
       type: Math.round(Math.random()) === 1 ? 'file' : 'table',
-    });
+    })
   }
-  return data;
+  return data
 }
 function getData2() {
-  const data = [];
+  const data = []
   for (let i = 0; i < 120; i++) {
     data.push({
       id: i,
@@ -51,12 +51,12 @@ function getData2() {
       time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
       menu: `目录名${i}`,
       dataType: Math.round(Math.random()) ? 'file' : 'table',
-    });
+    })
   }
-  return data;
+  return data
 }
 function getData3() {
-  const data = [];
+  const data = []
   for (let i = 0; i < 120; i++) {
     data.push({
       id: i,
@@ -71,13 +71,13 @@ function getData3() {
       time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
       menu: `目录名${i}`,
       dataType: Math.round(Math.random()) ? 'file' : 'table',
-    });
+    })
   }
-  return data;
+  return data
 }
-const data1 = getData1();
-const data2 = getData2();
-const data3 = getData3();
+const data1 = getData1()
+const data2 = getData2()
+const data3 = getData3()
 
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
@@ -93,63 +93,63 @@ export default class AllSub extends Component {
     isChanged: false,
     selectKeys: [],
     isNodeOperator: false,
-  };
+  }
 
   componentDidMount() {
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
-    });
+    })
   }
 
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       name: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleThemeChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       theme: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handSelectChange = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       state: val,
-    });
-  };
+    })
+  }
 
   handlePick = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       date: val,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return; // eslint-disable-line
+    if (!this.state.isChanged) return // eslint-disable-line
     this.setState({
       isChanged: false,
-    });
-  };
+    })
+  }
 
   handleStandardTableChange = pagination => {
-    console.log(pagination); // eslint-disable-line
-  };
+    console.log(pagination) // eslint-disable-line
+  }
 
   render() {
-    const { name, date, state, theme, selectKeys, organization, isNodeOperator } = this.state;
+    const { name, date, state, theme, selectKeys, organization, isNodeOperator } = this.state
 
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
@@ -166,7 +166,7 @@ export default class AllSub extends Component {
         value: 1,
         label: '已停止',
       },
-    ];
+    ]
 
     const columns = [
       {
@@ -275,10 +275,10 @@ export default class AllSub extends Component {
                 <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
               )}
             </Fragment>
-          );
+          )
         },
       },
-    ];
+    ]
     const willAuditColumns = [
       {
         title: '序号',
@@ -325,10 +325,10 @@ export default class AllSub extends Component {
               )}
               <Link to={`logAudit/${row.id}`}>审核日志</Link>
             </Fragment>
-          );
+          )
         },
       },
-    ];
+    ]
     const failSubcribedColumns = [
       {
         title: '序号',
@@ -374,40 +374,40 @@ export default class AllSub extends Component {
                 </Link>
               )}
             </Fragment>
-          );
+          )
         },
       },
-    ];
+    ]
 
     let rowSelection = {
       selectKeys,
       onChange: keys => {
         this.setState({
           selectKeys: keys,
-        });
+        })
       },
-    };
+    }
     if (!isNodeOperator) {
-      rowSelection = null;
+      rowSelection = null
     }
 
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     willAuditColumns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     failSubcribedColumns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const optionComs1 = stateList.map(item => {
       return (
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const optionComs2 = [
       { value: -1, label: '全部' },
       { value: 0, label: '上级待审核' },
@@ -416,9 +416,9 @@ export default class AllSub extends Component {
       <Option value={item.value} key={item.value}>
         {item.label}
       </Option>
-    ));
+    ))
 
-    const tabscls = isNodeOperator ? '' : styles.tabscls;
+    const tabscls = isNodeOperator ? '' : styles.tabscls
 
     return (
       <PageHeaderLayout>
@@ -465,7 +465,7 @@ export default class AllSub extends Component {
                         title: '是否确定?',
                         content: '此操作将启动所有已选择项',
                         onOk() {
-                          message.success(`${selectKeys.join(',')}已经启动`);
+                          message.success(`${selectKeys.join(',')}已经启动`)
                         },
                         okText: '确定',
                         cancelText: '取消',
@@ -481,7 +481,7 @@ export default class AllSub extends Component {
                         title: '是否确定?',
                         content: '此操作将停止所有已选择项',
                         onOk() {
-                          message.success(`${selectKeys.join(',')}已经停止`);
+                          message.success(`${selectKeys.join(',')}已经停止`)
                         },
                         okText: '确定',
                         cancelText: '取消',
@@ -562,6 +562,6 @@ export default class AllSub extends Component {
           </Tabs>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

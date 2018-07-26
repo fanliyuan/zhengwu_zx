@@ -1,7 +1,7 @@
-import React from 'react';
-import { Icon } from 'antd';
-import classNames from 'classnames';
-import styles from './index.less';
+import React from 'react'
+import { Icon } from 'antd'
+import classNames from 'classnames'
+import styles from './index.less'
 
 const NumberInfo = ({ theme, title, subTitle, total, subTotal, status, suffix, gap, ...rest }) => (
   <div
@@ -25,6 +25,6 @@ const NumberInfo = ({ theme, title, subTitle, total, subTotal, status, suffix, g
       )}
     </div>
   </div>
-);
+)
 
-export default NumberInfo;
+export default NumberInfo

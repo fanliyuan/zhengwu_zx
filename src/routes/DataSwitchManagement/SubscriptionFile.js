@@ -5,14 +5,14 @@
  * @Last Modified time: 2018-07-25 21:53:49
  * @描述: 数据交换管理 -- 资源订阅 -- 资源集市 -- 订阅(文件)
 */
-import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import { Form, Input, Select, Radio, Button, Tooltip, Icon } from 'antd';
+import React, { Component } from 'react'
+import { Link } from 'dva/router'
+import { Form, Input, Select, Radio, Button, Tooltip, Icon } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './SubscriptionFile.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './SubscriptionFile.less'
 
-const { Item } = Form;
+const { Item } = Form
 const itemLayout = {
   labelCol: {
     span: 2,
@@ -20,10 +20,10 @@ const itemLayout = {
   wrapperCol: {
     span: 10,
   },
-};
+}
 
 function ButtonList(props) {
-  const { onClick = () => {}, disabled = true } = props;
+  const { onClick = () => {}, disabled = true } = props
   return (
     <div className="btncls clearfix">
       <Link to="/dataSwitchManagement/sourceSubscription" className="fr mr40">
@@ -33,11 +33,11 @@ function ButtonList(props) {
         确定
       </Button>
     </div>
-  );
+  )
 }
 
 function hasErrors(errors) {
-  return Object.keys(errors).some(item => errors[item]);
+  return Object.keys(errors).some(item => errors[item])
 }
 
 // 禁用鼠标右键
@@ -48,21 +48,21 @@ function hasErrors(errors) {
 
 @Form.create()
 export default class SubscriptionFile extends Component {
-  state = {};
+  state = {}
 
   componentDidMount() {
-    this.props.form.validateFields();
+    this.props.form.validateFields()
   }
 
-  handleSave = () => {};
+  handleSave = () => {}
 
   render() {
     // const { name, method, rateType, rateOptions, path, floder } = this.state
-    const { getFieldDecorator, isFieldTouched, getFieldError, getFieldsError } = this.props.form;
+    const { getFieldDecorator, isFieldTouched, getFieldError, getFieldsError } = this.props.form
 
     const nameError =
       (isFieldTouched('name') && getFieldError('name')) ||
-      (isFieldTouched('name1') && getFieldError('name1'));
+      (isFieldTouched('name1') && getFieldError('name1'))
 
     return (
       <PageHeaderLayout>
@@ -136,6 +136,6 @@ export default class SubscriptionFile extends Component {
           </Form>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

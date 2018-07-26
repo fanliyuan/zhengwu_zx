@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Card, List, Button } from 'antd';
+import React, { Component } from 'react'
+import { Card, List, Button } from 'antd'
 
 // import styles from './LogAudit.less';
-import { Link } from 'dva/router';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import { Link } from 'dva/router'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 export default class LogAudit extends Component {
   render() {
@@ -32,7 +32,7 @@ export default class LogAudit extends Component {
         title: '拒绝理由',
         content: '',
       },
-    ];
+    ]
     const data1 = [
       {
         title: '申请人',
@@ -58,7 +58,7 @@ export default class LogAudit extends Component {
         title: '拒绝理由',
         content: '',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <div className="common-layout">
@@ -95,6 +95,6 @@ export default class LogAudit extends Component {
           </Card>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

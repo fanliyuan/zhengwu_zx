@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Card, Row, Col, List } from 'antd';
-import { Pie, TimelineChart, Gauge } from 'components/Charts';
+import React, { Component } from 'react'
+import { Card, Row, Col, List } from 'antd'
+import { Pie, TimelineChart, Gauge } from 'components/Charts'
 
-import styles from './PlatformOverview.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './PlatformOverview.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 export default class PlatformOverview extends Component {
-  state = {};
+  state = {}
 
   render() {
     const offlineChartData = [
@@ -29,7 +29,7 @@ export default class PlatformOverview extends Component {
       { x: 1531739722492, y1: 10, y2: 84 },
       { x: 1531741522492, y1: 67, y2: 34 },
       { x: 1531743322492, y1: 11, y2: 48 },
-    ];
+    ]
     const data = [
       {
         title: '机构数量',
@@ -63,7 +63,7 @@ export default class PlatformOverview extends Component {
         title: '总交换数',
         content: 1024,
       },
-    ];
+    ]
     const salesPieData = [
       {
         x: '分类1',
@@ -89,7 +89,7 @@ export default class PlatformOverview extends Component {
         x: '分类6',
         y: 14,
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -146,6 +146,6 @@ export default class PlatformOverview extends Component {
           </Row>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

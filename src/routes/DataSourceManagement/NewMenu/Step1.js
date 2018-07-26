@@ -4,15 +4,15 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-24 15:35:11
 */
-import React, { PureComponent } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { Form, Input, Button, Select } from 'antd';
+import React, { PureComponent } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Form, Input, Button, Select } from 'antd'
 
-import styles from './index.less';
+import styles from './index.less'
 
-const { Item } = Form;
-const { Option } = Select;
+const { Item } = Form
+const { Option } = Select
 const formItemLayout = {
   labelCol: {
     span: 7,
@@ -20,7 +20,7 @@ const formItemLayout = {
   wrapperCol: {
     span: 17,
   },
-};
+}
 
 @connect(({ step }) => ({
   step,
@@ -38,27 +38,27 @@ export default class Step1 extends PureComponent {
       resourceCode: '',
       formName: '',
     },
-  };
+  }
 
   handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/catalog'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/catalog'))
+  }
 
   render() {
     const {
       form: { getFieldDecorator, validateFields },
       dispatch,
-    } = this.props;
-    const { data } = this.state;
+    } = this.props
+    const { data } = this.state
 
     const onValidateForm = () => {
       validateFields(err => {
         if (!err) {
-          dispatch(routerRedux.push('/dataSourceManagement/newMenu/two'));
+          dispatch(routerRedux.push('/dataSourceManagement/newMenu/two'))
         }
-      });
-    };
+      })
+    }
 
     return (
       <Form className={styles.stepForm}>
@@ -132,6 +132,6 @@ export default class Step1 extends PureComponent {
           </Button> */}
         </Item>
       </Form>
-    );
+    )
   }
 }

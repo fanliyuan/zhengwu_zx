@@ -4,16 +4,16 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-19 16:16:44
 */
-import React, { Component } from 'react';
-import { Tabs, Form, Input, Select, Cascader, Table, Button, DatePicker } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { Tabs, Form, Input, Select, Cascader, Table, Button, DatePicker } from 'antd'
+import moment from 'moment'
 
-import { Link } from 'dva/router';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './Task.less';
+import { Link } from 'dva/router'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './Task.less'
 
-const dataPub = [];
-const dataSub = [];
+const dataPub = []
+const dataSub = []
 for (let i = 0; i < 198; i++) {
   dataPub.push({
     id: i,
@@ -23,7 +23,7 @@ for (let i = 0; i < 198; i++) {
     count: `${Math.ceil(Math.random() * 100000 + 500000)}条`,
     time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
     running: Math.round(Math.random()) === 1 ? '是' : '否',
-  });
+  })
   dataSub.push({
     id: i,
     pubName: `发布名${i}`,
@@ -33,7 +33,7 @@ for (let i = 0; i < 198; i++) {
     state: Math.round(Math.random()) === 1 ? '启用' : '停用',
     time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
     running: Math.round(Math.random()) === 1 ? '是' : '否',
-  });
+  })
 }
 
 export default class Task extends Component {
@@ -50,87 +50,87 @@ export default class Task extends Component {
     },
     pubIsChanged: false,
     subIsChanged: false,
-  };
+  }
 
   namePubChange = e => {
-    const { queryPub } = this.state;
+    const { queryPub } = this.state
     this.setState({
       queryPub: {
         ...queryPub,
         namePub: e.target.value,
       },
       pubIsChanged: true,
-    });
-  };
+    })
+  }
 
   nodeChange = value => {
-    const { queryPub } = this.state;
+    const { queryPub } = this.state
     this.setState({
       queryPub: {
         ...queryPub,
         node: value,
       },
       pubIsChanged: true,
-    });
-  };
+    })
+  }
 
   statePubChange = value => {
-    const { queryPub } = this.state;
+    const { queryPub } = this.state
     this.setState({
       queryPub: {
         ...queryPub,
         statePub: value,
       },
       pubIsChanged: true,
-    });
-  };
+    })
+  }
 
   timeChange = value => {
-    const { queryPub } = this.state;
+    const { queryPub } = this.state
     this.setState({
       queryPub: {
         ...queryPub,
         time: value,
       },
       pubIsChanged: true,
-    });
-  };
+    })
+  }
 
   searchPub = () => {
-    if (!this.state.pubIsChanged) return false;
-  };
+    if (!this.state.pubIsChanged) return false
+  }
 
   nameSubChange = e => {
-    const { querySub } = this.state;
+    const { querySub } = this.state
     this.setState({
       querySub: {
         ...querySub,
         nameSub: e.target.value,
       },
       subIsChanged: true,
-    });
-  };
+    })
+  }
 
   stateSubChange = value => {
-    const { querySub } = this.state;
+    const { querySub } = this.state
     this.setState({
       querySub: {
         ...querySub,
         stateSub: value,
       },
       subIsChanged: true,
-    });
-  };
+    })
+  }
 
   searchSub = () => {
-    if (!this.state.subIsChanged) return false;
-  };
+    if (!this.state.subIsChanged) return false
+  }
 
   render() {
     const {
       queryPub: { namePub, node, statePub, time },
       querySub: { nameSub, stateSub },
-    } = this.state;
+    } = this.state
 
     const nodeList = [
       {
@@ -165,18 +165,18 @@ export default class Task extends Component {
           },
         ],
       },
-    ];
+    ]
     const statePubList = [
       { value: -1, label: '全部状态' },
       { value: 0, label: '是' },
       { value: 1, label: '否' },
-    ];
+    ]
 
     const stateSubList = [
       { value: -1, label: '全部状态' },
       { value: 0, label: '启用' },
       { value: 1, label: '停用' },
-    ];
+    ]
 
     const columnsPub = [
       {
@@ -211,13 +211,13 @@ export default class Task extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          return <Link to={`/monitor/PubDetail/${row.id}`}>详情</Link>;
+          return <Link to={`/monitor/PubDetail/${row.id}`}>详情</Link>
         },
       },
-    ];
+    ]
     columnsPub.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const columnsSub = [
       {
         title: '序号',
@@ -255,28 +255,28 @@ export default class Task extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          return <Link to={`/monitor/SubDetail/${row.id}`}>详情</Link>;
+          return <Link to={`/monitor/SubDetail/${row.id}`}>详情</Link>
         },
       },
-    ];
+    ]
     columnsSub.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const statePubComs = statePubList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value}>
           {item.label}
         </Select.Option>
-      );
-    });
+      )
+    })
     const stateSubComs = stateSubList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value}>
           {item.label}
         </Select.Option>
-      );
-    });
+      )
+    })
 
     return (
       <PageHeaderLayout>
@@ -321,6 +321,6 @@ export default class Task extends Component {
           </Tabs>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

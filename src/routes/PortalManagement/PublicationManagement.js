@@ -5,7 +5,7 @@
  * @Last Modified time: 2018-07-23 11:16:26
  * @描述: 开放门户管理--资讯管理--发布管理
 */
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react'
 // import { connect } from 'dva';
 import {
   DatePicker,
@@ -18,23 +18,23 @@ import {
   Modal,
   Form,
   Radio,
-} from 'antd';
-import moment from 'moment';
-import { Link } from 'dva/router';
-import copy from 'copy-to-clipboard';
+} from 'antd'
+import moment from 'moment'
+import { Link } from 'dva/router'
+import copy from 'copy-to-clipboard'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './PublicationManagement.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './PublicationManagement.less'
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+const { RangePicker } = DatePicker
+const { Option } = Select
 
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
 //   loading: loading.models.overviewLogging,
 // }))
 
-const data = [];
+const data = []
 
 for (let i = 0; i < 120; i++) {
   data.push({
@@ -46,7 +46,7 @@ for (let i = 0; i < 120; i++) {
     operator: `操作人${i}`,
     time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
     state: Math.round(Math.random()),
-  });
+  })
 }
 
 @Form.create()
@@ -60,7 +60,7 @@ export default class PublicationManagement extends Component {
     date: [],
     isChanged: false,
     showModal: false,
-  };
+  }
 
   componentDidMount() {
     // const { dispatch } = this.props
@@ -81,59 +81,59 @@ export default class PublicationManagement extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       name: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleSystemChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       system: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleTypeChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       type: e,
-    });
-  };
+    })
+  }
 
   handleSubscribeChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       subscribe: e,
-    });
-  };
+    })
+  }
 
   handleAuditChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       audit: e,
-    });
-  };
+    })
+  }
 
   handlePickChange = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       date: val,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return; // eslint-disable-line
+    if (!this.state.isChanged) return // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -149,18 +149,18 @@ export default class PublicationManagement extends Component {
     // })
     this.setState({
       isChanged: false,
-    });
+    })
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
-  };
+  }
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination); // eslint-disable-line
+    console.log(pagination) // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -173,7 +173,7 @@ export default class PublicationManagement extends Component {
     //   type: 'overviewLogging/log',
     //   payload: { query: {...query, date: dateRange}, pagination },
     // });
-  };
+  }
 
   // goPublication = () => {
   //   const { dispatch } = this.props
@@ -183,25 +183,25 @@ export default class PublicationManagement extends Component {
   // }
 
   publishCancel = row => {
-    message.success(`已取消发布${row.title}`);
-  };
+    message.success(`已取消发布${row.title}`)
+  }
 
   copyUrl = row => {
-    copy(`这是复制的${row.title}`);
-    message.success('复制成功');
-  };
+    copy(`这是复制的${row.title}`)
+    message.success('复制成功')
+  }
 
   handleSet = row => {
     this.setState({
       showModal: true,
-    });
+    })
     // message.success(row.top)
-    this.props.form.setFieldsValue({ top: row.top, recommend: row.recommend });
-  };
+    this.props.form.setFieldsValue({ top: row.top, recommend: row.recommend })
+  }
 
   render() {
-    const { name, date, audit, subscribe, type, system, showModal } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const { name, date, audit, subscribe, type, system, showModal } = this.state
+    const { getFieldDecorator } = this.props.form
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const typeList = [
@@ -217,7 +217,7 @@ export default class PublicationManagement extends Component {
         value: 2,
         label: '目录',
       },
-    ];
+    ]
     const topList = [
       {
         value: -1,
@@ -231,7 +231,7 @@ export default class PublicationManagement extends Component {
         value: 1,
         label: '未置顶',
       },
-    ];
+    ]
     const recommendList = [
       {
         value: -1,
@@ -245,7 +245,7 @@ export default class PublicationManagement extends Component {
         value: 1,
         label: '未推荐',
       },
-    ];
+    ]
 
     const columns = [
       {
@@ -294,7 +294,7 @@ export default class PublicationManagement extends Component {
                 </a>
                 <a onClick={() => this.copyUrl(row)}>复制地址</a>
               </Fragment>
-            );
+            )
           }
           return (
             <Fragment>
@@ -305,14 +305,14 @@ export default class PublicationManagement extends Component {
                 设置
               </a>
             </Fragment>
-          );
+          )
         },
       },
-    ];
+    ]
 
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const typeComs = typeList.map(item => {
       // eslint-disable-line
@@ -320,26 +320,26 @@ export default class PublicationManagement extends Component {
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const topComs = topList.map(item => {
       // eslint-disable-line
       return (
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const recommendComs = recommendList.map(item => {
       // eslint-disable-line
       return (
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
-    const firstComs = typeComs;
-    const secondeComs = null;
+      )
+    })
+    const firstComs = typeComs
+    const secondeComs = null
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
@@ -422,6 +422,6 @@ export default class PublicationManagement extends Component {
           </Modal>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

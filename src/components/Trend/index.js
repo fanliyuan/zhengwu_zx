@@ -1,7 +1,7 @@
-import React from 'react';
-import { Icon } from 'antd';
-import classNames from 'classnames';
-import styles from './index.less';
+import React from 'react'
+import { Icon } from 'antd'
+import classNames from 'classnames'
+import styles from './index.less'
 
 const Trend = ({ colorful = true, reverseColor = false, flag, children, className, ...rest }) => {
   const classString = classNames(
@@ -11,7 +11,7 @@ const Trend = ({ colorful = true, reverseColor = false, flag, children, classNam
       [styles.reverseColor]: reverseColor && colorful,
     },
     className
-  );
+  )
   return (
     <div {...rest} className={classString} title={typeof children === 'string' ? children : ''}>
       <span className={styles.value}>{children}</span>
@@ -21,7 +21,7 @@ const Trend = ({ colorful = true, reverseColor = false, flag, children, classNam
         </span>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Trend;
+export default Trend

@@ -5,15 +5,15 @@
  * @Last Modified time: 2018-07-25 16:31:37
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
-import React, { Component } from 'react';
-import { Card, Row, Col, Button, Divider, Table, Tooltip } from 'antd';
-import moment from 'moment';
-import TextTruncate from 'react-text-truncate';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Card, Row, Col, Button, Divider, Table, Tooltip } from 'antd'
+import moment from 'moment'
+import TextTruncate from 'react-text-truncate'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import styles from './Source.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './Source.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 @connect(({ Source }) => ({
   Source,
@@ -22,37 +22,37 @@ export default class Source extends Component {
   state = {
     view: false,
     agency: true,
-  };
+  }
 
   handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'))
+  }
 
   handleView = () => {
     this.setState({
       view: true,
       agency: false,
-    });
-  };
+    })
+  }
 
   handleAgency = () => {
     this.setState({
       view: false,
       agency: true,
-    });
-  };
+    })
+  }
 
   render() {
-    const { view, agency } = this.state;
-    const that = this;
+    const { view, agency } = this.state
+    const that = this
     const pagination = {
       current: 1,
       pageSize: 10,
-    };
+    }
     const rowSelection = {
       onChange: () => {},
-    };
+    }
     const columns = [
       {
         title: '序号',
@@ -86,10 +86,10 @@ export default class Source extends Component {
                 结构
               </span>
             </div>
-          );
+          )
         },
       },
-    ];
+    ]
     const list = [
       {
         id: 0,
@@ -101,7 +101,7 @@ export default class Source extends Component {
         tableName: 'dig_order',
         chineseLabel: '订单表',
       },
-    ];
+    ]
     const columns1 = [
       {
         title: '序号',
@@ -119,7 +119,7 @@ export default class Source extends Component {
         title: 'last_updated',
         dataIndex: 'last_updated',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
       {
@@ -139,11 +139,11 @@ export default class Source extends Component {
                 text={text}
               />
             </Tooltip>
-          );
+          )
         },
         width: 250,
       },
-    ];
+    ]
     const list1 = [
       {
         id: 0,
@@ -172,7 +172,7 @@ export default class Source extends Component {
         post_content:
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida…',
       },
-    ];
+    ]
     const columns2 = [
       {
         title: '序号',
@@ -194,7 +194,7 @@ export default class Source extends Component {
         title: '中文标注',
         dataIndex: 'chineseLabel',
       },
-    ];
+    ]
     const list2 = [
       {
         id: 0,
@@ -217,7 +217,7 @@ export default class Source extends Component {
         dataType: 'datetime',
         chineseLabel: '',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <div className="btncls clearfix">
@@ -306,6 +306,6 @@ export default class Source extends Component {
           </Row>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

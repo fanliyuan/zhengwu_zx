@@ -1,5 +1,5 @@
 /* eslint-disable import/no-mutable-exports */
-let CURRENT = 'NULL';
+let CURRENT = 'NULL'
 /**
  * use  authority or getAuthority
  * @param {string|()=>String} currentAuthority
@@ -8,17 +8,17 @@ const renderAuthorize = Authorized => {
   return currentAuthority => {
     if (currentAuthority) {
       if (currentAuthority.constructor.name === 'Function') {
-        CURRENT = currentAuthority();
+        CURRENT = currentAuthority()
       }
       if (currentAuthority.constructor.name === 'String') {
-        CURRENT = currentAuthority;
+        CURRENT = currentAuthority
       }
     } else {
-      CURRENT = 'NULL';
+      CURRENT = 'NULL'
     }
-    return Authorized;
-  };
-};
+    return Authorized
+  }
+}
 
-export { CURRENT };
-export default Authorized => renderAuthorize(Authorized);
+export { CURRENT }
+export default Authorized => renderAuthorize(Authorized)

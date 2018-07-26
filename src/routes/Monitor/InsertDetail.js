@@ -5,13 +5,13 @@
  * @Last Modified time: 2018-07-17 11:12:44
  * @描述: 监控告警 -- 接入监控 -- 接入源数据监控
 */
-import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import { Form, DatePicker, Table, Button } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { Link } from 'dva/router'
+import { Form, DatePicker, Table, Button } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './InsertDetail.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './InsertDetail.less'
 
 export default class InsertDetail extends Component {
   state = {
@@ -19,29 +19,29 @@ export default class InsertDetail extends Component {
       time: [],
     },
     isChanged: false,
-  };
+  }
 
   timeChange = value => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         time: value,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   search = () => {
     if (!this.state.isChanged) {
-      return false;
+      return false
     }
-  };
+  }
 
   render() {
     const {
       query: { time },
-    } = this.state;
+    } = this.state
 
     const columns = [
       {
@@ -76,15 +76,15 @@ export default class InsertDetail extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          return <Link to={`/monitor/insertResource/${row.id}`}>详情</Link>;
+          return <Link to={`/monitor/insertResource/${row.id}`}>详情</Link>
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
-    const data = [];
+    const data = []
     for (let i = 0; i < 144; i++) {
       data.push({
         id: i,
@@ -94,7 +94,7 @@ export default class InsertDetail extends Component {
         delete: Math.ceil(Math.random() * 100 + 20),
         exception: Math.ceil(Math.random() * 100 + 20),
         time: moment(Date.now() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
-      });
+      })
     }
 
     return (
@@ -113,6 +113,6 @@ export default class InsertDetail extends Component {
           <Table columns={columns} dataSource={data} rowKey="id" bordered />
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

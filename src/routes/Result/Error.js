@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
-import { Button, Icon, Card } from 'antd';
-import Result from 'components/Result';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import React, { Fragment } from 'react'
+import { Button, Icon, Card } from 'antd'
+import Result from 'components/Result'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const extra = (
   <Fragment>
@@ -30,9 +30,9 @@ const extra = (
       </a>
     </div>
   </Fragment>
-);
+)
 
-const actions = <Button type="primary">返回修改</Button>;
+const actions = <Button type="primary">返回修改</Button>
 
 export default () => (
   <PageHeaderLayout>
@@ -47,4 +47,4 @@ export default () => (
       />
     </Card>
   </PageHeaderLayout>
-);
+)

@@ -5,19 +5,19 @@
  * @Last Modified time: 2018-07-25 10:38:00
  * @Description: FTP步骤2
  */
-import React, { Component, Fragment } from 'react';
-import { Link } from 'dva/router';
-import { Input, Select, Button, Tooltip, Icon, InputNumber } from 'antd';
+import React, { Component, Fragment } from 'react'
+import { Link } from 'dva/router'
+import { Input, Select, Button, Tooltip, Icon, InputNumber } from 'antd'
 
-import styles from './index.less';
+import styles from './index.less'
 
-const { Option } = Select;
+const { Option } = Select
 
 export default class Step2 extends Component {
-  state = {};
+  state = {}
 
   render() {
-    const { mode = 0, rate = 0 } = this.state;
+    const { mode = 0, rate = 0 } = this.state
 
     return (
       <Fragment>
@@ -86,6 +86,6 @@ export default class Step2 extends Component {
           </Link>
         </div>
       </Fragment>
-    );
+    )
   }
 }

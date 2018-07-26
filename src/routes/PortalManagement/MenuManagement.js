@@ -6,18 +6,18 @@
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
  *  
 */
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react'
 // import { connect } from 'dva';
-import { Modal, DatePicker, Input, Select, Button, Table, Radio } from 'antd';
-import moment from 'moment';
+import { Modal, DatePicker, Input, Select, Button, Table, Radio } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './MenuManagement.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './MenuManagement.less'
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+const { RangePicker } = DatePicker
+const { Option } = Select
 
-const data = [];
+const data = []
 
 for (let i = 0; i < 120; i++) {
   data.push({
@@ -27,7 +27,7 @@ for (let i = 0; i < 120; i++) {
     recommend: Math.round(Math.random()) === 1 ? '是' : '否',
     time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
     operator: `操作人${i}`,
-  });
+  })
 }
 
 // @connect(({ overviewLogging, loading }) => ({
@@ -46,7 +46,7 @@ export default class MenuManagement extends Component {
     modalTitle: '',
     // selectedRowKeys: [],
     defaultValue: '是',
-  };
+  }
 
   componentDidMount() {
     // const { dispatch } = this.props
@@ -67,46 +67,46 @@ export default class MenuManagement extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       name: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleOperatorChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       operator: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleStateChange = value => {
     this.setState({
       state: value,
       isChanged: true,
-    });
-  };
+    })
+  }
 
   recommendChange = value => {
     this.setState({
       recommend: value,
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handlePick = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       date: val,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return; // eslint-disable-line
+    if (!this.state.isChanged) return // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -122,18 +122,18 @@ export default class MenuManagement extends Component {
     // })
     this.setState({
       isChanged: false,
-    });
+    })
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
-  };
+  }
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination); // eslint-disable-line
+    console.log(pagination) // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -146,21 +146,21 @@ export default class MenuManagement extends Component {
     //   type: 'overviewLogging/log',
     //   payload: { query: {...query, date: dateRange}, pagination },
     // });
-  };
+  }
 
   handleModal = (row, modalTitle) => {
     this.setState({
       showModal: true,
       modalTitle,
       defaultValue: row.recommend,
-    });
-  };
+    })
+  }
 
   handleReccomend = e => {
     this.setState({
       defaultValue: e.target.value,
-    });
-  };
+    })
+  }
 
   render() {
     const {
@@ -172,7 +172,7 @@ export default class MenuManagement extends Component {
       showModal,
       modalTitle,
       defaultValue,
-    } = this.state;
+    } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const stateList = [
@@ -188,7 +188,7 @@ export default class MenuManagement extends Component {
         value: 1,
         label: '未发布',
       },
-    ];
+    ]
     const recommendList = [
       {
         value: -1,
@@ -202,7 +202,7 @@ export default class MenuManagement extends Component {
         value: 1,
         label: '否',
       },
-    ];
+    ]
 
     const columns = [
       {
@@ -234,7 +234,7 @@ export default class MenuManagement extends Component {
         dataIndex: 'operation',
         render: (text, row) => {
           if (row.state === '未发布') {
-            return <a onClick={() => this.handleModal(row, '发布')}>发布</a>;
+            return <a onClick={() => this.handleModal(row, '发布')}>发布</a>
           }
           return (
             <Fragment>
@@ -243,10 +243,10 @@ export default class MenuManagement extends Component {
               </a>
               <a onClick={() => this.handleModal(row, '设置')}>设置</a>
             </Fragment>
-          );
+          )
         },
       },
-    ];
+    ]
     // const rowSelection = {
     //   selectedRowKeys,
     //   onChange: (rowKeys) => {
@@ -257,8 +257,8 @@ export default class MenuManagement extends Component {
     // }
 
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     // const typeComs = stateList.map(item => { // eslint-disable-line
     //   return <Option value={item.value} key={item.value}>{item.label}</Option>
@@ -270,9 +270,9 @@ export default class MenuManagement extends Component {
           <Option value={item.value} key={item.value}>
             {item.label}
           </Option>
-        );
-      });
-    };
+        )
+      })
+    }
 
     return (
       <PageHeaderLayout>
@@ -353,6 +353,6 @@ export default class MenuManagement extends Component {
           </Modal>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

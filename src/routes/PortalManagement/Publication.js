@@ -5,13 +5,13 @@
  * @Last Modified time: 2018-07-20 17:21:45
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
-import React, { Component } from 'react';
-import { Button, Form, Input, Select, Table, DatePicker, message } from 'antd';
-import moment from 'moment';
-import { Link } from 'dva/router';
+import React, { Component } from 'react'
+import { Button, Form, Input, Select, Table, DatePicker, message } from 'antd'
+import moment from 'moment'
+import { Link } from 'dva/router'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './Publication.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './Publication.less'
 
 const classifyList = [
   {
@@ -30,17 +30,17 @@ const classifyList = [
     value: 2,
     label: '工作报告',
   },
-];
-const data = [];
+]
+const data = []
 for (let i = 0; i < 255; i++) {
-  const random = Math.ceil(Math.random() * 3);
+  const random = Math.ceil(Math.random() * 3)
   data.push({
     id: i,
     title: `标题${i}`,
     classify: classifyList[random].label,
     operator: `操作人人${i}`,
     time: moment(new Date() - 1000 * 60 * 60 * 13 * i).format('lll'),
-  });
+  })
 }
 
 export default class Publication extends Component {
@@ -53,65 +53,65 @@ export default class Publication extends Component {
     },
     isChange: false,
     selectRowKeys: [],
-  };
+  }
 
   titleChange = e => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         title: e.targetl.value,
       },
       isChange: true,
-    });
-  };
+    })
+  }
 
   operatorChange = e => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         operator: e.targetl.value,
       },
       isChange: true,
-    });
-  };
+    })
+  }
 
   classifyChange = value => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         classify: value,
       },
       isChange: true,
-    });
-  };
+    })
+  }
 
   timefyChange = value => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         timefy: value,
       },
       isChange: true,
-    });
-  };
+    })
+  }
 
   search = () => {
-    if (!this.state.isChange) return false;
-  };
+    if (!this.state.isChange) return false
+  }
 
   handlePublic = () => {
-    message.success(`成功发布${this.state.selectRowKeys.join('和')}`);
-  };
+    message.success(`成功发布${this.state.selectRowKeys.join('和')}`)
+  }
 
   render() {
     const {
       query: { title, operator, classify, time },
       selectRowKeys,
-    } = this.state;
+    } = this.state
     const columns = [
       {
         title: '序号',
@@ -133,26 +133,26 @@ export default class Publication extends Component {
         title: '操作时间',
         dataIndex: 'time',
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const rowSelection = {
       selectRowKeys,
       onChange: rowKeys => {
         this.setState({
           selectRowKeys: rowKeys,
-        });
+        })
       },
-    };
+    }
 
     const classifyComs = classifyList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value}>
           {item.label}
         </Select.Option>
-      );
-    });
+      )
+    })
 
     return (
       <PageHeaderLayout>
@@ -199,6 +199,6 @@ export default class Publication extends Component {
           />
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

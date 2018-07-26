@@ -5,32 +5,32 @@
  * @Last Modified time: 2018-07-19 10:50:42
  * @描述: 数据交换管理 -- 订阅审核 -- 审核日志
 */
-import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import { Card, Button, Row, Col } from 'antd';
+import React, { Component } from 'react'
+import { Link } from 'dva/router'
+import { Card, Button, Row, Col } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './AuditLog.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './AuditLog.less'
 
 export default class AuditLog extends Component {
   state = {
     loading: false,
-  };
+  }
 
   componentDidMount() {
     this.setState({
       loading: true,
-    });
+    })
     setTimeout(() => {
       this.setState({
         loading: false,
-      });
-    }, 200);
+      })
+    }, 200)
   }
 
   render() {
-    const { loading } = this.state;
-    const { history } = this.props;
+    const { loading } = this.state
+    const { history } = this.props
     return (
       <PageHeaderLayout>
         <div className="common-layout">
@@ -109,6 +109,6 @@ export default class AuditLog extends Component {
           ) : null}
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

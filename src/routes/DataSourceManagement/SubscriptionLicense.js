@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, DatePicker, Checkbox, Modal, Radio } from 'antd';
-import moment from 'moment';
-import { connect } from 'dva';
-import { Link, routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Table, Button, Input, Select, Card, DatePicker, Checkbox, Modal, Radio } from 'antd'
+import moment from 'moment'
+import { connect } from 'dva'
+import { Link, routerRedux } from 'dva/router'
 
-import styles from './SubscriptionLicense.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SubscriptionLicense.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const RadioGroup = Radio.Group;
-const { TextArea } = Input;
+const { Option } = Select
+const { RangePicker } = DatePicker
+const RadioGroup = Radio.Group
+const { TextArea } = Input
 @connect(({ SubscriptionLicense }) => ({
   SubscriptionLicense,
 }))
@@ -20,100 +20,100 @@ export default class SubscriptionLicense extends Component {
     status: '0',
     visible: false,
     isPass: 1,
-  };
+  }
 
   providerChange = val => {
     this.setState({
       provider: val,
-    });
-  };
+    })
+  }
 
   statusChange = val => {
     this.setState({
       status: val,
-    });
-  };
+    })
+  }
 
   showModal = () => {
     this.setState({
       visible: true,
-    });
-  };
+    })
+  }
 
   handleOk = () => {
     this.setState({
       visible: false,
-    });
-  };
+    })
+  }
 
   handleCancel = () => {
     this.setState({
       visible: false,
-    });
-  };
+    })
+  }
 
   handlePass = e => {
     this.setState({
       isPass: e.target.value,
-    });
-  };
+    })
+  }
 
   handleView = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
+  }
 
   render() {
-    const that = this;
-    const { provider, status, isPass, visible } = this.state;
+    const that = this
+    const { provider, status, isPass, visible } = this.state
     const data = [
       { value: '0', id: 0, label: '数据类型1' },
       { value: '1', id: 1, label: '数据类型2' },
-    ];
+    ]
     const selectData = data.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const data1 = [
       { value: '0', id: 0, label: '待授权' },
       { value: '1', id: 1, label: '已授权' },
       { value: '2', id: 2, label: '已拒绝' },
-    ];
+    ]
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const data2 = [
       { value: '0', id: 0, label: '所属机构1' },
       { value: '1', id: 1, label: '所属机构2' },
       { value: '2', id: 2, label: '所属机构3' },
-    ];
+    ]
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const data3 = [
       { value: '0', id: 0, label: '订阅机构1' },
       { value: '1', id: 1, label: '订阅机构2' },
       { value: '2', id: 2, label: '订阅机构3' },
-    ];
+    ]
     const selectData3 = data3.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const pagination = { pageSize: 10, current: 1 };
+      )
+    })
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '目录名称',
@@ -139,14 +139,14 @@ export default class SubscriptionLicense extends Component {
         title: '订阅时间',
         dataIndex: 'subTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '审核状态',
         dataIndex: 'status',
         render(text) {
-          return +text === 0 ? '待审核' : '已通过';
+          return +text === 0 ? '待审核' : '已通过'
         },
       },
       {
@@ -167,7 +167,7 @@ export default class SubscriptionLicense extends Component {
                   审核
                 </span>
               </div>
-            );
+            )
           } else {
             return (
               <div>
@@ -178,14 +178,14 @@ export default class SubscriptionLicense extends Component {
                   查看
                 </Link>
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -217,7 +217,7 @@ export default class SubscriptionLicense extends Component {
         subTime: 244154512,
         status: 2,
       },
-    ];
+    ]
     const rowSelection = {
       // onChange: selectedRows => {
       // },
@@ -225,7 +225,7 @@ export default class SubscriptionLicense extends Component {
       //   disabled: record.name === 'Disabled User',
       //   name: record.name,
       // }),
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -292,6 +292,6 @@ export default class SubscriptionLicense extends Component {
           </Modal>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

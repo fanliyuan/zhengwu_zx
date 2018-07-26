@@ -5,16 +5,16 @@
  * @Last Modified time: 2018-07-23 18:10:32
  * @描述: 开放门户管理--资讯管理--类型管理
 */
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react'
 // import { Link } from 'dva/router';
 // import { connect } from 'dva';
-import { DatePicker, Input, Button, Table, Modal, Form, message, Popconfirm } from 'antd';
-import moment from 'moment';
+import { DatePicker, Input, Button, Table, Modal, Form, message, Popconfirm } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './NewsManagement.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './NewsManagement.less'
 
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker
 // const { Option } = Select;
 
 // @connect(({ overviewLogging, loading }) => ({
@@ -30,7 +30,7 @@ export default class NewsManagement extends Component {
     isChanged: false,
     modalShow: false,
     classifyName: '',
-  };
+  }
 
   componentDidMount() {
     // const { dispatch } = this.props
@@ -51,32 +51,32 @@ export default class NewsManagement extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       name: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleOperatorChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       operator: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handlePick = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       date: val,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return; // eslint-disable-line
+    if (!this.state.isChanged) return // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -92,18 +92,18 @@ export default class NewsManagement extends Component {
     // })
     this.setState({
       isChanged: false,
-    });
+    })
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
-  };
+  }
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination); // eslint-disable-line
+    console.log(pagination) // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -116,48 +116,48 @@ export default class NewsManagement extends Component {
     //   type: 'overviewLogging/log',
     //   payload: { query: {...query, date: dateRange}, pagination },
     // });
-  };
+  }
 
   handleSubmit = () => {
     this.props.form.validateFields((errors, value) => {
       if (!errors) {
-        message.success(`操作成功${value.name}`);
+        message.success(`操作成功${value.name}`)
         this.setState({
           modalShow: false,
-        });
-        this.props.form.setFieldsValue({ name: '' });
+        })
+        this.props.form.setFieldsValue({ name: '' })
       }
-    });
-  };
+    })
+  }
 
   handleAdd = () => {
     // eslint-disable-line
     this.setState({
       modalShow: true,
       classifyName: '',
-    });
-    this.props.form.setFieldsValue({ name: '' });
-  };
+    })
+    this.props.form.setFieldsValue({ name: '' })
+  }
 
   handleEdit = row => {
     // eslint-disable-line
     this.setState({
       modalShow: true,
       classifyName: row.name,
-    });
-    this.props.form.setFieldsValue({ name: row.name });
-  };
+    })
+    this.props.form.setFieldsValue({ name: row.name })
+  }
 
   handleDelete = row => {
-    message.success(`成功删除${row.id}`);
-  };
+    message.success(`成功删除${row.id}`)
+  }
 
   render() {
-    const { name, date, operator, modalShow, classifyName } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const { name, date, operator, modalShow, classifyName } = this.state
+    const { getFieldDecorator } = this.props.form
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
-    const data = [];
+    const data = []
 
     for (let i = 0; i < 120; i++) {
       data.push({
@@ -165,7 +165,7 @@ export default class NewsManagement extends Component {
         name: '数据名' + i, // eslint-disable-line
         operator: '操作人' + i, // eslint-disable-line
         time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-      });
+      })
     }
 
     // const stateList = [
@@ -213,14 +213,14 @@ export default class NewsManagement extends Component {
                 <a>删除</a>
               </Popconfirm>
             </Fragment>
-          );
+          )
         },
       },
-    ];
+    ]
 
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     // const optionList = stateList.map(item => {
     //   // eslint-disable-line
@@ -286,6 +286,6 @@ export default class NewsManagement extends Component {
           </Modal>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

@@ -5,16 +5,16 @@
  * @Last Modified time: 2018-07-24 18:13:18
  * @Description: 新增文章
  */
-import React, { Component, Fragment } from 'react';
-import { Link } from 'dva/router';
-import { Form, Input, Select, Upload, Modal, Button, Icon, Radio } from 'antd';
-import ReactQuill from 'react-quill';
+import React, { Component, Fragment } from 'react'
+import { Link } from 'dva/router'
+import { Form, Input, Select, Upload, Modal, Button, Icon, Radio } from 'antd'
+import ReactQuill from 'react-quill'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import 'react-quill/dist/quill.snow.css';
-import styles from './AddArticle.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import 'react-quill/dist/quill.snow.css'
+import styles from './AddArticle.less'
 
-const { Item } = Form;
+const { Item } = Form
 const formItemLayout = {
   labelCol: {
     span: 2,
@@ -22,7 +22,7 @@ const formItemLayout = {
   wrapperCol: {
     span: 22,
   },
-};
+}
 const savaLayout = {
   labelCol: {
     span: 6,
@@ -30,7 +30,7 @@ const savaLayout = {
   wrapperCol: {
     span: 12,
   },
-};
+}
 
 @Form.create()
 export default class AddArticle extends Component {
@@ -42,44 +42,44 @@ export default class AddArticle extends Component {
     previewVisible: false,
     previewImage: '',
     saveVisible: false,
-  };
+  }
 
   handleQuillChange = value => {
     this.setState({
       quillText: value,
-    });
-  };
+    })
+  }
 
-  handleUploadChange = ({ fileList }) => this.setState({ fileList });
+  handleUploadChange = ({ fileList }) => this.setState({ fileList })
 
   handlePreviewChange = file => {
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,
-    });
-  };
+    })
+  }
 
   handlePreviewCancel = () => {
     this.setState({
       previewVisible: false,
-    });
-  };
+    })
+  }
 
   handleSave = () => {
     this.setState({
       saveVisible: true,
-    });
-  };
+    })
+  }
 
   saveCancel = () => {
     this.setState({
       saveVisible: false,
-    });
-  };
+    })
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { fileList, previewImage, previewVisible, saveVisible } = this.state;
+    const { getFieldDecorator } = this.props.form
+    const { fileList, previewImage, previewVisible, saveVisible } = this.state
     const quillModules = {
       toolbar: [
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -92,7 +92,7 @@ export default class AddArticle extends Component {
         [{ link: true }],
         [{ image: true }],
       ],
-    };
+    }
     const classifyList = [
       {
         value: 0,
@@ -102,7 +102,7 @@ export default class AddArticle extends Component {
         value: 1,
         label: '法规',
       },
-    ];
+    ]
     const columnList = [
       {
         value: 0,
@@ -128,7 +128,7 @@ export default class AddArticle extends Component {
         value: 5,
         label: '热门政题',
       },
-    ];
+    ]
     const btnComs = (
       <Fragment>
         <Link to="/portalManagement/newsLibrary" className={styles.fr}>
@@ -138,23 +138,23 @@ export default class AddArticle extends Component {
           保存
         </Button>
       </Fragment>
-    );
+    )
     const classifyComs = classifyList.map(item => (
       <Select.Option value={item.value} key={item.value}>
         {item.label}
       </Select.Option>
-    ));
+    ))
     const uploadButton = (
       <div>
         <Icon type="plus" />
         <div className="ant-upload-text">点击上传</div>
       </div>
-    );
+    )
     const columnComs = columnList.map(item => (
       <Select.Option value={item.value} key={item.value}>
         {item.label}
       </Select.Option>
-    ));
+    ))
 
     return (
       <PageHeaderLayout>
@@ -269,6 +269,6 @@ export default class AddArticle extends Component {
           </Modal>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

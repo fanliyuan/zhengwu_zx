@@ -4,28 +4,28 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-17 11:14:17
 */
-import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import { Card, Button, Row, Col } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { Link } from 'dva/router'
+import { Card, Button, Row, Col } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './InsertResource.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './InsertResource.less'
 
 export default class InsertResource extends Component {
   state = {
     loading: false,
-  };
+  }
 
   componentDidMount() {
     this.setState({
       loading: true,
-    });
+    })
     setTimeout(() => {
       this.setState({
         loading: false,
-      });
-    }, 300);
+      })
+    }, 300)
     // setTimeout(() => {
     //   // 利用浏览器的路由功能实现返回,或者说后退功能,缺点: 会造成页面的重新加载,非单页面应用程序.
     //   this.props.history.goBack()
@@ -111,6 +111,6 @@ export default class InsertResource extends Component {
           </Card>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

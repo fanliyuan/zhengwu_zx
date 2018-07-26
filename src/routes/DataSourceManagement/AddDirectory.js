@@ -1,32 +1,32 @@
-import React, { Component } from 'react';
-import { Input, Card, Form, Button, Steps, Select } from 'antd';
+import React, { Component } from 'react'
+import { Input, Card, Form, Button, Steps, Select } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './AddDirectory.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './AddDirectory.less'
 
-const FormItem = Form.Item;
-const { Step } = Steps;
-const { Option } = Select;
-const { TextArea } = Input;
+const FormItem = Form.Item
+const { Step } = Steps
+const { Option } = Select
+const { TextArea } = Input
 @Form.create()
 export default class InputDataInfo extends Component {
-  state = {};
+  state = {}
 
-  handleSubmit = () => {};
+  handleSubmit = () => {}
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
     const optionData = [
       { label: '分类1', value: '0', id: '0' },
       { label: '分类2', value: '1', id: '1' },
-    ];
+    ]
     const optionSelect = optionData.map(item => {
       return (
         <Option value={item.value} key={item.id} label={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const optionData1 = [
       { label: '数据库', value: '0', id: 0 },
       { label: '电子文件', value: '1', id: 1 },
@@ -34,14 +34,14 @@ export default class InputDataInfo extends Component {
       { label: '图形图像', value: '3', id: 3 },
       { label: '流媒体', value: '4', id: 4 },
       { label: '自定义', value: '5', id: 5 },
-    ];
+    ]
     const optionSelect1 = optionData1.map(item => {
       return (
         <Option value={item.value} key={item.id} label={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -52,13 +52,13 @@ export default class InputDataInfo extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
+    }
     const submitLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
         sm: { span: 10, offset: 7 },
       },
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -107,6 +107,6 @@ export default class InputDataInfo extends Component {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

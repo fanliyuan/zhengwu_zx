@@ -5,17 +5,17 @@
  * @Last Modified time: 2018-07-23 09:45:06
  * @描述: 开放门户管理--资讯管理--轮播图管理
 */
-import React, { Component, Fragment } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { DatePicker, Input, Select, Button, Table, Popconfirm, message } from 'antd';
-import moment from 'moment';
+import React, { Component, Fragment } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { DatePicker, Input, Select, Button, Table, Popconfirm, message } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './CarouselManagement.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './CarouselManagement.less'
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+const { RangePicker } = DatePicker
+const { Option } = Select
 
 @connect()
 export default class CarouselManagement extends Component {
@@ -25,7 +25,7 @@ export default class CarouselManagement extends Component {
     page: -1,
     date: [],
     isChanged: false,
-  };
+  }
 
   componentDidMount() {
     // const { dispatch } = this.props
@@ -46,39 +46,39 @@ export default class CarouselManagement extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       name: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleResourceChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       resource: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handlePageChange = e => {
     this.setState({
       page: e,
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handlePick = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       date: val,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return; // eslint-disable-line
+    if (!this.state.isChanged) return // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -94,18 +94,18 @@ export default class CarouselManagement extends Component {
     // })
     this.setState({
       isChanged: false,
-    });
+    })
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
-  };
+  }
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination); // eslint-disable-line
+    console.log(pagination) // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -118,33 +118,33 @@ export default class CarouselManagement extends Component {
     //   type: 'overviewLogging/log',
     //   payload: { query: {...query, date: dateRange}, pagination },
     // });
-  };
+  }
 
   goAddCarouse = () => {
-    this.props.dispatch(routerRedux.push('/portalManagement/addCarousel'));
-  };
+    this.props.dispatch(routerRedux.push('/portalManagement/addCarousel'))
+  }
 
   startCaroulse = () => {
-    message.success('启用成功');
-  };
+    message.success('启用成功')
+  }
 
   endCaroulse = () => {
-    message.success('停用成功');
-  };
+    message.success('停用成功')
+  }
 
   editCaroulse = () => {
-    this.props.dispatch(routerRedux.push('/portalManagement/addCarousel'));
-  };
+    this.props.dispatch(routerRedux.push('/portalManagement/addCarousel'))
+  }
 
   deleteCaroulse = () => {
-    message.success('删除成功');
-  };
+    message.success('删除成功')
+  }
 
   render() {
-    const { name, date, resource, page } = this.state;
+    const { name, date, resource, page } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
-    const data = [];
+    const data = []
 
     for (let i = 0; i < 120; i++) {
       data.push({
@@ -156,7 +156,7 @@ export default class CarouselManagement extends Component {
         sort: i,
         resource: `资源${i}`,
         state: Math.round(Math.random()),
-      });
+      })
     }
 
     const pageList = [
@@ -172,15 +172,15 @@ export default class CarouselManagement extends Component {
         value: 1,
         label: '开放动态',
       },
-    ];
+    ]
 
     const state1Coms = row => {
       return (
         <a onClick={() => this.startCaroulse(row)} style={{ marginRight: 8 }}>
           启用
         </a>
-      );
-    };
+      )
+    }
     const state0Coms = row => {
       return (
         <Fragment>
@@ -202,8 +202,8 @@ export default class CarouselManagement extends Component {
             <a style={{ marginRight: 8 }}>删除</a>
           </Popconfirm>
         </Fragment>
-      );
-    };
+      )
+    }
 
     const columns = [
       {
@@ -234,14 +234,14 @@ export default class CarouselManagement extends Component {
         title: '操作',
         dataIndex: 'state',
         render: (state, row) => {
-          return state === 0 ? state0Coms(row) : state1Coms(row);
+          return state === 0 ? state0Coms(row) : state1Coms(row)
         },
       },
-    ];
+    ]
 
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const pageComs = pageList.map(item => {
       // eslint-disable-line
@@ -249,8 +249,8 @@ export default class CarouselManagement extends Component {
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
 
     return (
       <PageHeaderLayout>
@@ -296,6 +296,6 @@ export default class CarouselManagement extends Component {
           </div>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

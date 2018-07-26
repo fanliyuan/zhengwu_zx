@@ -4,36 +4,36 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-24 15:35:57
 */
-import React, { PureComponent, Fragment } from 'react';
-import { Route, Redirect, Switch, Link } from 'dva/router';
-import { Steps, Card, Button } from 'antd';
+import React, { PureComponent, Fragment } from 'react'
+import { Route, Redirect, Switch, Link } from 'dva/router'
+import { Steps, Card, Button } from 'antd'
 
-import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import { getRoutes } from '../../../utils/utils';
-import styles from './index.less';
+import PageHeaderLayout from '../../../layouts/PageHeaderLayout'
+import { getRoutes } from '../../../utils/utils'
+import styles from './index.less'
 
-const { Step } = Steps;
+const { Step } = Steps
 
 export default class NewMenu extends PureComponent {
   getCurrentStep() {
     const {
       location: { pathname },
-    } = this.props;
-    const pathList = pathname.split('/');
+    } = this.props
+    const pathList = pathname.split('/')
     switch (pathList[pathList.length - 1]) {
       case 'one':
-        return 0;
+        return 0
       case 'two':
-        return 1;
+        return 1
       case 'three':
-        return 2;
+        return 2
       default:
-        return 0;
+        return 0
     }
   }
 
   render() {
-    const { match, routerData } = this.props;
+    const { match, routerData } = this.props
 
     return (
       <PageHeaderLayout>
@@ -67,6 +67,6 @@ export default class NewMenu extends PureComponent {
           </Fragment>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

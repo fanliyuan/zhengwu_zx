@@ -5,15 +5,15 @@
  * @Last Modified time: 2018-07-20 09:40:51
  * @描述: 数据管理 -- 此文件就是资源管理
 */
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 // import { connect } from 'dva';
-import { DatePicker, Input, Button, Table, message } from 'antd';
-import moment from 'moment';
+import { DatePicker, Input, Button, Table, message } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './DataManagement.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './DataManagement.less'
 
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker
 
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
@@ -28,7 +28,7 @@ export default class DataManagement extends Component {
     date: [],
     isChanged: false,
     selectedRowKeys: [],
-  };
+  }
 
   componentDidMount() {
     // const { dispatch } = this.props
@@ -49,46 +49,46 @@ export default class DataManagement extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       name: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleThemeChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       theme: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleOriginChange = e => {
     this.setState({
       theme: e.target.value.trim(),
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handleDataBaseChange = e => {
     this.setState({
       theme: e.target.value.trim(),
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handlePick = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       date: val,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return; // eslint-disable-line
+    if (!this.state.isChanged) return // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -104,18 +104,18 @@ export default class DataManagement extends Component {
     // })
     this.setState({
       isChanged: false,
-    });
+    })
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
-  };
+  }
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination); // eslint-disable-line
+    console.log(pagination) // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -128,27 +128,27 @@ export default class DataManagement extends Component {
     //   type: 'overviewLogging/log',
     //   payload: { query: {...query, date: dateRange}, pagination },
     // });
-  };
+  }
 
   downloadFun = val => {
     try {
-      message.success(`选择了${val.join(',')}`);
+      message.success(`选择了${val.join(',')}`)
     } catch (error) {
-      console.log(error); // eslint-disable-line
+      console.log(error) // eslint-disable-line
     } finally {
       // eslint-disable-line
     }
-  };
+  }
 
   downloadTpl = () => {
-    message.info('下载模板');
-  };
+    message.info('下载模板')
+  }
 
   render() {
-    const { name, date, theme, origin, dataBase, selectedRowKeys } = this.state;
+    const { name, date, theme, origin, dataBase, selectedRowKeys } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
-    const data = [];
+    const data = []
 
     for (let i = 0; i < 120; i++) {
       data.push({
@@ -159,7 +159,7 @@ export default class DataManagement extends Component {
         theme: '主题' + i, // eslint-disable-line
         origin: '数据源' + i, // eslint-disable-line
         dataBase: '数据库' + i, // eslint-disable-line
-      });
+      })
     }
 
     const columns = [
@@ -195,20 +195,20 @@ export default class DataManagement extends Component {
         title: '操作',
         dataIndex: 'operation',
       },
-    ];
+    ]
 
     const rowSelection = {
       selectedRowKeys,
       onChange: val => {
         this.setState({
           selectedRowKeys: val,
-        });
+        })
       },
-    };
+    }
 
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     return (
       <PageHeaderLayout>
@@ -271,6 +271,6 @@ export default class DataManagement extends Component {
           </div>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

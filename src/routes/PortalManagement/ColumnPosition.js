@@ -5,12 +5,12 @@
  * @Last Modified time: 2018-07-17 14:21:26
  * @描述: 开放门户管理 -- 栏目管理 -- 栏目位置
 */
-import React, { Component } from 'react';
-import { Form, Input, Select, DatePicker, Button, Table, message, Modal } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { Form, Input, Select, DatePicker, Button, Table, message, Modal } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './ColumnPosition.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './ColumnPosition.less'
 
 const pageData = [
   {
@@ -29,11 +29,11 @@ const pageData = [
     value: 3,
     label: '目录资源',
   },
-];
+]
 
-const pageTemp = pageData.map(item => item.label);
+const pageTemp = pageData.map(item => item.label)
 
-const data = [];
+const data = []
 for (let i = 0; i < 132; i++) {
   data.push({
     id: i,
@@ -42,7 +42,7 @@ for (let i = 0; i < 132; i++) {
     position: i,
     operator: `操作人${i}`,
     time: moment(+Date.now() - 3600000 * i).format('lll'),
-  });
+  })
 }
 
 @Form.create()
@@ -58,7 +58,7 @@ export default class ColumnPosition extends Component {
     edit: '',
     editShow: false,
     loading: false,
-  };
+  }
 
   nameChange = e => {
     this.setState({
@@ -67,8 +67,8 @@ export default class ColumnPosition extends Component {
         name: e.target.value,
       },
       isChange: true,
-    });
-  };
+    })
+  }
 
   pageChange = value => {
     this.setState({
@@ -77,8 +77,8 @@ export default class ColumnPosition extends Component {
         page: value,
       },
       isChange: true,
-    });
-  };
+    })
+  }
 
   operatorChange = e => {
     this.setState({
@@ -87,8 +87,8 @@ export default class ColumnPosition extends Component {
         operator: e.target.value,
       },
       isChange: true,
-    });
-  };
+    })
+  }
 
   timeChange = value => {
     this.setState({
@@ -96,25 +96,25 @@ export default class ColumnPosition extends Component {
         ...this.state.query, // eslint-disable-line
         time: value,
       },
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
     if (!this.state.isChange) {
-      return false;
+      return false
     }
-    message.success('搜索');
-  };
+    message.success('搜索')
+  }
 
   editName = row => {
     this.setState({
       editShow: true,
       edit: row.name,
-    });
+    })
     this.props.form.setFieldsValue({
       edit: row.name,
-    });
-  };
+    })
+  }
 
   // editChange = (e) => {
   //   this.setState({
@@ -127,16 +127,16 @@ export default class ColumnPosition extends Component {
         this.setState({
           loading: true,
           editShow: false,
-        });
+        })
         setTimeout(() => {
           this.setState({
             loading: false,
-          });
-          message.success(`栏目名修改为${value.edit}`);
-        }, 1000);
+          })
+          message.success(`栏目名修改为${value.edit}`)
+        }, 1000)
       }
-    });
-  };
+    })
+  }
 
   render() {
     const {
@@ -144,9 +144,9 @@ export default class ColumnPosition extends Component {
       edit,
       editShow,
       loading,
-    } = this.state;
-    const { getFieldDecorator } = this.props.form;
-    const pageList = pageData;
+    } = this.state
+    const { getFieldDecorator } = this.props.form
+    const pageList = pageData
     const colums = [
       {
         title: '序号',
@@ -176,19 +176,19 @@ export default class ColumnPosition extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          return <a onClick={() => this.editName(row)}>修改</a>;
+          return <a onClick={() => this.editName(row)}>修改</a>
         },
       },
-    ];
+    ]
     colums.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const pageComs = pageList.map(item => (
       <Select.Option value={item.value} key={item.value}>
         {item.label}
       </Select.Option>
-    ));
+    ))
 
     return (
       <PageHeaderLayout>
@@ -231,7 +231,7 @@ export default class ColumnPosition extends Component {
             title="修改栏目名称"
             onOk={this.editSubmit}
             onCancel={() => {
-              this.setState({ editShow: false });
+              this.setState({ editShow: false })
             }}
             className={styles.modal}
           >
@@ -246,6 +246,6 @@ export default class ColumnPosition extends Component {
           </Modal>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { Table, Button, Card, Divider } from 'antd';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Table, Button, Card, Divider } from 'antd'
 // import moment from 'moment';
 
-import styles from './Source.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './Source.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 @connect()
 export default class Source extends Component {
@@ -15,11 +15,11 @@ export default class Source extends Component {
         pathname: `/dataSourceManagement/fileSourceDetail/${row.id}`,
         state: row,
       })
-    );
-  };
+    )
+  }
 
   render() {
-    const pagination = { pageSize: 10, current: 1 };
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '信息项1',
@@ -41,10 +41,10 @@ export default class Source extends Component {
         title: '信息项5',
         dataIndex: 'infoItem5',
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -70,7 +70,7 @@ export default class Source extends Component {
         infoItem4: '',
         infoItem5: '',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -97,6 +97,6 @@ export default class Source extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

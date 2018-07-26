@@ -5,17 +5,17 @@
  * @Last Modified time: 2018-07-25 14:27:23
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
-import React, { Component } from 'react';
-import { Form, Input, InputNumber, Select, Button, Table, Card, Divider, Icon } from 'antd';
-import { Link } from 'dva/router';
+import React, { Component } from 'react'
+import { Form, Input, InputNumber, Select, Button, Table, Card, Divider, Icon } from 'antd'
+import { Link } from 'dva/router'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './SubscriptionTable.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './SubscriptionTable.less'
 
-const { Option } = Select;
+const { Option } = Select
 
 function ButtonList(props) {
-  const { onClick = () => {}, disabled = false } = props;
+  const { onClick = () => {}, disabled = false } = props
   return (
     <div className="btncls clearfix">
       <Link to="/dataSwitchManagement/sourceSubscription" className="fr mr40">
@@ -25,16 +25,16 @@ function ButtonList(props) {
         保存
       </Button>
     </div>
-  );
+  )
 }
 function Label(props) {
-  const { label, children, className = styles.span } = props;
+  const { label, children, className = styles.span } = props
   return (
     <span className={className}>
       <span className={styles.label}>{label}</span>
       {children}
     </span>
-  );
+  )
 }
 
 @Form.create()
@@ -56,7 +56,7 @@ export default class SubscriptionTable extends Component {
         dataIndex: 'description',
         align: 'center',
       },
-    ];
+    ]
     const arrowColumns = [
       {
         title: '',
@@ -66,10 +66,10 @@ export default class SubscriptionTable extends Component {
             <Divider dashed orientation="right" className={styles.divider}>
               <Icon type="right" />
             </Divider>
-          );
+          )
         },
       },
-    ];
+    ]
     const data = [
       {
         id: 1,
@@ -89,7 +89,7 @@ export default class SubscriptionTable extends Component {
         field: 'gender',
         classify: 'varchar',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <div className="common-layout">
@@ -227,6 +227,6 @@ export default class SubscriptionTable extends Component {
           </div>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

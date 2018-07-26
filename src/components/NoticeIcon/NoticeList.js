@@ -1,7 +1,7 @@
-import React from 'react';
-import { Avatar, List } from 'antd';
-import classNames from 'classnames';
-import styles from './NoticeList.less';
+import React from 'react'
+import { Avatar, List } from 'antd'
+import classNames from 'classnames'
+import styles from './NoticeList.less'
 
 export default function NoticeList({
   data = [],
@@ -18,7 +18,7 @@ export default function NoticeList({
         {emptyImage ? <img src={emptyImage} alt="not found" /> : null}
         <div>{emptyText || locale.emptyText}</div>
       </div>
-    );
+    )
   }
   return (
     <div>
@@ -26,7 +26,7 @@ export default function NoticeList({
         {data.map((item, i) => {
           const itemCls = classNames(styles.item, {
             [styles.read]: item.read,
-          });
+          })
           return (
             <List.Item className={itemCls} key={item.key || i} onClick={() => onClick(item)}>
               <List.Item.Meta
@@ -48,7 +48,7 @@ export default function NoticeList({
                 }
               />
             </List.Item>
-          );
+          )
         })}
       </List>
       <div className={styles.clear} onClick={onClear}>
@@ -56,5 +56,5 @@ export default function NoticeList({
         {title}
       </div>
     </div>
-  );
+  )
 }

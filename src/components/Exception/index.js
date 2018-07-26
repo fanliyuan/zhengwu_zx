@@ -1,12 +1,12 @@
-import React, { createElement } from 'react';
-import classNames from 'classnames';
-import { Button } from 'antd';
-import config from './typeConfig';
-import styles from './index.less';
+import React, { createElement } from 'react'
+import classNames from 'classnames'
+import { Button } from 'antd'
+import config from './typeConfig'
+import styles from './index.less'
 
 const Exception = ({ className, linkElement = 'a', type, title, desc, img, actions, ...rest }) => {
-  const pageType = type in config ? type : '404';
-  const clsString = classNames(styles.exception, className);
+  const pageType = type in config ? type : '404'
+  const clsString = classNames(styles.exception, className)
   return (
     <div className={clsString} {...rest}>
       <div className={styles.imgBlock}>
@@ -31,7 +31,7 @@ const Exception = ({ className, linkElement = 'a', type, title, desc, img, actio
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Exception;
+export default Exception

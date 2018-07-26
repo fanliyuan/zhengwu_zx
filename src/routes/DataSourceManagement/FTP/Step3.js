@@ -6,9 +6,9 @@
  * @Description: FTP步骤3
  */
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react'
 // import { routerRedux } from 'dva/router'
-import Result from 'components/Result';
+import Result from 'components/Result'
 
 export default class Step3 extends PureComponent {
   render() {
@@ -16,6 +16,6 @@ export default class Step3 extends PureComponent {
       <Fragment>
         <Result type="success" title="提交成功" />
       </Fragment>
-    );
+    )
   }
 }

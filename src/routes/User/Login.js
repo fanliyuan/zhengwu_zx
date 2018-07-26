@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
+import React, { Component } from 'react'
+import { connect } from 'dva'
 // import { Link } from 'dva/router';
-import { Alert } from 'antd';
-import Login from 'components/Login';
-import styles from './Login.less';
+import { Alert } from 'antd'
+import Login from 'components/Login'
+import styles from './Login.less'
 
-const { UserName, Password, Submit } = Login;
+const { UserName, Password, Submit } = Login
 
 @connect(({ login, loading }) => ({
   login,
@@ -17,26 +17,26 @@ export default class LoginPage extends Component {
     // autoLogin: true,
     isEmpty: false,
     isError: true,
-  };
+  }
 
   onTabChange = type => {
-    this.setState({ type });
-  };
+    this.setState({ type })
+  }
 
   handleSubmit = (err, values) => {
     if (!values.userName || !values.password) {
       this.setState({
         isEmpty: true,
         isError: false,
-      });
-      return;
+      })
+      return
     }
     this.setState({
       isEmpty: false,
       isError: true,
-    });
-    const { type } = this.state;
-    const { dispatch } = this.props;
+    })
+    const { type } = this.state
+    const { dispatch } = this.props
     if (!err) {
       dispatch({
         type: 'login/login',
@@ -44,9 +44,9 @@ export default class LoginPage extends Component {
           ...values,
           type,
         },
-      });
+      })
     }
-  };
+  }
 
   // changeAutoLogin = e => {
   //   // this.setState({
@@ -58,16 +58,16 @@ export default class LoginPage extends Component {
     this.setState({
       isEmpty: false,
       isError: false,
-    });
-  };
+    })
+  }
 
   renderMessage = content => {
-    return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />;
-  };
+    return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
+  }
 
   render() {
-    const { login, submitting } = this.props;
-    const { type, isEmpty, isError } = this.state;
+    const { login, submitting } = this.props
+    const { type, isEmpty, isError } = this.state
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
@@ -113,6 +113,6 @@ export default class LoginPage extends Component {
           </div>
         </Login>
       </div>
-    );
+    )
   }
 }

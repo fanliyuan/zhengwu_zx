@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import { Card, Row, Col, Button, Divider, Table, Input, Form, Select } from 'antd'; // Select,  Popconfirm
+import React, { Component } from 'react'
+import { Card, Row, Col, Button, Divider, Table, Input, Form, Select } from 'antd' // Select,  Popconfirm
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './SearchRelationship.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './SearchRelationship.less'
 
 // const { Option } = Select;
-const FormItem = Form.Item;
-const EditableContext = React.createContext();
+const FormItem = Form.Item
+const EditableContext = React.createContext()
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
   </EditableContext.Provider>
-);
-const EditableFormRow = Form.create()(EditableRow);
+)
+const EditableFormRow = Form.create()(EditableRow)
 class EditableCell extends React.Component {
   getInput = () => {
     if (this.props.filedType === 'select') {
@@ -25,18 +25,18 @@ class EditableCell extends React.Component {
             否
           </Select.Option>
         </Select>
-      );
+      )
     }
-    return <Input className={styles.input} />;
-  };
+    return <Input className={styles.input} />
+  }
 
   render() {
-    const { editing, dataIndex, title, filedType, record, index, ...restProps } = this.props;
+    const { editing, dataIndex, title, filedType, record, index, ...restProps } = this.props
 
     return (
       <EditableContext.Consumer>
         {form => {
-          const { getFieldDecorator } = form;
+          const { getFieldDecorator } = form
           return (
             <td {...restProps}>
               {editing ? (
@@ -55,10 +55,10 @@ class EditableCell extends React.Component {
                 restProps.children
               )}
             </td>
-          );
+          )
         }}
       </EditableContext.Consumer>
-    );
+    )
   }
 }
 
@@ -67,11 +67,11 @@ export default class SearchRelationship extends Component {
     // tableKey:'',
     // fieldKey:'',
     // editingKey:'',
-  };
+  }
 
   isEditing = record => {
-    return record.key === this.state.editingKey;
-  };
+    return record.key === this.state.editingKey
+  }
 
   render() {
     const components = {
@@ -79,12 +79,12 @@ export default class SearchRelationship extends Component {
         row: EditableFormRow,
         cell: EditableCell,
       },
-    };
+    }
     // const { tableKey, fieldKey } = this.state;
     const pagination = {
       current: 1,
       pageSize: 10,
-    };
+    }
     const columns = [
       {
         title: '序号',
@@ -105,10 +105,10 @@ export default class SearchRelationship extends Component {
             <div>
               <a>数据项</a>
             </div>
-          );
+          )
         },
       },
-    ];
+    ]
     const list = [
       {
         id: 0,
@@ -120,7 +120,7 @@ export default class SearchRelationship extends Component {
         tableName: 'dig_order',
         chineseLabel: '订单表',
       },
-    ];
+    ]
     const columns1 = [
       {
         title: '序号',
@@ -168,10 +168,10 @@ export default class SearchRelationship extends Component {
         editable: true,
         width: 157,
       },
-    ];
+    ]
     const columns2 = columns1.map(item => {
       if (!item.editable) {
-        return item;
+        return item
       }
       return {
         ...item,
@@ -182,8 +182,8 @@ export default class SearchRelationship extends Component {
           filedType: item.isSelect ? 'select' : 'input',
           editing: this.isEditing(record),
         }),
-      };
-    });
+      }
+    })
     const list1 = [
       {
         id: 0,
@@ -195,7 +195,7 @@ export default class SearchRelationship extends Component {
         chineseLabel: '标注2',
         isMainKey: 0,
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card className={styles.card}>
@@ -262,6 +262,6 @@ export default class SearchRelationship extends Component {
           </Row>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

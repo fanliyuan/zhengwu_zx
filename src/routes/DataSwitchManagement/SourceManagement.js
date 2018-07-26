@@ -1,35 +1,35 @@
-import React, { Component } from 'react';
-import { Table, Card, Tabs, Input, DatePicker, Row, Col, Button } from 'antd';
-import moment from 'moment';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Table, Card, Tabs, Input, DatePicker, Row, Col, Button } from 'antd'
+import moment from 'moment'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import styles from './SourceManagement.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SourceManagement.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { TabPane } = Tabs;
-const { RangePicker } = DatePicker;
+const { TabPane } = Tabs
+const { RangePicker } = DatePicker
 @connect(({ sourceManagement }) => ({
   sourceManagement,
 }))
 export default class SourceManagement extends Component {
   state = {
     loading: false,
-  };
+  }
 
   handleCataLog = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSwitchManagement/viewDirectory'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSwitchManagement/viewDirectory'))
+  }
 
   handleSource = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSwitchManagement/source'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSwitchManagement/source'))
+  }
 
   render() {
-    const that = this;
-    const { loading } = this.state;
+    const that = this
+    const { loading } = this.state
     const columns = [
       {
         title: '序号',
@@ -59,7 +59,7 @@ export default class SourceManagement extends Component {
         title: '更新时间',
         dataIndex: 'upTime',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
       {
@@ -74,10 +74,10 @@ export default class SourceManagement extends Component {
                 资源
               </span>
             </div>
-          );
+          )
         },
       },
-    ];
+    ]
     const list = [
       {
         id: 0,
@@ -97,7 +97,7 @@ export default class SourceManagement extends Component {
         storeDataL: '',
         upTime: '3132141',
       },
-    ];
+    ]
     const columns1 = [
       {
         title: '序号',
@@ -131,7 +131,7 @@ export default class SourceManagement extends Component {
         title: '更新时间',
         dataIndex: 'upTime',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
       {
@@ -143,10 +143,10 @@ export default class SourceManagement extends Component {
                 目录
               </span>
             </div>
-          );
+          )
         },
       },
-    ];
+    ]
     const list1 = [
       {
         id: 0,
@@ -168,15 +168,15 @@ export default class SourceManagement extends Component {
         storeFile: 'goutu',
         upTime: '1323131',
       },
-    ];
+    ]
     const pagination = {
       current: 1,
       pageSize: 10,
-    };
+    }
     const rowSelection = {
       // selectedRowKeys,
       onChange: () => {},
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card loading={loading}>
@@ -250,6 +250,6 @@ export default class SourceManagement extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

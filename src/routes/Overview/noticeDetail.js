@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { Card, Button, message } from 'antd';
-import { connect } from 'dva';
-import { routerRedux, Link} from 'dva/router';
+import React, { Component } from 'react'
+import { Card, Button, message } from 'antd'
+import { connect } from 'dva'
+import { routerRedux, Link } from 'dva/router'
 
-import styles from './noticeDetail.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './noticeDetail.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-let layLess = 0;
-let layMore = 0;
+let layLess = 0
+let layMore = 0
 @connect(({ SystemNotification, loading }) => ({
   SystemNotification,
   loading: loading.models.SystemNotification,
@@ -16,37 +16,37 @@ export default class noticeDetail extends Component {
   state = {
     layId: 0,
     state: false,
-  };
+  }
 
   componentDidMount() {
-    const { match } = this.props;
-    const { params } = match.params;
-    const { dispatch } = this.props;
-    const selectedRowIds = [];
-    selectedRowIds.push(params);
+    const { match } = this.props
+    const { params } = match.params
+    const { dispatch } = this.props
+    const selectedRowIds = []
+    selectedRowIds.push(params)
     this.setState({
       layId: params,
-    });
+    })
     dispatch({
       type: 'SystemNotification/selectById',
       payload: { query: { queryId: params } },
-    });
+    })
     dispatch({
       type: 'SystemNotification/changeState',
       payload: { rows: selectedRowIds },
-    });
+    })
     dispatch({
       type: 'SystemNotification/getIntros',
       payload: { query: { state: '' }, pagination: { pageSize: 10, current: 1 } },
-    });
+    })
   }
 
   componentDidUpdate() {
     const {
       SystemNotification: { backInfo },
-    } = this.props;
-    const { state } = this.state;
-    if( state && backInfo.backInfo ){
+    } = this.props
+    const { state } = this.state
+    if (state && backInfo.backInfo) {
       this.deleteSuccess('删除成功')
     }
   }
@@ -58,40 +58,38 @@ export default class noticeDetail extends Component {
   // };
 
   handleDelete = () => {
-    const { layId } = this.state;
-    const paramsIds = [];
-    paramsIds.push(layId);
-    const { dispatch } = this.props;
+    const { layId } = this.state
+    const paramsIds = []
+    paramsIds.push(layId)
+    const { dispatch } = this.props
     this.setState({
       state: true,
-    });
+    })
     dispatch({
       type: 'SystemNotification/deleteRows',
       payload: { rows: paramsIds },
-    });
-  };
+    })
+  }
 
   deleteSuccess = text => {
     const { dispatch } = this.props
     this.setState({
       state: false,
-    });
-    message.info(text);
-    dispatch(
-      routerRedux.push('/overview/SystemNotification')
-    )
-  };
+    })
+    message.info(text)
+    dispatch(routerRedux.push('/overview/SystemNotification'))
+  }
 
   render() {
     const {
       SystemNotification: { infos, data },
       loading,
-    } = this.props;
-    const { layId } = this.state;
-    data.forEach((item,index) => {
-      if( +item.id === +layId ){
-        layLess = (index >= 1 ? data[index -1].id : item.id);
-        layMore = (index <= data.length ? data[index +1].id : item.id);
+    } = this.props
+    const { layId } = this.state
+    data.forEach((item, index) => {
+      if (+item.id === +layId) {
+        layLess = index >= 1 ? data[index - 1].id : item.id
+        layMore = index <= data.length ? data[index + 1].id : item.id
       }
     })
     return (
@@ -113,6 +111,6 @@ export default class noticeDetail extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

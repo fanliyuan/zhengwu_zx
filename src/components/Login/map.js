@@ -1,6 +1,6 @@
-import React from 'react';
-import { Input, Icon } from 'antd';
-import styles from './index.less';
+import React from 'react'
+import { Input, Icon } from 'antd'
+import styles from './index.less'
 
 const map = {
   UserName: {
@@ -64,6 +64,6 @@ const map = {
       },
     ],
   },
-};
+}
 
-export default map;
+export default map

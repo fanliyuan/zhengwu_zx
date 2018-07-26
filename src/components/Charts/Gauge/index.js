@@ -1,42 +1,42 @@
-import React from 'react';
-import { Chart, Geom, Axis, Coord, Guide, Shape } from 'bizcharts';
-import autoHeight from '../autoHeight';
+import React from 'react'
+import { Chart, Geom, Axis, Coord, Guide, Shape } from 'bizcharts'
+import autoHeight from '../autoHeight'
 
-const { Arc, Html, Line } = Guide;
+const { Arc, Html, Line } = Guide
 
 const defaultFormatter = val => {
   switch (val) {
     case '1':
-      return '1';
+      return '1'
     case '2':
-      return '2';
+      return '2'
     case '3':
-      return '3';
+      return '3'
     case '4':
-      return '4';
+      return '4'
     case '5':
-      return '5';
+      return '5'
     case '6':
-      return '6';
+      return '6'
     case '7':
-      return '7';
+      return '7'
     case '8':
-      return '8';
+      return '8'
     case '9':
-      return '9';
+      return '9'
     default:
-      return '';
+      return ''
   }
-};
+}
 
 Shape.registerShape('point', 'pointer', {
   drawShape(cfg, group) {
-    let point = cfg.points[0];
-    point = this.parsePoint(point);
+    let point = cfg.points[0]
+    point = this.parsePoint(point)
     const center = this.parsePoint({
       x: 0,
       y: 0,
-    });
+    })
     group.addShape('line', {
       attrs: {
         x1: center.x,
@@ -47,7 +47,7 @@ Shape.registerShape('point', 'pointer', {
         lineWidth: 2,
         lineCap: 'round',
       },
-    });
+    })
     return group.addShape('circle', {
       attrs: {
         x: center.x,
@@ -57,9 +57,9 @@ Shape.registerShape('point', 'pointer', {
         lineWidth: 3,
         fill: '#fff',
       },
-    });
+    })
   },
-});
+})
 
 @autoHeight()
 export default class Gauge extends React.Component {
@@ -72,7 +72,7 @@ export default class Gauge extends React.Component {
       formatter = defaultFormatter,
       color = '#2F9CFF',
       bgColor = '#F0F2F5',
-    } = this.props;
+    } = this.props
     const cols = {
       value: {
         type: 'linear',
@@ -81,8 +81,8 @@ export default class Gauge extends React.Component {
         tickCount: 6,
         nice: true,
       },
-    };
-    const data = [{ value: percent / 10 }];
+    }
+    const data = [{ value: percent / 10 }]
     return (
       <Chart height={height} data={data} scale={cols} padding={[-16, 0, 16, 0]} forceFit={forceFit}>
         <Coord type="polar" startAngle={-1.25 * Math.PI} endAngle={0.25 * Math.PI} radius={0.8} />
@@ -159,7 +159,7 @@ export default class Gauge extends React.Component {
                   <p style="font-size: 24px;color: rgba(0,0,0,0.85);margin: 0;">
                     ${data[0].value * 10}%
                   </p>
-                </div>`;
+                </div>`
             }}
           />
         </Guide>
@@ -172,6 +172,6 @@ export default class Gauge extends React.Component {
           active={false}
         />
       </Chart>
-    );
+    )
   }
 }

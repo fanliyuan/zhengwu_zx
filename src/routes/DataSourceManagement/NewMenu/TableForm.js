@@ -2,16 +2,17 @@
  * @Author: ChouEric
  * @Date: 2018-07-05 17:20:24
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-06 10:35:47
+ * @Last Modified time: 2018-07-26 19:43:12
 */
 import React, { PureComponent, Fragment } from 'react'
 import { Table, Button, Input, message, Popconfirm, Divider, Tooltip } from 'antd'
 
+// eslint-disable-next-line
 import styles from './index.less'
 
 export default class TableForm extends PureComponent {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       data: props.value,
       loading: false,
@@ -31,7 +32,7 @@ export default class TableForm extends PureComponent {
   // }
 
   getRowByKey(key, newData) {
-    return (newData || this.state.data).filter(item => item.key === key)[0];
+    return (newData || this.state.data).filter(item => item.key === key)[0]
   }
 
   // 这里是表格单元格的编辑功能
@@ -47,28 +48,29 @@ export default class TableForm extends PureComponent {
   }
 
   addNew = () => {
-    const newData = this.state.data.map(item => ({ ...item }));
+    // eslint-disable-next-line
+    const newData = this.state.data.map(item => ({ ...item }))
     newData.push({
       key: `NEW_TEMP_ID_${this.index}`,
       infoCode: '',
       editable: true,
       isNew: true,
-    });
-    this.index += 1;
-    this.setState({ data: newData });
-  };
+    })
+    this.index += 1
+    this.setState({ data: newData })
+  }
 
   toggleEditable = (e, key) => {
-    e.preventDefault();
+    e.preventDefault()
     const newData = JSON.parse(JSON.stringify(this.state.data))
-    const target = this.getRowByKey(key, newData);
+    const target = this.getRowByKey(key, newData)
     if (target) {
       // 进入编辑状态时保存原始数据
       if (!target.editable) {
-        this.cacheOriginData[key] = { ...target };
+        this.cacheOriginData[key] = { ...target }
       }
-      target.editable = !target.editable;
-      this.setState({ data: newData });
+      target.editable = !target.editable
+      this.setState({ data: newData })
     }
   }
 
@@ -79,8 +81,8 @@ export default class TableForm extends PureComponent {
     })
     setTimeout(() => {
       if (this.clickedCancel) {
-        this.clickedCancel = false;
-        return;
+        this.clickedCancel = false
+        return
       }
       const row = this.getRowByKey(key) || {}
       if (!row.infoCode) {
@@ -91,38 +93,37 @@ export default class TableForm extends PureComponent {
         })
         return false
       }
-      delete row.isNew;
-      this.toggleEditable(e, key);
-      this.props.onChange(this.state.data);
+      delete row.isNew
+      this.toggleEditable(e, key)
+      this.props.onChange(this.state.data)
       this.setState({
         loading: false,
-      });
-    }, 200);
+      })
+    }, 200)
   }
 
   cancel(e, key) {
-    this.clickedCancel = true;
-    e.preventDefault();
-    const newData = this.state.data.map(item => ({ ...item }));// eslint-disable-line
-    const target = this.getRowByKey(key, newData);
+    this.clickedCancel = true
+    e.preventDefault()
+    const newData = this.state.data.map(item => ({ ...item })) // eslint-disable-line
+    const target = this.getRowByKey(key, newData)
     if (this.cacheOriginData[key]) {
-      Object.assign(target, this.cacheOriginData[key]);
-      target.editable = false;
-      delete this.cacheOriginData[key];
+      Object.assign(target, this.cacheOriginData[key])
+      target.editable = false
+      delete this.cacheOriginData[key]
     }
-    this.setState({ data: newData });
-    this.clickedCancel = false;
+    this.setState({ data: newData })
+    this.clickedCancel = false
   }
 
   remove(key) {
-    const newData = this.state.data.filter(item => item.key !== key);// eslint-disable-line
+    const newData = this.state.data.filter(item => item.key !== key) // eslint-disable-line
     // console.log(newData)
-    this.setState({ data: newData });
-    this.props.onChange(newData);
+    this.setState({ data: newData })
+    this.props.onChange(newData)
   }
 
   render() {
-
     const columns = [
       {
         title: '信息项编码',
@@ -131,14 +132,13 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
+              <Tooltip title={text}>
                 <Input
                   value={text}
                   autoFocus
                   onChange={e => this.handleFieldChang(e, 'infoCode', row.key)}
                 />
               </Tooltip>
-
             )
           }
           return text
@@ -151,11 +151,8 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
-                <Input
-                  value={text}
-                  onChange={e => this.handleFieldChang(e, 'infoName', row.key)}
-                />
+              <Tooltip title={text}>
+                <Input value={text} onChange={e => this.handleFieldChang(e, 'infoName', row.key)} />
               </Tooltip>
             )
           }
@@ -169,11 +166,8 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
-                <Input
-                  value={text}
-                  onChange={e => this.handleFieldChang(e, 'dataType', row.key)}
-                />
+              <Tooltip title={text}>
+                <Input value={text} onChange={e => this.handleFieldChang(e, 'dataType', row.key)} />
               </Tooltip>
             )
           }
@@ -187,7 +181,7 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
+              <Tooltip title={text}>
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'dataLength', row.key)}
@@ -205,7 +199,7 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
+              <Tooltip title={text}>
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareType', row.key)}
@@ -223,7 +217,7 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
+              <Tooltip title={text}>
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareCondition', row.key)}
@@ -241,7 +235,7 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
+              <Tooltip title={text}>
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareMethodClassify', row.key)}
@@ -259,7 +253,7 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
+              <Tooltip title={text}>
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareMethodType', row.key)}
@@ -277,11 +271,8 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
-                <Input
-                  value={text}
-                  onChange={e => this.handleFieldChang(e, 'openType', row.key)}
-                />
+              <Tooltip title={text}>
+                <Input value={text} onChange={e => this.handleFieldChang(e, 'openType', row.key)} />
               </Tooltip>
             )
           }
@@ -295,7 +286,7 @@ export default class TableForm extends PureComponent {
         render: (text, row) => {
           if (row.editable) {
             return (
-              <Tooltip title={text} >
+              <Tooltip title={text}>
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'openCondition', row.key)}

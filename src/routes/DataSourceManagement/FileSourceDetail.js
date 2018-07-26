@@ -2,11 +2,10 @@
  * @Author: ChouEric
  * @Date: 2018-07-06 17:49:15
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-08 15:08:30
+ * @Last Modified time: 2018-07-26 19:42:16
 */
 import React, { Component } from 'react'
-import { Link } from 'dva/router'
-import { Divider, Button, Card, Input  } from 'antd'
+import { Button, Card } from 'antd'
 import moment from 'moment'
 
 import FileHeader from 'components/FileHeader'
@@ -16,7 +15,7 @@ import styles from './FileSourceDetail.less'
 export default class FileSourceDetail extends Component {
   state = {
     loading: true,
-    data:{},
+    data: {},
   }
 
   componentDidMount() {
@@ -25,7 +24,7 @@ export default class FileSourceDetail extends Component {
         loading: false,
         data: this.props.location.state || {},
       })
-    }, 300);
+    }, 300)
   }
 
   render() {
@@ -44,16 +43,17 @@ export default class FileSourceDetail extends Component {
 
     return (
       <PageHeaderLayout>
-        <div className='common-layout' >
+        <div className="common-layout">
           <FileHeader data={fileHeaderData} btnList={btnList} />
-          <Card loading={this.state.loading} bordered={false} >
-            <h2>
-              资源挂接
-            </h2>
-            <ul className={styles.box} >
+          <Card loading={this.state.loading} bordered={false}>
+            <h2>资源挂接</h2>
+            <ul className={styles.box}>
               <li>
                 <span>资源名称</span>:
-                <span>{this.state.data.name && this.state.data.name.substring(0,this.state.data.name.lastIndexOf('.'))}</span>
+                <span>
+                  {this.state.data.name &&
+                    this.state.data.name.substring(0, this.state.data.name.lastIndexOf('.'))}
+                </span>
               </li>
               <li>
                 <span>数据类型</span>:
@@ -61,19 +61,19 @@ export default class FileSourceDetail extends Component {
               </li>
               <li>
                 <span>节点</span>:
-                <span>{this.state.data.node || '石家庄市民政部' }</span>
+                <span>{this.state.data.node || '石家庄市民政部'}</span>
               </li>
               <li>
                 <span>所属机构</span>:
-                <span>{this.state.data.node || '石家庄市民政部' }</span>
+                <span>{this.state.data.node || '石家庄市民政部'}</span>
               </li>
               <li>
                 <span>应用系统名称</span>:
-                <span>{this.state.data.node || '统计系统' }</span>
+                <span>{this.state.data.node || '统计系统'}</span>
               </li>
               <li>
                 <span>注册时间</span>:
-                <span>{moment(this.state.data.uploadTime).format('lll') }</span>
+                <span>{moment(this.state.data.uploadTime).format('lll')}</span>
               </li>
               <li>
                 <span>资源</span>:
@@ -82,8 +82,8 @@ export default class FileSourceDetail extends Component {
                 </span>
               </li>
             </ul>
-            <div style={{textAlign: 'center'}} >
-              <Button type='primary' >修改</Button>
+            <div style={{ textAlign: 'center' }}>
+              <Button type="primary">修改</Button>
             </div>
           </Card>
         </div>

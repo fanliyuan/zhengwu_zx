@@ -4,9 +4,9 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-24 16:59:04
 */
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react'
 // import { routerRedux } from 'dva/router'
-import Result from 'components/Result';
+import Result from 'components/Result'
 
 // import styles from './index.less'
 
@@ -15,16 +15,16 @@ import Result from 'components/Result';
 export default class Step3 extends PureComponent {
   state = {
     show: false,
-  };
+  }
 
   componentDidMount = () => {
     this.setState({
       show: this.props.location.state.show,
-    });
-  };
+    })
+  }
 
   render() {
-    const { show } = this.state;
+    const { show } = this.state
     return (
       <Fragment>
         <Result type="success" title="提交成功" />
@@ -36,6 +36,6 @@ export default class Step3 extends PureComponent {
           </div>
         )}
       </Fragment>
-    );
+    )
   }
 }

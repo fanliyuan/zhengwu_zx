@@ -6,29 +6,18 @@
  * @描述: 监控告警 -- 节点系统监控  -- 统称监控详情 ( 系统告警 和 -- 系统告警设置 ) 
 
 */
-import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import {
-  Tabs,
-  Table,
-  Input,
-  Select,
-  Cascader,
-  Button,
-  DatePicker,
-  Form,
-  message,
-  Card,
-} from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { Link } from 'dva/router'
+import { Tabs, Table, Input, Select, Cascader, Button, DatePicker, Form, message, Card } from 'antd'
+import moment from 'moment'
 
-import { TimelineChart } from 'components/Charts';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { getRandom } from '../../utils/faker';
-import styles from './Node.less';
+import { TimelineChart } from 'components/Charts'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import { getRandom } from '../../utils/faker'
+import styles from './Node.less'
 
-const usageType = ['CPU利用率', '内存利用率', '硬盘利用率', '网络利用率'];
-const dataOption = [];
+const usageType = ['CPU利用率', '内存利用率', '硬盘利用率', '网络利用率']
+const dataOption = []
 for (let i = 0; i < 178; i++) {
   dataOption.push({
     id: i,
@@ -37,39 +26,39 @@ for (let i = 0; i < 178; i++) {
     threshold: Math.floor(Math.random() * 60 + 40),
     period: '5分钟',
     boolean: Math.round(Math.random()) === 1 ? '有效' : '无效',
-  });
+  })
 }
-const dataWarning = [];
+const dataWarning = []
 for (let i = 0; i < 145; i++) {
   dataWarning.push({
     id: i,
     time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
     name: usageType[Math.floor(Math.random() * 4)],
     value: Math.floor(Math.random() * 30 + 40),
-  });
+  })
 }
 
-const CPUData = [];
-const memoryData = [];
-const diskData = [];
-const newworkData = [];
+const CPUData = []
+const memoryData = []
+const diskData = []
+const newworkData = []
 for (let i = 0; i < 50; i++) {
   CPUData.push({
     x: +Date.now() + 5000 * i - 5000 * 365,
     y1: getRandom(10, 2),
-  });
+  })
   memoryData.push({
     x: +Date.now() + 5000 * i - 5000 * 365,
     y1: getRandom(8, 2),
-  });
+  })
   diskData.push({
     x: +Date.now() + 5000 * i - 5000 * 365,
     y1: Math.round(Math.random()) + getRandom(9, 0) * 0.1,
-  });
+  })
   newworkData.push({
     x: +Date.now() + 5000 * i - 5000 * 365,
     y1: getRandom(20, 0),
-  });
+  })
 }
 
 export default class Node extends Component {
@@ -88,97 +77,97 @@ export default class Node extends Component {
     isChanged2: false,
     defaultActiveKey: 'system',
     loading: false,
-  };
+  }
 
   componentWillMount = () => {
     this.setState({
       defaultActiveKey: this.props.location.state || 'system',
       loading: true,
-    });
+    })
     setTimeout(() => {
       this.setState({
         loading: false,
-      });
-    }, 300);
-  };
+      })
+    }, 300)
+  }
 
   warningNameChange = e => {
-    const { query1 } = this.state;
+    const { query1 } = this.state
     this.setState({
       query1: {
         ...query1,
         warningName: e.target.value,
       },
       isChanged1: true,
-    });
-  };
+    })
+  }
 
   warningTimeChange = value => {
-    const { query1 } = this.state;
+    const { query1 } = this.state
     this.setState({
       query1: {
         ...query1,
         warningTime: value,
       },
       isChanged1: true,
-    });
-  };
+    })
+  }
 
   search = () => {
-    if (!this.state.isChanged1) return false;
-    message.success('this.state.query1');
-  };
+    if (!this.state.isChanged1) return false
+    message.success('this.state.query1')
+  }
 
   dataOriginNameChange = e => {
-    const { query2 } = this.state;
+    const { query2 } = this.state
     this.setState({
       query2: {
         ...query2,
         dataOriginName: e.target.value,
       },
       isChanged2: true,
-    });
-  };
+    })
+  }
 
   serverAddressChagne = e => {
-    const { query2 } = this.state;
+    const { query2 } = this.state
     this.setState({
       query2: {
         ...query2,
         serverAddress: e.target.value,
       },
       isChanged2: true,
-    });
-  };
+    })
+  }
 
   organizationChange = value => {
-    const { query2 } = this.state;
+    const { query2 } = this.state
     this.setState({
       query2: {
         ...query2,
         organization: value,
       },
       isChanged2: true,
-    });
-  };
+    })
+  }
 
   stateChange = value => {
-    const { query2 } = this.state;
+    const { query2 } = this.state
     this.setState({
       query2: {
         ...query2,
         state: value,
       },
       isChanged2: true,
-    });
-  };
+    })
+  }
 
   searchOption = () => {
     if (!this.state.isChanged2) {
-      return false;
+      return false
     }
-    message.success('this.state.query2');
-  };
+    message.success('this.state.query2')
+  }
 
   render() {
     const {
@@ -186,7 +175,7 @@ export default class Node extends Component {
       query2: { dataOriginName, serverAddress, organization, state },
       defaultActiveKey,
       loading,
-    } = this.state;
+    } = this.state
     const stateList = [
       {
         value: -1,
@@ -200,7 +189,7 @@ export default class Node extends Component {
         value: 1,
         lable: '连接失败',
       },
-    ];
+    ]
     const organizationList = [
       {
         value: 101,
@@ -234,7 +223,7 @@ export default class Node extends Component {
           },
         ],
       },
-    ];
+    ]
     const columnsWarning = [
       {
         title: '告警时间',
@@ -248,10 +237,10 @@ export default class Node extends Component {
         title: '当前值',
         dataIndex: 'value',
       },
-    ];
+    ]
     columnsWarning.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const columnsOption = [
       {
         title: '告警名称',
@@ -277,21 +266,21 @@ export default class Node extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          return <Link to={`/monitor/editOption/${row.id}`}>修改</Link>;
+          return <Link to={`/monitor/editOption/${row.id}`}>修改</Link>
         },
       },
-    ];
+    ]
     columnsOption.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const stateComs = stateList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value}>
           {item.lable}
         </Select.Option>
-      );
-    });
+      )
+    })
 
     return (
       <PageHeaderLayout>
@@ -402,6 +391,6 @@ export default class Node extends Component {
           </Tabs.TabPane>
         </Tabs>
       </PageHeaderLayout>
-    );
+    )
   }
 }

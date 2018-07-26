@@ -1,35 +1,35 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { Form, Card, Input, TreeSelect, Checkbox, Button, message } from 'antd';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Form, Card, Input, TreeSelect, Checkbox, Button, message } from 'antd'
 
 // import styles from './AddSwitch.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { SHOW_PARENT } = TreeSelect;
-const FormItem = Form.Item;
-const { TextArea } = Input;
+const { SHOW_PARENT } = TreeSelect
+const FormItem = Form.Item
+const { TextArea } = Input
 
 @connect()
 @Form.create()
 export default class AddSwitch extends Component {
-  state = {};
+  state = {}
 
-  onChange = () => {};
+  onChange = () => {}
 
-  onChange1 = () => {};
+  onChange1 = () => {}
 
   handleSubmit = e => {
-    e.preventDefault();
-    message.success('提交成功, 即将返回上一页');
+    e.preventDefault()
+    message.success('提交成功, 即将返回上一页')
     setTimeout(() => {
-      this.props.dispatch(routerRedux.push('/infrastructure/switch'));
-    }, 1000);
-  };
+      this.props.dispatch(routerRedux.push('/infrastructure/switch'))
+    }, 1000)
+  }
 
   handleCancle = () => {
-    this.props.dispatch(routerRedux.push('/infrastructure/switch'));
-  };
+    this.props.dispatch(routerRedux.push('/infrastructure/switch'))
+  }
 
   render() {
     const FormItemLayout = {
@@ -43,8 +43,8 @@ export default class AddSwitch extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    }
+    const { getFieldDecorator, getFieldValue } = this.props.form
     const treeData = [
       {
         title: '一级机构1',
@@ -100,7 +100,7 @@ export default class AddSwitch extends Component {
           },
         ],
       },
-    ];
+    ]
     const treeData1 = [
       {
         title: '一级节点1',
@@ -156,7 +156,7 @@ export default class AddSwitch extends Component {
           },
         ],
       },
-    ];
+    ]
     const tProps = {
       treeData,
       // value:this.state.value,
@@ -167,7 +167,7 @@ export default class AddSwitch extends Component {
       style: {
         width: 300,
       },
-    };
+    }
     const tProps1 = {
       treeData: treeData1,
       // value:this.state.value,
@@ -178,7 +178,7 @@ export default class AddSwitch extends Component {
       style: {
         width: 300,
       },
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -234,6 +234,6 @@ export default class AddSwitch extends Component {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

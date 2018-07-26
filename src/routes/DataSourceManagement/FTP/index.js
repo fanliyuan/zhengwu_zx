@@ -5,33 +5,33 @@
  * @Last Modified time: 2018-07-24 23:45:34
  * @Description: 资源注册FTP
  */
-import React from 'react';
-import { Link, Switch, Redirect, Route } from 'dva/router';
-import { Steps, Button } from 'antd';
+import React from 'react'
+import { Link, Switch, Redirect, Route } from 'dva/router'
+import { Steps, Button } from 'antd'
 
-import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import { getRoutes } from '../../../utils/utils';
-import styles from './index.less';
+import PageHeaderLayout from '../../../layouts/PageHeaderLayout'
+import { getRoutes } from '../../../utils/utils'
+import styles from './index.less'
 
-const { Step } = Steps;
+const { Step } = Steps
 
 export default function FTP(props) {
-  const { match, routerData } = props;
+  const { match, routerData } = props
 
   function getCurrentStep() {
     const {
       location: { pathname },
-    } = props;
-    const pathList = pathname.split('/');
+    } = props
+    const pathList = pathname.split('/')
     switch (pathList[pathList.length - 1]) {
       case 'one':
-        return 0;
+        return 0
       case 'two':
-        return 1;
+        return 1
       case 'three':
-        return 2;
+        return 2
       default:
-        return 0;
+        return 0
     }
   }
 
@@ -56,5 +56,5 @@ export default function FTP(props) {
         </Switch>
       </div>
     </PageHeaderLayout>
-  );
+  )
 }

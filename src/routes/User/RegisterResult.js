@@ -1,8 +1,8 @@
-import React from 'react';
-import { Button } from 'antd';
-import { Link } from 'dva/router';
-import Result from 'components/Result';
-import styles from './RegisterResult.less';
+import React from 'react'
+import { Button } from 'antd'
+import { Link } from 'dva/router'
+import Result from 'components/Result'
+import styles from './RegisterResult.less'
 
 const actions = (
   <div className={styles.actions}>
@@ -15,7 +15,7 @@ const actions = (
       <Button size="large">返回首页</Button>
     </Link>
   </div>
-);
+)
 
 export default ({ location }) => (
   <Result
@@ -31,4 +31,4 @@ export default ({ location }) => (
     actions={actions}
     style={{ marginTop: 56 }}
   />
-);
+)

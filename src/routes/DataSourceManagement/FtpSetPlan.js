@@ -1,40 +1,40 @@
-import React, { Component } from 'react';
-import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber } from 'antd';
+import React, { Component } from 'react'
+import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './FtpSetPlan.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './FtpSetPlan.less'
 
-const FormItem = Form.Item;
-const { Step } = Steps;
-const { Option } = Select;
-const InputGroup = Input.Group;
+const FormItem = Form.Item
+const { Step } = Steps
+const { Option } = Select
+const InputGroup = Input.Group
 @Form.create()
 export default class FtpSetPlan extends Component {
-  state = {};
+  state = {}
 
   setInputs = () => {
-    const { setFieldValue } = this.props.form;
-    const { minutes, hours, day, month, week } = this.state;
-    const timeInfo = [minutes, hours, day, month, week];
-    setFieldValue('setTime', timeInfo);
-  };
+    const { setFieldValue } = this.props.form
+    const { minutes, hours, day, month, week } = this.state
+    const timeInfo = [minutes, hours, day, month, week]
+    setFieldValue('setTime', timeInfo)
+  }
 
-  handleSubmit = () => {};
+  handleSubmit = () => {}
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
     const optionData = [
       { label: '定时', value: '0', id: 0 },
       { label: '实时', value: '1', id: 1 },
       { label: '手动', value: '2', id: 2 },
-    ];
+    ]
     const optionSelect = optionData.map(item => {
       return (
         <Option value={item.value} key={item.id} label={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const options = [
       {
         value: '0',
@@ -72,7 +72,7 @@ export default class FtpSetPlan extends Component {
           },
         ],
       },
-    ];
+    ]
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -83,13 +83,13 @@ export default class FtpSetPlan extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
+    }
     const submitLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
         sm: { span: 10, offset: 7 },
       },
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -136,6 +136,6 @@ export default class FtpSetPlan extends Component {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

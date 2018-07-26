@@ -1,35 +1,35 @@
-import React from 'react';
-import { Spin } from 'antd';
+import React from 'react'
+import { Spin } from 'antd'
 
 export default class PromiseRender extends React.PureComponent {
   state = {
     component: null,
-  };
+  }
 
   componentDidMount() {
-    this.setRenderComponent(this.props);
+    this.setRenderComponent(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
     // new Props enter
-    this.setRenderComponent(nextProps);
+    this.setRenderComponent(nextProps)
   }
 
   // set render Component : ok or error
   setRenderComponent(props) {
-    const ok = this.checkIsInstantiation(props.ok);
-    const error = this.checkIsInstantiation(props.error);
+    const ok = this.checkIsInstantiation(props.ok)
+    const error = this.checkIsInstantiation(props.error)
     props.promise
       .then(() => {
         this.setState({
           component: ok,
-        });
+        })
       })
       .catch(() => {
         this.setState({
           component: error,
-        });
-      });
+        })
+      })
   }
 
   // Determine whether the incoming component has been instantiated
@@ -38,13 +38,13 @@ export default class PromiseRender extends React.PureComponent {
   // Secured is not instantiated
   checkIsInstantiation = target => {
     if (!React.isValidElement(target)) {
-      return target;
+      return target
     }
-    return () => target;
-  };
+    return () => target
+  }
 
   render() {
-    const { component: Component } = this.state;
+    const { component: Component } = this.state
     return Component ? (
       <Component {...this.props} />
     ) : (
@@ -59,6 +59,6 @@ export default class PromiseRender extends React.PureComponent {
       >
         <Spin size="large" />
       </div>
-    );
+    )
   }
 }

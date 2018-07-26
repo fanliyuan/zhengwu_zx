@@ -5,15 +5,15 @@
  * @Last Modified time: 2018-07-23 21:41:56
  * @描述: 监控告警 -- 系统告警设置 -- 告警页面
 */
-import React, { Component, Fragment } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { Form, Input, Select, Checkbox, InputNumber, Button } from 'antd';
+import React, { Component, Fragment } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Form, Input, Select, Checkbox, InputNumber, Button } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './EditWarningOption.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './EditWarningOption.less'
 
-const { Item } = Form;
+const { Item } = Form
 const itemLayout = {
   labelCol: {
     span: 2,
@@ -21,7 +21,7 @@ const itemLayout = {
   wrapperCol: {
     span: 22,
   },
-};
+}
 
 @Form.create()
 @connect()
@@ -32,26 +32,26 @@ export default class EditWarningOption extends Component {
     threshold: 80,
     period: '',
     availability: false, // eslint-disable-line
-  };
+  }
 
   handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values); // eslint-disable-line
+        console.log('Received values of form: ', values) // eslint-disable-line
       }
-    });
-  };
+    })
+  }
 
   availabilityChange = value => {
     this.setState({
       availability: !value, // eslint-disable-line
-    });
-  };
+    })
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { name, target, threshold, period } = this.state;
+    const { getFieldDecorator } = this.props.form
+    const { name, target, threshold, period } = this.state
     const typeList = [
       {
         value: 0,
@@ -69,13 +69,13 @@ export default class EditWarningOption extends Component {
         value: 3,
         label: '网络',
       },
-    ];
+    ]
 
     const typeComs = typeList.map(item => (
       <Select.Option value={item.value} key={item.value}>
         {item.label}
       </Select.Option>
-    ));
+    ))
 
     return (
       <PageHeaderLayout>
@@ -137,6 +137,6 @@ export default class EditWarningOption extends Component {
           </Form>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

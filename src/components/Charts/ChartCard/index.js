@@ -1,23 +1,23 @@
-import React from 'react';
-import { Card, Spin } from 'antd';
-import classNames from 'classnames';
+import React from 'react'
+import { Card, Spin } from 'antd'
+import classNames from 'classnames'
 
-import styles from './index.less';
+import styles from './index.less'
 
 const renderTotal = total => {
-  let totalDom;
+  let totalDom
   switch (typeof total) {
     case 'undefined':
-      totalDom = null;
-      break;
+      totalDom = null
+      break
     case 'function':
-      totalDom = <div className={styles.total}>{total()}</div>;
-      break;
+      totalDom = <div className={styles.total}>{total()}</div>
+      break
     default:
-      totalDom = <div className={styles.total}>{total}</div>;
+      totalDom = <div className={styles.total}>{total}</div>
   }
-  return totalDom;
-};
+  return totalDom
+}
 
 const ChartCard = ({
   loading = false,
@@ -61,7 +61,7 @@ const ChartCard = ({
         </div>
       )}
     </div>
-  );
+  )
 
   return (
     <Card bodyStyle={{ padding: '20px 24px 8px 24px' }} {...rest}>
@@ -71,7 +71,7 @@ const ChartCard = ({
         </Spin>
       }
     </Card>
-  );
-};
+  )
+}
 
-export default ChartCard;
+export default ChartCard

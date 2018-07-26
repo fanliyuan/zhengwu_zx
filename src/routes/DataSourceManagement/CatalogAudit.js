@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, DatePicker, Checkbox, Modal, Radio } from 'antd';
-import moment from 'moment';
-import { connect } from 'dva';
-import { Link, routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Table, Button, Input, Select, Card, DatePicker, Checkbox, Modal, Radio } from 'antd'
+import moment from 'moment'
+import { connect } from 'dva'
+import { Link, routerRedux } from 'dva/router'
 
-import styles from './CatalogAudit.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './CatalogAudit.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const RadioGroup = Radio.Group;
-const { TextArea } = Input;
+const { Option } = Select
+const { RangePicker } = DatePicker
+const RadioGroup = Radio.Group
+const { TextArea } = Input
 @connect(({ catalogAudit }) => ({
   catalogAudit,
 }))
@@ -20,72 +20,72 @@ export default class CatalogAudit extends Component {
     status: '0',
     visible: false,
     isPass: 1,
-  };
+  }
 
   providerChange = val => {
     this.setState({
       provider: val,
-    });
-  };
+    })
+  }
 
   statusChange = val => {
     this.setState({
       status: val,
-    });
-  };
+    })
+  }
 
   showModal = () => {
     this.setState({
       visible: true,
-    });
-  };
+    })
+  }
 
   handleOk = () => {
     this.setState({
       visible: false,
-    });
-  };
+    })
+  }
 
   handleCancel = () => {
     this.setState({
       visible: false,
-    });
-  };
+    })
+  }
 
   handlePass = e => {
     this.setState({
       isPass: e.target.value,
-    });
-  };
+    })
+  }
 
   handleView = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
+  }
 
   render() {
-    const that = this;
-    const { provider, status, isPass, visible } = this.state;
-    const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }];
+    const that = this
+    const { provider, status, isPass, visible } = this.state
+    const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
     const selectData = data.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const data1 = [
       { value: '0', id: 0, label: '审核状态' },
       { value: '1', id: 1, label: '审核状态1' },
-    ];
+    ]
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const pagination = { pageSize: 10, current: 1 };
+      )
+    })
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '目录编码',
@@ -103,28 +103,28 @@ export default class CatalogAudit extends Component {
         title: '注册时间',
         dataIndex: 'createTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '是否挂载资源',
         dataIndex: 'isMouontSource',
         render(text) {
-          return +text === 0 ? '否' : '是';
+          return +text === 0 ? '否' : '是'
         },
       },
       {
         title: '信息项',
         dataIndex: 'information',
         render(text) {
-          return +text === 0 ? '否' : '是';
+          return +text === 0 ? '否' : '是'
         },
       },
       {
         title: '审核状态',
         dataIndex: 'status',
         render(text) {
-          return +text === 0 ? '待审核' : '已通过';
+          return +text === 0 ? '待审核' : '已通过'
         },
       },
       {
@@ -142,7 +142,7 @@ export default class CatalogAudit extends Component {
                   审核
                 </span>
               </div>
-            );
+            )
           } else {
             return (
               <div>
@@ -153,14 +153,14 @@ export default class CatalogAudit extends Component {
                   审核日志
                 </Link>
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -195,7 +195,7 @@ export default class CatalogAudit extends Component {
         information: 2,
         status: '2',
       },
-    ];
+    ]
     const rowSelection = {
       // onChange: selectedRows => {
       // },
@@ -203,7 +203,7 @@ export default class CatalogAudit extends Component {
       //   disabled: record.name === 'Disabled User',
       //   name: record.name,
       // }),
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -260,6 +260,6 @@ export default class CatalogAudit extends Component {
           </Modal>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

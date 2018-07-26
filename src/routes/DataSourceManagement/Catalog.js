@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Card } from 'antd';
-import { Link } from 'dva/router';
+import React, { Component } from 'react'
+import { Card } from 'antd'
+import { Link } from 'dva/router'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './Catalog.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './Catalog.less'
 
 export default class Catalog extends Component {
-  state = {};
+  state = {}
 
   render() {
     return (
@@ -27,6 +27,6 @@ export default class Catalog extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

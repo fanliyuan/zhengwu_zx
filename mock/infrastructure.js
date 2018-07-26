@@ -35,15 +35,15 @@ const organizationData = [
       },
     ],
   },
-];
-const organizationDataArr = [];
+]
+const organizationDataArr = []
 organizationData.forEach(item => {
   if (item.children) {
     item.children.forEach(sub => {
-      organizationDataArr.push(sub);
-    });
+      organizationDataArr.push(sub)
+    })
   }
-});
+})
 const nodeList = [
   {
     value: 1001,
@@ -77,16 +77,16 @@ const nodeList = [
       },
     ],
   },
-];
-let nodeArr = [];
+]
+let nodeArr = []
 nodeList.forEach(item => {
   if (Array.isArray(item.children)) {
-    nodeArr = [...nodeArr, ...item.children];
+    nodeArr = [...nodeArr, ...item.children]
   }
-});
-let InfrastructureNodeData = [];
+})
+let InfrastructureNodeData = []
 for (let i = 0; i < 255; i++) {
-  const random = Math.ceil(Math.random() * (nodeArr.length - 1));
+  const random = Math.ceil(Math.random() * (nodeArr.length - 1))
   InfrastructureNodeData.push({
     organization: organizationDataArr[Math.floor(Math.random() * 6)].value,
     ip: `192.168.${255 - i}.${i}`,
@@ -94,14 +94,14 @@ for (let i = 0; i < 255; i++) {
     name: nodeArr[random].label + i,
     parentNode: nodeArr[random].value,
     id: i,
-  });
+  })
 }
 
 const getInfrastructureNode = (req, res) => {
   const {
     query: { ip, node, parentNode, organization, state },
     pagination: { current = 1, pageSize = 10 },
-  } = req.body;
+  } = req.body
   const queryList = InfrastructureNodeData.filter(item => {
     return (
       item.ip.indexOf(ip) !== -1 &&
@@ -109,8 +109,8 @@ const getInfrastructureNode = (req, res) => {
       (item.parentNode === parentNode[1] || !parentNode[1]) &&
       (item.organization === organization[1] || !organization[1]) &&
       (item.state === state || state === -1)
-    );
-  });
+    )
+  })
 
   res.send({
     status: 200,
@@ -118,35 +118,35 @@ const getInfrastructureNode = (req, res) => {
       list: queryList.splice((current - 1) * pageSize, pageSize),
       pagination: { current, pageSize, total: queryList.length },
     },
-  });
-};
+  })
+}
 
 const getNodeList = (req, res) => {
   res.send({
     status: 200,
     data: nodeList,
-  });
-};
+  })
+}
 
 const deleteNode = (req, res) => {
-  InfrastructureNodeData = InfrastructureNodeData.filter(item => item.id !== +req.params.id);
+  InfrastructureNodeData = InfrastructureNodeData.filter(item => item.id !== +req.params.id)
   res.send({
     status: 200,
     data: '删除成功',
-  });
-};
+  })
+}
 
 const deleteNodes = (req, res) => {
-  const ids = req.body;
+  const ids = req.body
   // 这是优化方案
   const InfrastructureNodeDataObject = InfrastructureNodeData.reduce((pre, cur) => {
-    pre[cur.id] = cur;
-    return pre;
-  }, {});
+    pre[cur.id] = cur
+    return pre
+  }, {})
   ids.forEach(item => {
-    delete InfrastructureNodeDataObject[item];
-  });
-  InfrastructureNodeData = Object.values(InfrastructureNodeDataObject);
+    delete InfrastructureNodeDataObject[item]
+  })
+  InfrastructureNodeData = Object.values(InfrastructureNodeDataObject)
   // 这里两层循环,应该有优化的方案
   // const result = [];
   // InfrastructureNodeData.forEach(item => {
@@ -164,12 +164,12 @@ const deleteNodes = (req, res) => {
   res.send({
     status: 200,
     data: '删除成功',
-  });
-};
+  })
+}
 
 export default {
   getInfrastructureNode,
   getNodeList,
   deleteNode, // 命名有误
   deleteNodes, // 命名有误
-};
+}

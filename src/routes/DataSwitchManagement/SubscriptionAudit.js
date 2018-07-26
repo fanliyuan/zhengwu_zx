@@ -1,22 +1,22 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { Table, Button, Input, Card, DatePicker } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Table, Button, Input, Card, DatePicker } from 'antd'
+import moment from 'moment'
 
-import styles from './SubscriptionAudit.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SubscriptionAudit.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker
 
 @connect()
 export default class SubscriptionAudit extends Component {
   goAuditLog = row => {
-    this.props.dispatch(routerRedux.push('/dataSwitchManagement/auditLog', { ...row }));
-  };
+    this.props.dispatch(routerRedux.push('/dataSwitchManagement/auditLog', { ...row }))
+  }
 
   render() {
-    const pagination = { pageSize: 10, current: 1 };
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: 'ID',
@@ -42,14 +42,14 @@ export default class SubscriptionAudit extends Component {
         title: '订阅申请时间',
         dataIndex: 'applyTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '审核状态',
         dataIndex: 'status',
         render(text) {
-          return +text <= 0 ? '待审批' : +text === 1 ? '已通过' : '已拒绝';
+          return +text <= 0 ? '待审批' : +text === 1 ? '已通过' : '已拒绝'
         },
       },
       {
@@ -62,21 +62,21 @@ export default class SubscriptionAudit extends Component {
                 {/* <Link to={`/dataSwitchManagement/auditLog/${row.id}/${row.state || 0}`}>审核日志</Link> */}
                 <a onClick={() => this.goAuditLog(row)}>审核详情</a>
               </div>
-            );
+            )
           } else {
             return (
               <div>
                 <a style={{ marginRight: 20 }}>详情</a>
                 <a>审核</a>
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -114,7 +114,7 @@ export default class SubscriptionAudit extends Component {
         applayTime: 232444242,
         status: '3',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -135,6 +135,6 @@ export default class SubscriptionAudit extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

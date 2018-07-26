@@ -5,11 +5,11 @@
  * @Last Modified time: 2018-07-24 11:50:47
  * @Description: 节点监控的首页
  */
-import React from 'react';
-import { Link } from 'dva/router';
+import React from 'react'
+import { Link } from 'dva/router'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './NodeMonitor.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './NodeMonitor.less'
 
 export default function NodeMonitor() {
   return (
@@ -25,5 +25,5 @@ export default function NodeMonitor() {
         </div>
       </div>
     </PageHeaderLayout>
-  );
+  )
 }

@@ -4,16 +4,16 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-23 16:27:35
 */
-import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import { Form, Input, Select, Cascader, Button, Table } from 'antd';
+import React, { Component } from 'react'
+import { Link } from 'dva/router'
+import { Form, Input, Select, Cascader, Button, Table } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './WarningOption.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './WarningOption.less'
 
-const data = [];
+const data = []
 for (let i = 0; i < 120; i++) {
-  const random = Math.round(Math.random());
+  const random = Math.round(Math.random())
   data.push({
     id: i,
     name: `告警名称${i}`,
@@ -22,7 +22,7 @@ for (let i = 0; i < 120; i++) {
     node: `节点${i}`,
     IP: `192.168${255 - i}.${i}`,
     state: i % 3 === 0 ? '已停止' : '运行中',
-  });
+  })
 }
 
 export default class WarningOption extends Component {
@@ -35,71 +35,71 @@ export default class WarningOption extends Component {
       state: -1,
     },
     isChanged: false,
-  };
+  }
 
   nameChange = e => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         name: e.target.value,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   targetChange = e => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         target: e.target.value,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   methodChange = value => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         method: value,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   nodeChange = value => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         node: value,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   stateChange = value => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         state: value,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   search = () => {
-    if (!this.state.isChanged) return false;
-  };
+    if (!this.state.isChanged) return false
+  }
 
   render() {
     const {
       query: { name, target, method, node, state },
-    } = this.state;
+    } = this.state
     const nodeList = [
       {
         value: -1,
@@ -133,17 +133,17 @@ export default class WarningOption extends Component {
           },
         ],
       },
-    ];
+    ]
     const methodList = [
       { value: -1, label: '全部方式' },
       { value: 0, label: '短信告警' },
       { value: 1, label: '邮件告警' },
-    ];
+    ]
     const stateList = [
       { value: -1, label: '全部状态' },
       { value: 0, label: '运行中' },
       { value: 1, label: '已停止' },
-    ];
+    ]
 
     const columns = [
       {
@@ -178,28 +178,28 @@ export default class WarningOption extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          return <Link to={`/monitor/editWarningOption/${row.id}`}>修改</Link>;
+          return <Link to={`/monitor/editWarningOption/${row.id}`}>修改</Link>
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const methodComs = methodList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value}>
           {item.label}
         </Select.Option>
-      );
-    });
+      )
+    })
     const stateComs = stateList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value}>
           {item.label}
         </Select.Option>
-      );
-    });
+      )
+    })
 
     return (
       <PageHeaderLayout>
@@ -242,6 +242,6 @@ export default class WarningOption extends Component {
           <Table columns={columns} dataSource={data} rowKey="id" bordered />
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

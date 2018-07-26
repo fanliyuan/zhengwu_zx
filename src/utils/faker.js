@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-20 13:40:30
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 15:18:41
+ * @Last Modified time: 2018-07-26 19:43:43
  * @Description: 获取假数据
  */
 
@@ -23,7 +23,7 @@ const firstName = [
   '彭',
   '杨',
   '宋',
-];
+]
 const middleName = [
   '小',
   '锦',
@@ -41,7 +41,7 @@ const middleName = [
   '怀',
   '铭',
   '晨',
-];
+]
 const lastName = [
   '明',
   '红',
@@ -59,9 +59,9 @@ const lastName = [
   '浩',
   '文',
   '海',
-];
-const type = ['添加', '修改', '删除', '查看'];
-const data = ['用户', '权限', '数据', '文件', '图片', '视频', '机构', '节点', '通道'];
+]
+const type = ['添加', '修改', '删除', '查看']
+const data = ['用户', '权限', '数据', '文件', '图片', '视频', '机构', '节点', '通道']
 const address = [
   {
     name: '河北省',
@@ -1228,8 +1228,8 @@ const address = [
       },
     ],
   },
-];
-const department = ['财政局', '检察院', '公安局', '地税局', '计生委', '政府', '党委'];
+]
+const department = ['财政局', '检察院', '公安局', '地税局', '计生委', '政府', '党委']
 
 /**
  * 返回一个随机数
@@ -1238,10 +1238,11 @@ const department = ['财政局', '检察院', '公安局', '地税局', '计生�
  */
 export function getRandom(max = 10, min = 0) {
   try {
-    return Math.floor(Math.random() * max + min);
+    return Math.floor(Math.random() * max + min)
   } catch (error) {
-    console.log(error);
-  } // eslint-disable-line
+    // eslint-disable-next-line
+    console.log(error)
+  }
 }
 
 /**
@@ -1249,7 +1250,7 @@ export function getRandom(max = 10, min = 0) {
  * @returns {string} 例如:李锦平
  */
 export function getName() {
-  return firstName[getRandom(15)] + (middleName[getRandom(25)] || '') + lastName[getRandom(15)];
+  return firstName[getRandom(15)] + (middleName[getRandom(25)] || '') + lastName[getRandom(15)]
 }
 /**
  * 返回一个操作详情
@@ -1257,7 +1258,7 @@ export function getName() {
  * @returns {string} 例如:新增用户22
  */
 export function getDetail(id) {
-  return type[getRandom(3)] + data[getRandom(8)] + (id || '');
+  return type[getRandom(3)] + data[getRandom(8)] + (id || '')
 }
 
 /**
@@ -1266,13 +1267,14 @@ export function getDetail(id) {
  */
 export function getAddress() {
   try {
-    const province = address[getRandom(7)];
-    const cities = province.city;
-    const city = cities[getRandom(cities.length)];
-    return province.name + (getRandom(4) > 0 ? city.name : '');
+    const province = address[getRandom(7)]
+    const cities = province.city
+    const city = cities[getRandom(cities.length)]
+    return province.name + (getRandom(4) > 0 ? city.name : '')
   } catch (error) {
-    console.log(error);
-  } // eslint-disable-line
+    // eslint-disable-next-line
+    console.log(error)
+  }
 }
 
 /**
@@ -1280,5 +1282,5 @@ export function getAddress() {
  * @returns {string} 例如: 检察院
  */
 export function getDepartment() {
-  return department[getRandom(6)];
+  return department[getRandom(6)]
 }

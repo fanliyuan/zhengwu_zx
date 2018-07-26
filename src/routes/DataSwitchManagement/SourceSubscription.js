@@ -1,64 +1,64 @@
-import React, { Component } from 'react';
-import { Link } from 'dva/router';
-import { Table, Button, Input, Select, Card, DatePicker } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { Link } from 'dva/router'
+import { Table, Button, Input, Select, Card, DatePicker } from 'antd'
+import moment from 'moment'
 
-import styles from './SourceSubscription.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SourceSubscription.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+const { Option } = Select
+const { RangePicker } = DatePicker
 export default class SourceSubscription extends Component {
   state = {
     selectJg: '0',
     selectDy: '0',
     isNodeOperator: false,
-  };
+  }
 
   componentDidMount() {
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
-    });
+    })
   }
 
   handleSelectChangejg = val => {
     this.setState({
       selectJg: val,
-    });
-  };
+    })
+  }
 
   handleSelectChangedy = val => {
     this.setState({
       selectDy: val,
-    });
-  };
+    })
+  }
 
   render() {
-    const { selectJg, selectDy, isNodeOperator } = this.state;
+    const { selectJg, selectDy, isNodeOperator } = this.state
     const data = [
       { value: '0', id: 0, label: '发布机构' },
       { value: '1', id: 1, label: '发布机构1' },
-    ];
+    ]
     const selectData = data.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const data1 = [
       { value: '0', id: 0, label: '是否订阅' },
       { value: '1', id: 1, label: '是' },
       { value: '2', id: 2, label: '否' },
-    ];
+    ]
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const pagination = { pageSize: 10, current: 1 };
+      )
+    })
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: 'ID',
@@ -92,21 +92,21 @@ export default class SourceSubscription extends Component {
         title: '发布时间',
         dataIndex: 'publicTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '发布方是否审核',
         dataIndex: 'isAudit',
         render(text) {
-          return +text === 0 ? '否' : '是';
+          return +text === 0 ? '否' : '是'
         },
       },
       {
         title: '是否已订阅',
         dataIndex: 'isSubscription',
         render(text) {
-          return +text === 0 ? '否' : '是';
+          return +text === 0 ? '否' : '是'
         },
       },
       {
@@ -114,7 +114,7 @@ export default class SourceSubscription extends Component {
         render(text, row) {
           if (row.isSubscription === '0') {
             if (!isNodeOperator) {
-              return <span>--</span>;
+              return <span>--</span>
             }
             return (
               <div>
@@ -125,7 +125,7 @@ export default class SourceSubscription extends Component {
                   <Link to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>订阅</Link>
                 ) : null}
               </div>
-            );
+            )
           } else {
             return (
               <div>
@@ -136,14 +136,14 @@ export default class SourceSubscription extends Component {
                   <Link to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>详情</Link>
                 ) : null}
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -181,7 +181,7 @@ export default class SourceSubscription extends Component {
         isAudit: '0',
         isSubscription: '1',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -217,6 +217,6 @@ export default class SourceSubscription extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

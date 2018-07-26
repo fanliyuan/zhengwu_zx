@@ -5,19 +5,19 @@
  * @Last Modified time: 2018-07-24 15:37:05
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
-import React, { Component, Fragment } from 'react';
+import React, { Component, Fragment } from 'react'
 // import { connect } from 'dva';
-import { Link } from 'dva/router';
-import { DatePicker, Input, Select, Button, Table, Popconfirm, message } from 'antd';
-import moment from 'moment';
+import { Link } from 'dva/router'
+import { DatePicker, Input, Select, Button, Table, Popconfirm, message } from 'antd'
+import moment from 'moment'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './NewsLibrary.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './NewsLibrary.less'
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+const { RangePicker } = DatePicker
+const { Option } = Select
 
-const data = [];
+const data = []
 
 for (let i = 0; i < 120; i++) {
   data.push({
@@ -26,7 +26,7 @@ for (let i = 0; i < 120; i++) {
     operator: '操作人' + i, // eslint-disable-line
     type: Math.round(Math.random()) === 0 ? '新闻' : '政策', // eslint-disable-line
     time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-  });
+  })
 }
 
 // @connect(({ overviewLogging, loading }) => ({
@@ -42,7 +42,7 @@ export default class NewsLibrary extends Component {
     audit: -1,
     date: [],
     isChanged: false,
-  };
+  }
 
   componentDidMount() {
     // const { dispatch } = this.props
@@ -63,59 +63,59 @@ export default class NewsLibrary extends Component {
   handleNameChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       name: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleOperatorChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       operator: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handleTypeChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       type: e,
-    });
-  };
+    })
+  }
 
   handleSubscribeChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       subscribe: e,
-    });
-  };
+    })
+  }
 
   handleAuditChange = e => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       audit: e,
-    });
-  };
+    })
+  }
 
   handlePickChange = val => {
     this.setState({
       isChanged: true,
-    });
+    })
     this.setState({
       date: val,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return; // eslint-disable-line
+    if (!this.state.isChanged) return // eslint-disable-line
     // const { dispatch } = this.props;
     // const query = this.state
     // const pagination = {
@@ -131,18 +131,18 @@ export default class NewsLibrary extends Component {
     // })
     this.setState({
       isChanged: false,
-    });
+    })
     // dispatch({
     //   type: 'overviewLogging/log',
     //   payload: { query: { ...query, date: dateRange }, pagination },
     // });
-  };
+  }
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination); // eslint-disable-line
+    console.log(pagination) // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))
@@ -155,10 +155,10 @@ export default class NewsLibrary extends Component {
     //   type: 'overviewLogging/log',
     //   payload: { query: {...query, date: dateRange}, pagination },
     // });
-  };
+  }
 
   render() {
-    const { name, date, audit, subscribe, type, operator } = this.state;
+    const { name, date, audit, subscribe, type, operator } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const typeList = [
@@ -174,7 +174,7 @@ export default class NewsLibrary extends Component {
         value: 1,
         label: '政策',
       },
-    ];
+    ]
     const subscribeList = [
       {
         value: -1,
@@ -188,7 +188,7 @@ export default class NewsLibrary extends Component {
         value: 1,
         label: '未授权',
       },
-    ];
+    ]
     const auditList = [
       {
         value: -1,
@@ -206,7 +206,7 @@ export default class NewsLibrary extends Component {
         value: 2,
         label: '待审核',
       },
-    ];
+    ]
 
     const columns = [
       {
@@ -245,14 +245,14 @@ export default class NewsLibrary extends Component {
                 <a>删除</a>
               </Popconfirm>
             </Fragment>
-          );
+          )
         },
       },
-    ];
+    ]
 
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
 
     const typeComs = typeList.map(item => {
       // eslint-disable-line
@@ -260,24 +260,24 @@ export default class NewsLibrary extends Component {
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const subscribeComs = subscribeList.map(item => {
       // eslint-disable-line
       return (
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const auditComs = auditList.map(item => {
       // eslint-disable-line
       return (
         <Option value={item.value} key={item.value}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
 
     return (
       <PageHeaderLayout>
@@ -335,6 +335,6 @@ export default class NewsLibrary extends Component {
           </div>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

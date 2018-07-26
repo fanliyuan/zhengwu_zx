@@ -1,12 +1,12 @@
-import React from 'react';
-import { Chart, Tooltip, Geom } from 'bizcharts';
-import autoHeight from '../autoHeight';
-import styles from '../index.less';
+import React from 'react'
+import { Chart, Tooltip, Geom } from 'bizcharts'
+import autoHeight from '../autoHeight'
+import styles from '../index.less'
 
 @autoHeight()
 export default class MiniBar extends React.Component {
   render() {
-    const { height, forceFit = true, color = '#1890FF', data = [] } = this.props;
+    const { height, forceFit = true, color = '#1890FF', data = [] } = this.props
 
     const scale = {
       x: {
@@ -15,9 +15,9 @@ export default class MiniBar extends React.Component {
       y: {
         min: 0,
       },
-    };
+    }
 
-    const padding = [36, 5, 30, 5];
+    const padding = [36, 5, 30, 5]
 
     const tooltip = [
       'x*y',
@@ -25,10 +25,10 @@ export default class MiniBar extends React.Component {
         name: x,
         value: y,
       }),
-    ];
+    ]
 
     // for tooltip not to be hide
-    const chartHeight = height + 54;
+    const chartHeight = height + 54
 
     return (
       <div className={styles.miniChart} style={{ height }}>
@@ -45,6 +45,6 @@ export default class MiniBar extends React.Component {
           </Chart>
         </div>
       </div>
-    );
+    )
   }
 }

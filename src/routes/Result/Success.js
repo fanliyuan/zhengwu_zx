@@ -1,9 +1,9 @@
-import React, { Fragment } from 'react';
-import { Button, Row, Col, Icon, Steps, Card } from 'antd';
-import Result from 'components/Result';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import React, { Fragment } from 'react'
+import { Button, Row, Col, Icon, Steps, Card } from 'antd'
+import Result from 'components/Result'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Step } = Steps;
+const { Step } = Steps
 
 const desc1 = (
   <div
@@ -20,7 +20,7 @@ const desc1 = (
     </div>
     <div>2016-12-12 12:32</div>
   </div>
-);
+)
 
 const desc2 = (
   <div style={{ fontSize: 12, position: 'relative', left: 42 }}>
@@ -32,7 +32,7 @@ const desc2 = (
       <a href="">催一下</a>
     </div>
   </div>
-);
+)
 
 const extra = (
   <Fragment>
@@ -67,7 +67,7 @@ const extra = (
       <Step title={<span style={{ fontSize: 14 }}>完成</span>} />
     </Steps>
   </Fragment>
-);
+)
 
 const actions = (
   <Fragment>
@@ -75,7 +75,7 @@ const actions = (
     <Button>查看项目</Button>
     <Button>打 印</Button>
   </Fragment>
-);
+)
 
 export default () => (
   <PageHeaderLayout>
@@ -93,4 +93,4 @@ export default () => (
       />
     </Card>
   </PageHeaderLayout>
-);
+)

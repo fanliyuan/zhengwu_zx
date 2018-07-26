@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
-import { Table, Button, Card, Divider, Row, Col, Modal, Input, DatePicker } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
+import { Table, Button, Card, Divider, Row, Col, Modal, Input, DatePicker } from 'antd'
+import moment from 'moment'
 
-import styles from './ResourceConnection.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './ResourceConnection.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker
 @connect(({ resourceConnection }) => ({
   resourceConnection,
 }))
@@ -23,58 +23,58 @@ export default class ResourceConnection extends Component {
   state = {
     visible1: false,
     visible2: false,
-  };
+  }
 
   handleSave = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+  }
 
   handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+  }
 
   showModal1 = () => {
     this.setState({
       visible1: true,
-    });
-  };
+    })
+  }
 
   showModal2 = () => {
     this.setState({
       visible2: true,
-    });
-  };
+    })
+  }
 
   handleOk1 = () => {
     this.setState({
       visible1: false,
-    });
-  };
+    })
+  }
 
   handleOk2 = () => {
     this.setState({
       visible2: false,
-    });
-  };
+    })
+  }
 
   handleCancel1 = () => {
     this.setState({
       visible1: false,
-    });
-  };
+    })
+  }
 
   handleCancel2 = () => {
     this.setState({
       visible2: false,
-    });
-  };
+    })
+  }
 
   render() {
     // const { resourceVisible, resourceFileVisible, confirmLoading, confirmFileLoading } = this.state;
-    const { visible1, visible2 } = this.state;
-    const pagination = { pageSize: 10, current: 1 };
+    const { visible1, visible2 } = this.state
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '序号',
@@ -96,19 +96,19 @@ export default class ResourceConnection extends Component {
         title: '挂接时间',
         dataIndex: 'connectionTime',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
       {
         title: '操作',
         render() {
-          return <a>删除</a>;
+          return <a>删除</a>
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -131,7 +131,7 @@ export default class ResourceConnection extends Component {
         fileSize: '1.56MB',
         connectionTime: 34223233,
       },
-    ];
+    ]
     const columns1 = [
       {
         title: '表名称',
@@ -152,13 +152,13 @@ export default class ResourceConnection extends Component {
       {
         title: '操作',
         render() {
-          return <a>删除</a>;
+          return <a>删除</a>
         },
       },
-    ];
+    ]
     columns1.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const columnsModal1 = [
       {
         title: 'ID',
@@ -180,10 +180,10 @@ export default class ResourceConnection extends Component {
         title: '注册时间',
         dataIndex: 'registerTime',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
-    ];
+    ]
     const columnsModal2 = [
       {
         title: '文件名称',
@@ -205,10 +205,10 @@ export default class ResourceConnection extends Component {
         title: '上传时间',
         dataIndex: 'uploadTime',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
-    ];
+    ]
     const listModal1 = [
       {
         id: 0,
@@ -231,7 +231,7 @@ export default class ResourceConnection extends Component {
         systemName: '统计系统',
         registerTime: 451233554,
       },
-    ];
+    ]
     const listModal2 = [
       {
         fileName: '城市低保标准表(各市第7季度).xlsx',
@@ -254,7 +254,7 @@ export default class ResourceConnection extends Component {
         uploader: '王五',
         uploadTime: 4512211,
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <div className="btncls">
@@ -352,6 +352,6 @@ export default class ResourceConnection extends Component {
           </Modal>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

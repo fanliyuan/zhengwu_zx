@@ -1,49 +1,49 @@
-import React, { Component } from 'react';
-import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber, message } from 'antd';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber, message } from 'antd'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './SetPlan.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './SetPlan.less'
 
-const FormItem = Form.Item;
-const { Step } = Steps;
-const { Option } = Select;
-const InputGroup = Input.Group;
+const FormItem = Form.Item
+const { Step } = Steps
+const { Option } = Select
+const InputGroup = Input.Group
 @connect(({ setPlan }) => ({
   setPlan,
 }))
 @Form.create() // eslint-disable-line
 export default class SetPlan extends Component {
-  state = {};
+  state = {}
 
   handleSubmit = e => {
-    e.preventDefault();
-    message.success('提交成功, 即将跳转');
+    e.preventDefault()
+    message.success('提交成功, 即将跳转')
     setTimeout(() => {
-      this.props.dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'));
-    }, 1000);
-  };
+      this.props.dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'))
+    }, 1000)
+  }
 
   handlePre = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
     const optionData = [
       { label: '定时', value: '0', id: 0 },
       { label: '实时', value: '1', id: 1 },
       { label: '手动', value: '2', id: 2 },
-    ];
+    ]
     const optionSelect = optionData.map(item => {
       return (
         <Option value={item.value} key={item.id} label={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const options = [
       {
         value: '0',
@@ -81,7 +81,7 @@ export default class SetPlan extends Component {
           },
         ],
       },
-    ];
+    ]
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -92,7 +92,7 @@ export default class SetPlan extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -133,6 +133,6 @@ export default class SetPlan extends Component {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

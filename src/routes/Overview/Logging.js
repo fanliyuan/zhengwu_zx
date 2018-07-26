@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { DatePicker, Input, Select, Button, Table } from 'antd';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { DatePicker, Input, Select, Button, Table } from 'antd'
 import moment from 'moment'
 
 // import { getTimeDistance } from '../../utils/utils'
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './Logging.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './Logging.less'
 // import { getLogState } from '../../services/api';
 
-const { RangePicker } = DatePicker;
-const { Option } = Select;
+const { RangePicker } = DatePicker
+const { Option } = Select
 
 @connect(({ overviewLogging, loading }) => ({
   overviewLogging,
@@ -21,15 +21,15 @@ export default class Log extends Component {
     state: -1,
     date: [],
     isChanged: false,
-  };
+  }
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props
     const { date } = this.state
 
-    const dateRange = date.map((item) => {
+    const dateRange = date.map(item => {
       if (moment.isMoment(item)) {
-        return +(item.format('x'))
+        return +item.format('x')
       } else {
         return 0
       }
@@ -37,7 +37,10 @@ export default class Log extends Component {
 
     dispatch({
       type: 'overviewLogging/log',
-      payload: {query: {...this.state, date: dateRange}, pagination: {pageSize: 10, current: 1}},
+      payload: {
+        query: { ...this.state, date: dateRange },
+        pagination: { pageSize: 10, current: 1 },
+      },
     })
   }
 
@@ -47,8 +50,8 @@ export default class Log extends Component {
     })
     this.setState({
       IPValue: e.target.value.trim(),
-    });
-  };
+    })
+  }
 
   handSelectChange = val => {
     this.setState({
@@ -59,7 +62,7 @@ export default class Log extends Component {
     })
   }
 
-  handlePick = (val) => {
+  handlePick = val => {
     this.setState({
       isChanged: true,
     })
@@ -70,15 +73,15 @@ export default class Log extends Component {
 
   handleSearch = () => {
     if (!this.state.isChanged) return // eslint-disable-line
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     const query = this.state
     const pagination = {
       current: 1,
       pageSize: 10,
     }
-    const dateRange = query.date.map((item) => {
+    const dateRange = query.date.map(item => {
       if (moment.isMoment(item)) {
-        return +(item.format('x'))
+        return +item.format('x')
       } else {
         return 0
       }
@@ -89,17 +92,17 @@ export default class Log extends Component {
     dispatch({
       type: 'overviewLogging/log',
       payload: { query: { ...query, date: dateRange }, pagination },
-    });
-  };
+    })
+  }
 
-  handleStandardTableChange = (pagination) => {
+  handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
     const query = this.state
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
 
-    const dateRange = query.date.map((item) => {
+    const dateRange = query.date.map(item => {
       if (moment.isMoment(item)) {
-        return +(item.format('x'))
+        return +item.format('x')
       } else {
         return 0
       }
@@ -107,13 +110,16 @@ export default class Log extends Component {
 
     dispatch({
       type: 'overviewLogging/log',
-      payload: { query: {...query, date: dateRange}, pagination },
-    });
-  };
+      payload: { query: { ...query, date: dateRange }, pagination },
+    })
+  }
 
   render() {
     const { IPValue, date, state } = this.state
-    const { overviewLogging: { data, pagination, stateList }, loading } = this.props
+    const {
+      overviewLogging: { data, pagination, stateList },
+      loading,
+    } = this.props
     const columns = [
       {
         title: 'ID',
@@ -135,17 +141,26 @@ export default class Log extends Component {
         dataIndex: 'result',
         align: 'center',
       },
-    ];
+    ]
 
     const optionList = stateList.map(item => {
-      return <Option value={item.value} key={item.value}>{item.label}</Option>
+      return (
+        <Option value={item.value} key={item.value}>
+          {item.label}
+        </Option>
+      )
     })
 
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
           <div className={styles.search}>
-            <RangePicker value={date} className={styles.picker} onChange={this.handlePick} style={{ widht: 200, marginRight: 20 }} />
+            <RangePicker
+              value={date}
+              className={styles.picker}
+              onChange={this.handlePick}
+              style={{ widht: 200, marginRight: 20 }}
+            />
             <Input
               className={styles.IPInput}
               placeholder="IP地址"
@@ -154,7 +169,11 @@ export default class Log extends Component {
               onChange={this.handleIPChange}
               style={{ marginRight: 20 }}
             />
-            <Select value={state} onChange={this.handSelectChange} style={{ width: 112, marginRight: 20 }}>
+            <Select
+              value={state}
+              onChange={this.handSelectChange}
+              style={{ width: 112, marginRight: 20 }}
+            >
               {optionList}
             </Select>
             <Button type="primary" onClick={this.handleSearch} icon="search">
@@ -174,6 +193,6 @@ export default class Log extends Component {
           </div>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

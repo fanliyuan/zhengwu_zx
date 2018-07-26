@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react';
-import { Link } from 'dva/router';
+import React, { Component, Fragment } from 'react'
+import { Link } from 'dva/router'
 import {
   Form,
   Input,
@@ -12,13 +12,13 @@ import {
   Modal,
   message,
   Tooltip,
-} from 'antd';
+} from 'antd'
 // import copy from 'copy-to-clipboard' //复制到剪切板
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './AddCarousel.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './AddCarousel.less'
 
-const { Item } = Form;
+const { Item } = Form
 const itemLayout = {
   labelCol: {
     span: 2,
@@ -26,21 +26,21 @@ const itemLayout = {
   wrapperCol: {
     span: 20,
   },
-};
+}
 
 function hasErrors(fieldErrors) {
-  return Object.keys(fieldErrors).some(item => fieldErrors[item]);
+  return Object.keys(fieldErrors).some(item => fieldErrors[item])
 }
 
 class Column extends Component {
   state = {
     first: 1,
     second: 11,
-  };
+  }
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
-      this.setState(nextProps.value);
+      this.setState(nextProps.value)
     }
   }
 
@@ -50,8 +50,8 @@ class Column extends Component {
         first: val,
       },
       () => this.props.onChange({ ...this.state })
-    );
-  };
+    )
+  }
 
   secondChange = val => {
     this.setState(
@@ -59,22 +59,22 @@ class Column extends Component {
         second: val,
       },
       () => this.props.onChange({ ...this.state })
-    );
-  };
+    )
+  }
 
   render() {
-    const { first, second } = this.state;
-    const { firstList = [], secondList = [] } = this.props;
+    const { first, second } = this.state
+    const { firstList = [], secondList = [] } = this.props
     const firstComs = firstList.map(item => (
       <Select.Option value={item.value} key={item.value}>
         {item.label}
       </Select.Option>
-    ));
+    ))
     const secondComs = secondList.map(item => (
       <Select.Option value={item.value} key={item.value}>
         {item.label}
       </Select.Option>
-    ));
+    ))
     return (
       <Fragment>
         <Select value={first} onChange={this.firstChange} className={styles.select1}>
@@ -84,7 +84,7 @@ class Column extends Component {
           {secondComs}
         </Select>
       </Fragment>
-    );
+    )
   }
 }
 
@@ -161,77 +161,77 @@ export default class AddCarousel extends Component {
       },
     ],
     sColList: [],
-  };
+  }
 
   componentDidMount() {
     if (!this.state.sColList.length) {
       this.setState({
         sColList: this.state.columnList[0].children, // eslint-disable-line
-      });
+      })
     }
-    this.props.form.validateFields();
+    this.props.form.validateFields()
   }
 
   uploadChange = ({ fileList }) => {
     this.setState({
       fileList,
-    });
-  };
+    })
+  }
 
   handlePreview = file => {
     this.setState({
       previewUrl: file.url || file.thumbUrl,
       previewVisible: true,
-    });
-  };
+    })
+  }
 
   previewCancel = () => {
     this.setState({
       previewVisible: false,
-    });
-  };
+    })
+  }
 
   columnChange = value => {
     this.state.columnList.some(item => {
       if (item.value === value.first) {
-        value.second = item.children[0].value;
+        value.second = item.children[0].value
         this.setState({
           sColList: item.children,
-        });
-        return true;
+        })
+        return true
       } else {
-        return false;
+        return false
       }
-    });
-  };
+    })
+  }
 
   normFile = e => {
     if (e && e.fileList && e.fileList[0]) {
       if (e.fileList[0].status === 'error') {
         this.setState({
           image: true,
-        });
+        })
       }
-      return e.fileList[0].status === 'error' ? null : '成功';
+      return e.fileList[0].status === 'error' ? null : '成功'
     } else {
-      console.log('上传失败'); // eslint-disable-line
+      console.log('上传失败') // eslint-disable-line
       this.setState({
         image: false,
-      });
-      return null;
+      })
+      return null
     }
-  };
+  }
 
   handleSave = () => {
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (!errors) {
-        message.success('通过表单验证,可以提交,控制台将打印表单值');
-        console.log(values); // eslint-disable-line
+        message.success('通过表单验证,可以提交,控制台将打印表单值')
+        console.log(values) // eslint-disable-line
       } else {
-        console.log('表单未通过验证', values); // eslint-disable-line
+        console.log('表单未通过验证', values) // eslint-disable-line
       }
-    });
-  };
+    })
+  }
 
   render() {
     const {
@@ -246,17 +246,17 @@ export default class AddCarousel extends Component {
       previewVisible,
       sColList,
       columnList,
-    } = this.state;
-    const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched } = this.props.form;
+    } = this.state
+    const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched } = this.props.form
 
-    const fColList = columnList.map(item => ({ value: item.value, label: item.label }));
+    const fColList = columnList.map(item => ({ value: item.value, label: item.label }))
 
-    const nameError = isFieldTouched('name') && getFieldError('name');
-    const columnError = isFieldTouched('column') && getFieldError('column');
-    const sortError = isFieldTouched('sort') && getFieldError('sort');
-    const urlTypeError = isFieldTouched('urlType') && getFieldError('urlType');
-    const urlError = isFieldTouched('url') && getFieldError('url');
-    const imageError = isFieldTouched('image') && getFieldError('image');
+    const nameError = isFieldTouched('name') && getFieldError('name')
+    const columnError = isFieldTouched('column') && getFieldError('column')
+    const sortError = isFieldTouched('sort') && getFieldError('sort')
+    const urlTypeError = isFieldTouched('urlType') && getFieldError('urlType')
+    const urlError = isFieldTouched('url') && getFieldError('url')
+    const imageError = isFieldTouched('image') && getFieldError('image')
 
     const btnComs = (
       <Fragment>
@@ -272,13 +272,13 @@ export default class AddCarousel extends Component {
           保存
         </Button>
       </Fragment>
-    );
+    )
     const uploadBtn = (
       <Fragment>
         <Icon type="upload" />
         <div>点击上传</div>
       </Fragment>
-    );
+    )
 
     return (
       <PageHeaderLayout>
@@ -414,6 +414,6 @@ export default class AddCarousel extends Component {
           {/* <Button onClick={this.getFieldStates} >获取验证状态</Button> */}
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { routerRedux, Link } from 'dva/router';
-import { Form, Input, Button, Select, Row, Col, Popover, Progress } from 'antd';
-import styles from './Register.less';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux, Link } from 'dva/router'
+import { Form, Input, Button, Select, Row, Col, Popover, Progress } from 'antd'
+import styles from './Register.less'
 
-const FormItem = Form.Item;
-const { Option } = Select;
-const InputGroup = Input.Group;
+const FormItem = Form.Item
+const { Option } = Select
+const InputGroup = Input.Group
 
 const passwordStatusMap = {
   ok: <div className={styles.success}>强度：强</div>,
   pass: <div className={styles.warning}>强度：中</div>,
   poor: <div className={styles.error}>强度：太短</div>,
-};
+}
 
 const passwordProgressMap = {
   ok: 'success',
   pass: 'normal',
   poor: 'exception',
-};
+}
 
 @connect(({ register, loading }) => ({
   register,
@@ -32,11 +32,11 @@ export default class Register extends Component {
     visible: false,
     help: '',
     prefix: '86',
-  };
+  }
 
   componentWillReceiveProps(nextProps) {
-    const { form, dispatch } = this.props;
-    const account = form.getFieldValue('mail');
+    const { form, dispatch } = this.props
+    const account = form.getFieldValue('mail')
     if (nextProps.register.status === 'ok') {
       dispatch(
         routerRedux.push({
@@ -45,43 +45,43 @@ export default class Register extends Component {
             account,
           },
         })
-      );
+      )
     }
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.interval)
   }
 
   onGetCaptcha = () => {
-    let count = 59;
-    this.setState({ count });
+    let count = 59
+    this.setState({ count })
     this.interval = setInterval(() => {
-      count -= 1;
-      this.setState({ count });
+      count -= 1
+      this.setState({ count })
       if (count === 0) {
-        clearInterval(this.interval);
+        clearInterval(this.interval)
       }
-    }, 1000);
-  };
+    }, 1000)
+  }
 
   getPasswordStatus = () => {
-    const { form } = this.props;
-    const value = form.getFieldValue('password');
+    const { form } = this.props
+    const value = form.getFieldValue('password')
     if (value && value.length > 9) {
-      return 'ok';
+      return 'ok'
     }
     if (value && value.length > 5) {
-      return 'pass';
+      return 'pass'
     }
-    return 'poor';
-  };
+    return 'poor'
+  }
 
   handleSubmit = e => {
-    e.preventDefault();
-    const { form, dispatch } = this.props;
+    e.preventDefault()
+    const { form, dispatch } = this.props
     form.validateFields({ force: true }, (err, values) => {
-      const { prefix } = this.state;
+      const { prefix } = this.state
       if (!err) {
         dispatch({
           type: 'register/submit',
@@ -89,65 +89,65 @@ export default class Register extends Component {
             ...values,
             prefix,
           },
-        });
+        })
       }
-    });
-  };
+    })
+  }
 
   handleConfirmBlur = e => {
-    const { value } = e.target;
-    const { confirmDirty } = this.state;
-    this.setState({ confirmDirty: confirmDirty || !!value });
-  };
+    const { value } = e.target
+    const { confirmDirty } = this.state
+    this.setState({ confirmDirty: confirmDirty || !!value })
+  }
 
   checkConfirm = (rule, value, callback) => {
-    const { form } = this.props;
+    const { form } = this.props
     if (value && value !== form.getFieldValue('password')) {
-      callback('两次输入的密码不匹配!');
+      callback('两次输入的密码不匹配!')
     } else {
-      callback();
+      callback()
     }
-  };
+  }
 
   checkPassword = (rule, value, callback) => {
     if (!value) {
       this.setState({
         help: '请输入密码！',
         visible: !!value,
-      });
-      callback('error');
+      })
+      callback('error')
     } else {
       this.setState({
         help: '',
-      });
-      const { visible, confirmDirty } = this.state;
+      })
+      const { visible, confirmDirty } = this.state
       if (!visible) {
         this.setState({
           visible: !!value,
-        });
+        })
       }
       if (value.length < 6) {
-        callback('error');
+        callback('error')
       } else {
-        const { form } = this.props;
+        const { form } = this.props
         if (value && confirmDirty) {
-          form.validateFields(['confirm'], { force: true });
+          form.validateFields(['confirm'], { force: true })
         }
-        callback();
+        callback()
       }
     }
-  };
+  }
 
   changePrefix = value => {
     this.setState({
       prefix: value,
-    });
-  };
+    })
+  }
 
   renderPasswordProgress = () => {
-    const { form } = this.props;
-    const value = form.getFieldValue('password');
-    const passwordStatus = this.getPasswordStatus();
+    const { form } = this.props
+    const value = form.getFieldValue('password')
+    const passwordStatus = this.getPasswordStatus()
     return value && value.length ? (
       <div className={styles[`progress-${passwordStatus}`]}>
         <Progress
@@ -158,13 +158,13 @@ export default class Register extends Component {
           showInfo={false}
         />
       </div>
-    ) : null;
-  };
+    ) : null
+  }
 
   render() {
-    const { form, submitting } = this.props;
-    const { getFieldDecorator } = form;
-    const { count, prefix, help, visible } = this.state;
+    const { form, submitting } = this.props
+    const { getFieldDecorator } = form
+    const { count, prefix, help, visible } = this.state
     return (
       <div className={styles.main}>
         <h3>注册</h3>
@@ -285,6 +285,6 @@ export default class Register extends Component {
           </FormItem>
         </Form>
       </div>
-    );
+    )
   }
 }

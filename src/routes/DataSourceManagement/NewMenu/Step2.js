@@ -5,9 +5,9 @@
  * @Last Modified time: 2018-07-24 17:34:39
  * @描述: 这个页面的上传应该是 上传完数据,然后后台处理,返回给前台,前台再核对,确认
 */
-import React, { PureComponent, Fragment } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { PureComponent, Fragment } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 import {
   Modal,
   Form,
@@ -20,12 +20,12 @@ import {
   DatePicker,
   Upload,
   Icon,
-} from 'antd';
+} from 'antd'
 
-import TableForm from './TableForm';
-import styles from './index.less';
+import TableForm from './TableForm'
+import styles from './index.less'
 
-const { Item } = Form;
+const { Item } = Form
 const modalList = [
   {
     id: 3,
@@ -45,7 +45,7 @@ const modalList = [
     type: 'MySQL',
     applicationName: '统计系统',
   },
-];
+]
 
 @connect()
 @Form.create()
@@ -69,13 +69,13 @@ export default class Step2 extends PureComponent {
     visible1: false,
     visible2: false,
     selectKeys: [],
-  };
+  }
 
   onChange = val => {
     this.setState({
       tableData: val,
-    });
-  };
+    })
+  }
 
   methodChange = e => {
     this.setState({
@@ -84,21 +84,21 @@ export default class Step2 extends PureComponent {
       },
       visible1: e.target.value === 1,
       visible2: e.target.value === 2,
-    });
-  };
+    })
+  }
 
   goBack = () => {
-    this.props.dispatch(routerRedux.push('/dataSourceManagement/newMenu/one'));
-  };
+    this.props.dispatch(routerRedux.push('/dataSourceManagement/newMenu/one'))
+  }
 
   goForward = () => {
     const {
       data: { method },
-    } = this.state;
+    } = this.state
     this.props.dispatch(
       routerRedux.push('/dataSourceManagement/newMenu/three', { show: method === 1 })
-    );
-  };
+    )
+  }
 
   render() {
     // const { form: { getFieldDecorator, validateFields }, dispatch } = this.props
@@ -109,7 +109,7 @@ export default class Step2 extends PureComponent {
       visible1,
       visible2,
       selectKeys,
-    } = this.state;
+    } = this.state
     const columns = [
       {
         title: 'ID',
@@ -131,15 +131,15 @@ export default class Step2 extends PureComponent {
         dataIndex: 'applicationName',
         align: 'center',
       },
-    ];
+    ]
     const rowSelection = {
       selectKeys,
       onChange: keys => {
         this.setState({
           selectKeys: keys,
-        });
+        })
       },
-    };
+    }
     return (
       <Fragment>
         <Form>
@@ -208,6 +208,6 @@ export default class Step2 extends PureComponent {
           </Upload.Dragger>
         </Modal>
       </Fragment>
-    );
+    )
   }
 }

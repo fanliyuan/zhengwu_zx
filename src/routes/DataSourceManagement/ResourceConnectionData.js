@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 import {
   Table,
   Button,
@@ -13,22 +13,22 @@ import {
   DatePicker,
   Form,
   Select,
-} from 'antd';
-import moment from 'moment';
+} from 'antd'
+import moment from 'moment'
 
-import styles from './ResourceConnectionData.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './ResourceConnectionData.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker
 
-const FormItem = Form.Item;
-const EditableContext = React.createContext();
+const FormItem = Form.Item
+const EditableContext = React.createContext()
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
   </EditableContext.Provider>
-);
-const EditableFormRow = Form.create()(EditableRow);
+)
+const EditableFormRow = Form.create()(EditableRow)
 class EditableCell extends React.Component {
   getInput = () => {
     if (this.props.filedType === 'select') {
@@ -41,18 +41,18 @@ class EditableCell extends React.Component {
             否
           </Select.Option>
         </Select>
-      );
+      )
     }
-    return <Input className={styles.input} />;
-  };
+    return <Input className={styles.input} />
+  }
 
   render() {
-    const { editing, dataIndex, title, filedType, record, index, ...restProps } = this.props;
+    const { editing, dataIndex, title, filedType, record, index, ...restProps } = this.props
 
     return (
       <EditableContext.Consumer>
         {form => {
-          const { getFieldDecorator } = form;
+          const { getFieldDecorator } = form
           return (
             <td {...restProps}>
               {editing ? (
@@ -71,10 +71,10 @@ class EditableCell extends React.Component {
                 restProps.children
               )}
             </td>
-          );
+          )
         }}
       </EditableContext.Consumer>
-    );
+    )
   }
 }
 
@@ -86,11 +86,11 @@ export default class ResourceConnectionData extends Component {
     ItemConnect: true,
     visible1: false,
     visible2: false,
-  };
+  }
 
   isEditing = record => {
-    return record.key === this.state.editingKey;
-  };
+    return record.key === this.state.editingKey
+  }
 
   goToDetail = row => {
     this.props.dispatch(
@@ -98,70 +98,70 @@ export default class ResourceConnectionData extends Component {
         pathname: `/dataSourceManagement/fileSourceDetail/${row.id}`,
         state: row,
       })
-    );
-  };
+    )
+  }
 
   handleConnect = () => {
     this.setState({
       ItemConnect: true,
-    });
-  };
+    })
+  }
 
   handleClearConnect = () => {
     this.setState({
       ItemConnect: false,
-    });
-  };
+    })
+  }
 
   handleSave = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+  }
 
   handleBack = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+  }
 
   showModal1 = () => {
     this.setState({
       visible1: true,
-    });
-  };
+    })
+  }
 
   showModal2 = () => {
     this.setState({
       visible2: true,
-    });
-  };
+    })
+  }
 
   handleOk1 = () => {
     this.setState({
       visible1: false,
-    });
-  };
+    })
+  }
 
   handleOk2 = () => {
     this.setState({
       visible2: false,
-    });
-  };
+    })
+  }
 
   handleCancel1 = () => {
     this.setState({
       visible1: false,
-    });
-  };
+    })
+  }
 
   handleCancel2 = () => {
     this.setState({
       visible2: false,
-    });
-  };
+    })
+  }
 
   render() {
-    const { ItemConnect, visible1, visible2 } = this.state;
-    const pagination = { pageSize: 10, current: 1 };
+    const { ItemConnect, visible1, visible2 } = this.state
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '信息编码',
@@ -179,10 +179,10 @@ export default class ResourceConnectionData extends Component {
         title: '数据长度',
         dataIndex: 'dataSize',
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -205,7 +205,7 @@ export default class ResourceConnectionData extends Component {
         dataTypes: 'varchar',
         dataSize: '',
       },
-    ];
+    ]
     const columns1 = [
       {
         title: '表名称',
@@ -226,13 +226,13 @@ export default class ResourceConnectionData extends Component {
       {
         title: '操作',
         render() {
-          return <a>删除</a>;
+          return <a>删除</a>
         },
       },
-    ];
+    ]
     columns1.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list1 = [
       {
         id: 0,
@@ -255,7 +255,7 @@ export default class ResourceConnectionData extends Component {
         types: 'varchar',
         intro: '',
       },
-    ];
+    ]
     const columnsModal1 = [
       {
         title: 'ID',
@@ -277,10 +277,10 @@ export default class ResourceConnectionData extends Component {
         title: '注册时间',
         dataIndex: 'registerTime',
         render(text) {
-          return moment(text).format('lll');
+          return moment(text).format('lll')
         },
       },
-    ];
+    ]
     const listModal1 = [
       {
         id: 0,
@@ -303,7 +303,7 @@ export default class ResourceConnectionData extends Component {
         systemName: '统计系统',
         registerTime: 451233554,
       },
-    ];
+    ]
     const columnsModal2 = [
       {
         title: '序号',
@@ -324,11 +324,11 @@ export default class ResourceConnectionData extends Component {
             <div>
               <a>数据项</a>
             </div>
-          );
+          )
         },
       },
-    ];
-    columnsModal2.forEach(item => (item.align = 'center')); // eslint-disable-line
+    ]
+    columnsModal2.forEach(item => (item.align = 'center')) // eslint-disable-line
     const listModal2 = [
       {
         id: 0,
@@ -405,7 +405,7 @@ export default class ResourceConnectionData extends Component {
         tableName: 'dig_order',
         chineseLabel: '订单表',
       },
-    ];
+    ]
     const columns2 = [
       {
         title: '序号',
@@ -415,7 +415,7 @@ export default class ResourceConnectionData extends Component {
         title: '主键',
         dataIndex: 'isMainKey',
         render: text => {
-          return <span>{text === 1 ? '是' : ''}</span>;
+          return <span>{text === 1 ? '是' : ''}</span>
         },
       },
       {
@@ -456,11 +456,11 @@ export default class ResourceConnectionData extends Component {
         editable: true,
         width: 157,
       },
-    ];
-    columns2.forEach(item => (item.align = 'center')); // eslint-disable-line
+    ]
+    columns2.forEach(item => (item.align = 'center')) // eslint-disable-line
     const columns3 = columns2.map(item => {
       if (!item.editable) {
-        return item;
+        return item
       }
       return {
         ...item,
@@ -471,8 +471,8 @@ export default class ResourceConnectionData extends Component {
           filedType: item.isSelect ? 'select' : 'input',
           editing: this.isEditing(record),
         }),
-      };
-    });
+      }
+    })
     const list3 = [
       {
         id: 0,
@@ -484,14 +484,14 @@ export default class ResourceConnectionData extends Component {
         chineseLabel: '标注2',
         isMainKey: 0,
       },
-    ];
+    ]
 
     const components = {
       body: {
         row: EditableFormRow,
         cell: EditableCell,
       },
-    };
+    }
 
     return (
       <PageHeaderLayout>
@@ -667,6 +667,6 @@ export default class ResourceConnectionData extends Component {
           </Modal>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

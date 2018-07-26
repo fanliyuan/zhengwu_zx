@@ -1,56 +1,56 @@
-import React, { Component } from 'react';
-import { Chart, Axis, Tooltip, Geom } from 'bizcharts';
-import Debounce from 'lodash-decorators/debounce';
-import Bind from 'lodash-decorators/bind';
-import autoHeight from '../autoHeight';
-import styles from '../index.less';
+import React, { Component } from 'react'
+import { Chart, Axis, Tooltip, Geom } from 'bizcharts'
+import Debounce from 'lodash-decorators/debounce'
+import Bind from 'lodash-decorators/bind'
+import autoHeight from '../autoHeight'
+import styles from '../index.less'
 
 @autoHeight()
 class Bar extends Component {
   state = {
     autoHideXLabels: false,
-  };
+  }
 
   componentDidMount() {
-    window.addEventListener('resize', this.resize);
+    window.addEventListener('resize', this.resize)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.resize);
+    window.removeEventListener('resize', this.resize)
   }
 
   handleRoot = n => {
-    this.root = n;
-  };
+    this.root = n
+  }
 
   handleRef = n => {
-    this.node = n;
-  };
+    this.node = n
+  }
 
   @Bind()
   @Debounce(400)
   resize() {
     if (!this.node) {
-      return;
+      return
     }
-    const canvasWidth = this.node.parentNode.clientWidth;
-    const { data = [], autoLabel = true } = this.props;
+    const canvasWidth = this.node.parentNode.clientWidth
+    const { data = [], autoLabel = true } = this.props
     if (!autoLabel) {
-      return;
+      return
     }
-    const minWidth = data.length * 30;
-    const { autoHideXLabels } = this.state;
+    const minWidth = data.length * 30
+    const { autoHideXLabels } = this.state
 
     if (canvasWidth <= minWidth) {
       if (!autoHideXLabels) {
         this.setState({
           autoHideXLabels: true,
-        });
+        })
       }
     } else if (autoHideXLabels) {
       this.setState({
         autoHideXLabels: false,
-      });
+      })
     }
   }
 
@@ -62,9 +62,9 @@ class Bar extends Component {
       data,
       color = 'rgba(24, 144, 255, 0.85)',
       padding,
-    } = this.props;
+    } = this.props
 
-    const { autoHideXLabels } = this.state;
+    const { autoHideXLabels } = this.state
 
     const scale = {
       x: {
@@ -73,7 +73,7 @@ class Bar extends Component {
       y: {
         min: 0,
       },
-    };
+    }
 
     const tooltip = [
       'x*y',
@@ -81,7 +81,7 @@ class Bar extends Component {
         name: x,
         value: y,
       }),
-    ];
+    ]
 
     return (
       <div className={styles.chart} style={{ height }} ref={this.handleRoot}>
@@ -106,8 +106,8 @@ class Bar extends Component {
           </Chart>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Bar;
+export default Bar
