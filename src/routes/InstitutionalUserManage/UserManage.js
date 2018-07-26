@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import { Table, Button, Input, Select, Card, DatePicker, Message } from 'antd';
-import moment from 'moment';
-import { connect } from 'dva';
-import { routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { Table, Button, Input, Select, Card, DatePicker, Message } from 'antd'
+import moment from 'moment'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
-import styles from './UserManage.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './UserManage.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+const { Option } = Select
+const { RangePicker } = DatePicker
 @connect(({ userManage }) => ({
   userManage,
 }))
@@ -19,7 +19,7 @@ export default class UserManage extends Component {
     isEnable: '状态',
     isStart: true,
     isStart1: false,
-  };
+  }
 
   // selectOwingJg = (val) => {
   //   this.setState({
@@ -30,53 +30,53 @@ export default class UserManage extends Component {
   selectrole = val => {
     this.setState({
       role: val,
-    });
-  };
+    })
+  }
 
   selectIsEnable = val => {
     this.setState({
       isEnable: val,
-    });
-  };
+    })
+  }
 
   handleAdd = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/institutionalUserManage/addUser'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/institutionalUserManage/addUser'))
+  }
 
   handleStart = () => {
-    const { isStart } = this.state;
+    const { isStart } = this.state
     if (isStart) {
       this.setState({
         isStart: false,
-      });
-      Message.info('停用成功!');
+      })
+      Message.info('停用成功!')
     } else {
       this.setState({
         isStart: true,
-      });
-      Message.info('启用成功!');
+      })
+      Message.info('启用成功!')
     }
-  };
+  }
 
   handleStart1 = () => {
-    const { isStart1 } = this.state;
+    const { isStart1 } = this.state
     if (isStart1) {
       this.setState({
         isStart1: false,
-      });
-      Message.info('停用成功!');
+      })
+      Message.info('停用成功!')
     } else {
       this.setState({
         isStart1: true,
-      });
-      Message.info('启用成功!');
+      })
+      Message.info('启用成功!')
     }
-  };
+  }
 
   render() {
-    const that = this;
-    const { role, isEnable, isStart, isStart1 } = this.state;
+    const that = this
+    const { role, isEnable, isStart, isStart1 } = this.state
     // const data=[
     //   {value:'0',id:0,label:'所属机构'},
     //   {value:'1',id:1,label:'XXX机构'},
@@ -90,23 +90,23 @@ export default class UserManage extends Component {
       { value: '1', id: 1, label: '平台安全员' },
       { value: '2', id: 1, label: '平台审计员' },
       { value: '3', id: 1, label: '平台操作员' },
-    ];
+    ]
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const data2 = [{ value: '0', id: 0, label: '启用' }, { value: '1', id: 1, label: '停用' }];
+      )
+    })
+    const data2 = [{ value: '0', id: 0, label: '启用' }, { value: '1', id: 1, label: '停用' }]
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const pagination = { pageSize: 10, current: 1 };
+      )
+    })
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       // {
       //   title:'ID',
@@ -140,14 +140,14 @@ export default class UserManage extends Component {
         title: '建立时间',
         dataIndex: 'createTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '状态',
         dataIndex: 'status',
         render(text) {
-          return +text === 0 ? '停用' : '启用';
+          return +text === 0 ? '停用' : '启用'
         },
       },
       {
@@ -164,7 +164,7 @@ export default class UserManage extends Component {
                 </span>
                 <a style={{ marginRight: 20 }}>删除</a>
               </div>
-            );
+            )
           } else {
             return (
               <div>
@@ -176,14 +176,14 @@ export default class UserManage extends Component {
                 </span>
                 <a style={{ marginRight: 20 }}>删除</a>
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -207,7 +207,7 @@ export default class UserManage extends Component {
         createTime: 454453353535,
         status: '1',
       },
-    ];
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -252,6 +252,6 @@ export default class UserManage extends Component {
           </div>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { routerRedux, Link } from 'dva/router';
-import { connect } from 'dva';
-import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio } from 'antd';
-import moment from 'moment';
+import React, { Component } from 'react'
+import { routerRedux, Link } from 'dva/router'
+import { connect } from 'dva'
+import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio } from 'antd'
+import moment from 'moment'
 
-import styles from './SourceAudit.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SourceAudit.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const RadioGroup = Radio.Group;
-const { TextArea } = Input;
+const { Option } = Select
+const { RangePicker } = DatePicker
+const RadioGroup = Radio.Group
+const { TextArea } = Input
 @connect(({ sourceAudit }) => ({
   sourceAudit,
 }))
@@ -22,116 +22,116 @@ export default class SourceAudit extends Component {
     status: '0',
     visible: false,
     isPass: 1,
-  };
+  }
 
   dataTypeChange = val => {
     this.setState({
       dataType: val,
-    });
-  };
+    })
+  }
 
   nodeNameChange = val => {
     this.setState({
       nodeName: val,
-    });
-  };
+    })
+  }
 
   owingJgChange = val => {
     this.setState({
       owingJg: val,
-    });
-  };
+    })
+  }
 
   statusChange = val => {
     this.setState({
       status: val,
-    });
-  };
+    })
+  }
 
   showModal = () => {
     this.setState({
       visible: true,
-    });
-  };
+    })
+  }
 
   handleOk = () => {
     this.setState({
       visible: false,
-    });
-  };
+    })
+  }
 
   handleCancel = () => {
     this.setState({
       visible: false,
-    });
-  };
+    })
+  }
 
   handleView = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
+  }
 
   handleSource = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource'))
+  }
 
   handlePlan = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/dataSourceManagement/setPlan'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/setPlan'))
+  }
 
   handlePass = e => {
     this.setState({
       isPass: e.target.value,
-    });
-  };
+    })
+  }
 
   render() {
-    const that = this;
-    const { dataType, nodeName, owingJg, status, visible, isPass } = this.state;
+    const that = this
+    const { dataType, nodeName, owingJg, status, visible, isPass } = this.state
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
-    ];
+    ]
     const selectData = data.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const data1 = [{ value: '0', id: 0, label: '节点' }, { value: '1', id: 1, label: '节点1' }];
+      )
+    })
+    const data1 = [{ value: '0', id: 0, label: '节点' }, { value: '1', id: 1, label: '节点1' }]
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const data2 = [
       { value: '0', id: 0, label: '所属机构' },
       { value: '1', id: 1, label: 'XXX机构' },
-    ];
+    ]
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const data4 = [
       { value: '0', id: 0, label: '审核状态' },
       { value: '1', id: 1, label: '审核状态1' },
-    ];
+    ]
     const selectData4 = data4.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
-      );
-    });
-    const pagination = { pageSize: 10, current: 1 };
+      )
+    })
+    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: 'ID',
@@ -161,14 +161,14 @@ export default class SourceAudit extends Component {
         title: '注册时间',
         dataIndex: 'createTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss');
+          return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '状态',
         dataIndex: 'status',
         render(text) {
-          return +text === 0 ? '待审核' : +text === 1 ? '已通过' : '已拒绝';
+          return +text === 0 ? '待审核' : +text === 1 ? '已通过' : '已拒绝'
         },
       },
       {
@@ -186,7 +186,7 @@ export default class SourceAudit extends Component {
                   审核日志
                 </Link>
               </div>
-            );
+            )
           } else if (row.status === '1') {
             return (
               <div>
@@ -203,7 +203,7 @@ export default class SourceAudit extends Component {
                   审核日志
                 </Link>
               </div>
-            );
+            )
           } else {
             return (
               <div>
@@ -217,14 +217,14 @@ export default class SourceAudit extends Component {
                   审核
                 </span>
               </div>
-            );
+            )
           }
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,
@@ -262,7 +262,7 @@ export default class SourceAudit extends Component {
         subscription: 5,
         status: '2',
       },
-    ];
+    ]
     const rowSelection = {
       // onChange: selectedRows => {
       // },
@@ -270,7 +270,7 @@ export default class SourceAudit extends Component {
       //   disabled: record.name === 'Disabled User',
       //   name: record.name,
       // }),
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -340,6 +340,6 @@ export default class SourceAudit extends Component {
           </Modal>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

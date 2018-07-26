@@ -162,11 +162,11 @@ export const getRouterData = app => {
     '/institutionalUserManage/addUser': {
       component: dynamicWrapper(app, [], () => import('../routes/InstitutionalUserManage/AddUser')),
     },
-    '/institutionalUserManage/roleLimit': {
-      component: dynamicWrapper(app, ['roleLimit'], () =>
-        import('../routes/InstitutionalUserManage/RoleLimit')
-      ),
-    },
+    // '/institutionalUserManage/roleLimit': {
+    //   component: dynamicWrapper(app, ['roleLimit'], () =>
+    //     import('../routes/InstitutionalUserManage/RoleLimit')
+    //   ),
+    // },
     '/institutionalUserManage/addRole': {
       component: dynamicWrapper(app, [], () => import('../routes/InstitutionalUserManage/AddRole')),
     },

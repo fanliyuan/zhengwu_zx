@@ -1,30 +1,30 @@
-import React, { Component } from 'react';
-import { Card, Input, Button, Form, Select, Checkbox } from 'antd';
+import React, { Component } from 'react'
+import { Card, Input, Button, Form, Select, Checkbox } from 'antd'
 
 // import styles from './AddUser.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const FormItem = Form.Item;
-const { Option } = Select;
+const FormItem = Form.Item
+const { Option } = Select
 @Form.create()
 export default class AddUser extends Component {
-  state = {};
+  state = {}
 
-  handleSubmit = () => {};
+  handleSubmit = () => {}
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
     const role = [
       { value: '0', label: '管理员', id: '0' },
       { value: '1', label: '审核员', id: '1' },
-    ];
+    ]
     const roleData = role.map(item => {
       return (
         <Option value={item.value} label={item.label} key={item.id}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -35,13 +35,13 @@ export default class AddUser extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
+    }
     const submitLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
         sm: { span: 10, offset: 7 },
       },
-    };
+    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -108,6 +108,6 @@ export default class AddUser extends Component {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

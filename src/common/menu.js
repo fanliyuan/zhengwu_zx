@@ -22,7 +22,7 @@ const menuData = [
       {
         name: '系统通知',
         path: 'systemNotification',
-        authority: ['operator', 'operator-n'],
+        authority: ['operator', 'security', 'operator-n'],
       },
       {
         name: '通知详情',
@@ -132,11 +132,11 @@ const menuData = [
         hideInMenu: true,
         authority: ['admin', 'admin-n'],
       },
-      {
-        name: '角色权限',
-        path: 'roleLimit',
-        authority: ['security', 'security-n'],
-      },
+      // {
+      //   name: '角色管理',
+      //   path: 'roleLimit',
+      //   authority: ['security', 'security-n'],
+      // },
       {
         name: '新建角色',
         path: 'addRole',

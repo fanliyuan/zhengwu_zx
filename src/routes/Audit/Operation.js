@@ -7,11 +7,11 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { RangePicker } = DatePicker
 
-@connect(({ auditOperation, auditLogging, loading }) =>( {
-    auditOperation,
-    auditLogging,
-    loading: loading.models.auditOperation,
-  }))
+@connect(({ auditOperation, auditLogging, loading }) => ({
+  auditOperation,
+  auditLogging,
+  loading: loading.models.auditOperation,
+}))
 export default class Operation extends Component {
   state = {
     query: {
@@ -49,7 +49,7 @@ export default class Operation extends Component {
     })
   }
 
-  handleNameChange = (e) => {
+  handleNameChange = e => {
     const { query } = this.state
     this.setState({
       isChanged: true,
@@ -62,7 +62,7 @@ export default class Operation extends Component {
     })
   }
 
-  handleOrganizationChange = (value) =>{
+  handleOrganizationChange = value => {
     const { query } = this.state
     this.setState({
       isChanged: true,
@@ -75,7 +75,7 @@ export default class Operation extends Component {
     })
   }
 
-  handleIPChange = (e) => {
+  handleIPChange = e => {
     const { query } = this.state
     this.setState({
       isChanged: true,
@@ -88,7 +88,7 @@ export default class Operation extends Component {
     })
   }
 
-  handleDateChange = (value) => {
+  handleDateChange = value => {
     // let query = { ...this.state.query, date: value.map(item => +item.format('x')) }
     const { query } = this.state
     this.setState({
@@ -102,7 +102,7 @@ export default class Operation extends Component {
     })
   }
 
-  handleOperationChange = (value) => {
+  handleOperationChange = value => {
     const { query } = this.state
     this.setState({
       isChanged: true,
@@ -124,11 +124,11 @@ export default class Operation extends Component {
     })
     dispatch({
       type: 'auditOperation/search',
-      payload: {...state},
+      payload: { ...state },
     })
   }
 
-  tableChange = (pagination) => {
+  tableChange = pagination => {
     const { dispatch } = this.props
     const { state } = this
     dispatch({
@@ -140,8 +140,12 @@ export default class Operation extends Component {
     })
   }
 
-  render () {
-    const { auditOperation: { data, operationList }, auditLogging: {organizationList}, loading } = this.props
+  render() {
+    const {
+      auditOperation: { data, operationList },
+      auditLogging: { organizationList },
+      loading,
+    } = this.props
 
     const columns = [
       {
@@ -155,8 +159,13 @@ export default class Operation extends Component {
         align: 'center',
       },
       {
-        title: '所属机构',
+        title: '操作模块',
         dataIndex: 'organization',
+        align: 'center',
+      },
+      {
+        title: '操作类型',
+        dataIndex: 'operation',
         align: 'center',
       },
       {
@@ -170,11 +179,6 @@ export default class Operation extends Component {
         align: 'center',
       },
       {
-        title: '操作类型',
-        dataIndex: 'operation',
-        align: 'center',
-      },
-      {
         title: '行为记录',
         dataIndex: 'detail',
         align: 'center',
@@ -183,25 +187,55 @@ export default class Operation extends Component {
 
     const OperationList = operationList.map(item => {
       return (
-        <Select.Option value={item.id} key={item.id}>{item.label}</Select.Option>
+        <Select.Option value={item.id} key={item.id}>
+          {item.label}
+        </Select.Option>
       )
     })
 
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
-          <Form style={{marginBottom: 20}}>
-            <Input onChange={this.handleNameChange} onPressEnter={this.handleSearch} className={styles.name} placeholder="请输入用户名" />
-            <Cascader options={organizationList} onChange={this.handleOrganizationChange} placeholder='请选择机构' className={styles.organization} />
-            <Input onChange={this.handleIPChange} onPressEnter={this.handleSearch} className={styles.ip} placeholder="请输入IP" />
-            <RangePicker onChange={this.handleDateChange} className={styles.date} />
-            <Select defaultValue={-1} onChange={this.handleOperationChange} className={styles.operation}>
+          <Form style={{ marginBottom: 20 }}>
+            <Input
+              onChange={this.handleNameChange}
+              onPressEnter={this.handleSearch}
+              className={styles.name}
+              placeholder="用户名"
+            />
+            <Cascader
+              options={organizationList}
+              onChange={this.handleOrganizationChange}
+              placeholder="模块"
+              className={styles.organization}
+            />
+            <Select
+              defaultValue={-1}
+              onChange={this.handleOperationChange}
+              className={styles.operation}
+            >
               {OperationList}
             </Select>
-            <Button type="primary" icon="search" onClick={this.handleSearch}>搜索</Button>
+            <Input
+              onChange={this.handleIPChange}
+              onPressEnter={this.handleSearch}
+              className={styles.ip}
+              placeholder="IP地址"
+            />
+            <RangePicker onChange={this.handleDateChange} className={styles.date} />
+            <Button type="primary" icon="search" onClick={this.handleSearch}>
+              搜索
+            </Button>
           </Form>
           <div>
-            <Table dataSource={data.list} pagination={data.pagination} columns={columns} onChange={this.tableChange} loading={loading} rowKey="id" />
+            <Table
+              dataSource={data.list}
+              pagination={data.pagination}
+              columns={columns}
+              onChange={this.tableChange}
+              loading={loading}
+              rowKey="id"
+            />
           </div>
         </div>
       </PageHeaderLayout>
