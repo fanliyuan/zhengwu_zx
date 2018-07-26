@@ -265,6 +265,11 @@ const menuData = [
         authority: ['assessor-n', 'operator-n'],
       },
       {
+        name: '查看授权',
+        path: 'checkAudit',
+        authority: ['assessor-n', 'operator-n'],
+      },
+      {
         name: '录入数据库信息',
         path: 'inputDataInfo',
         hideInMenu: true,

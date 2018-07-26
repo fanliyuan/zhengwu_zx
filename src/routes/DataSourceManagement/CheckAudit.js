@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-08 15:33:07
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-26 15:18:59
+ * @Last Modified time: 2018-07-26 16:18:37
 */
 import React, { PureComponent } from 'react'
 import { Link } from 'dva/router'
@@ -42,7 +42,7 @@ export default class CheckAudit extends PureComponent {
       <PageHeaderLayout>
         <div className="common-layout">
           <div className="btncls clearfix">
-            <Link to="/dataSourceManagement/SubscriptionLicense" className="fr mr40">
+            <Link to="/dataSourceManagement/subscriptionAudit" className="fr mr40">
               <Button>返回</Button>
             </Link>
           </div>
