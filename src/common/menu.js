@@ -17,18 +17,18 @@ const menuData = [
       {
         name: '平台概览',
         path: 'platformOverview',
-        authority: 'operator',
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '系统通知',
         path: 'systemNotification',
-        authority: ['operator', 'security'],
+        authority: ['operator', 'security', 'operator-n'],
       },
       {
         name: '通知详情',
         path: 'noticeDetail',
         hideInMenu: true,
-        authority: ['operator'],
+        authority: ['operator', 'operator-n'],
       },
       // {
       //   name: '工作台',
@@ -171,6 +171,13 @@ const menuData = [
         name: '新建接入',
         path: 'addAccess',
         hideInMenu: true,
+        authority: 'operator-n',
+      },
+      {
+        name: '修改接入',
+        path: 'editAccess',
+        hideInMenu: true,
+        authority: 'operator-n',
       },
       // {
       //   name: '接入审核',

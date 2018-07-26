@@ -188,6 +188,9 @@ export const getRouterData = app => {
     '/dataSourceManagement/addAccess': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/AddAccess')),
     },
+    '/dataSourceManagement/editAccess': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/AddAccess')),
+    },
     '/dataSourceManagement/inputDataInfo': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/InputDataInfo')
