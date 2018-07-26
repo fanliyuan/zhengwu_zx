@@ -329,10 +329,10 @@ const menuData = [
         path: 'logAudit',
         hideInMenu: true,
       },
-      {
-        name: '资源',
-        path: 'source',
-      },
+      // {
+      //   name: '资源',
+      //   path: 'source',
+      // },
       {
         name: '资源管理',
         path: 'sourceManagement',
