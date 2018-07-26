@@ -1,33 +1,33 @@
-import React, { Fragment } from 'react';
-import { Link, Redirect, Switch, Route } from 'dva/router';
-import DocumentTitle from 'react-document-title';
-import { Icon, Tooltip } from 'antd';
-import GlobalFooter from '../components/GlobalFooter';
-import styles from './UserLayout.less';
-import logo from '../assets/logo.png';
-import { getRoutes } from '../utils/utils';
+import React, { Fragment } from 'react'
+import { Link, Redirect, Switch, Route } from 'dva/router'
+import DocumentTitle from 'react-document-title'
+import { Icon, Tooltip } from 'antd'
+import GlobalFooter from '../components/GlobalFooter'
+import styles from './UserLayout.less'
+import logo from '../assets/logo.png'
+import { getRoutes } from '../utils/utils'
 
-const links = [];
+const links = []
 
 const copyright = (
   <Fragment>
     Copyright <Icon type="copyright" /> www.youedata.cn,All Rights Reserved
   </Fragment>
-);
+)
 
 class UserLayout extends React.PureComponent {
   getPageTitle() {
-    const { routerData, location } = this.props;
-    const { pathname } = location;
-    let title = '政务系统';
+    const { routerData, location } = this.props
+    const { pathname } = location
+    let title = '政务数据交换平台'
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - 政务系统`;
+      title = `${routerData[pathname].name} - 政务数据交换平台`
     }
-    return title;
+    return title
   }
 
   render() {
-    const { routerData, match } = this.props;
+    const { routerData, match } = this.props
     return (
       <DocumentTitle title={this.getPageTitle()}>
         <div className={styles.container}>
@@ -74,8 +74,8 @@ class UserLayout extends React.PureComponent {
           <GlobalFooter links={links} copyright={copyright} className={styles.footers} />
         </div>
       </DocumentTitle>
-    );
+    )
   }
 }
 
-export default UserLayout;
+export default UserLayout
