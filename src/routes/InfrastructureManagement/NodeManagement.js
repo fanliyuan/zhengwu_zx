@@ -4,9 +4,9 @@
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-07-23 10:35:45
 */
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { Link, routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { Link, routerRedux } from 'dva/router'
 import {
   Form,
   Input,
@@ -20,10 +20,10 @@ import {
   Dropdown,
   Menu,
   Icon,
-} from 'antd';
+} from 'antd'
 
-import styles from './NodeManagement.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './NodeManagement.less'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 @connect(({ infrastructureManagementNode, loading }) => ({
   infrastructureManagementNode,
@@ -45,81 +45,81 @@ export default class NodeManagement extends Component {
     },
     isChanged: false,
     selectKeys: [],
-  };
+  }
 
   componentWillMount() {
-    const { query, pagination } = this.state;
-    const { dispatch } = this.props;
+    const { query, pagination } = this.state
+    const { dispatch } = this.props
     dispatch({
       type: 'infrastructureManagementNode/query',
       payload: {
         query,
         pagination,
       },
-    });
+    })
   }
 
   handleNodeChange = e => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         node: e.target.value,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handleNodeSelectChange = val => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         parentNode: val,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handleOrganizationChange = val => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         organization: val,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handleStateChange = val => {
-    const { query } = this.state;
+    const { query } = this.state
     this.setState({
       query: {
         ...query,
         state: val,
       },
       isChanged: true,
-    });
-  };
+    })
+  }
 
   handleSearch = () => {
-    const { query, pagination, isChanged } = this.state;
+    const { query, pagination, isChanged } = this.state
     if (!isChanged) {
-      return false;
+      return false
     }
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: 'infrastructureManagementNode/query',
       payload: {
         query,
         pagination,
       },
-    });
+    })
     this.setState({
       isChanged: false,
-    });
-  };
+    })
+  }
 
   handleTableChange = pagination => {
     this.props.dispatch({
@@ -128,8 +128,8 @@ export default class NodeManagement extends Component {
         query: this.state.query,
         pagination,
       },
-    });
-  };
+    })
+  }
 
   handleDelete = async row => {
     await this.props.dispatch({
@@ -137,66 +137,66 @@ export default class NodeManagement extends Component {
       payload: {
         row,
       },
-    });
+    })
     await this.setState({
       isChanged: true,
-    });
-    await this.handleSearch();
-  };
+    })
+    await this.handleSearch()
+  }
 
   handleCancel = () => {
-    message.info('删除取消');
-  };
+    message.info('删除取消')
+  }
 
   addNode = () => {
-    const { dispatch } = this.props;
-    dispatch(routerRedux.push('/infrastructure/addNode'));
-  };
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/infrastructure/addNode'))
+  }
 
   handleMenuClick = async (e, selectKeys) => {
     switch (e.key) {
       case '1':
-        console.log('批量启动', selectKeys); // eslint-disable-line
-        break;
+        console.log('批量启动', selectKeys) // eslint-disable-line
+        break
       case '2':
-        console.log('批量停止', selectKeys); // eslint-disable-line
-        break;
+        console.log('批量停止', selectKeys) // eslint-disable-line
+        break
       case '3':
-        console.log('批量删除', selectKeys); // eslint-disable-line
+        console.log('批量删除', selectKeys) // eslint-disable-line
         await this.props.dispatch({
           type: 'infrastructureManagementNode/deleteSome',
           payload: { ids: selectKeys },
-        });
+        })
         await this.setState({
           isChanged: true,
-        });
-        await this.handleSearch();
-        break;
+        })
+        await this.handleSearch()
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   render() {
     const {
       infrastructureManagementNode: { list, pagination, nodeList, organizationList, stateList },
       loading,
-    } = this.props;
-    const { selectKeys } = this.state;
+    } = this.props
+    const { selectKeys } = this.state
     const rowSelection = {
       selectKeys,
       onChange: Keys => {
         this.setState({
           selectKeys: Keys,
-        });
+        })
       },
-    };
+    }
 
     const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-      },
+      // {
+      //   title: 'ID',
+      //   dataIndex: 'id',
+      // },
       {
         title: '节点名称',
         dataIndex: 'name',
@@ -222,8 +222,8 @@ export default class NodeManagement extends Component {
               <Badge status="success" text="运行中" />
             ) : (
               <Badge status="default" text="已停止" />
-            );
-          return Com;
+            )
+          return Com
         },
       },
       {
@@ -256,27 +256,27 @@ export default class NodeManagement extends Component {
                 任务
               </Link> */}
             </div>
-          );
+          )
         },
       },
-    ];
+    ]
     columns.forEach(item => {
-      item.align = 'center';
-    });
+      item.align = 'center'
+    })
     const stateComs = stateList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value} title={item.label}>
           {item.label}
         </Select.Option>
-      );
-    });
+      )
+    })
     const MenuComs = (
       <Menu onClick={e => this.handleMenuClick(e, selectKeys)}>
         <Menu.Item key="1">启动</Menu.Item>
         <Menu.Item key="2">停止</Menu.Item>
         <Menu.Item key="3">删除</Menu.Item>
       </Menu>
-    );
+    )
 
     return (
       <PageHeaderLayout>
@@ -286,27 +286,27 @@ export default class NodeManagement extends Component {
               onChange={this.handleNodeChange}
               onPressEnter={this.handleSearch}
               className={styles.node}
-              placeholder="请输入节点名"
+              placeholder="节点名"
             />
             <Input
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
-              placeholder="请输入IP地址"
+              placeholder="IP地址"
             />
             <Cascader
               options={nodeList}
               value={this.state.query.parentNode}
               onChange={this.handleNodeSelectChange}
               className={styles.parentNode}
-              placeholder="请选择上级节点"
+              placeholder="上级节点"
             />
             <Cascader
               options={organizationList}
               value={this.state.query.organization}
               onChange={this.handleOrganizationChange}
               className={styles.organization}
-              placeholder="请选择所属机构"
+              placeholder="所属机构"
             />
             <Select
               value={this.state.query.state}
@@ -341,6 +341,6 @@ export default class NodeManagement extends Component {
           />
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

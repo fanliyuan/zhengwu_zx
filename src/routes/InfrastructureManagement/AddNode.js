@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { Link, routerRedux } from 'dva/router';
-import { Card, Input, Button, Form, Select, TreeSelect, message } from 'antd';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { Link, routerRedux } from 'dva/router'
+import { Card, Input, Button, Form, TreeSelect, message } from 'antd'
 
 // import styles from './AddNode.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const FormItem = Form.Item;
-const { Option } = Select;
+const FormItem = Form.Item
+// const { Option } = Select
 @connect()
 @Form.create()
 export default class AddNode extends Component {
-  state = {};
+  state = {}
 
   handleSubmit = e => {
-    e.preventDefault();
-    message.success('新建成功,即将跳转到上级页面');
+    e.preventDefault()
+    message.success('新建成功,即将跳转到上级页面')
     setTimeout(() => {
-      this.props.dispatch(routerRedux.push('/infrastructure/node'));
-    }, 1000);
-  };
+      this.props.dispatch(routerRedux.push('/infrastructure/node'))
+    }, 1000)
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const role = [
-      { value: '0', label: '某某机构', id: '0' },
-      { value: '1', label: 'XX机构', id: '1' },
-    ];
-    const roleData = role.map(item => {
-      return (
-        <Option value={item.value} key={item.id}>
-          {item.label}
-        </Option>
-      );
-    });
+    const { getFieldDecorator } = this.props.form
+    // const role = [
+    //   { value: '0', label: '某某机构', id: '0' },
+    //   { value: '1', label: 'XX机构', id: '1' },
+    // ]
+    // const roleData = role.map(item => {
+    //   return (
+    //     <Option value={item.value} key={item.id}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -44,13 +44,13 @@ export default class AddNode extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
+    }
     const submitLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
         sm: { span: 10, offset: 7 },
       },
-    };
+    }
     const treeData = [
       {
         title: '第一级节点',
@@ -69,7 +69,26 @@ export default class AddNode extends Component {
           },
         ],
       },
-    ];
+    ]
+    const treeData1 = [
+      {
+        title: '北京市国土局',
+        value: '0-0',
+        key: '0-0',
+        children: [
+          {
+            title: '海淀国土局',
+            value: '0-0-0',
+            key: '0-0-0',
+          },
+          {
+            title: '丰台国土局',
+            value: '0-0-1',
+            key: '0-0-1',
+          },
+        ],
+      },
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -107,7 +126,7 @@ export default class AddNode extends Component {
                     message: '请选择机构',
                   },
                 ],
-              })(<Select placeholder="请选择">{roleData}</Select>)}
+              })(<TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll />)}
             </FormItem>
             <FormItem {...submitLayout}>
               <div className="btnclsb">
@@ -122,6 +141,6 @@ export default class AddNode extends Component {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

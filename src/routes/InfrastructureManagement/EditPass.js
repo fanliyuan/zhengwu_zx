@@ -1,61 +1,61 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { Link, routerRedux } from 'dva/router';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { Link, routerRedux } from 'dva/router'
 
-import { Card, Form, Select, Checkbox, Button, message } from 'antd';
+import { Card, Form, Select, Checkbox, Button, message } from 'antd'
 
 // import styles from './EditPass.less';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const FormItem = Form.Item;
-const { Option } = Select;
+const FormItem = Form.Item
+const { Option } = Select
 @Form.create()
 class EditPass extends Component {
-  state = {};
+  state = {}
 
   handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll(err => {
       // values
       if (!err) {
-        message.success('提交成功, 即将返回上一页');
+        message.success('提交成功, 即将返回上一页')
         setTimeout(() => {
-          this.props.dispatch(routerRedux.push('/infrastructure/pass'));
-        }, 1000);
+          this.props.dispatch(routerRedux.push('/infrastructure/pass'))
+        }, 1000)
         // const { dispatch } = this.props;
         // dispatch({
         //   type:'',
         //   payload:values,
         // })
       }
-    });
-  };
+    })
+  }
 
   render() {
-    const { data } = this.props;
-    const { getFieldDecorator } = this.props.form; // getFieldValue
+    const { data } = this.props
+    const { getFieldDecorator } = this.props.form // getFieldValue
     const startData = [
       { value: '0', label: '石家庄市发展改革委', id: 0 },
       { value: '1', label: '北京发展改革委', id: 1 },
-    ];
+    ]
     const startNode = startData.map(item => {
       return (
         <Option value={item.value} title={item.label} key={item.id}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const endData = [
       { value: '0', label: '石家庄市民政部', id: 0 },
       { value: '1', label: '北京民政部', id: 1 },
-    ];
+    ]
     const targetNode = endData.map(item => {
       return (
         <Option value={item.value} title={item.label} key={item.id}>
           {item.label}
         </Option>
-      );
-    });
+      )
+    })
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -66,7 +66,7 @@ class EditPass extends Component {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
+    }
 
     return (
       <PageHeaderLayout>
@@ -75,12 +75,12 @@ class EditPass extends Component {
             <FormItem label="起始节点" {...formItemLayout}>
               {getFieldDecorator('startNode', {
                 initialValue: data.startCode,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择起始节点',
-                  },
-                ],
+                // rules: [
+                //   {
+                //     required: true,
+                //     message: '请选择起始节点',
+                //   },
+                // ],
               })(
                 <Select placeholder="起始节点" disabled>
                   {startNode}
@@ -90,12 +90,12 @@ class EditPass extends Component {
             <FormItem label="目标节点" {...formItemLayout}>
               {getFieldDecorator('endNode', {
                 initialValue: data.targetCode,
-                rules: [
-                  {
-                    required: true,
-                    message: '请选择目标节点',
-                  },
-                ],
+                // rules: [
+                //   {
+                //     required: true,
+                //     message: '请选择目标节点',
+                //   },
+                // ],
               })(
                 <Select placeholder="目标节点" disabled>
                   {targetNode}
@@ -131,9 +131,9 @@ class EditPass extends Component {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }
 export default connect(({ passOperation }) => ({
   data: passOperation.params,
-}))(EditPass);
+}))(EditPass)
