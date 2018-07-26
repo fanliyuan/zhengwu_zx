@@ -6,10 +6,10 @@ const menuData = [
     icon: 'dashboard',
     path: 'overview',
     children: [
-      {
-        name: '概览',
-        path: 'analysis',
-      },
+      // {
+      //   name: '概览',
+      //   path: 'analysis',
+      // },
       {
         name: '登录日志',
         path: 'logging',
@@ -320,10 +320,16 @@ const menuData = [
         path: 'logAudit',
         hideInMenu: true,
       },
-      // {
-      //   name: '资源',
-      //   path: 'source',
-      // },
+      {
+        name: '资源',
+        path: 'source',
+        hideInMenu: true,
+      },
+      {
+        name: '查看目录',
+        path: 'viewDirectory',
+        hideInMenu: true,
+      },
       {
         name: '资源管理',
         path: 'sourceManagement',

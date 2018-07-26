@@ -91,7 +91,11 @@ export default class AddUser extends Component {
               })(<Input placeholder="手机号" />)}
             </FormItem>
             <FormItem label="角色" {...formItemLayout}>
-              {getFieldDecorator('role')(<Select placeholder="请选择">{roleData}</Select>)}
+              {getFieldDecorator('role')(
+                <Select placeholder="请选择" disabled>
+                  {roleData}
+                </Select>
+              )}
             </FormItem>
             <FormItem label="状态" {...formItemLayout}>
               {getFieldDecorator('status')(<Checkbox>停用</Checkbox>)}

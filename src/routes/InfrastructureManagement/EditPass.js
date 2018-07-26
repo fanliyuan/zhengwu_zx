@@ -81,7 +81,11 @@ class EditPass extends Component {
                     message: '请选择起始节点',
                   },
                 ],
-              })(<Select placeholder="起始节点">{startNode}</Select>)}
+              })(
+                <Select placeholder="起始节点" disabled>
+                  {startNode}
+                </Select>
+              )}
             </FormItem>
             <FormItem label="目标节点" {...formItemLayout}>
               {getFieldDecorator('endNode', {
@@ -92,13 +96,17 @@ class EditPass extends Component {
                     message: '请选择目标节点',
                   },
                 ],
-              })(<Select placeholder="目标节点">{targetNode}</Select>)}
+              })(
+                <Select placeholder="目标节点" disabled>
+                  {targetNode}
+                </Select>
+              )}
             </FormItem>
             <FormItem label="双向传输" {...formItemLayout}>
               {getFieldDecorator('twoWayTransfer', {
                 valuePropName: 'checked',
-                initialValue: !!+data.isTwoWay,
-              })(<Checkbox>启用</Checkbox>)}
+                initialValue: true, // !!+data.isTwoWay
+              })(<Checkbox disabled>启用</Checkbox>)}
             </FormItem>
             <FormItem label="压缩传输" {...formItemLayout}>
               {getFieldDecorator('compressTransfer', {

@@ -1,18 +1,34 @@
 import React, { Component } from 'react';
 import { Table, Card, Tabs, Input, DatePicker, Row, Col, Button } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
 
 import styles from './SourceManagement.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const { TabPane } = Tabs;
 const { RangePicker } = DatePicker;
+@connect(({ sourceManagement }) => ({
+  sourceManagement,
+}))
 export default class SourceManagement extends Component {
   state = {
     loading: false,
   };
 
+  handleCataLog = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSwitchManagement/viewDirectory'));
+  };
+
+  handleSource = () => {
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/dataSwitchManagement/source'));
+  };
+
   render() {
+    const that = this;
     const { loading } = this.state;
     const columns = [
       {
@@ -51,8 +67,12 @@ export default class SourceManagement extends Component {
         render() {
           return (
             <div>
-              <a className="mr8">目录</a>
-              <a>资源</a>
+              <span className={styles.clickBtn} onClick={that.handleCataLog}>
+                目录
+              </span>
+              <span className={styles.clickBtn} onClick={that.handleSource}>
+                资源
+              </span>
             </div>
           );
         },
@@ -119,7 +139,9 @@ export default class SourceManagement extends Component {
         render() {
           return (
             <div>
-              <a className="mr8">目录</a>
+              <span className={styles.clickBtn} onClick={that.handleCataLog}>
+                目录
+              </span>
             </div>
           );
         },

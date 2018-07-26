@@ -72,9 +72,9 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
-    '/overview/analysis': {
-      component: dynamicWrapper(app, ['chart'], () => import('../routes/Overview/Analysis')),
-    },
+    // '/overview/analysis': {
+    //   component: dynamicWrapper(app, ['chart'], () => import('../routes/Overview/Analysis')),
+    // },
     '/overview/logging': {
       component: dynamicWrapper(app, ['overviewLogging'], () =>
         import('../routes/Overview/Logging')
@@ -352,6 +352,11 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/SourceSubscription')
       ),
     },
+    '/dataSwitchManagement/viewDirectory': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSwitchManagement/ViewDirectory')
+      ),
+    },
     '/dataSwitchManagement/subscriptionFile/:id': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/SubscriptionFile')
@@ -365,9 +370,9 @@ export const getRouterData = app => {
     '/dataSwitchManagement/allSub': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/AllSub')),
     },
-    // '/dataSwitchManagement/source': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/Source')),
-    // },
+    '/dataSwitchManagement/source': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/Source')),
+    },
     '/dataSwitchManagement/logAudit/:id': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/LogAudit')),
     },
