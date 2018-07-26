@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Form, Input, Cascader, DatePicker, Select, Button, Table } from 'antd'
+import { Form, Input, DatePicker, Select, Button, Table } from 'antd'
 
 import styles from './Logging.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -24,7 +24,7 @@ export default class Logging extends Component {
     isChanged: false,
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { pagination, query } = this.state
     const { dispatch } = this.props
     dispatch({
@@ -39,7 +39,7 @@ export default class Logging extends Component {
     })
   }
 
-  handleUserNameChange = (e) => {
+  handleUserNameChange = e => {
     const { query } = this.state
     this.setState({
       isChanged: true,
@@ -49,7 +49,7 @@ export default class Logging extends Component {
     })
   }
 
-  handleOrganizationChange = (value) => {
+  handleOrganizationChange = value => {
     const { query } = this.state
     this.setState({
       isChanged: true,
@@ -59,7 +59,7 @@ export default class Logging extends Component {
     })
   }
 
-  handleIPChange = (e) => {
+  handleIPChange = e => {
     const { query } = this.state
     this.setState({
       isChanged: true,
@@ -69,7 +69,7 @@ export default class Logging extends Component {
     })
   }
 
-  handleDatePickerChange = (value) => {
+  handleDatePickerChange = value => {
     // const query = { ...this.state.query, date: value.map(item => +item.format('x')) }
     const { query } = this.state
     this.setState({
@@ -80,7 +80,7 @@ export default class Logging extends Component {
     })
   }
 
-  handleResultChange = (value) => {
+  handleResultChange = value => {
     // let query = { ...this.state.query, state: value }
     const { query } = this.state
     this.setState({
@@ -93,7 +93,7 @@ export default class Logging extends Component {
 
   handleSearch = () => {
     const { pagination, isChanged } = this.state
-    if (! isChanged) return
+    if (!isChanged) return
     this.setState({
       isChanged: false,
     })
@@ -104,7 +104,7 @@ export default class Logging extends Component {
     })
   }
 
-  handleTableChange = (pagination) => {
+  handleTableChange = pagination => {
     const { query } = this.state
     const { dispatch } = this.props
     dispatch({
@@ -113,11 +113,21 @@ export default class Logging extends Component {
     })
   }
 
-  render () {
-    const { auditLogging: { organizationList, stateList, data: {list, pagination} }, loading } = this.props
+  render() {
+    const {
+      auditLogging: {
+        stateList,
+        data: { list, pagination },
+      },
+      loading,
+    } = this.props
 
     const selectOptionList = stateList.map(item => {
-      return <Select.Option value={item.value} key={item.value}>{item.label}</Select.Option>
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      )
     })
 
     const columns = [
@@ -131,11 +141,11 @@ export default class Logging extends Component {
         dataIndex: 'name',
         align: 'center',
       },
-      {
-        title: '所属机构',
-        dataIndex: 'organization',
-        align: 'center',
-      },
+      // {
+      //   title: '所属机构',
+      //   dataIndex: 'organization',
+      //   align: 'center',
+      // },
       {
         title: '登录时间',
         dataIndex: 'time',
@@ -156,22 +166,44 @@ export default class Logging extends Component {
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
-          <Form style={{marginBottom: 20}}>
-            <Input onChange={this.handleUserNameChange} onPressEnter={this.handleSearch} className={styles.username} placeholder="请输入用户名" />
-            <Cascader options={organizationList} onChange={this.handleOrganizationChange} style={{width: 112, marginRight: 10}} placeholder="请选择机构" />
-            <Input onChange={this.handleIPChange} onPressEnter={this.handleSearch} className={styles.ip} placeholder="请输入IP地址" />
+          <Form style={{ marginBottom: 20 }}>
+            <Input
+              onChange={this.handleUserNameChange}
+              onPressEnter={this.handleSearch}
+              className={styles.username}
+              placeholder="用户名"
+            />
+            {/* <Cascader options={organizationList} onChange={this.handleOrganizationChange} style={{width: 112, marginRight: 10}} placeholder="请选择机构" /> */}
+            <Input
+              onChange={this.handleIPChange}
+              onPressEnter={this.handleSearch}
+              className={styles.ip}
+              placeholder="IP地址"
+            />
             <RangePicker onChange={this.handleDatePickerChange} className={styles.date} />
-            <Select defaultValue={-1} onChange={this.handleResultChange} style={{width: 112, marginRight: 10}}>
+            <Select
+              defaultValue={-1}
+              onChange={this.handleResultChange}
+              style={{ width: 112, marginRight: 10 }}
+            >
               {selectOptionList}
             </Select>
-            <Button type="primary" onClick={this.handleSearch} icon="search">搜索</Button>
+            <Button type="primary" onClick={this.handleSearch} icon="search">
+              搜索
+            </Button>
           </Form>
           <div>
-            <Table dataSource={list} pagination={pagination} columns={columns} onChange={this.handleTableChange} loading={loading} rowKey="id" />
+            <Table
+              dataSource={list}
+              pagination={pagination}
+              columns={columns}
+              onChange={this.handleTableChange}
+              loading={loading}
+              rowKey="id"
+            />
           </div>
         </div>
       </PageHeaderLayout>
     )
   }
-
 }
