@@ -203,7 +203,7 @@ export default class Publication extends Component {
               <Button>返回</Button>
             </Link>
             <Button type="primary" onClick={this.handlePublic} className="fr mr16">
-              发布
+              开始发布
             </Button>
           </div>
           <Form className={styles.search}>
