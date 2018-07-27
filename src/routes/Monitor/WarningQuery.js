@@ -32,7 +32,7 @@ export default class WarningQuery extends Component {
     datIsChanged: false,
   }
 
-  taskNameChange = (e) => {
+  taskNameChange = e => {
     const { querySer } = this.state
     this.setState({
       querySer: {
@@ -43,7 +43,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  originNameChange = (e) => {
+  originNameChange = e => {
     const { querySer } = this.state
     this.setState({
       querySer: {
@@ -54,7 +54,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  nodeSerChange = (val) => {
+  nodeSerChange = val => {
     const { querySer } = this.state
     this.setState({
       querySer: {
@@ -65,7 +65,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  originSerChange = (val) => {
+  originSerChange = val => {
     const { querySer } = this.state
     this.setState({
       querySer: {
@@ -76,7 +76,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  typeSerChange = (val) => {
+  typeSerChange = val => {
     const { querySer } = this.state
     this.setState({
       querySer: {
@@ -87,7 +87,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  nameChange = (e) => {
+  nameChange = e => {
     const { queryDat } = this.state
     this.setState({
       queryDat: {
@@ -98,7 +98,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  nodeDatChange = (val) => {
+  nodeDatChange = val => {
     const { queryDat } = this.state
     this.setState({
       queryDat: {
@@ -109,7 +109,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  originDatChange = (val) => {
+  originDatChange = val => {
     const { queryDat } = this.state
     this.setState({
       queryDat: {
@@ -120,7 +120,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  typeDatChange = (val) => {
+  typeDatChange = val => {
     const { queryDat } = this.state
     this.setState({
       queryDat: {
@@ -131,7 +131,7 @@ export default class WarningQuery extends Component {
     })
   }
 
-  timeChange = (value) => {
+  timeChange = value => {
     const { queryDat } = this.state
     this.setState({
       queryDat: {
@@ -142,7 +142,6 @@ export default class WarningQuery extends Component {
     })
   }
 
-
   searchSer() {
     if (!this.state.serIsChanged) return false
   }
@@ -152,7 +151,10 @@ export default class WarningQuery extends Component {
   }
 
   render() {
-    const { querySer: { taskName, originName, nodeSer, originSer, typeSer }, queryDat: { name, nodeDat, originDat, typeDat, time } } = this.state
+    const {
+      querySer: { taskName, originName, nodeSer, originSer, typeSer },
+      queryDat: { name, nodeDat, originDat, typeDat, time },
+    } = this.state
     const nodeList = [
       {
         value: -1,
@@ -238,13 +240,25 @@ export default class WarningQuery extends Component {
       },
     ]
     const originComs = originList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      )
     })
     const methodComs = methodList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      )
     })
     const typeComs = typeList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      )
     })
     const columnsSer = [
       {
@@ -326,14 +340,14 @@ export default class WarningQuery extends Component {
     })
     const dataSer = []
     const dataDat = []
-    for(let i = 0; i < 301; i ++) {
+    for (let i = 0; i < 301; i++) {
       const random = Math.round(Math.random())
       dataSer.push({
         id: i,
         nodeName: `节点名${i}`,
-        origin: originList[random+1].label+i,
+        origin: originList[random + 1].label + i,
         originName: random === 1 ? `通道${i}订阅${i}` : `数据源名${i}`,
-        type: methodList[i%3 + 1].label,
+        type: methodList[(i % 3) + 1].label,
         code: 500 + random,
         description: `描述${i}`,
         time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
@@ -341,9 +355,9 @@ export default class WarningQuery extends Component {
       dataDat.push({
         id: i,
         nodeName: `节点${i}`,
-        origin: originList[random+1].label+i,
+        origin: originList[random + 1].label + i,
         originName: random === 1 ? `通道${i}订阅${i}` : `数据源名${i}`,
-        type: typeList[i%3 + 1].label,
+        type: typeList[(i % 3) + 1].label,
         cause: random === 1 ? '数据不存在' : 'nage”非法值',
         time: moment(new Date() - 1000 * 60 * 60 * 25 * i, 'x').format('lll'),
         key: `id=${i}`,
@@ -354,40 +368,83 @@ export default class WarningQuery extends Component {
 
     return (
       <PageHeaderLayout>
-        <div className={styles.layout} >
+        <div className={styles.layout}>
           <Tabs>
-            <Tabs.TabPane tab='业务告警' key='service' >
-              <div className={styles.layout} >
-                <Form className={styles.search} >
-                  <Cascader options={nodeList} value={nodeSer} onChange={this.nodeSerChange} className={styles.cascader} placeholder='请选择节点名称' />
-                  <Select value={originSer} onChange={this.originSerChange} className={styles.select} >
+            <Tabs.TabPane tab="业务告警" key="service">
+              <div className={styles.layout}>
+                <Form className={styles.search}>
+                  <Cascader
+                    options={nodeList}
+                    value={nodeSer}
+                    onChange={this.nodeSerChange}
+                    className={styles.cascader}
+                    placeholder="请选择节点名称"
+                  />
+                  <Select
+                    value={originSer}
+                    onChange={this.originSerChange}
+                    className={styles.select}
+                  >
                     {originComs}
                   </Select>
-                  <Input value={originName} onChange={this.originNameChange} className={styles.input} placeholder='告警来源名称' />
-                  <Select value={typeSer} onChange={this.typeSerChange} className={styles.select} >
+                  <Input
+                    value={originName}
+                    onChange={this.originNameChange}
+                    className={styles.input}
+                    placeholder="告警来源名称"
+                  />
+                  <Select value={typeSer} onChange={this.typeSerChange} className={styles.select}>
                     {methodComs}
                   </Select>
-                  <Input value={taskName} onChange={this.taskNameChange} className={styles.input} placeholder='任务名称' />
-                  <Button type='primary' icon='search' onClick={this.searchSer} >搜索</Button>
+                  <Input
+                    value={taskName}
+                    onChange={this.taskNameChange}
+                    className={styles.input}
+                    placeholder="任务名称"
+                  />
+                  <Button type="primary" icon="search" onClick={this.searchSer}>
+                    搜索
+                  </Button>
                 </Form>
-                <Table columns={columnsSer} dataSource={dataSer} rowKey='id' bordered />
+                <Table columns={columnsSer} dataSource={dataSer} rowKey="id" bordered />
               </div>
             </Tabs.TabPane>
-            <Tabs.TabPane tab='数据告警' key='data' >
-              <div className={styles.layout} >
-                <Form className={styles.search} >
-                  <Cascader options={nodeList} value={nodeDat} onChange={this.nodeDatChange} className={styles.cascader} placeholder='请选择节点名称' />
-                  <Select value={originDat} onChange={this.originDatChange} className={styles.select} >
+            <Tabs.TabPane tab="数据告警" key="data">
+              <div className={styles.layout}>
+                <Form className={styles.search}>
+                  <Cascader
+                    options={nodeList}
+                    value={nodeDat}
+                    onChange={this.nodeDatChange}
+                    className={styles.cascader}
+                    placeholder="请选择节点名称"
+                  />
+                  <Select
+                    value={originDat}
+                    onChange={this.originDatChange}
+                    className={styles.select}
+                  >
                     {originComs}
                   </Select>
-                  <Input value={name} onChange={this.nameChange} className={styles.input} placeholder='数据来源名称' />
-                  <Select value={typeDat} onChange={this.typeDatChange} className={styles.select} >
+                  <Input
+                    value={name}
+                    onChange={this.nameChange}
+                    className={styles.input}
+                    placeholder="数据来源名称"
+                  />
+                  <Select value={typeDat} onChange={this.typeDatChange} className={styles.select}>
                     {typeComs}
                   </Select>
-                  <DatePicker.RangePicker value={time} onChange={this.timeChange} className={styles.picker} />
-                  <Button type='primary' icon='search' onClick={this.searchDat} >搜索</Button>
+                  <DatePicker.RangePicker
+                    value={time}
+                    onChange={this.timeChange}
+                    className={styles.picker}
+                  />
+                  <Button type="primary" icon="search" onClick={this.searchDat}>
+                    搜索
+                  </Button>
                 </Form>
-                <Table columns={columnsDat} dataSource={dataDat} rowKey='id' bordered />
+                <Table columns={columnsDat} dataSource={dataDat} rowKey="id" bordered />
               </div>
             </Tabs.TabPane>
           </Tabs>

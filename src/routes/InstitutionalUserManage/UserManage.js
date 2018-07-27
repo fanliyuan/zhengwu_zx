@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Message } from 'antd'
+import { Table, Button, Input, Select, Card, DatePicker, Message, Popconfirm } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -162,7 +162,12 @@ export default class UserManage extends Component {
                 <span className={styles.editBtn} onClick={that.handleAdd}>
                   修改
                 </span>
-                <a style={{ marginRight: 20 }}>删除</a>
+                <Popconfirm
+                  title={`是否要刪除${row.name}?`}
+                  onConfirm={() => Message.success('刪除成功')}
+                >
+                  <a style={{ marginRight: 20 }}>删除</a>
+                </Popconfirm>
               </div>
             )
           } else {
@@ -174,7 +179,12 @@ export default class UserManage extends Component {
                 <span className={styles.editBtn} onClick={that.handleAdd}>
                   修改
                 </span>
-                <a style={{ marginRight: 20 }}>删除</a>
+                <Popconfirm
+                  title={`是否要刪除${row.name}?`}
+                  onConfirm={() => Message.success('刪除成功')}
+                >
+                  <a style={{ marginRight: 20 }}>删除</a>
+                </Popconfirm>
               </div>
             )
           }

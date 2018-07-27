@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Card, Input, Button, Form, Select, Checkbox } from 'antd'
+import { Link } from 'dva/router'
+import { Card, Input, Button, Form, Select, Checkbox, message } from 'antd'
+import copy from 'copy-to-clipboard'
 
 // import styles from './AddUser.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -7,11 +9,34 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 const FormItem = Form.Item
 const { Option } = Select
 
+function getPassword(n = 8) {
+  const str = 'qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM'
+  const len = str.length
+  let result = ''
+  for (let i = 0; i < n; i++) {
+    result += str.charAt(Math.floor(Math.random() * len))
+  }
+  return result
+}
+
 @Form.create()
 export default class AddUser extends Component {
   state = {}
 
-  handleSubmit = () => {}
+  setPassword = () => {
+    this.props.form.setFieldsValue({
+      password: getPassword(),
+    })
+  }
+
+  handleCopy = () => {
+    copy(this.props.form.getFieldValue('password'))
+    message.success('成功复制')
+  }
+
+  handleSubmit = e => {
+    e.preventDefault()
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form
@@ -37,12 +62,6 @@ export default class AddUser extends Component {
         md: { span: 10 },
       },
     }
-    const submitLayout = {
-      wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 10, offset: 7 },
-      },
-    }
     return (
       <PageHeaderLayout>
         <Card>
@@ -58,7 +77,7 @@ export default class AddUser extends Component {
               })(<Input placeholder="请输入用户名" />)}
             </FormItem>
             <FormItem label="密码" {...formItemLayout}>
-              {getFieldDecorator('passwords', {
+              {getFieldDecorator('password', {
                 rules: [
                   {
                     required: true,
@@ -67,8 +86,10 @@ export default class AddUser extends Component {
                 ],
               })(<Input placeholder="请输入密码" />)}
               <div>
-                <a className="mr8">随机生成</a>
-                <a>复制</a>
+                <a className="mr8" onClick={this.setPassword}>
+                  随机生成
+                </a>
+                <a onClick={this.handleCopy}>复制</a>
               </div>
             </FormItem>
             <FormItem label="姓名" {...formItemLayout}>
@@ -101,11 +122,14 @@ export default class AddUser extends Component {
             <FormItem label="状态" {...formItemLayout}>
               {getFieldDecorator('status')(<Checkbox>停用</Checkbox>)}
             </FormItem>
-            <FormItem {...submitLayout}>
-              <Button type="primary" htmlType="submit">
+            <div className="btnclsb">
+              <Button type="primary" htmlType="submit" className="mr64">
                 确定
               </Button>
-            </FormItem>
+              <Link to="/institutionalUserManage/userManage">
+                <Button>取消</Button>
+              </Link>
+            </div>
           </Form>
         </Card>
       </PageHeaderLayout>
