@@ -55,7 +55,7 @@ export default class PublicationManagement extends Component {
   state = {
     name: '',
     system: '',
-    subscribe: -1,
+    subscribe: '是否置顶/推荐',
     // audit: -1,
     date: [],
     isChanged: false,
@@ -248,10 +248,10 @@ export default class PublicationManagement extends Component {
       },
     ]
     const topList = [
-      {
-        value: -1,
-        label: '是否置顶/推荐',
-      },
+      // {
+      //   value: -1,
+      //   label: '是否置顶/推荐',
+      // },
       {
         value: 0,
         label: '置顶',
