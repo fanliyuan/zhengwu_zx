@@ -103,15 +103,15 @@ export default class AddNode extends Component {
                 ],
               })(<Input placeholder="节点名称" />)}
             </FormItem>
-            <FormItem label="IP地址" {...formItemLayout}>
+            <FormItem label="mac地址" {...formItemLayout}>
               {getFieldDecorator('ipAddress', {
                 rules: [
                   {
                     required: true,
-                    message: '请输入IP地址',
+                    message: '请输入mac地址',
                   },
                 ],
-              })(<Input placeholder="IP地址" />)}
+              })(<Input placeholder="mac地址" />)}
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('parentNode')(

@@ -13,6 +13,7 @@ import {
   DatePicker,
   Form,
   Select,
+  Radio,
 } from 'antd'
 import moment from 'moment'
 
@@ -86,6 +87,7 @@ export default class ResourceConnectionData extends Component {
     ItemConnect: true,
     visible1: false,
     visible2: false,
+    target: 'a1',
   }
 
   isEditing = record => {
@@ -101,17 +103,21 @@ export default class ResourceConnectionData extends Component {
     )
   }
 
-  handleConnect = () => {
-    this.setState({
-      ItemConnect: true,
-    })
-  }
+  // handleConnect = () => {
+  //   this.setState({
+  //     ItemConnect: true,
+  //     active:true,
+  //     active1:false,
+  //   })
+  // }
 
-  handleClearConnect = () => {
-    this.setState({
-      ItemConnect: false,
-    })
-  }
+  // handleClearConnect = () => {
+  //   this.setState({
+  //     ItemConnect: false,
+  //     active:false,
+  //     active1:true,
+  //   })
+  // }
 
   handleSave = () => {
     const { dispatch } = this.props
@@ -121,6 +127,23 @@ export default class ResourceConnectionData extends Component {
   handleBack = () => {
     const { dispatch } = this.props
     dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+  }
+
+  handleSizeChange = e => {
+    this.setState({ target: e.target.value })
+    if (e.target.value === 'a1') {
+      this.setState({
+        ItemConnect: true,
+        // active:true,
+        // active1:false,
+      })
+    } else {
+      this.setState({
+        ItemConnect: false,
+        // active:false,
+        // active1:true,
+      })
+    }
   }
 
   showModal1 = () => {
@@ -160,7 +183,7 @@ export default class ResourceConnectionData extends Component {
   }
 
   render() {
-    const { ItemConnect, visible1, visible2 } = this.state
+    const { ItemConnect, visible1, visible2, target } = this.state
     const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
@@ -260,7 +283,19 @@ export default class ResourceConnectionData extends Component {
       {
         title: 'ID',
         dataIndex: 'id',
+        render(text) {
+          return (
+            <div>
+              <input type="radio" name="mo1" />
+              <span style={{ marginLeft: 10 }}>{text}</span>
+            </div>
+          )
+        },
       },
+      // {
+      //   title: 'ID',
+      //   dataIndex: '',
+      // },
       {
         title: '资源名称',
         dataIndex: 'sourceName',
@@ -322,7 +357,7 @@ export default class ResourceConnectionData extends Component {
         render() {
           return (
             <div>
-              <a>数据项</a>
+              <a>结构</a>
             </div>
           )
         },
@@ -407,17 +442,17 @@ export default class ResourceConnectionData extends Component {
       },
     ]
     const columns2 = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-      },
-      {
-        title: '主键',
-        dataIndex: 'isMainKey',
-        render: text => {
-          return <span>{text === 1 ? '是' : ''}</span>
-        },
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      // },
+      // {
+      //   title: '主键',
+      //   dataIndex: 'isMainKey',
+      //   render: text => {
+      //     return <span>{text === 1 ? '是' : ''}</span>
+      //   },
+      // },
       {
         title: '字段名称',
         dataIndex: 'filedName',
@@ -431,7 +466,7 @@ export default class ResourceConnectionData extends Component {
         dataIndex: 'chineseLabel',
       },
       {
-        title: '是否作为检索主键',
+        title: '是否是主键',
         dataIndex: 'isQueryKey',
         editable: true,
         isSelect: true,
@@ -445,17 +480,17 @@ export default class ResourceConnectionData extends Component {
         width: 96,
       },
       {
-        title: '外键所表',
+        title: '外键所在表',
         dataIndex: 'tableKey',
         editable: true,
         width: 157,
       },
-      {
-        title: '外键对应字段',
-        dataIndex: 'fieldKey',
-        editable: true,
-        width: 157,
-      },
+      // {
+      //   title: '外键对应字段',
+      //   dataIndex: 'fieldKey',
+      //   editable: true,
+      //   width: 157,
+      // },
     ]
     columns2.forEach(item => (item.align = 'center')) // eslint-disable-line
     const columns3 = columns2.map(item => {
@@ -513,28 +548,28 @@ export default class ResourceConnectionData extends Component {
             </h3>
             <Divider />
           </div>
-          <Row style={{ marginBottom: 15 }}>
-            <Col span={4}>
+          <div style={{ marginBottom: 15 }}>
+            <div style={{ display: 'inline-block', marginRight: 20 }}>
               <h3>
                 挂接资源名称&nbsp;:&nbsp;<span>城市低保标准</span>
               </h3>
-            </Col>
-            <Col span={18}>
+            </div>
+            <div style={{ display: 'inline-block' }}>
               <span className={styles.linkBtn} onClick={this.showModal1}>
                 去选择
               </span>
-            </Col>
-          </Row>
-          <Row style={{ marginBottom: 20 }}>
-            <Col span={4}>
+            </div>
+          </div>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ display: 'inline-block', marginRight: 20 }}>
               <h3>挂接资源检索关系设置&nbsp;:&nbsp;</h3>
-            </Col>
-            <Col span={18}>
+            </div>
+            <div style={{ display: 'inline-block' }}>
               <span className={styles.linkBtn} onClick={this.showModal2}>
                 去选择
               </span>
-            </Col>
-          </Row>
+            </div>
+          </div>
           {/* <Row style={{ marginBottom: 20 }}>
             <Col span={4}>
               <Input placeholder="信息编码" />
@@ -557,14 +592,18 @@ export default class ResourceConnectionData extends Component {
               />
             </Col>
             <Col span={4} style={{ textAlign: 'center' }}>
-              <Row>
+              {/* <Row>
                 <Col span={11}>
-                  <Button onClick={this.handleConnect}>自动映射</Button>
+                  <Button onClick={this.handleConnect} size="small" disabled={active ? 'priamy':''}>自动映射</Button>
                 </Col>
                 <Col span={11} offset={2}>
-                  <Button onClick={this.handleClearConnect}>清除映射</Button>
+                  <Button onClick={this.handleClearConnect} size="small" type={active1 ? 'priamy':''}>清除映射</Button>
                 </Col>
-              </Row>
+              </Row> */}
+              <Radio.Group value={target} onChange={this.handleSizeChange}>
+                <Radio.Button value="a1">Large</Radio.Button>
+                <Radio.Button value="a2">Default</Radio.Button>
+              </Radio.Group>
               <Row
                 style={{
                   marginTop: 40,
@@ -647,13 +686,13 @@ export default class ResourceConnectionData extends Component {
           >
             <div>
               <h3>
-                数据表 共<span>32</span>张
+                数据表 共<span className={styles.spe}>32</span>张
               </h3>
               <Table columns={columnsModal2} dataSource={listModal2} rowKey="id" bordered />
             </div>
             <div>
               <h3>
-                数据 共<span>32</span>行
+                数据 共<span className={styles.spe}>32</span>行
               </h3>
               <Table
                 columns={columns3}
