@@ -1,7 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
-import { Table, Button, Card, Divider, Row, Col, Modal, Input, DatePicker } from 'antd'
+import {
+  Table,
+  Button,
+  Card,
+  Divider,
+  Row,
+  Col,
+  Modal,
+  Input,
+  DatePicker,
+  Popconfirm,
+  message,
+} from 'antd'
 import moment from 'moment'
 
 import styles from './ResourceConnection.less'
@@ -23,6 +35,13 @@ export default class ResourceConnection extends Component {
   state = {
     visible1: false,
     visible2: false,
+    isNodeOperator: false,
+  }
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    })
   }
 
   handleSave = () => {
@@ -73,7 +92,7 @@ export default class ResourceConnection extends Component {
 
   render() {
     // const { resourceVisible, resourceFileVisible, confirmLoading, confirmFileLoading } = this.state;
-    const { visible1, visible2 } = this.state
+    const { visible1, visible2, isNodeOperator } = this.state
     const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
@@ -99,13 +118,22 @@ export default class ResourceConnection extends Component {
           return moment(text).format('lll')
         },
       },
-      {
-        title: '操作',
-        render() {
-          return <a>删除</a>
-        },
-      },
     ]
+    if (isNodeOperator) {
+      columns.push({
+        title: '操作',
+        render(text, row) {
+          return (
+            <Popconfirm
+              title={`是否删除${row.fileName || '此行'}?`}
+              onConfirm={() => message.info('删除成功!')}
+            >
+              <a>删除</a>
+            </Popconfirm>
+          )
+        },
+      })
+    }
     columns.forEach(item => {
       item.align = 'center'
     })
@@ -202,7 +230,7 @@ export default class ResourceConnection extends Component {
         render(text) {
           return (
             <div>
-              <input type="checkbox" />
+              <input type="radio" name="mo2" />
               <span style={{ marginLeft: 10 }}>{text}</span>
             </div>
           )
@@ -260,7 +288,6 @@ export default class ResourceConnection extends Component {
     ]
     const listModal2 = [
       {
-        id: 0,
         fileName: '城市低保标准表(各市第7季度).xlsx',
         type: 'Zip',
         fileSize: '1.38MB',
@@ -268,7 +295,6 @@ export default class ResourceConnection extends Component {
         uploadTime: 4512211,
       },
       {
-        id: 1,
         fileName: '农村低保标准表(各地第1季度).json',
         type: 'json',
         fileSize: '0.12MB',
@@ -276,7 +302,6 @@ export default class ResourceConnection extends Component {
         uploadTime: 4512211,
       },
       {
-        id: 2,
         fileName: '人口普查数据.xml',
         type: 'jpeg',
         fileSize: '1.56MB',
@@ -290,9 +315,11 @@ export default class ResourceConnection extends Component {
           <Button onClick={this.handleBack} className="fr mr40">
             返回
           </Button>
-          <Button type="primary" className="fr mr40" onClick={this.handleSave}>
-            保存
-          </Button>
+          {isNodeOperator && (
+            <Button type="primary" className="fr mr40" onClick={this.handleSave}>
+              保存
+            </Button>
+          )}
         </div>
         <Card>
           <div className={styles.form}>
@@ -310,21 +337,25 @@ export default class ResourceConnection extends Component {
                 挂接资源名称:<span>城市低保标准</span>
               </h3>
             </div>
-            <div style={{ display: 'inline-block' }}>
-              <span className={styles.linkBtn} onClick={this.showModal1}>
-                去选择
-              </span>
-            </div>
+            {isNodeOperator && (
+              <div style={{ display: 'inline-block' }}>
+                <span className={styles.linkBtn} onClick={this.showModal1}>
+                  去选择
+                </span>
+              </div>
+            )}
           </div>
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: 'inline-block', marginRight: 20 }}>
-              <h3>挂接资源文件:</h3>
+              <h3>挂接资源检索关系设置:</h3>
             </div>
-            <div style={{ display: 'inline-block' }}>
-              <span className={styles.linkBtn} onClick={this.showModal2}>
-                去选择
-              </span>
-            </div>
+            {isNodeOperator && (
+              <div style={{ display: 'inline-block' }}>
+                <span className={styles.linkBtn} onClick={this.showModal2}>
+                  去选择
+                </span>
+              </div>
+            )}
           </div>
           <div>
             <Table

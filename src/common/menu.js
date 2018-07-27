@@ -376,7 +376,7 @@ const menuData = [
     path: 'portalManagement',
     children: [
       {
-        name: '文章分类',
+        name: '文章管理',
         path: 'newsManagement',
       },
       {
