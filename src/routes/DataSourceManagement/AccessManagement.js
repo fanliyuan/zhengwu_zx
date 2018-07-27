@@ -170,12 +170,12 @@ export default class AccessManagement extends Component {
         title: '数据类型',
         dataIndex: 'dataType',
       },
+      // {
+      //   title: '节点',
+      //   dataIndex: 'node',
+      // },
       {
-        title: '节点',
-        dataIndex: 'node',
-      },
-      {
-        title: '所属机构',
+        title: '所属节点',
         dataIndex: 'institution',
       },
       {
@@ -334,7 +334,7 @@ export default class AccessManagement extends Component {
             <Select value={dataType} onChange={this.selectDataTypeChange} className={styles.select}>
               {selectData}
             </Select>
-            <Cascader options={options} placeholder="所属机构" style={{ marginRight: 16 }} />
+            <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
             <Select value={creater} onChange={this.selectCreaterChange} className={styles.select}>
               {selectData3}
             </Select>
