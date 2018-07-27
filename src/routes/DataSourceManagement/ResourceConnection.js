@@ -191,6 +191,14 @@ export default class ResourceConnection extends Component {
       {
         title: 'ID',
         dataIndex: 'id',
+        render(text) {
+          return (
+            <div>
+              <input type="radio" name="mo1" />
+              <span style={{ marginLeft: 10 }}>{text}</span>
+            </div>
+          )
+        },
       },
       {
         title: '资源名称',
@@ -212,7 +220,22 @@ export default class ResourceConnection extends Component {
         },
       },
     ]
+    columnsModal1.forEach(item => {
+      item.align = 'center'
+    })
     const columnsModal2 = [
+      {
+        title: 'ID',
+        dataIndex: 'id',
+        render(text) {
+          return (
+            <div>
+              <input type="radio" name="mo2" />
+              <span style={{ marginLeft: 10 }}>{text}</span>
+            </div>
+          )
+        },
+      },
       {
         title: '文件名称',
         dataIndex: 'fileName',
@@ -237,6 +260,9 @@ export default class ResourceConnection extends Component {
         },
       },
     ]
+    columnsModal2.forEach(item => {
+      item.align = 'center'
+    })
     const listModal1 = [
       {
         id: 0,
@@ -305,32 +331,32 @@ export default class ResourceConnection extends Component {
             </h3>
             <Divider />
           </div>
-          <Row style={{ marginBottom: 15 }}>
-            <Col span={4}>
+          <div style={{ marginBottom: 15 }}>
+            <div style={{ display: 'inline-block', marginRight: 20 }}>
               <h3>
                 挂接资源名称:<span>城市低保标准</span>
               </h3>
-            </Col>
+            </div>
             {isNodeOperator && (
-              <Col span={18}>
+              <div style={{ display: 'inline-block' }}>
                 <span className={styles.linkBtn} onClick={this.showModal1}>
                   去选择
                 </span>
-              </Col>
+              </div>
             )}
-          </Row>
-          <Row style={{ marginBottom: 20 }}>
-            <Col span={4}>
+          </div>
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ display: 'inline-block', marginRight: 20 }}>
               <h3>挂接资源检索关系设置:</h3>
-            </Col>
+            </div>
             {isNodeOperator && (
-              <Col span={18}>
+              <div style={{ display: 'inline-block' }}>
                 <span className={styles.linkBtn} onClick={this.showModal2}>
                   去选择
                 </span>
-              </Col>
+              </div>
             )}
-          </Row>
+          </div>
           <div>
             <Table
               columns={columns}
