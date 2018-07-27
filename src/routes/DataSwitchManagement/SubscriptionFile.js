@@ -2,12 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-13 16:15:18
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 21:53:49
+ * @Last Modified time: 2018-07-27 14:28:14
  * @描述: 数据交换管理 -- 资源订阅 -- 资源集市 -- 订阅(文件)
 */
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
-import { Form, Input, Select, Radio, Button, Tooltip, Icon } from 'antd'
+import { Form, Input, Select, Radio, Button, Tooltip, Icon, InputNumber } from 'antd'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './SubscriptionFile.less'
@@ -23,15 +23,17 @@ const itemLayout = {
 }
 
 function ButtonList(props) {
-  const { onClick = () => {}, disabled = true } = props
+  const { onClick = () => {}, disabled = true, isNodeOperator = false } = props
   return (
     <div className="btncls clearfix">
       <Link to="/dataSwitchManagement/sourceSubscription" className="fr mr40">
         <Button>返回</Button>
       </Link>
-      <Button type="primary" onClick={onClick} disabled={disabled} className="fr mr40">
-        确定
-      </Button>
+      {isNodeOperator && (
+        <Button type="primary" onClick={onClick} disabled={disabled} className="fr mr40">
+          确定
+        </Button>
+      )}
     </div>
   )
 }
@@ -48,16 +50,25 @@ function hasErrors(errors) {
 
 @Form.create()
 export default class SubscriptionFile extends Component {
-  state = {}
+  state = {
+    isNodeOperator: false,
+  }
 
   componentDidMount() {
-    this.props.form.validateFields()
+    this.setState(
+      {
+        isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      },
+      () => {
+        if (this.state.isNodeOperator) this.props.form.validateFields()
+      }
+    )
   }
 
   handleSave = () => {}
 
   render() {
-    // const { name, method, rateType, rateOptions, path, floder } = this.state
+    const { isNodeOperator } = this.state
     const { getFieldDecorator, isFieldTouched, getFieldError, getFieldsError } = this.props.form
 
     const nameError =
@@ -67,7 +78,11 @@ export default class SubscriptionFile extends Component {
     return (
       <PageHeaderLayout>
         <div className="common-layout">
-          <ButtonList onClick={this.handleSave} disabled={hasErrors(getFieldsError())} />
+          <ButtonList
+            onClick={this.handleSave}
+            isNodeOperator={isNodeOperator}
+            disabled={hasErrors(getFieldsError())}
+          />
           <Form>
             <Item
               {...itemLayout}
@@ -77,7 +92,7 @@ export default class SubscriptionFile extends Component {
             >
               {getFieldDecorator('name', {
                 rules: [{ required: true, message: '请输入名称' }],
-              })(<Input className={styles.input} />)}
+              })(<Input className={styles.input} disabled={!isNodeOperator} />)}
               <span className={styles.span2}>
                 <span className={styles.label}>目录名称</span>:
                 <span className={styles.value}>石家庄东城区国土数据</span>
@@ -103,19 +118,35 @@ export default class SubscriptionFile extends Component {
               </span>
             </Item>
             <Item label="发布模式" {...itemLayout}>
-              <Select value={0} disabled className={styles.input}>
+              <Select value={0} disabled={!isNodeOperator} className={styles.input}>
                 <Select.Option value={0}>增量</Select.Option>
                 <Select.Option value={1}>全量</Select.Option>
               </Select>
             </Item>
             <Item label="发布频率" {...itemLayout}>
-              <Select value={0} disabled className={styles.input}>
+              <Select value={0} disabled={!isNodeOperator} className={styles.input}>
                 <Select.Option value={0}>定时</Select.Option>
                 <Select.Option value={1}>定时</Select.Option>
               </Select>
             </Item>
-            <Item label="定时设置" {...itemLayout}>
-              <Input />
+            <Item label="定时设置" {...itemLayout} className={styles.timeSetting}>
+              <InputNumber
+                max={60}
+                min={0}
+                className={styles.time}
+                placeholder="分钟"
+                disabled={!isNodeOperator}
+              />
+              <InputNumber
+                max={23}
+                min={0}
+                className={styles.time}
+                placeholder="小时"
+                disabled={!isNodeOperator}
+              />
+              <Input className={styles.time} placeholder="日" disabled={!isNodeOperator} />
+              <Input className={styles.time} placeholder="月" disabled={!isNodeOperator} />
+              <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
             </Item>
             <Item
               label={
@@ -128,7 +159,7 @@ export default class SubscriptionFile extends Component {
               }
               {...itemLayout}
             >
-              <Radio.Group defaultValue="0">
+              <Radio.Group defaultValue="0" disabled={!isNodeOperator}>
                 <Radio value="0">是</Radio>
                 <Radio value="1">否</Radio>
               </Radio.Group>
