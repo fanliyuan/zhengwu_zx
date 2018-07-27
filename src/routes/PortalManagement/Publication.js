@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-27 17:57:51
+ * @Last Modified time: 2018-07-27 18:02:42
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -202,7 +202,7 @@ export default class Publication extends Component {
             <Button>返回</Button>
           </Link>
           <Button type="primary" onClick={this.handlePublic} className="fr mr40">
-            发布
+            开始发布
           </Button>
         </div>
         <div className="common-layout">
