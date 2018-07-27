@@ -18,6 +18,7 @@ import {
   Modal,
   Form,
   Radio,
+  Cascader,
 } from 'antd'
 import moment from 'moment'
 import { Link } from 'dva/router'
@@ -54,8 +55,6 @@ export default class PublicationManagement extends Component {
   state = {
     name: '',
     system: '',
-    type: 0,
-    // subscribe: -1,
     audit: '是否置顶/推荐',
     date: [],
     isChanged: false,
@@ -96,12 +95,9 @@ export default class PublicationManagement extends Component {
     })
   }
 
-  handleTypeChange = e => {
+  handleTypeChange = () => {
     this.setState({
       isChanged: true,
-    })
-    this.setState({
-      type: e,
     })
   }
 
@@ -200,10 +196,39 @@ export default class PublicationManagement extends Component {
   }
 
   render() {
-    const { name, date, audit, type, system, showModal } = this.state
+    const { name, date, audit, system, showModal } = this.state
     const { getFieldDecorator } = this.props.form
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
-
+    const options = [
+      {
+        value: '0-0',
+        label: '开放动态',
+        children: [
+          {
+            value: '0-0-1',
+            label: '重要新闻',
+            // children: [{
+            //   value: 'xihu',
+            //   label: 'West Lake',
+            // }],
+          },
+        ],
+      },
+      {
+        value: '0-1',
+        label: '首页',
+        children: [
+          {
+            value: '0-1-0',
+            label: '通知公告',
+            // children: [{
+            //   value: 'zhonghuamen',
+            //   label: 'Zhong Hua Men',
+            // }],
+          },
+        ],
+      },
+    ]
     const typeList = [
       {
         value: 0,
@@ -358,9 +383,10 @@ export default class PublicationManagement extends Component {
               onChange={this.handleSystemChange}
               className={styles.name}
             />
-            <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
+            <Cascader options={options} placeholder="栏目" style={{ marginRight: 16 }} />
+            {/* <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
               {typeComs}
-            </Select>
+            </Select> */}
             {/* <Select
               value={subscribe}
               onChange={this.handleSubscribeChange}
