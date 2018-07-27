@@ -2,10 +2,10 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 14:27:23
+ * @Last Modified time: 2018-07-27 14:13:54
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Form, Input, InputNumber, Select, Button, Table, Card, Divider, Icon } from 'antd'
 import { Link } from 'dva/router'
 
@@ -15,15 +15,17 @@ import styles from './SubscriptionTable.less'
 const { Option } = Select
 
 function ButtonList(props) {
-  const { onClick = () => {}, disabled = false } = props
+  const { onClick = () => {}, disabled = false, isNodeOperator = false } = props
   return (
     <div className="btncls clearfix">
       <Link to="/dataSwitchManagement/sourceSubscription" className="fr mr40">
         <Button>返回</Button>
       </Link>
-      <Button type="primary" onClick={onClick} disabled={disabled} className="fr mr40">
-        保存
-      </Button>
+      {isNodeOperator && (
+        <Button type="primary" onClick={onClick} disabled={disabled} className="fr mr40">
+          保存
+        </Button>
+      )}
     </div>
   )
 }
@@ -39,7 +41,18 @@ function Label(props) {
 
 @Form.create()
 export default class SubscriptionTable extends Component {
+  state = {
+    isNodeOperator: false,
+  }
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    })
+  }
+
   render() {
+    const { isNodeOperator } = this.state
     const columns = [
       {
         title: '字段',
@@ -93,10 +106,10 @@ export default class SubscriptionTable extends Component {
     return (
       <PageHeaderLayout>
         <div className="common-layout">
-          <ButtonList onClick={this.handleSave} />
+          <ButtonList onClick={this.handleSave} isNodeOperator={isNodeOperator} />
           <div>
             <Label label="订阅名称">
-              <Input className={styles.value} />
+              <Input className={styles.value} disabled={!isNodeOperator} />
             </Label>
             <Label label="目录名称">石家庄东城区国土数据</Label>
           </div>
@@ -112,11 +125,11 @@ export default class SubscriptionTable extends Component {
           </div>
           <div>
             <Label label="发布模式">
-              <Select className={styles.method}>
+              <Select className={styles.method} disabled={!isNodeOperator}>
                 <Option value={0}>全量</Option>
                 <Option value={1}>增量</Option>
               </Select>
-              <Select className={styles.method}>
+              <Select className={styles.method} disabled={!isNodeOperator}>
                 <Option value={0}>日志</Option>
                 <Option value={1}>数据</Option>
               </Select>
@@ -124,23 +137,35 @@ export default class SubscriptionTable extends Component {
           </div>
           <div>
             <Label label="发布频率">
-              <Select className={styles.rate}>
+              <Select className={styles.rate} disabled={!isNodeOperator}>
                 <Option value={0}>定时</Option>
               </Select>
             </Label>
           </div>
           <div>
             <Label label="定时设置" className={styles.timeSetting}>
-              <InputNumber max={60} min={0} className={styles.time} placeholder="分钟" />
-              <InputNumber max={23} min={0} className={styles.time} placeholder="小时" />
-              <Input className={styles.time} placeholder="日" />
-              <Input className={styles.time} placeholder="月" />
-              <Input className={styles.time} placeholder="星期" />
+              <InputNumber
+                max={60}
+                min={0}
+                className={styles.time}
+                placeholder="分钟"
+                disabled={!isNodeOperator}
+              />
+              <InputNumber
+                max={23}
+                min={0}
+                className={styles.time}
+                placeholder="小时"
+                disabled={!isNodeOperator}
+              />
+              <Input className={styles.time} placeholder="日" disabled={!isNodeOperator} />
+              <Input className={styles.time} placeholder="月" disabled={!isNodeOperator} />
+              <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
             </Label>
           </div>
           <div>
             <Label label="订阅存储数据库">
-              <Select className={styles.rate}>
+              <Select className={styles.rate} disabled={!isNodeOperator}>
                 <Option value={1}>数据库1</Option>
                 <Option value={2}>数据库2</Option>
                 <Option value={3}>数据库3</Option>
@@ -155,7 +180,7 @@ export default class SubscriptionTable extends Component {
                 <span className={styles.tableLabel}>发布表名</span>
                 <span className={styles.tableValue}>table1</span>
                 <span className={styles.tableLabel}>订阅存储表</span>
-                <Select className={styles.tableSelect}>
+                <Select className={styles.tableSelect} disabled={!isNodeOperator}>
                   <Option value={0}>自动创建</Option>
                   <Option value={1}>映射</Option>
                 </Select>
@@ -171,8 +196,21 @@ export default class SubscriptionTable extends Component {
                 dataSource={data}
                 title={() => (
                   <span>
-                    <a className="fl">自动映射</a>
-                    <a className="fr">清除映射</a>
+                    {isNodeOperator ? (
+                      <Fragment>
+                        <a className="fl">自动映射</a>
+                        <a className="fr">清除映射</a>
+                      </Fragment>
+                    ) : (
+                      <Fragment>
+                        <span className="fl" style={{ cursor: 'no-drop', color: 'silver' }}>
+                          自动映射
+                        </span>
+                        <span className="fr" style={{ cursor: 'no-drop', color: 'silver' }}>
+                          清除映射
+                        </span>
+                      </Fragment>
+                    )}
                   </span>
                 )}
                 columns={arrowColumns}
@@ -192,7 +230,7 @@ export default class SubscriptionTable extends Component {
                 <span className={styles.tableLabel}>发布表名</span>
                 <span className={styles.tableValue}>table1</span>
                 <span className={styles.tableLabel}>订阅存储表</span>
-                <Select className={styles.tableSelect}>
+                <Select className={styles.tableSelect} disabled={!isNodeOperator}>
                   <Option value={0}>自动创建</Option>
                   <Option value={1}>映射</Option>
                 </Select>
@@ -208,8 +246,21 @@ export default class SubscriptionTable extends Component {
                 dataSource={data}
                 title={() => (
                   <span>
-                    <a className="fl">自动映射</a>
-                    <a className="fr">清除映射</a>
+                    {isNodeOperator ? (
+                      <Fragment>
+                        <a className="fl">自动映射</a>
+                        <a className="fr">清除映射</a>
+                      </Fragment>
+                    ) : (
+                      <Fragment>
+                        <span className="fl" style={{ cursor: 'no-drop', color: 'silver' }}>
+                          自动映射
+                        </span>
+                        <span className="fr" style={{ cursor: 'no-drop', color: 'silver' }}>
+                          清除映射
+                        </span>
+                      </Fragment>
+                    )}
                   </span>
                 )}
                 columns={arrowColumns}

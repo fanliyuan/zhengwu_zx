@@ -1,7 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
-import { Table, Button, Card, Divider, Row, Col, Modal, Input, DatePicker } from 'antd'
+import {
+  Table,
+  Button,
+  Card,
+  Divider,
+  Row,
+  Col,
+  Modal,
+  Input,
+  DatePicker,
+  Popconfirm,
+  message,
+} from 'antd'
 import moment from 'moment'
 
 import styles from './ResourceConnection.less'
@@ -23,6 +35,13 @@ export default class ResourceConnection extends Component {
   state = {
     visible1: false,
     visible2: false,
+    isNodeOperator: false,
+  }
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    })
   }
 
   handleSave = () => {
@@ -73,7 +92,7 @@ export default class ResourceConnection extends Component {
 
   render() {
     // const { resourceVisible, resourceFileVisible, confirmLoading, confirmFileLoading } = this.state;
-    const { visible1, visible2 } = this.state
+    const { visible1, visible2, isNodeOperator } = this.state
     const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
@@ -99,13 +118,22 @@ export default class ResourceConnection extends Component {
           return moment(text).format('lll')
         },
       },
-      {
-        title: '操作',
-        render() {
-          return <a>删除</a>
-        },
-      },
     ]
+    if (isNodeOperator) {
+      columns.push({
+        title: '操作',
+        render(text, row) {
+          return (
+            <Popconfirm
+              title={`是否删除${row.fileName || '此行'}?`}
+              onConfirm={() => message.info('删除成功!')}
+            >
+              <a>删除</a>
+            </Popconfirm>
+          )
+        },
+      })
+    }
     columns.forEach(item => {
       item.align = 'center'
     })
@@ -261,9 +289,11 @@ export default class ResourceConnection extends Component {
           <Button onClick={this.handleBack} className="fr mr40">
             返回
           </Button>
-          <Button type="primary" className="fr mr40" onClick={this.handleSave}>
-            保存
-          </Button>
+          {isNodeOperator && (
+            <Button type="primary" className="fr mr40" onClick={this.handleSave}>
+              保存
+            </Button>
+          )}
         </div>
         <Card>
           <div className={styles.form}>
@@ -281,21 +311,25 @@ export default class ResourceConnection extends Component {
                 挂接资源名称:<span>城市低保标准</span>
               </h3>
             </Col>
-            <Col span={18}>
-              <span className={styles.linkBtn} onClick={this.showModal1}>
-                去选择
-              </span>
-            </Col>
+            {isNodeOperator && (
+              <Col span={18}>
+                <span className={styles.linkBtn} onClick={this.showModal1}>
+                  去选择
+                </span>
+              </Col>
+            )}
           </Row>
           <Row style={{ marginBottom: 20 }}>
             <Col span={4}>
               <h3>挂接资源检索关系设置:</h3>
             </Col>
-            <Col span={18}>
-              <span className={styles.linkBtn} onClick={this.showModal2}>
-                去选择
-              </span>
-            </Col>
+            {isNodeOperator && (
+              <Col span={18}>
+                <span className={styles.linkBtn} onClick={this.showModal2}>
+                  去选择
+                </span>
+              </Col>
+            )}
           </Row>
           <div>
             <Table

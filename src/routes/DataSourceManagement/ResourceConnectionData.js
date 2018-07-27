@@ -1,3 +1,10 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-07-27 14:49:28
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-07-27 14:55:15
+ * @Description: 这个页面值得研究
+ */
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -12,7 +19,7 @@ import {
   Input,
   DatePicker,
   Form,
-  Select,
+  Checkbox,
 } from 'antd'
 import moment from 'moment'
 
@@ -30,18 +37,9 @@ const EditableRow = ({ form, index, ...props }) => (
 )
 const EditableFormRow = Form.create()(EditableRow)
 class EditableCell extends React.Component {
-  getInput = () => {
+  getInput = initialValue => {
     if (this.props.filedType === 'select') {
-      return (
-        <Select>
-          <Select.Option value={1} key={1}>
-            是
-          </Select.Option>
-          <Select.Option value={0} key={0}>
-            否
-          </Select.Option>
-        </Select>
-      )
+      return <Checkbox defaultChecked={initialValue} />
     }
     return <Input className={styles.input} />
   }
@@ -65,7 +63,7 @@ class EditableCell extends React.Component {
                       },
                     ],
                     initialValue: record[dataIndex] || 1,
-                  })(this.getInput())}
+                  })(this.getInput(record[dataIndex]))}
                 </FormItem>
               ) : (
                 restProps.children
@@ -86,6 +84,13 @@ export default class ResourceConnectionData extends Component {
     ItemConnect: true,
     visible1: false,
     visible2: false,
+    isNodeOperator: false,
+  }
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    })
   }
 
   isEditing = record => {
@@ -160,7 +165,7 @@ export default class ResourceConnectionData extends Component {
   }
 
   render() {
-    const { ItemConnect, visible1, visible2 } = this.state
+    const { ItemConnect, visible1, visible2, isNodeOperator } = this.state
     const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
@@ -223,13 +228,15 @@ export default class ResourceConnectionData extends Component {
         title: '说明',
         dataIndex: 'intro',
       },
-      {
+    ]
+    if (isNodeOperator) {
+      columns1.push({
         title: '操作',
         render() {
           return <a>删除</a>
         },
-      },
-    ]
+      })
+    }
     columns1.forEach(item => {
       item.align = 'center'
     })
@@ -478,6 +485,7 @@ export default class ResourceConnectionData extends Component {
         id: 0,
         chineseLabel: '标注1',
         isMainKey: 1,
+        isQueryKey: 1,
       },
       {
         id: 1,
@@ -499,9 +507,11 @@ export default class ResourceConnectionData extends Component {
           <Button onClick={this.handleBack} className="fr mr40">
             返回
           </Button>
-          <Button type="primary" className="fr mr40" onClick={this.handleSave}>
-            保存
-          </Button>
+          {isNodeOperator && (
+            <Button type="primary" className="fr mr40" onClick={this.handleSave}>
+              保存
+            </Button>
+          )}
         </div>
         <Card>
           <div className={styles.form}>
@@ -519,21 +529,25 @@ export default class ResourceConnectionData extends Component {
                 挂接资源名称&nbsp;:&nbsp;<span>城市低保标准</span>
               </h3>
             </Col>
-            <Col span={18}>
-              <span className={styles.linkBtn} onClick={this.showModal1}>
-                去选择
-              </span>
-            </Col>
+            {isNodeOperator && (
+              <Col span={18}>
+                <span className={styles.linkBtn} onClick={this.showModal1}>
+                  去选择
+                </span>
+              </Col>
+            )}
           </Row>
           <Row style={{ marginBottom: 20 }}>
             <Col span={4}>
               <h3>挂接资源检索关系设置&nbsp;:&nbsp;</h3>
             </Col>
-            <Col span={18}>
-              <span className={styles.linkBtn} onClick={this.showModal2}>
-                去选择
-              </span>
-            </Col>
+            {isNodeOperator && (
+              <Col span={18}>
+                <span className={styles.linkBtn} onClick={this.showModal2}>
+                  去选择
+                </span>
+              </Col>
+            )}
           </Row>
           {/* <Row style={{ marginBottom: 20 }}>
             <Col span={4}>
@@ -559,10 +573,14 @@ export default class ResourceConnectionData extends Component {
             <Col span={4} style={{ textAlign: 'center' }}>
               <Row>
                 <Col span={11}>
-                  <Button onClick={this.handleConnect}>自动映射</Button>
+                  <Button onClick={this.handleConnect} disabled={!isNodeOperator}>
+                    自动映射
+                  </Button>
                 </Col>
                 <Col span={11} offset={2}>
-                  <Button onClick={this.handleClearConnect}>清除映射</Button>
+                  <Button onClick={this.handleClearConnect} disabled={!isNodeOperator}>
+                    清除映射
+                  </Button>
                 </Col>
               </Row>
               <Row
