@@ -224,6 +224,9 @@ export const getRouterData = app => {
     '/dataSourceManagement/setPlan': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/SetPlan')),
     },
+    '/dataSourceManagement/checkPlan': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/SetPlan')),
+    },
     '/dataSourceManagement/updataFile': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/UpdataFile')),
     },
@@ -355,9 +358,19 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/NewMenu/Step1')
       ),
     },
+    '/dataSourceManagement/editMenu/two': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step2')
+      ),
+    },
     '/dataSourceManagement/checkMenu/one': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/NewMenu/Step1')
+      ),
+    },
+    '/dataSourceManagement/checkMenu/two': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/DataSourceManagement/NewMenu/Step2')
       ),
     },
     '/dataSourceManagement/auditLog/:id': {

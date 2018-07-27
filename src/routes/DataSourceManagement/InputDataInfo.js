@@ -31,7 +31,11 @@ export default class InputDataInfo extends Component {
 
   handleNext = () => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/setPlan'))
+    if (!this.state.disabled) {
+      dispatch(routerRedux.push('/dataSourceManagement/setPlan'))
+    } else {
+      dispatch(routerRedux.push('/dataSourceManagement/checkPlan'))
+    }
   }
 
   handleBack = () => {
@@ -96,7 +100,7 @@ export default class InputDataInfo extends Component {
               {getFieldDecorator('systemName')(<Input disabled={disabled} />)}
             </FormItem>
             <FormItem label="数据库描述" {...formItemLayout}>
-              {getFieldDecorator('dataBaseDescription')(<TextArea row={4} />)}
+              {getFieldDecorator('dataBaseDescription')(<TextArea row={4} readOnly={disabled} />)}
             </FormItem>
             <FormItem label="负责人姓名" {...formItemLayout}>
               {getFieldDecorator('headerName')(<Input disabled={disabled} />)}
@@ -108,11 +112,9 @@ export default class InputDataInfo extends Component {
               {getFieldDecorator('headerPosition')(<Input disabled={disabled} />)}
             </FormItem>
             <div className="btnclsb">
-              {!disabled && (
-                <Button type="primary" className="mr64" onClick={this.handleNext}>
-                  下一步
-                </Button>
-              )}
+              <Button type="primary" className="mr64" onClick={this.handleNext}>
+                下一步
+              </Button>
               <Button onClick={this.handleBack}>返回</Button>
             </div>
           </Form>

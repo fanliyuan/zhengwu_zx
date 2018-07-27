@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-05 16:45:01
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-24 17:34:39
+ * @Last Modified time: 2018-07-27 11:03:37
  * @描述: 这个页面的上传应该是 上传完数据,然后后台处理,返回给前台,前台再核对,确认
 */
 import React, { PureComponent, Fragment } from 'react'
@@ -69,6 +69,15 @@ export default class Step2 extends PureComponent {
     visible1: false,
     visible2: false,
     selectKeys: [],
+    disabled: true,
+  }
+
+  componentDidMount() {
+    if (this.props.location.pathname === '/dataSourceManagement/newMenu/two') {
+      this.setState({
+        disabled: false,
+      })
+    }
   }
 
   onChange = val => {
@@ -88,7 +97,11 @@ export default class Step2 extends PureComponent {
   }
 
   goBack = () => {
-    this.props.dispatch(routerRedux.push('/dataSourceManagement/newMenu/one'))
+    if (!this.state.disabled) {
+      this.props.dispatch(routerRedux.push('/dataSourceManagement/newMenu/one'))
+    } else {
+      this.props.dispatch(routerRedux.push('/dataSourceManagement/checkMenu/one'))
+    }
   }
 
   goForward = () => {
@@ -109,6 +122,7 @@ export default class Step2 extends PureComponent {
       visible1,
       visible2,
       selectKeys,
+      disabled,
     } = this.state
     const columns = [
       {
@@ -144,23 +158,25 @@ export default class Step2 extends PureComponent {
       <Fragment>
         <Form>
           <Item lable="名称">
-            <Radio.Group value={data.method} onChange={this.methodChange}>
+            <Radio.Group value={data.method} onChange={this.methodChange} disabled={disabled}>
               <Radio value={1}>从数据资源导入</Radio>
               <Radio value={2}>导入已有目录</Radio>
               <Radio value={3}>手工建立</Radio>
             </Radio.Group>
           </Item>
           <Item label="信息项">
-            <TableForm value={tableData} onChange={val => this.onChange(val)} />
+            <TableForm value={tableData} onChange={val => this.onChange(val)} disabled={disabled} />
           </Item>
         </Form>
         <div style={{ textAlign: 'center' }}>
           <Button className="mr64" onClick={this.goBack}>
             上一步
           </Button>
-          <Button type="primary" onClick={this.goForward}>
-            提交
-          </Button>
+          {!disabled && (
+            <Button type="primary" onClick={this.goForward}>
+              提交
+            </Button>
+          )}
         </div>
         <Modal
           title="选择注册资源自动建立目录数据项"

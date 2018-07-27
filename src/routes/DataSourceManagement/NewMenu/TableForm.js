@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-05 17:20:24
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-26 19:43:12
+ * @Last Modified time: 2018-07-27 11:01:45
 */
 import React, { PureComponent, Fragment } from 'react'
 import { Table, Button, Input, message, Popconfirm, Divider, Tooltip } from 'antd'
@@ -124,6 +124,8 @@ export default class TableForm extends PureComponent {
   }
 
   render() {
+    const { disabled = false } = this.props
+
     const columns = [
       {
         title: '信息项编码',
@@ -297,7 +299,9 @@ export default class TableForm extends PureComponent {
           return text
         },
       },
-      {
+    ]
+    if (!disabled) {
+      columns.push({
         title: '操作',
         dataIndex: 'operation',
         key: 'operation',
@@ -332,8 +336,8 @@ export default class TableForm extends PureComponent {
             </span>
           )
         },
-      },
-    ]
+      })
+    }
     columns.forEach(item => {
       item.align = 'center'
       item.width = '9%'
@@ -348,14 +352,16 @@ export default class TableForm extends PureComponent {
           bordered
           pagination={false}
         />
-        <Button
-          style={{ width: '100%', marginTop: 8, marginBottom: 16 }}
-          type="dashed"
-          onClick={this.addNew}
-          icon="plus"
-        >
-          新增数据
-        </Button>
+        {!disabled && (
+          <Button
+            style={{ width: '100%', marginTop: 8, marginBottom: 16 }}
+            type="dashed"
+            onClick={this.addNew}
+            icon="plus"
+          >
+            新增数据
+          </Button>
+        )}
       </Fragment>
     )
   }
