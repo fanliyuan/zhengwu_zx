@@ -1,10 +1,6 @@
 export default {
-  namespace:'Institution',
-  state:{},
-  effects:{
-
-  },
-  reducers:{
-    
-  },
+  namespace: 'Institution',
+  state: {},
+  effects: {},
+  reducers: {},
 }

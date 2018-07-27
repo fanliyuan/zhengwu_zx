@@ -11,25 +11,21 @@ import { isArray, isObject } from 'util'
 
 import styles from './index.less'
 
-export default (props) => {
+export default props => {
   const { btnList = [], data = {} } = props
   if (!isArray(btnList) || !isObject(data)) {
-    console.log('FileHeader组件属性非法')// eslint-disable-line
+    console.log('FileHeader组件属性非法') // eslint-disable-line
     return null
   }
   const btnComs = btnList.map(item => (
-    <Link to={item.path} className={styles.fr} key={item.label} >
-      <Button type='primary' >
-        {item.label}
-      </Button>
+    <Link to={item.path} className={styles.fr} key={item.label}>
+      <Button type="primary">{item.label}</Button>
     </Link>
   ))
   return (
-    <div className='common-layout' >
-      <div className='clearfix' >
-        {btnComs}
-      </div>
-      <div className={styles.header} >
+    <div className="common-layout">
+      <div className="clearfix">{btnComs}</div>
+      <div className={styles.header}>
         目录编码:
         <span>{data.menuCode}</span>
         名称:

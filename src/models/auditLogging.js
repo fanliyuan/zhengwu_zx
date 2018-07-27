@@ -16,7 +16,7 @@ export default {
     organizationList: [],
   },
   effects: {
-    *organization(_ , { call, put }) {
+    *organization(_, { call, put }) {
       const response = yield call(getOrganization)
       yield put({
         type: 'saveOrganization',
@@ -46,7 +46,7 @@ export default {
         return pre
       }, {})
       response.data.list.forEach(item => {
-        item.result = item.result === 0 ? '登录失败' : '登录成功'  // eslint-disable-line
+        item.result = item.result === 0 ? '登录失败' : '登录成功' // eslint-disable-line
         item.time = moment(item.time).format('lll') // eslint-disable-line
         item.organization = organizatioObject[item.organization] // eslint-disable-line
       })
@@ -73,7 +73,7 @@ export default {
     save(state, action) {
       return {
         ...state,
-        data: {...action.payload},
+        data: { ...action.payload },
       }
     },
   },

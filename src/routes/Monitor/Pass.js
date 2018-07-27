@@ -21,7 +21,7 @@ export default class Pass extends Component {
     isChanged: false,
   }
 
-  nameChange = (e) => {
+  nameChange = e => {
     const { query } = this.state
     this.setState({
       query: {
@@ -32,7 +32,7 @@ export default class Pass extends Component {
     })
   }
 
-  stateChange = (value) => {
+  stateChange = value => {
     const { query } = this.state
     this.setState({
       query: {
@@ -43,7 +43,7 @@ export default class Pass extends Component {
     })
   }
 
-  linkChange = (value) => {
+  linkChange = value => {
     const { query } = this.state
     this.setState({
       query: {
@@ -61,7 +61,9 @@ export default class Pass extends Component {
   }
 
   render() {
-    const { query: { name, state, link } } = this.state
+    const {
+      query: { name, state, link },
+    } = this.state
 
     const stateList = [
       {
@@ -130,7 +132,7 @@ export default class Pass extends Component {
     })
 
     const data = []
-    for(let i = 0; i < 144; i ++) {
+    for (let i = 0; i < 144; i++) {
       data.push({
         id: i,
         name: `通道${i}`,
@@ -145,26 +147,41 @@ export default class Pass extends Component {
     }
 
     const stateComs = stateList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      )
     })
     const LinkComs = linkList.map(item => {
-      return <Select.Option value={item.value} key={item.value} >{item.label}</Select.Option>
+      return (
+        <Select.Option value={item.value} key={item.value}>
+          {item.label}
+        </Select.Option>
+      )
     })
 
     return (
       <PageHeaderLayout>
-        <div className={styles.layout} >
-          <Form className={styles.search} >
-            <Input value={name} onChange={this.nameChange} className={styles.input} placeholder='通道名称' />
-            <Select value={state} onChange={this.stateChange} className={styles.select} >
+        <div className={styles.layout}>
+          <Form className={styles.search}>
+            <Input
+              value={name}
+              onChange={this.nameChange}
+              className={styles.input}
+              placeholder="通道名称"
+            />
+            <Select value={state} onChange={this.stateChange} className={styles.select}>
               {stateComs}
             </Select>
-            <Select value={link} onChange={this.linkChange} className={styles.select} >
+            <Select value={link} onChange={this.linkChange} className={styles.select}>
               {LinkComs}
             </Select>
-            <Button type='primary' icon='search' onClick={this.search} >搜索</Button>
+            <Button type="primary" icon="search" onClick={this.search}>
+              搜索
+            </Button>
           </Form>
-          <Table columns={columns} dataSource={data} rowKey='id' bordered />
+          <Table columns={columns} dataSource={data} rowKey="id" bordered />
         </div>
       </PageHeaderLayout>
     )

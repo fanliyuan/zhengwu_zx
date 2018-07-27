@@ -15,22 +15,22 @@ import { Input, Select, DatePicker, Button, Cascader, Form } from 'antd'
 function CreatElement(item, onSearch) {
   switch (item.type.toLowerCase()) {
     case 'input':
-      return (
-        <Input defaultValue={item.defaultValue} value={item.value} onPressEnter={onSearch} />
-      )
+      return <Input defaultValue={item.defaultValue} value={item.value} onPressEnter={onSearch} />
     case 'select':
       return (
         <Select defaultValue={item.defaultValue} value={item.value}>
           {item.list.map(sub => {
-            return <Select.Option value={sub.id} key={sub.id}>{sub.label}</Select.Option>
+            return (
+              <Select.Option value={sub.id} key={sub.id}>
+                {sub.label}
+              </Select.Option>
+            )
           })}
         </Select>
       )
     case 'cascader':
-      return (
-        <Cascader options={item.list} />
-      )
-    default :
+      return <Cascader options={item.list} />
+    default:
       return null
   }
 }
@@ -41,13 +41,10 @@ function QueryBar(props) {
     const components = data.map(item => {
       return CreatElement(item, onSearch)
     })
-    return (
-      <Form>
-        {components}
-      </Form>
-    )
-
-  } catch (error) {console.log(error)} // eslint-disable-line
+    return <Form>{components}</Form>
+  } catch (error) {
+    console.log(error)
+  } // eslint-disable-line
 }
 
 export default QueryBar

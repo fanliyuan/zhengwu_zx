@@ -1,10 +1,6 @@
 export default {
-  namespace:'switchManage',
-  state:{},
-  effects:{
-
-  },
-  reducers:{
-    
-  },
+  namespace: 'switchManage',
+  state: {},
+  effects: {},
+  reducers: {},
 }
