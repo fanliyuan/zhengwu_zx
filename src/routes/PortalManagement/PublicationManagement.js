@@ -305,30 +305,18 @@ export default class PublicationManagement extends Component {
         title: '操作',
         dataIndex: 'operation',
         render: (text, row) => {
-          if (row.state === 1) {
-            return (
-              <Fragment>
-                <Popconfirm
-                  title="取消后开放门户将无法看到此篇文章，您是否确认取消发布?"
-                  onConfirm={() => this.publishCancel(row)}
-                >
-                  <a className="mr16">取消发布</a>
-                </Popconfirm>
-                <a onClick={() => this.handleSet(row)} className="mr16">
-                  设置
-                </a>
-                <a onClick={() => this.copyUrl(row)}>复制地址</a>
-              </Fragment>
-            )
-          }
           return (
             <Fragment>
-              <a className="mr16" onClick={() => message.success(`${row.title}发布成功`)}>
-                发布
-              </a>
+              <Popconfirm
+                title="取消后开放门户将无法看到此篇文章，您是否确认取消发布?"
+                onConfirm={() => this.publishCancel(row)}
+              >
+                <a className="mr16">取消发布</a>
+              </Popconfirm>
               <a onClick={() => this.handleSet(row)} className="mr16">
                 设置
               </a>
+              <a onClick={() => this.copyUrl(row)}>复制地址</a>
             </Fragment>
           )
         },
