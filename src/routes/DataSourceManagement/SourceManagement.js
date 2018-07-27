@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message } from 'antd'
+import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message, Cascader } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -15,7 +15,7 @@ const { RangePicker } = DatePicker
 export default class SourceManagement extends Component {
   state = {
     dataType: '0',
-    nodeName: '0',
+    // nodeName: '0',
     // owingJg: '0',
     status: '0',
     isNodeOperator: false,
@@ -33,10 +33,10 @@ export default class SourceManagement extends Component {
     })
   }
 
-  nodeNameChange = val => {
-    this.setState({
-      nodeName: val,
-    })
+  nodeNameChange = () => {
+    // this.setState({
+    //   nodeName: val,
+    // })
   }
 
   owingJgChange = () => {
@@ -88,7 +88,37 @@ export default class SourceManagement extends Component {
 
   render() {
     const that = this
-    const { dataType, nodeName, status, isNodeOperator } = this.state
+    const { dataType, status, isNodeOperator } = this.state
+    const options = [
+      {
+        value: '0-0',
+        label: '北京国土局',
+        children: [
+          {
+            value: '0-0-1',
+            label: '海淀国土局',
+            // children: [{
+            //   value: 'xihu',
+            //   label: 'West Lake',
+            // }],
+          },
+        ],
+      },
+      {
+        value: '0-1',
+        label: '河北国土局',
+        children: [
+          {
+            value: '0-1-0',
+            label: '保定国土局',
+            // children: [{
+            //   value: 'zhonghuamen',
+            //   label: 'Zhong Hua Men',
+            // }],
+          },
+        ],
+      },
+    ]
     const data = [
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
@@ -100,14 +130,14 @@ export default class SourceManagement extends Component {
         </Option>
       )
     })
-    const data1 = [{ value: '0', id: 0, label: '节点' }, { value: '1', id: 1, label: '节点1' }]
-    const selectData1 = data1.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
+    // const data1 = [{ value: '0', id: 0, label: '节点' }, { value: '1', id: 1, label: '节点1' }]
+    // const selectData1 = data1.map(item => {
+    //   return (
+    //     <Option value={item.value} key={item.id} title={item.label}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
     // const data2 = [
     //   { value: '0', id: 0, label: '所属机构' },
     //   { value: '1', id: 1, label: 'XXX机构' },
@@ -145,7 +175,7 @@ export default class SourceManagement extends Component {
         dataIndex: 'dataType',
       },
       {
-        title: '节点',
+        title: '所属节点',
         dataIndex: 'node',
       },
       // {
@@ -317,13 +347,14 @@ export default class SourceManagement extends Component {
             >
               {selectData}
             </Select>
-            <Select
+            {/* <Select
               style={{ marginRight: 20, width: 120 }}
               value={nodeName}
               onChange={this.nodeNameChange}
             >
               {selectData1}
-            </Select>
+            </Select> */}
+            <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
             {/* <Select
               style={{ marginRight: 20, width: 120 }}
               value={owingJg}

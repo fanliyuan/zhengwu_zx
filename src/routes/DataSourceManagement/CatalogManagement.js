@@ -13,6 +13,7 @@ import {
   Icon,
   Tooltip,
   Popconfirm,
+  Cascader,
 } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
@@ -202,6 +203,36 @@ export default class CatalogManagement extends Component {
         </Option>
       )
     })
+    const options = [
+      {
+        value: '0-0',
+        label: '北京国土局',
+        children: [
+          {
+            value: '0-0-1',
+            label: '海淀国土局',
+            // children: [{
+            //   value: 'xihu',
+            //   label: 'West Lake',
+            // }],
+          },
+        ],
+      },
+      {
+        value: '0-1',
+        label: '河北国土局',
+        children: [
+          {
+            value: '0-1-0',
+            label: '保定国土局',
+            // children: [{
+            //   value: 'zhonghuamen',
+            //   label: 'Zhong Hua Men',
+            // }],
+          },
+        ],
+      },
+    ]
     const data1 = [
       { value: '0', id: 0, label: '审核状态' },
       { value: '1', id: 1, label: '审核状态1' },
@@ -215,10 +246,10 @@ export default class CatalogManagement extends Component {
     })
     const pagination = { pageSize: 10, current: 1 }
     let columns = [
-      {
-        title: '目录编码',
-        dataIndex: 'catalogEncoding',
-      },
+      // {
+      //   title: '目录编码',
+      //   dataIndex: 'catalogEncoding',
+      // },
       {
         title: '名称',
         dataIndex: 'name',
@@ -226,6 +257,10 @@ export default class CatalogManagement extends Component {
       {
         title: '提供方',
         dataIndex: 'provider',
+      },
+      {
+        title: '所属节点',
+        dataIndex: 'oweNode',
       },
       {
         title: '注册时间',
@@ -299,6 +334,7 @@ export default class CatalogManagement extends Component {
         provider: '规划局',
         createTime: 344344242,
         isMouontSource: 0,
+        oweNode: '石家庄民政局',
         isOpen: 1,
         information: 14,
         status: '0',
@@ -310,6 +346,7 @@ export default class CatalogManagement extends Component {
         catalogEncoding: '330003130681126-0002',
         name: '资产负债表信息',
         provider: '规划局',
+        oweNode: '石家庄民政局',
         createTime: 344344242,
         isMouontSource: 1,
         isOpen: 0,
@@ -323,6 +360,7 @@ export default class CatalogManagement extends Component {
         catalogEncoding: '330003130681126-0003',
         name: '资产总值表',
         provider: '规划局',
+        oweNode: '石家庄民政局',
         createTime: 344344242,
         isMouontSource: 0,
         isOpen: 0,
@@ -367,9 +405,9 @@ export default class CatalogManagement extends Component {
           </div>
           <div className={styles.column2}>
             <div className={styles.form}>
-              <Input placeholder="名称" style={{ width: 150, marginRight: 20 }} />
+              <Input placeholder="名称" style={{ width: 100, marginRight: 20 }} />
               {isNodeOperator && (
-                <Input placeholder="节点名称" style={{ width: 150, marginRight: 20 }} />
+                <Input placeholder="节点名称" style={{ width: 100, marginRight: 20 }} />
               )}
               <Select
                 style={{ marginRight: 20, width: 120 }}
@@ -378,7 +416,8 @@ export default class CatalogManagement extends Component {
               >
                 {selectData}
               </Select>
-              <RangePicker style={{ marginRight: 20, width: 250 }} />
+              <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
+              <RangePicker style={{ marginRight: 20, width: 200 }} />
               <Select
                 style={{ marginRight: 20, width: 120 }}
                 value={status}
