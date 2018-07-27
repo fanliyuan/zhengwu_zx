@@ -13,7 +13,6 @@ import {
   DatePicker,
   Form,
   Select,
-  Radio,
 } from 'antd'
 import moment from 'moment'
 
@@ -87,7 +86,6 @@ export default class ResourceConnectionData extends Component {
     ItemConnect: true,
     visible1: false,
     visible2: false,
-    target: 'a1',
   }
 
   isEditing = record => {
@@ -103,21 +101,17 @@ export default class ResourceConnectionData extends Component {
     )
   }
 
-  // handleConnect = () => {
-  //   this.setState({
-  //     ItemConnect: true,
-  //     active:true,
-  //     active1:false,
-  //   })
-  // }
+  handleConnect = () => {
+    this.setState({
+      ItemConnect: true,
+    })
+  }
 
-  // handleClearConnect = () => {
-  //   this.setState({
-  //     ItemConnect: false,
-  //     active:false,
-  //     active1:true,
-  //   })
-  // }
+  handleClearConnect = () => {
+    this.setState({
+      ItemConnect: false,
+    })
+  }
 
   handleSave = () => {
     const { dispatch } = this.props
@@ -129,22 +123,22 @@ export default class ResourceConnectionData extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
   }
 
-  handleSizeChange = e => {
-    this.setState({ target: e.target.value })
-    if (e.target.value === 'a1') {
-      this.setState({
-        ItemConnect: true,
-        // active:true,
-        // active1:false,
-      })
-    } else {
-      this.setState({
-        ItemConnect: false,
-        // active:false,
-        // active1:true,
-      })
-    }
-  }
+  // handleSizeChange = e => {
+  //   this.setState({ target: e.target.value })
+  //   if (e.target.value === 'a1') {
+  //     this.setState({
+  //       ItemConnect: true,
+  //       // active:true,
+  //       // active1:false,
+  //     })
+  //   } else {
+  //     this.setState({
+  //       ItemConnect: false,
+  //       // active:false,
+  //       // active1:true,
+  //     })
+  //   }
+  // }
 
   showModal1 = () => {
     this.setState({
@@ -183,7 +177,7 @@ export default class ResourceConnectionData extends Component {
   }
 
   render() {
-    const { ItemConnect, visible1, visible2, target } = this.state
+    const { ItemConnect, visible1, visible2 } = this.state
     const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
@@ -592,18 +586,22 @@ export default class ResourceConnectionData extends Component {
               />
             </Col>
             <Col span={4} style={{ textAlign: 'center' }}>
-              {/* <Row>
+              <Row>
                 <Col span={11}>
-                  <Button onClick={this.handleConnect} size="small" disabled={active ? 'priamy':''}>自动映射</Button>
+                  <Button onClick={this.handleConnect} size="small" type="primary">
+                    自动映射
+                  </Button>
                 </Col>
                 <Col span={11} offset={2}>
-                  <Button onClick={this.handleClearConnect} size="small" type={active1 ? 'priamy':''}>清除映射</Button>
+                  <Button onClick={this.handleClearConnect} size="small" type="primary">
+                    清除映射
+                  </Button>
                 </Col>
-              </Row> */}
-              <Radio.Group value={target} onChange={this.handleSizeChange}>
+              </Row>
+              {/* <Radio.Group value={target} onChange={this.handleSizeChange}>
                 <Radio.Button value="a1">Large</Radio.Button>
                 <Radio.Button value="a2">Default</Radio.Button>
-              </Radio.Group>
+              </Radio.Group> */}
               <Row
                 style={{
                   marginTop: 40,

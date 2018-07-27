@@ -18,6 +18,7 @@ import {
   Modal,
   Form,
   Radio,
+  Cascader,
 } from 'antd'
 import moment from 'moment'
 import { Link } from 'dva/router'
@@ -54,9 +55,8 @@ export default class PublicationManagement extends Component {
   state = {
     name: '',
     system: '',
-    type: 0,
     subscribe: -1,
-    audit: -1,
+    // audit: -1,
     date: [],
     isChanged: false,
     showModal: false,
@@ -96,13 +96,13 @@ export default class PublicationManagement extends Component {
     })
   }
 
-  handleTypeChange = e => {
+  handleTypeChange = () => {
     this.setState({
       isChanged: true,
     })
-    this.setState({
-      type: e,
-    })
+    // this.setState({
+    //   type: e,
+    // })
   }
 
   handleSubscribeChange = e => {
@@ -114,13 +114,13 @@ export default class PublicationManagement extends Component {
     })
   }
 
-  handleAuditChange = e => {
+  handleAuditChange = () => {
     this.setState({
       isChanged: true,
     })
-    this.setState({
-      audit: e,
-    })
+    // this.setState({
+    //   audit: e,
+    // })
   }
 
   handlePickChange = val => {
@@ -200,10 +200,39 @@ export default class PublicationManagement extends Component {
   }
 
   render() {
-    const { name, date, audit, subscribe, type, system, showModal } = this.state
+    const { name, date, subscribe, system, showModal } = this.state
     const { getFieldDecorator } = this.props.form
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
-
+    const options = [
+      {
+        value: '0-0',
+        label: '首页',
+        children: [
+          {
+            value: '0-0-1',
+            label: '通知公告',
+            // children: [{
+            //   value: 'xihu',
+            //   label: 'West Lake',
+            // }],
+          },
+        ],
+      },
+      {
+        value: '0-1',
+        label: '开放动态',
+        children: [
+          {
+            value: '0-1-0',
+            label: '重要新闻',
+            // children: [{
+            //   value: 'zhonghuamen',
+            //   label: 'Zhong Hua Men',
+            // }],
+          },
+        ],
+      },
+    ]
     const typeList = [
       {
         value: 0,
@@ -221,7 +250,7 @@ export default class PublicationManagement extends Component {
     const topList = [
       {
         value: -1,
-        label: '全部状态',
+        label: '是否置顶/推荐',
       },
       {
         value: 0,
@@ -229,23 +258,23 @@ export default class PublicationManagement extends Component {
       },
       {
         value: 1,
-        label: '未置顶',
-      },
-    ]
-    const recommendList = [
-      {
-        value: -1,
-        label: '全部状态',
-      },
-      {
-        value: 0,
         label: '推荐',
       },
-      {
-        value: 1,
-        label: '未推荐',
-      },
     ]
+    // const recommendList = [
+    //   {
+    //     value: -1,
+    //     label: '全部状态',
+    //   },
+    //   {
+    //     value: 0,
+    //     label: '推荐',
+    //   },
+    //   {
+    //     value: 1,
+    //     label: '未推荐',
+    //   },
+    // ]
 
     const columns = [
       {
@@ -330,14 +359,14 @@ export default class PublicationManagement extends Component {
         </Option>
       )
     })
-    const recommendComs = recommendList.map(item => {
-      // eslint-disable-line
-      return (
-        <Option value={item.value} key={item.value}>
-          {item.label}
-        </Option>
-      )
-    })
+    // const recommendComs = recommendList.map(item => {
+    //   // eslint-disable-line
+    //   return (
+    //     <Option value={item.value} key={item.value}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
     const firstComs = typeComs
     const secondeComs = null
     return (
@@ -358,9 +387,14 @@ export default class PublicationManagement extends Component {
               onChange={this.handleSystemChange}
               className={styles.name}
             />
-            <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
+            {/* <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
               {typeComs}
-            </Select>
+            </Select> */}
+            <Cascader
+              options={options}
+              placeholder="栏目"
+              style={{ marginRight: 16, width: 150 }}
+            />
             <Select
               value={subscribe}
               onChange={this.handleSubscribeChange}
@@ -368,9 +402,9 @@ export default class PublicationManagement extends Component {
             >
               {topComs}
             </Select>
-            <Select value={audit} onChange={this.handleAuditChange} className={styles.select}>
+            {/* <Select value={audit} onChange={this.handleAuditChange} className={styles.select}>
               {recommendComs}
-            </Select>
+            </Select> */}
             <RangePicker value={date} onChange={this.handlePickChange} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索

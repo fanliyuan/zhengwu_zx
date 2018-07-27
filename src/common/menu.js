@@ -376,11 +376,11 @@ const menuData = [
     path: 'portalManagement',
     children: [
       {
-        name: '资讯管理',
+        name: '文章分类',
         path: 'newsManagement',
       },
       {
-        name: '发布管理',
+        name: '文章发布',
         path: 'publicationManagement',
       },
       {

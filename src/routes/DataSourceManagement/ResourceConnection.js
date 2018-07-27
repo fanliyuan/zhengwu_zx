@@ -202,7 +202,7 @@ export default class ResourceConnection extends Component {
         render(text) {
           return (
             <div>
-              <input type="radio" name="mo2" />
+              <input type="checkbox" />
               <span style={{ marginLeft: 10 }}>{text}</span>
             </div>
           )
@@ -260,6 +260,7 @@ export default class ResourceConnection extends Component {
     ]
     const listModal2 = [
       {
+        id: 0,
         fileName: '城市低保标准表(各市第7季度).xlsx',
         type: 'Zip',
         fileSize: '1.38MB',
@@ -267,6 +268,7 @@ export default class ResourceConnection extends Component {
         uploadTime: 4512211,
       },
       {
+        id: 1,
         fileName: '农村低保标准表(各地第1季度).json',
         type: 'json',
         fileSize: '0.12MB',
@@ -274,6 +276,7 @@ export default class ResourceConnection extends Component {
         uploadTime: 4512211,
       },
       {
+        id: 2,
         fileName: '人口普查数据.xml',
         type: 'jpeg',
         fileSize: '1.56MB',
@@ -315,7 +318,7 @@ export default class ResourceConnection extends Component {
           </div>
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: 'inline-block', marginRight: 20 }}>
-              <h3>挂接资源检索关系设置:</h3>
+              <h3>挂接资源文件:</h3>
             </div>
             <div style={{ display: 'inline-block' }}>
               <span className={styles.linkBtn} onClick={this.showModal2}>
