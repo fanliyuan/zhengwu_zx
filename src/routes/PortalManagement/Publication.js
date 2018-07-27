@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 17:21:45
+ * @Last Modified time: 2018-07-27 17:57:51
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -197,15 +197,15 @@ export default class Publication extends Component {
     const secondeComs = null
     return (
       <PageHeaderLayout>
+        <div className="clearfix btncls">
+          <Link to="/portalManagement/publicationManagement" className="fr mr40">
+            <Button>返回</Button>
+          </Link>
+          <Button type="primary" onClick={this.handlePublic} className="fr mr40">
+            发布
+          </Button>
+        </div>
         <div className="common-layout">
-          <div className="clearfix mb8">
-            <Link to="/portalManagement/publicationManagement" className="fr">
-              <Button>返回</Button>
-            </Link>
-            <Button type="primary" onClick={this.handlePublic} className="fr mr16">
-              发布
-            </Button>
-          </div>
           <Form className={styles.search}>
             <Input
               value={title}
