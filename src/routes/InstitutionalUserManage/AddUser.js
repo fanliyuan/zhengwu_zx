@@ -6,6 +6,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const FormItem = Form.Item
 const { Option } = Select
+
 @Form.create()
 export default class AddUser extends Component {
   state = {}
@@ -64,7 +65,7 @@ export default class AddUser extends Component {
                     message: '请输入密码',
                   },
                 ],
-              })(<Input placeholder="请输入密码" type="password" />)}
+              })(<Input placeholder="请输入密码" />)}
               <div>
                 <a className="mr8">随机生成</a>
                 <a>复制</a>
