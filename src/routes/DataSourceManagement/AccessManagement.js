@@ -197,9 +197,6 @@ export default class AccessManagement extends Component {
         },
       },
     ]
-    columns.forEach(item => {
-      item.align = 'center'
-    })
     if (isNodeOperator) {
       columns.push({
         title: '操作',
@@ -273,6 +270,9 @@ export default class AccessManagement extends Component {
         },
       })
     }
+    columns.forEach(item => {
+      item.align = 'center'
+    })
     const list = [
       {
         id: 0,

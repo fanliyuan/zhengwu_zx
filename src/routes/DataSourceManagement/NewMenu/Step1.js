@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-06 17:49:30
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-26 23:23:19
+ * @Last Modified time: 2018-07-27 11:05:13
 */
 import React, { PureComponent } from 'react'
 import { connect } from 'dva'
@@ -55,6 +55,11 @@ export default class Step1 extends PureComponent {
     dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
   }
 
+  handleNext = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/checkMenu/two'))
+  }
+
   render() {
     const {
       form: { getFieldDecorator, validateFields },
@@ -82,7 +87,7 @@ export default class Step1 extends PureComponent {
           {getFieldDecorator('desc', {
             initialValue: data.desc,
             rules: [{ required: true, message: '请输入描述' }],
-          })(<Input.TextArea placeholder="请输入描述" disabled={disabled} />)}
+          })(<Input.TextArea placeholder="请输入描述" rows={4} readOnly={disabled} />)}
         </Item>
         <Item label="分类" {...formItemLayout}>
           {getFieldDecorator('classify', {
@@ -135,14 +140,14 @@ export default class Step1 extends PureComponent {
         </Item>
         <div className="btnclsb">
           {!disabled ? (
-            <Button type="primary" onClick={onValidateForm} className="mr64">
+            <Button type="primary" onClick={onValidateForm}>
               下一步
             </Button>
-          ) : null
-          // <Button onClick={this.handleBack}>
-          //   返回
-          // </Button>
-          }
+          ) : (
+            <Button type="primary" onClick={this.handleNext}>
+              下一步
+            </Button>
+          )}
         </div>
       </Form>
     )

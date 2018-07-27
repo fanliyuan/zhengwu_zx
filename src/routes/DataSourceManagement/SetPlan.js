@@ -15,7 +15,17 @@ const InputGroup = Input.Group
 }))
 @Form.create() // eslint-disable-line
 export default class SetPlan extends Component {
-  state = {}
+  state = {
+    disabled: true,
+  }
+
+  componentDidMount() {
+    if (this.props.location.pathname !== '/dataSourceManagement/checkPlan') {
+      this.setState({
+        disabled: false,
+      })
+    }
+  }
 
   handleSubmit = e => {
     e.preventDefault()
@@ -27,11 +37,21 @@ export default class SetPlan extends Component {
 
   handlePre = () => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
+    if (!this.state.disabled) {
+      dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
+    } else {
+      dispatch(routerRedux.push('/dataSourceManagement/checkDataInfo'))
+    }
+  }
+
+  handleGoBack = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'))
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
+    const { disabled } = this.state
     const optionData = [
       { label: '定时', value: '0', id: 0 },
       { label: '实时', value: '1', id: 1 },
@@ -103,32 +123,38 @@ export default class SetPlan extends Component {
           </Steps>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="同步模式" {...formItemLayout}>
-              {getFieldDecorator('types')(<Cascader options={options} />)}
+              {getFieldDecorator('types')(<Cascader options={options} disabled={disabled} />)}
             </FormItem>
             <FormItem label="同步频率" {...formItemLayout}>
-              {getFieldDecorator('rate')(<Select>{optionSelect}</Select>)}
+              {getFieldDecorator('rate')(<Select disabled={disabled}>{optionSelect}</Select>)}
             </FormItem>
             <FormItem label="定时设置" {...formItemLayout}>
               <InputGroup compact>
-                <Input style={{ width: '20%' }} placeholder="分钟" />
-                <Input style={{ width: '20%' }} placeholder="小时" />
-                <Input style={{ width: '20%' }} placeholder="天" />
-                <Input style={{ width: '20%' }} placeholder="月" />
-                <Input style={{ width: '20%' }} placeholder="星期" />
+                <Input style={{ width: '20%' }} placeholder="分钟" disabled={disabled} />
+                <Input style={{ width: '20%' }} placeholder="小时" disabled={disabled} />
+                <Input style={{ width: '20%' }} placeholder="天" disabled={disabled} />
+                <Input style={{ width: '20%' }} placeholder="月" disabled={disabled} />
+                <Input style={{ width: '20%' }} placeholder="星期" disabled={disabled} />
               </InputGroup>
             </FormItem>
             <FormItem label="自动停止" extra="0次代表永不停止" {...formItemLayout}>
               <span>报错 </span>
-              {getFieldDecorator('autoStop')(<InputNumber />)}
+              {getFieldDecorator('autoStop')(<InputNumber disabled={disabled} />)}
               <span> 次后自动停止服务</span>
             </FormItem>
             <div className="btnclsb">
               <Button className="mr64" onClick={this.handlePre}>
                 上一步
               </Button>
-              <Button type="primary" htmlType="submit">
-                提交
-              </Button>
+              {!disabled ? (
+                <Button type="primary" htmlType="submit">
+                  提交
+                </Button>
+              ) : (
+                <Button type="primary" onClick={this.handleGoBack}>
+                  返回
+                </Button>
+              )}
             </div>
           </Form>
         </Card>
