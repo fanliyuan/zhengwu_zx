@@ -1,3 +1,69 @@
-div {
-  height: auto;
+.card {
+  text-align: center;
+  background: #f2f2f2;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  p {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+  }
+}
+.img {
+  text-align: center;
+}
+.right {
+  border-left: '1px dash #ccc';
+  h3 {
+    margin: 16px 0;
+  }
+  td {
+    padding: 5px 16px !important;
+  }
+}
+.tips {
+  span {
+    &:first-of-type {
+      &::after {
+        content: ':';
+        margin: 0 4px;
+      }
+    }
+    & + span {
+      margin-right: 16px;
+    }
+  }
+}
+.rank {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  border-radius: 66%;
+  background: #ccc;
+  color: #000;
+  margin-right: 4px;
+  line-height: 20px;
+}
+.rank1 {
+  opacity: 1;
+}
+.rank2 {
+  opacity: 0.9;
+}
+.rank3 {
+  opacity: 0.8;
+}
+.rank4 {
+  opacity: 0.7;
+}
+.rank5 {
+  opacity: 0.6;
+}
+.select {
+  width: 150px !important;
+  float: right;
+  margin: 16px 0;
 }
