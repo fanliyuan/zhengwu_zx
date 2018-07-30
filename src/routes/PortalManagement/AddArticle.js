@@ -210,7 +210,11 @@ export default class AddArticle extends Component {
                 ],
               })(<Input className={styles.input} />)}
             </Item>
-            <Item label="封面图" {...formItemLayout}>
+            <Item
+              label="封面图"
+              {...formItemLayout}
+              extra="说明:最大不超过5M,格式支持jpg、png、gif、bmp"
+            >
               <Upload
                 action="//jsonplaceholder.typicode.com/posts/" // 上传地址
                 onPreview={this.handlePreviewChange}
