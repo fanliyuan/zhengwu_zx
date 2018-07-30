@@ -233,8 +233,7 @@ export default class ColumnPosition extends Component {
             onCancel={() => {
               this.setState({ editShow: false })
             }}
-            className={styles.modal}
-          >
+            className={styles.modal}>
             <Form>
               <Form.Item label="栏目名称" labelCol={{ span: 4 }} wrapperCol={{ span: 12 }}>
                 {getFieldDecorator('edit', {

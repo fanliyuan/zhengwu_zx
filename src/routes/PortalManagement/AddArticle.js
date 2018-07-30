@@ -2,8 +2,9 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-30 09:20:29
+ * @Last Modified time: 2018-07-30 17:44:50
  * @Description: 新增文章
+ *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  */
 import React, { Component, Fragment } from 'react'
 import { Link, routerRedux } from 'dva/router'
@@ -33,6 +34,23 @@ const savaLayout = {
   },
 }
 
+const convertBase64UrlToBlob = urlData => {
+  // 去掉url的头，并转换为byte
+  const bytes = window.atob(urlData.split(',')[1])
+  // 处理异常,将ascii码小于0的转换为大于0
+  const ab = new ArrayBuffer(bytes.length)
+  const ia = new Uint8Array(ab)
+  ia.forEach((i, index) => {
+    ia[index] = bytes.charCodeAt(index)
+  })
+  return new Blob([ia], {
+    type: urlData
+      .split(',')[0]
+      .split(':')[1]
+      .split(';')[0],
+  })
+}
+
 @Form.create()
 @connect(({ addArtice }) => ({
   addArtice,
@@ -48,10 +66,27 @@ export default class AddArticle extends Component {
     saveVisible: false,
   }
 
-  handleQuillChange = value => {
+  // eslint-disable-next-line
+  handleQuillChange = (value, delta, source, editor) => {
     this.setState({
       quillText: value,
     })
+    try {
+      // editor.getContents() 这个获取delta
+      const { ops } = delta
+      if (
+        ops &&
+        ops[ops.length - 1] &&
+        ops[ops.length - 1].insert &&
+        ops[ops.length - 1].insert.image
+      ) {
+        const imgURL = ops[ops.length - 1].insert.image
+        console.log(convertBase64UrlToBlob(imgURL)) // eslint-disable-line
+      }
+    } catch (error) {
+      // eslint-disable-next-line
+      console.log(error)
+    }
   }
 
   handleUploadChange = ({ fileList }) => this.setState({ fileList })
@@ -224,8 +259,7 @@ export default class AddArticle extends Component {
                 <div style={{ color: '#e4393c' }}>
                   说明：最大不超过5M,格式支持jpg、png、gif、bmp
                 </div>
-              }
-            >
+              }>
               <Upload
                 action="//jsonplaceholder.typicode.com/posts/" // 上传地址
                 onPreview={this.handlePreviewChange}
@@ -254,8 +288,7 @@ export default class AddArticle extends Component {
               {...formItemLayout}
               extra={
                 <div style={{ color: '#e4393c' }}>说明：单个文件最大不超过100M,最多上传5个文件</div>
-              }
-            >
+              }>
               <Upload action="//jsonplaceholder.typicode.com/posts/">
                 <Button>
                   <Icon type="upload" /> Upload

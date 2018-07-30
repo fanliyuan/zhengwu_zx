@@ -197,8 +197,7 @@ export default class CarouselManagement extends Component {
             title="确定删除此轮播图"
             okText="确定"
             okType="danger"
-            cancelText="取消"
-          >
+            cancelText="取消">
             <a style={{ marginRight: 8 }}>删除</a>
           </Popconfirm>
         </Fragment>

@@ -314,8 +314,7 @@ export default class MenuManagement extends Component {
           <Modal
             visible={showModal}
             title={modalTitle || '确认执行此操作?'}
-            onCancel={() => this.setState({ showModal: false })}
-          >
+            onCancel={() => this.setState({ showModal: false })}>
             {modalTitle === '发布' ? (
               <Fragment>
                 <span className={styles.label}>是否推荐</span>
