@@ -212,7 +212,7 @@ export default class Publication extends Component {
               onChange={this.titleChange}
               className={styles.input}
               placeholder="标题"
-            />
+              />
             <Select value={classify} onChange={this.classifyChange} className={styles.select}>
               {classifyComs}
             </Select>
@@ -221,12 +221,12 @@ export default class Publication extends Component {
               onChange={this.operatorChange}
               className={styles.input}
               placeholder="操作人"
-            />
+              />
             <DatePicker.RangePicker
               value={time}
               onChange={this.timeChange}
               className={styles.picker}
-            />
+              />
             <Button type="primary" icon="search" onClick={this.search}>
               搜索
             </Button>
@@ -237,13 +237,13 @@ export default class Publication extends Component {
             // rowSelection={rowSelection}
             rowKey="id"
             bordered
-          />
+            />
         </div>
         <Modal
           visible={showModal}
           onCancel={() => this.setState({ showModal: false })}
           title="设置"
-        >
+          >
           <Form>
             <Form.Item label="栏目" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
               <Select className={styles.selectInner1}>{firstComs}</Select>

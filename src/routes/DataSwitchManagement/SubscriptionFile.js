@@ -82,14 +82,14 @@ export default class SubscriptionFile extends Component {
             onClick={this.handleSave}
             isNodeOperator={isNodeOperator}
             disabled={hasErrors(getFieldsError())}
-          />
+            />
           <Form>
             <Item
               {...itemLayout}
               label="订阅名称"
               validateStatus={nameError ? 'error' : ''}
               help={nameError ? '请输入名称' : ''}
-            >
+              >
               {getFieldDecorator('name', {
                 rules: [{ required: true, message: '请输入名称' }],
               })(<Input className={styles.input} disabled={!isNodeOperator} />)}
@@ -136,14 +136,14 @@ export default class SubscriptionFile extends Component {
                 className={styles.time}
                 placeholder="分钟"
                 disabled={!isNodeOperator}
-              />
+                />
               <InputNumber
                 max={23}
                 min={0}
                 className={styles.time}
                 placeholder="小时"
                 disabled={!isNodeOperator}
-              />
+                />
               <Input className={styles.time} placeholder="日" disabled={!isNodeOperator} />
               <Input className={styles.time} placeholder="月" disabled={!isNodeOperator} />
               <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
@@ -158,7 +158,7 @@ export default class SubscriptionFile extends Component {
                 </span>
               }
               {...itemLayout}
-            >
+              >
               <Radio.Group defaultValue="0" disabled={!isNodeOperator}>
                 <Radio value="0">是</Radio>
                 <Radio value="1">否</Radio>

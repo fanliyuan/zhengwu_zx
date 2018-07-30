@@ -93,7 +93,7 @@ export default class HeaderSearch extends PureComponent {
           className={inputClass}
           value={value}
           onChange={this.onChange}
-        >
+          >
           <Input
             placeholder={placeholder}
             ref={node => {
@@ -101,7 +101,7 @@ export default class HeaderSearch extends PureComponent {
             }}
             onKeyDown={this.onKeyDown}
             onBlur={this.leaveSearchMode}
-          />
+            />
         </AutoComplete>
       </span>
     )

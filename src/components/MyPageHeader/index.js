@@ -152,7 +152,7 @@ export default class PageHeader extends PureComponent {
           params={params}
           itemRender={this.itemRender}
           separator={breadcrumbSeparator}
-        />
+          />
       )
     }
     // 根据 location 生成 面包屑
@@ -228,7 +228,7 @@ export default class PageHeader extends PureComponent {
               {...activeKeyProps}
               onChange={this.onChange}
               tabBarExtraContent={tabBarExtraContent}
-            >
+              >
               {tabList.map(item => <TabPane tab={item.tab} key={item.key} />)}
             </Tabs>
           )}

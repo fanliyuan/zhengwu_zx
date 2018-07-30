@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 14:05:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-23 16:27:35
+ * @Last Modified time: 2018-07-30 21:54:31
 */
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
@@ -210,13 +210,13 @@ export default class WarningOption extends Component {
               onChange={this.nameChange}
               className={styles.input}
               placeholder="告警名称"
-            />
+              />
             <Input
               value={target}
               onChange={this.targetChange}
               className={styles.input}
               placeholder="告警目标"
-            />
+              />
             <Select value={method} onChange={this.methodChange} className={styles.select}>
               {methodComs}
             </Select>
@@ -226,7 +226,7 @@ export default class WarningOption extends Component {
               onChange={this.nodeChange}
               className={styles.cascader}
               placeholder="请选择告警节点"
-            />
+              />
             <Select value={state} onChange={this.stateChange} className={styles.select}>
               {stateComs}
             </Select>

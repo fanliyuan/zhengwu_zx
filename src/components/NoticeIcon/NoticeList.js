@@ -46,7 +46,7 @@ export default function NoticeList({
                     <div className={styles.datetime}>{item.datetime}</div>
                   </div>
                 }
-              />
+                />
             </List.Item>
           )
         })}

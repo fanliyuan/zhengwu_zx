@@ -129,7 +129,7 @@ export default class PlatformOverview extends Component {
                     </Card>
                   </List.Item>
                 )}
-              />
+                />
               <div style={{ height: '300px', textAlign: 'center' }}>
                 <h3 style={{ textAlign: 'left' }}>交换任务</h3>
                 <img src="/src/assets/platOvewview.png" alt="交换任务" />
@@ -141,7 +141,7 @@ export default class PlatformOverview extends Component {
                   data={offlineChartData}
                   titleMap={{ y1: '客流量', y2: '支付笔数' }}
                   showArea
-                />
+                  />
               </div>
             </Col>
             <Col span={9} className={styles.rightBox}>
@@ -205,7 +205,7 @@ export default class PlatformOverview extends Component {
                     height={294}
                     showValue={false}
                     listyle={{ marginLeft: 80 }}
-                  />
+                    />
                 </Card>
               </div>
               <div>

@@ -93,13 +93,13 @@ class Bar extends Component {
             forceFit={forceFit}
             data={data}
             padding={padding || 'auto'}
-          >
+            >
             <Axis
               name="x"
               title={false}
               label={autoHideXLabels ? false : {}}
               tickLine={autoHideXLabels ? false : {}}
-            />
+              />
             <Axis name="y" min={0} />
             <Tooltip showTitle={false} crosshairs={false} />
             <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />

@@ -61,7 +61,7 @@ export default class ActiveChart extends Component {
               line: false,
             }}
             data={activeData}
-          />
+            />
         </div>
         {activeData && (
           <div className={styles.activeChartGrid}>

@@ -13,7 +13,7 @@ const desc1 = (
       position: 'relative',
       left: 42,
     }}
-  >
+    >
     <div style={{ margin: '8px 0 4px' }}>
       曲丽丽
       <Icon style={{ marginLeft: 8 }} type="dingding-o" />
@@ -43,7 +43,7 @@ const extra = (
         fontWeight: '500',
         marginBottom: 20,
       }}
-    >
+      >
       项目名称
     </div>
     <Row style={{ marginBottom: 16 }}>
@@ -90,7 +90,7 @@ export default () => (
         extra={extra}
         actions={actions}
         style={{ marginTop: 48, marginBottom: 16 }}
-      />
+        />
     </Card>
   </PageHeaderLayout>
 )

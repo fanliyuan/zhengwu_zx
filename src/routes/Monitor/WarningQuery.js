@@ -379,12 +379,12 @@ export default class WarningQuery extends Component {
                     onChange={this.nodeSerChange}
                     className={styles.cascader}
                     placeholder="请选择节点名称"
-                  />
+                    />
                   <Select
                     value={originSer}
                     onChange={this.originSerChange}
                     className={styles.select}
-                  >
+                    >
                     {originComs}
                   </Select>
                   <Input
@@ -392,7 +392,7 @@ export default class WarningQuery extends Component {
                     onChange={this.originNameChange}
                     className={styles.input}
                     placeholder="告警来源名称"
-                  />
+                    />
                   <Select value={typeSer} onChange={this.typeSerChange} className={styles.select}>
                     {methodComs}
                   </Select>
@@ -401,7 +401,7 @@ export default class WarningQuery extends Component {
                     onChange={this.taskNameChange}
                     className={styles.input}
                     placeholder="任务名称"
-                  />
+                    />
                   <Button type="primary" icon="search" onClick={this.searchSer}>
                     搜索
                   </Button>
@@ -418,12 +418,12 @@ export default class WarningQuery extends Component {
                     onChange={this.nodeDatChange}
                     className={styles.cascader}
                     placeholder="请选择节点名称"
-                  />
+                    />
                   <Select
                     value={originDat}
                     onChange={this.originDatChange}
                     className={styles.select}
-                  >
+                    >
                     {originComs}
                   </Select>
                   <Input
@@ -431,7 +431,7 @@ export default class WarningQuery extends Component {
                     onChange={this.nameChange}
                     className={styles.input}
                     placeholder="数据来源名称"
-                  />
+                    />
                   <Select value={typeDat} onChange={this.typeDatChange} className={styles.select}>
                     {typeComs}
                   </Select>
@@ -439,7 +439,7 @@ export default class WarningQuery extends Component {
                     value={time}
                     onChange={this.timeChange}
                     className={styles.picker}
-                  />
+                    />
                   <Button type="primary" icon="search" onClick={this.searchDat}>
                     搜索
                   </Button>

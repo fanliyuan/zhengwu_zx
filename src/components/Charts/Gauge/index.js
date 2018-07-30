@@ -97,7 +97,8 @@ export default class Gauge extends React.Component {
           scale={cols}
           padding={[-16, 0, 16, 0]}
           forceFit={forceFit}
-          style={{ marginLeft: hasLegend ? -180 : 0 }}>
+          style={{ marginLeft: hasLegend ? -180 : 0 }}
+          >
           <Coord type="polar" startAngle={-1.25 * Math.PI} endAngle={0.25 * Math.PI} radius={0.8} />
           <Axis name="1" line={null} />
           <Axis
@@ -116,7 +117,7 @@ export default class Gauge extends React.Component {
                 textAlign: 'center',
               },
             }}
-          />
+            />
           <Guide>
             <Line
               start={[3, 0.905]}
@@ -126,7 +127,7 @@ export default class Gauge extends React.Component {
                 lineDash: null,
                 lineWidth: 2,
               }}
-            />
+              />
             <Line
               start={[5, 0.905]}
               end={[5, 0.85]}
@@ -135,7 +136,7 @@ export default class Gauge extends React.Component {
                 lineDash: null,
                 lineWidth: 3,
               }}
-            />
+              />
             <Line
               start={[7, 0.905]}
               end={[7, 0.85]}
@@ -144,7 +145,7 @@ export default class Gauge extends React.Component {
                 lineDash: null,
                 lineWidth: 3,
               }}
-            />
+              />
             <Arc
               zIndex={0}
               start={[0, 0.965]}
@@ -153,7 +154,7 @@ export default class Gauge extends React.Component {
                 stroke: bgColor,
                 lineWidth: 10,
               }}
-            />
+              />
             <Arc
               zIndex={1}
               start={[0, 0.965]}
@@ -162,7 +163,7 @@ export default class Gauge extends React.Component {
                 stroke: color,
                 lineWidth: 10,
               }}
-            />
+              />
             <Html
               position={['50%', '95%']}
               html={() => {
@@ -174,7 +175,7 @@ export default class Gauge extends React.Component {
                   </p>
                 </div>`
               }}
-            />
+              />
           </Guide>
           <Geom
             line={false}
@@ -183,7 +184,7 @@ export default class Gauge extends React.Component {
             shape="pointer"
             color={color}
             active={false}
-          />
+            />
         </Chart>
         {hasLegend && (
           <ul className={styles.legend}>

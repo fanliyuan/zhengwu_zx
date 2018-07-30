@@ -37,7 +37,7 @@ function RouterConfig({ history, app }) {
               'operator-n',
             ]}
             redirectPath="/user/login"
-          />
+            />
         </Switch>
       </ConnectedRouter>
     </LocaleProvider>

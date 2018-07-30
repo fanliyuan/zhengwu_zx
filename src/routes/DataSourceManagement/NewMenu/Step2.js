@@ -184,7 +184,7 @@ export default class Step2 extends PureComponent {
           width={900}
           onOk={() => this.setState({ visible1: false })}
           onCancel={() => this.setState({ visible1: false })}
-        >
+          >
           <div className="mb16">
             <Input value={name} className={styles.input} placeholder="应用系统名称" />
             <Cascader value={organization} className={styles.cascader} placeholder="请选择机构" />
@@ -205,14 +205,14 @@ export default class Step2 extends PureComponent {
             pagination={false}
             rowKey="id"
             bordered
-          />
+            />
         </Modal>
         <Modal
           title="导入目录"
           visible={visible2}
           onOk={() => this.setState({ visible2: false })}
           onCancel={() => this.setState({ visible2: false })}
-        >
+          >
           <div className="mb8">
             <a>点击此处下载模板</a>
           </div>

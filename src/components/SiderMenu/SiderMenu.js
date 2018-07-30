@@ -111,7 +111,7 @@ export default class SiderMenu extends PureComponent {
               }
             : undefined
         }
-      >
+        >
         {icon}
         <span>{name}</span>
       </Link>
@@ -139,7 +139,7 @@ export default class SiderMenu extends PureComponent {
               )
             }
             key={item.path}
-          >
+            >
             {childrenItems}
           </SubMenu>
         )
@@ -231,7 +231,7 @@ export default class SiderMenu extends PureComponent {
         onCollapse={onCollapse}
         width={256}
         className={styles.sider}
-      >
+        >
         <div className={styles.logo} key="logo">
           <Link to="/">
             <img src={logo} alt="logo" />
@@ -246,7 +246,7 @@ export default class SiderMenu extends PureComponent {
           onOpenChange={this.handleOpenChange}
           selectedKeys={selectedKeys}
           style={{ padding: '16px 0', width: '100%' }}
-        >
+          >
           {this.getNavMenuItems(this.menus)}
         </Menu>
       </Sider>

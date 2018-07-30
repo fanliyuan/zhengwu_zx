@@ -214,7 +214,7 @@ export default class CatalogAudit extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={provider}
               onChange={this.providerChange}
-            >
+              >
               {selectData}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} />
@@ -222,7 +222,7 @@ export default class CatalogAudit extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={status}
               onChange={this.statusChange}
-            >
+              >
               {selectData1}
             </Select>
             <Checkbox style={{ marginRight: 10 }}>已挂接资源</Checkbox>
@@ -236,7 +236,7 @@ export default class CatalogAudit extends Component {
               rowKey="id"
               rowSelection={rowSelection}
               bordered
-            />
+              />
           </div>
           <div>
             <Button type="primary">删除</Button>

@@ -241,7 +241,7 @@ export default class NodeManagement extends Component {
                 onCancel={this.handleCancel}
                 okText="确定"
                 cancelText="取消"
-              >
+                >
                 <Link to={`#${row.id}`} style={{ marginRight: 10 }}>
                   删除
                 </Link>
@@ -287,32 +287,32 @@ export default class NodeManagement extends Component {
               onPressEnter={this.handleSearch}
               className={styles.node}
               placeholder="节点名"
-            />
+              />
             <Input
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
               placeholder="IP地址"
-            />
+              />
             <Cascader
               options={nodeList}
               value={this.state.query.parentNode}
               onChange={this.handleNodeSelectChange}
               className={styles.parentNode}
               placeholder="上级节点"
-            />
+              />
             <Cascader
               options={organizationList}
               value={this.state.query.organization}
               onChange={this.handleOrganizationChange}
               className={styles.organization}
               placeholder="所属机构"
-            />
+              />
             <Select
               value={this.state.query.state}
               onChange={this.handleStateChange}
               className={styles.state}
-            >
+              >
               {stateComs}
             </Select>
             <Button type="primary" icon="search" onClick={this.handleSearch}>
@@ -338,7 +338,7 @@ export default class NodeManagement extends Component {
             loading={loading}
             rowKey="id"
             bordered
-          />
+            />
         </div>
       </PageHeaderLayout>
     )

@@ -119,7 +119,7 @@ class PassManagement extends React.PureComponent {
               <span
                 onClick={that.editHandle.bind(null, row)}
                 style={{ marginRight: 10, color: '#1991FF', cursor: 'pointer' }}
-              >
+                >
                 修改
               </span>
               {/* <a href={`#${row.id}`} style={{ marginRight:10 }}>监控</a> 
@@ -167,14 +167,14 @@ class PassManagement extends React.PureComponent {
               value={startNode}
               style={{ marginRight: 20, width: 200 }}
               onChange={this.selectStartChange}
-            >
+              >
               {selectData1}
             </Select>
             <Select
               value={endNode}
               style={{ marginRight: 20, width: 200 }}
               onChange={this.selectEndChange}
-            >
+              >
               {selectData2}
             </Select>
             <Button type="primary">搜索</Button>
@@ -188,7 +188,7 @@ class PassManagement extends React.PureComponent {
               // loading={loading}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </Card>
       </PageHeaderLayout>

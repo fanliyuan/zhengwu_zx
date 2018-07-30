@@ -139,7 +139,7 @@ export default class TableForm extends PureComponent {
                   value={text}
                   autoFocus
                   onChange={e => this.handleFieldChang(e, 'infoCode', row.key)}
-                />
+                  />
               </Tooltip>
             )
           }
@@ -187,7 +187,7 @@ export default class TableForm extends PureComponent {
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'dataLength', row.key)}
-                />
+                  />
               </Tooltip>
             )
           }
@@ -205,7 +205,7 @@ export default class TableForm extends PureComponent {
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareType', row.key)}
-                />
+                  />
               </Tooltip>
             )
           }
@@ -223,7 +223,7 @@ export default class TableForm extends PureComponent {
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareCondition', row.key)}
-                />
+                  />
               </Tooltip>
             )
           }
@@ -241,7 +241,7 @@ export default class TableForm extends PureComponent {
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareMethodClassify', row.key)}
-                />
+                  />
               </Tooltip>
             )
           }
@@ -259,7 +259,7 @@ export default class TableForm extends PureComponent {
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'shareMethodType', row.key)}
-                />
+                  />
               </Tooltip>
             )
           }
@@ -292,7 +292,7 @@ export default class TableForm extends PureComponent {
                 <Input
                   value={text}
                   onChange={e => this.handleFieldChang(e, 'openCondition', row.key)}
-                />
+                  />
               </Tooltip>
             )
           }
@@ -351,14 +351,14 @@ export default class TableForm extends PureComponent {
           loading={this.state.loading}
           bordered
           pagination={false}
-        />
+          />
         {!disabled && (
           <Button
             style={{ width: '100%', marginTop: 8, marginBottom: 16 }}
             type="dashed"
             onClick={this.addNew}
             icon="plus"
-          >
+            >
             新增数据
           </Button>
         )}

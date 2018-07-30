@@ -310,7 +310,7 @@ export default class PublicationManagement extends Component {
               <Popconfirm
                 title="取消后开放门户将无法看到此篇文章，您是否确认取消发布?"
                 onConfirm={() => this.publishCancel(row)}
-              >
+                >
                 <a className="mr16">取消发布</a>
               </Popconfirm>
               <a onClick={() => this.handleSet(row)} className="mr16">
@@ -363,14 +363,14 @@ export default class PublicationManagement extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
-            />
+              />
             <Input
               placeholder="发布人"
               value={system}
               onPressEnter={this.handleSearch}
               onChange={this.handleSystemChange}
               className={styles.name}
-            />
+              />
             <Cascader options={options} placeholder="栏目" style={{ marginRight: 16 }} />
             {/* <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
               {typeComs}
@@ -404,13 +404,13 @@ export default class PublicationManagement extends Component {
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
-            />
+              />
           </div>
           <Modal
             visible={showModal}
             onCancel={() => this.setState({ showModal: false })}
             title="设置"
-          >
+            >
             <Form>
               <Form.Item label="栏目" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
                 <Select className={styles.selectInner1}>{firstComs}</Select>

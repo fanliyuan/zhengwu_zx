@@ -259,16 +259,14 @@ export default class AddArticle extends Component {
                 <div style={{ color: '#e4393c' }}>
                   说明：最大不超过5M,格式支持jpg、png、gif、bmp
                 </div>
-              }>
+              }
+              >
               <Upload
                 action="//jsonplaceholder.typicode.com/posts/" // 上传地址
                 onPreview={this.handlePreviewChange}
                 onChange={this.handleUploadChange}
                 listType="picture-card"
-                // headers={{
-                //   "Access-Control-Allow-Origin": "*",
-                // }}
-              >
+                >
                 {fileList.length >= 1 ? null : uploadButton}
               </Upload>
               <Modal visible={previewVisible} onCancel={this.handlePreviewCancel} footer={null}>
@@ -281,14 +279,15 @@ export default class AddArticle extends Component {
                 modules={quillModules}
                 onChange={this.handleQuillChange}
                 className={styles.quill}
-              />
+                />
             </Item>
             <Item
               label="附件"
               {...formItemLayout}
               extra={
                 <div style={{ color: '#e4393c' }}>说明：单个文件最大不超过100M,最多上传5个文件</div>
-              }>
+              }
+              >
               <Upload action="//jsonplaceholder.typicode.com/posts/">
                 <Button>
                   <Icon type="upload" /> Upload
@@ -300,7 +299,8 @@ export default class AddArticle extends Component {
             visible={saveVisible}
             onCancel={this.saveCancel}
             title="保存"
-            className={styles.box}>
+            className={styles.box}
+            >
             <Form>
               <Item label="保存类型" {...savaLayout}>
                 {getFieldDecorator('saveType', {

@@ -291,7 +291,7 @@ export default class Task extends Component {
                   onChange={this.nodeChange}
                   placeholder="资源目标节点"
                   className={styles.cascader}
-                />
+                  />
                 <Select value={statePub} onChange={this.statePubChange} className={styles.select}>
                   {statePubComs}
                 </Select>
@@ -299,7 +299,7 @@ export default class Task extends Component {
                   value={time}
                   onChange={this.timeChange}
                   className={styles.picker}
-                />
+                  />
                 <Button type="primary" icon="search" onClick={this.searchPub}>
                   搜索
                 </Button>

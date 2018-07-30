@@ -224,21 +224,21 @@ export default class SubscriptionAudit extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={dataType}
               onChange={this.dataTypeChange}
-            >
+              >
               {selectData}
             </Select>
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={owingJg}
               onChange={this.owingJgChange}
-            >
+              >
               {selectData1}
             </Select>
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={subJg}
               onChange={this.subJgChange}
-            >
+              >
               {selectData2}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} />
@@ -246,7 +246,7 @@ export default class SubscriptionAudit extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={status}
               onChange={this.statusChange}
-            >
+              >
               {selectData4}
             </Select>
             <Button type="primary">搜索</Button>
@@ -258,7 +258,7 @@ export default class SubscriptionAudit extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </Card>
         <Modal
@@ -266,12 +266,12 @@ export default class SubscriptionAudit extends Component {
           visible={modalVisibility}
           onCancel={() => this.setState({ modalVisibility: false })}
           onOk={() => this.submitAuthority(id)}
-        >
+          >
           <Radio.Group
             value={authority}
             onChange={this.authorityChange}
             style={{ margin: '0 auto' }}
-          >
+            >
             <Radio value={1} key={1} className="mr40 ml16">
               通过
             </Radio>

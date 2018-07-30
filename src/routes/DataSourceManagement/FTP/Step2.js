@@ -27,7 +27,7 @@ export default class Step2 extends Component {
             value={mode}
             onChange={value => this.setState({ mode: value })}
             className={styles.input}
-          >
+            >
             <Option value={0} key={0}>
               增量
             </Option>
@@ -42,7 +42,7 @@ export default class Step2 extends Component {
             value={rate}
             onChange={value => this.setState({ rate: value })}
             className={styles.input}
-          >
+            >
             <Option value={0} key={0}>
               定时
             </Option>

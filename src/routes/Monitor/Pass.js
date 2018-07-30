@@ -170,7 +170,7 @@ export default class Pass extends Component {
               onChange={this.nameChange}
               className={styles.input}
               placeholder="通道名称"
-            />
+              />
             <Select value={state} onChange={this.stateChange} className={styles.select}>
               {stateComs}
             </Select>

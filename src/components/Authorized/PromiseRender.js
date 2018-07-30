@@ -56,7 +56,7 @@ export default class PromiseRender extends React.PureComponent {
           paddingTop: 50,
           textAlign: 'center',
         }}
-      >
+        >
         <Spin size="large" />
       </div>
     )

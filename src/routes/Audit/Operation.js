@@ -202,18 +202,18 @@ export default class Operation extends Component {
               onPressEnter={this.handleSearch}
               className={styles.name}
               placeholder="用户名"
-            />
+              />
             <Cascader
               options={organizationList}
               onChange={this.handleOrganizationChange}
               placeholder="模块"
               className={styles.organization}
-            />
+              />
             <Select
               defaultValue={-1}
               onChange={this.handleOperationChange}
               className={styles.operation}
-            >
+              >
               {OperationList}
             </Select>
             <Input
@@ -221,7 +221,7 @@ export default class Operation extends Component {
               onPressEnter={this.handleSearch}
               className={styles.ip}
               placeholder="IP地址"
-            />
+              />
             <RangePicker onChange={this.handleDateChange} className={styles.date} />
             <Button type="primary" icon="search" onClick={this.handleSearch}>
               搜索
@@ -235,7 +235,7 @@ export default class Operation extends Component {
               onChange={this.tableChange}
               loading={loading}
               rowKey="id"
-            />
+              />
           </div>
         </div>
       </PageHeaderLayout>

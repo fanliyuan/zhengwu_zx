@@ -165,7 +165,7 @@ export default class UserManage extends Component {
                 <Popconfirm
                   title={`是否要刪除${row.name}?`}
                   onConfirm={() => Message.success('刪除成功')}
-                >
+                  >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
               </div>
@@ -182,7 +182,7 @@ export default class UserManage extends Component {
                 <Popconfirm
                   title={`是否要刪除${row.name}?`}
                   onConfirm={() => Message.success('刪除成功')}
-                >
+                  >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
               </div>
@@ -233,14 +233,14 @@ export default class UserManage extends Component {
               value={role}
               onChange={this.selectrole}
               placeholder="角色"
-            >
+              >
               {selectData1}
             </Select>
             <Select
               style={{ marginRight: 20, width: 100 }}
               value={isEnable}
               onChange={this.selectIsEnable}
-            >
+              >
               {selectData2}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} />
@@ -258,7 +258,7 @@ export default class UserManage extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </Card>
       </PageHeaderLayout>

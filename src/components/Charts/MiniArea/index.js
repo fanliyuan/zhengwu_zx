@@ -55,7 +55,7 @@ export default class MiniArea extends React.Component {
               forceFit={forceFit}
               data={data}
               padding={padding}
-            >
+              >
               <Axis
                 key="axis-x"
                 name="x"
@@ -64,7 +64,7 @@ export default class MiniArea extends React.Component {
                 tickLine={false}
                 grid={false}
                 {...xAxis}
-              />
+                />
               <Axis
                 key="axis-y"
                 name="y"
@@ -73,7 +73,7 @@ export default class MiniArea extends React.Component {
                 tickLine={false}
                 grid={false}
                 {...yAxis}
-              />
+                />
               <Tooltip showTitle={false} crosshairs={false} />
               <Geom
                 type="area"
@@ -84,7 +84,7 @@ export default class MiniArea extends React.Component {
                 style={{
                   fillOpacity: 1,
                 }}
-              />
+                />
               {line ? (
                 <Geom
                   type="line"
@@ -93,7 +93,7 @@ export default class MiniArea extends React.Component {
                   color={borderColor}
                   size={borderWidth}
                   tooltip={false}
-                />
+                  />
               ) : (
                 <span style={{ display: 'none' }} />
               )}

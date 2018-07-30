@@ -103,7 +103,7 @@ export default class EditWarningOption extends Component {
                   min={0}
                   formatter={val => `${val}%`}
                   parser={val => val.replace('%', '')}
-                />
+                  />
               )}
             </Item>
             <Item {...itemLayout} label="检测周期">
@@ -130,7 +130,7 @@ export default class EditWarningOption extends Component {
               {/* <Link to='/monitor/node'><Button>取消</Button></Link> */}
               <Button
                 onClick={() => this.props.dispatch(routerRedux.push('/monitor/node', 'option'))}
-              >
+                >
                 取消
               </Button>
             </Item>

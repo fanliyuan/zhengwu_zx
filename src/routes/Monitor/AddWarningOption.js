@@ -206,7 +206,7 @@ export default class AddWarningOption extends Component {
             title="编辑邮箱服务器"
             visible={modalVisibility}
             onCancel={() => this.setState({ modalVisibility: false })}
-          >
+            >
             <Form>
               <Item label="邮箱服务器" {...modalLayout}>
                 {getFieldDecorator('emailServer', {

@@ -150,14 +150,14 @@ export default class SubscriptionTable extends Component {
                 className={styles.time}
                 placeholder="分钟"
                 disabled={!isNodeOperator}
-              />
+                />
               <InputNumber
                 max={23}
                 min={0}
                 className={styles.time}
                 placeholder="小时"
                 disabled={!isNodeOperator}
-              />
+                />
               <Input className={styles.time} placeholder="日" disabled={!isNodeOperator} />
               <Input className={styles.time} placeholder="月" disabled={!isNodeOperator} />
               <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
@@ -191,7 +191,7 @@ export default class SubscriptionTable extends Component {
                 columns={columns}
                 className={styles.table}
                 bordered
-              />
+                />
               <Table
                 dataSource={data}
                 title={() => (
@@ -216,14 +216,14 @@ export default class SubscriptionTable extends Component {
                 columns={arrowColumns}
                 className={styles.arrow}
                 pagination={false}
-              />
+                />
               <Table
                 dataSource={data}
                 title={() => <span>目标表 : table1</span>}
                 columns={columns}
                 className={styles.table}
                 bordered
-              />
+                />
             </Card>
             <Card className={styles.card}>
               <div className="mb16">
@@ -241,7 +241,7 @@ export default class SubscriptionTable extends Component {
                 columns={columns}
                 className={styles.table}
                 bordered
-              />
+                />
               <Table
                 dataSource={data}
                 title={() => (
@@ -266,14 +266,14 @@ export default class SubscriptionTable extends Component {
                 columns={arrowColumns}
                 className={styles.arrow}
                 pagination={false}
-              />
+                />
               <Table
                 dataSource={data}
                 title={() => <span>目标表 : table1</span>}
                 columns={columns}
                 className={styles.table}
                 bordered
-              />
+                />
             </Card>
           </div>
         </div>

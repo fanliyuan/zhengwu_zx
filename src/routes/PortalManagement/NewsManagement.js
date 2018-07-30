@@ -241,14 +241,14 @@ export default class NewsManagement extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
-            />
+              />
             <Input
               placeholder="操作人"
               value={operator}
               onPressEnter={this.handleSearch}
               onChange={this.handleOperatorChange}
               className={styles.operator}
-            />
+              />
             <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
@@ -268,14 +268,14 @@ export default class NewsManagement extends Component {
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
-            />
+              />
           </div>
           <Modal
             visible={modalShow}
             title={classifyName ? '修改文章分类' : '新增文章分类'}
             onOk={this.handleSubmit}
             onCancel={() => this.setState({ modalShow: false })}
-          >
+            >
             <Form>
               <Form.Item label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('name', {

@@ -293,7 +293,7 @@ export default class CatalogManagement extends Component {
               <span
                 className={styles.clickBtn}
                 onClick={that.handleSourceConnect.bind(null, row.id)}
-              >
+                >
                 资源挂接
               </span>
               {isNodeOperator && (
@@ -314,7 +314,7 @@ export default class CatalogManagement extends Component {
                 <Popconfirm
                   title={`确认删除${row.name}?`}
                   onConfirm={() => message.info('删除成功!')}
-                >
+                  >
                   <a>删除</a>
                 </Popconfirm>
               )}
@@ -398,7 +398,7 @@ export default class CatalogManagement extends Component {
                 defaultExpandAll
                 onRightClick={this.directoryChange}
                 className={styles.tree}
-              >
+                >
                 {renderTreeNode(menuData)}
               </DirectoryTree>
             </div>
@@ -413,7 +413,7 @@ export default class CatalogManagement extends Component {
                 style={{ marginRight: 20, width: 120 }}
                 value={provider}
                 onChange={this.providerChange}
-              >
+                >
                 {selectData}
               </Select>
               <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
@@ -422,7 +422,7 @@ export default class CatalogManagement extends Component {
                 style={{ marginRight: 20, width: 120 }}
                 value={status}
                 onChange={this.statusChange}
-              >
+                >
                 {selectData1}
               </Select>
               <Checkbox style={{ marginRight: 10 }}>已挂接资源</Checkbox>
@@ -441,7 +441,7 @@ export default class CatalogManagement extends Component {
                     action="//jsonplaceholder.typicode.com/posts/"
                     showUploadList={false}
                     onChange={this.uploadFun}
-                  >
+                    >
                     <Button icon="upload">导入</Button>
                   </Upload>
                   {isHover && <a onClick={this.downTpl}>下载模板</a>}
@@ -457,7 +457,7 @@ export default class CatalogManagement extends Component {
                 rowSelection={rowSelection}
                 loading={this.state.loading}
                 bordered
-              />
+                />
             </div>
             <div>{isNodeOperator && <Button type="primary">删除</Button>}</div>
           </div>

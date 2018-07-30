@@ -218,7 +218,7 @@ export default class AccessAudit extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </Card>
       </PageHeaderLayout>

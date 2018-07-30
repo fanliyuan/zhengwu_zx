@@ -243,7 +243,7 @@ export default class SearchRelationship extends Component {
                 pagination={pagination}
                 rowKey="id"
                 bordered
-              />
+                />
             </Col>
             <Col span={15} offset={1}>
               <h3>
@@ -257,7 +257,7 @@ export default class SearchRelationship extends Component {
                 bordered
                 components={components}
                 className={styles.table}
-              />
+                />
             </Col>
           </Row>
         </Card>

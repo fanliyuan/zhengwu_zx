@@ -240,7 +240,7 @@ export default class SourceManagement extends Component {
                   <Popconfirm
                     title={`确认删除${row.name}?`}
                     onConfirm={() => message.info('删除成功')}
-                  >
+                    >
                     <a>删除</a>
                   </Popconfirm>
                 )}
@@ -272,7 +272,7 @@ export default class SourceManagement extends Component {
                   <Popconfirm
                     title={`确认删除${row.name}?`}
                     onConfirm={() => message.info('删除成功')}
-                  >
+                    >
                     <a>删除</a>
                   </Popconfirm>
                 )}
@@ -344,7 +344,7 @@ export default class SourceManagement extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={dataType}
               onChange={this.dataTypeChange}
-            >
+              >
               {selectData}
             </Select>
             {/* <Select
@@ -366,7 +366,7 @@ export default class SourceManagement extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={status}
               onChange={this.statusChange}
-            >
+              >
               {selectData4}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 210 }} />
@@ -380,7 +380,7 @@ export default class SourceManagement extends Component {
               rowKey="id"
               rowSelection={rowSelection}
               bordered
-            />
+              />
           </div>
           <div>{isNodeOperator && <Button type="primary">删除</Button>}</div>
         </Card>

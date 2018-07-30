@@ -9,7 +9,7 @@ const NumberInfo = ({ theme, title, subTitle, total, subTotal, status, suffix, g
       [styles[`numberInfo${theme}`]]: theme,
     })}
     {...rest}
-  >
+    >
     {title && <div className={styles.numberInfoTitle}>{title}</div>}
     {subTitle && <div className={styles.numberInfoSubTitle}>{subTitle}</div>}
     <div className={styles.numberInfoValue} style={gap ? { marginTop: gap } : null}>

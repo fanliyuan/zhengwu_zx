@@ -32,7 +32,9 @@ module.exports = {
         prop: 'ignore',
       },
     ],
-    'react/jsx-closing-bracket-location': [0],
+    'react/jsx-closing-bracket-location': [2, {
+      'location': 'props-aligned',
+    }],
     'no-else-return': [0],
     'no-restricted-syntax': [0],
     'import/no-extraneous-dependencies': [0],
@@ -65,7 +67,6 @@ module.exports = {
     'no-plusplus': [0],
     'react/destructuring-assignment': [0],
     'no-param-reassign': [0],
-    'react/jsx-tag-spacing': [0],
     'react/no-multi-comp': [0],
     semi: ['error', 'never'],
   },

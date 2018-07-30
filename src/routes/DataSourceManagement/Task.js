@@ -217,7 +217,7 @@ export default class Task extends Component {
                   pagination={pagination}
                   // loading={loading}
                   rowKey="id"
-                />
+                  />
               </TabPane>
               <TabPane tab="同步日志" key="3">
                 <Table
@@ -227,7 +227,7 @@ export default class Task extends Component {
                   pagination={pagination}
                   // loading={loading}
                   rowKey="id"
-                />
+                  />
               </TabPane>
             </Tabs>
           </div>

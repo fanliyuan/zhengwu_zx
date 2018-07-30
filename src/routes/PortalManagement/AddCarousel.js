@@ -267,7 +267,8 @@ export default class AddCarousel extends Component {
           type="primary"
           className={styles.fr}
           disabled={hasErrors(getFieldsError())}
-          onClick={this.handleSave}>
+          onClick={this.handleSave}
+          >
           保存
         </Button>
       </Fragment>
@@ -289,7 +290,8 @@ export default class AddCarousel extends Component {
               label="名称"
               {...itemLayout}
               validateStatus={nameError ? 'error' : ''}
-              help={nameError ? '请输入名称' : ''}>
+              help={nameError ? '请输入名称' : ''}
+              >
               {getFieldDecorator('name', {
                 initialValue: name,
                 rules: [
@@ -304,7 +306,8 @@ export default class AddCarousel extends Component {
               label="栏目"
               {...itemLayout}
               validateStatus={columnError ? 'error' : ''}
-              help={columnError ? '选择栏目' : ''}>
+              help={columnError ? '选择栏目' : ''}
+              >
               {getFieldDecorator('column', {
                 initialValue: column,
                 rules: [
@@ -322,7 +325,8 @@ export default class AddCarousel extends Component {
               label="排序"
               {...itemLayout}
               validateStatus={sortError ? 'error' : ''}
-              help={sortError ? '请输入排序' : ''}>
+              help={sortError ? '请输入排序' : ''}
+              >
               {getFieldDecorator('sort', {
                 initialValue: sort,
                 rules: [
@@ -337,7 +341,8 @@ export default class AddCarousel extends Component {
               label="资源地址类型"
               {...itemLayout}
               validateStatus={urlTypeError ? 'error' : ''}
-              help={urlTypeError ? '请选择链接类型' : ''}>
+              help={urlTypeError ? '请选择链接类型' : ''}
+              >
               {getFieldDecorator('urlType', {
                 initialValue: urlType,
                 rules: [
@@ -357,7 +362,8 @@ export default class AddCarousel extends Component {
               label="资源地址"
               {...itemLayout}
               validateStatus={urlError ? 'error' : ''}
-              help={urlError ? '请输入链接地址' : ''}>
+              help={urlError ? '请输入链接地址' : ''}
+              >
               {getFieldDecorator('url', {
                 initialValue: url,
                 rules: [
@@ -380,7 +386,8 @@ export default class AddCarousel extends Component {
               {...itemLayout}
               validateStatus={imageError ? 'error' : ''}
               help={imageError ? '请上传封面图' : ''}
-              extra={image ? '网络或者服务器错误,上传图片失败' : ''}>
+              extra={image ? '网络或者服务器错误,上传图片失败' : ''}
+              >
               {getFieldDecorator('image', {
                 getValueFromEvent: this.normFile,
                 rules: [
@@ -394,7 +401,8 @@ export default class AddCarousel extends Component {
                   action="//jsonplaceholder.typicode.com/posts/" // 上传地址
                   listType="picture-card"
                   onChange={this.uploadChange}
-                  onPreview={this.handlePreview}>
+                  onPreview={this.handlePreview}
+                  >
                   {fileList.length >= 1 ? null : uploadBtn}
                 </Upload>
               )}

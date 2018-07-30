@@ -60,7 +60,7 @@ export default class NoticeIcon extends PureComponent {
             onClear={() => onClear(child.props.title)}
             title={child.props.title}
             locale={locale}
-          />
+            />
         </TabPane>
       )
     })
@@ -101,7 +101,7 @@ export default class NoticeIcon extends PureComponent {
         popupAlign={popupAlign}
         onVisibleChange={onPopupVisibleChange}
         {...popoverProps}
-      >
+        >
         {trigger}
       </Popover>
     )

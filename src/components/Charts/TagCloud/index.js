@@ -141,7 +141,7 @@ class TagCloud extends Component {
         className={classNames(styles.tagCloud, className)}
         style={{ width: '100%', height }}
         ref={this.saveRootRef}
-      >
+        >
         {dv && (
           <Chart
             width={w}
@@ -152,7 +152,7 @@ class TagCloud extends Component {
               x: { nice: false },
               y: { nice: false },
             }}
-          >
+            >
             <Coord reflect="y" />
             <Geom type="point" position="x*y" color="text" shape="cloud" />
           </Chart>

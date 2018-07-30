@@ -100,7 +100,7 @@ export default class TimelineChart extends React.Component {
           ds.setState('start', startValue)
           ds.setState('end', endValue)
         }}
-      />
+        />
     )
 
     return (

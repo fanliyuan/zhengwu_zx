@@ -211,7 +211,7 @@ export default class SourceManagement extends Component {
                     rowSelection={rowSelection}
                     rowKey="id"
                     bordered
-                  />
+                    />
                 </div>
               </TabPane>
               <TabPane tab="数据文件" key="2">
@@ -243,7 +243,7 @@ export default class SourceManagement extends Component {
                     pagination={pagination}
                     rowKey="id"
                     bordered
-                  />
+                    />
                 </div>
               </TabPane>
             </Tabs>

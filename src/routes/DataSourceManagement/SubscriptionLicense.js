@@ -235,21 +235,21 @@ export default class SubscriptionLicense extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={provider}
               onChange={this.providerChange}
-            >
+              >
               {selectData}
             </Select>
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={provider}
               onChange={this.providerChange}
-            >
+              >
               {selectData3}
             </Select>
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={provider}
               onChange={this.providerChange}
-            >
+              >
               {selectData2}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} />
@@ -257,7 +257,7 @@ export default class SubscriptionLicense extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={status}
               onChange={this.statusChange}
-            >
+              >
               {selectData1}
             </Select>
             <Checkbox style={{ marginRight: 10 }}>已挂接资源</Checkbox>
@@ -271,7 +271,7 @@ export default class SubscriptionLicense extends Component {
               rowKey="id"
               rowSelection={rowSelection}
               bordered
-            />
+              />
           </div>
           <Modal title="审核" visible={visible} onOk={this.handleOk} onCancel={this.handleCancel}>
             <div className={styles.modals}>

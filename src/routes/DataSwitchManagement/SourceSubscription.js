@@ -323,7 +323,8 @@ export default class SourceSubscription extends Component {
                 <DirectoryTree
                   defaultExpandAll
                   onRightClick={this.directoryChange}
-                  className={styles.tree}>
+                  className={styles.tree}
+                  >
                   {renderTreeNode(menuData)}
                 </DirectoryTree>
               </div>
@@ -335,14 +336,16 @@ export default class SourceSubscription extends Component {
               <Select
                 style={{ marginRight: 20, width: 120 }}
                 onChange={this.handleSelectChangejg}
-                value={selectJg}>
+                value={selectJg}
+                >
                 {selectData}
               </Select>
               {isNodeOperator && (
                 <Select
                   style={{ marginRight: 20, width: 120 }}
                   onChange={this.handleSelectChangedy}
-                  value={selectDy}>
+                  value={selectDy}
+                  >
                   {selectData1}
                 </Select>
               )}
@@ -357,7 +360,7 @@ export default class SourceSubscription extends Component {
                 pagination={pagination}
                 rowKey="id"
                 bordered
-              />
+                />
             </div>
           </Col>
         </Row>

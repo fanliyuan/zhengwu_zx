@@ -291,25 +291,25 @@ export default class Node extends Component {
                 loading={loading}
                 title="CPU利用率(当前值4%)"
                 style={{ width: 600, display: 'inline-block', marginRight: 100 }}
-              >
+                >
                 <TimelineChart
                   data={CPUData}
                   titleMap={{ y1: 'CPU利用率' }}
                   height={300}
                   showArea
-                />
+                  />
               </Card>
               <Card
                 loading={loading}
                 title="内存使用(当前值0.5G，6.3%，峰值1G，12%)"
                 style={{ width: 600, display: 'inline-block' }}
-              >
+                >
                 <TimelineChart
                   data={memoryData}
                   titleMap={{ y1: '内存使用' }}
                   height={300}
                   showArea
-                />
+                  />
               </Card>
             </div>
             <div style={{ textAlign: 'center', marginTop: 40 }}>
@@ -317,25 +317,25 @@ export default class Node extends Component {
                 loading={loading}
                 title="硬盘使用(当前值30T，6%；峰值40T，8%)"
                 style={{ width: 600, display: 'inline-block', marginRight: 100 }}
-              >
+                >
                 <TimelineChart
                   data={diskData}
                   titleMap={{ y1: '硬盘使用' }}
                   height={300}
                   showArea
-                />
+                  />
               </Card>
               <Card
                 loading={loading}
                 title="网络利用率(当前值8%)"
                 style={{ width: 600, display: 'inline-block' }}
-              >
+                >
                 <TimelineChart
                   data={newworkData}
                   titleMap={{ y1: '网络利用率' }}
                   height={300}
                   showArea
-                />
+                  />
               </Card>
             </div>
           </Tabs.TabPane>
@@ -346,12 +346,12 @@ export default class Node extends Component {
                   value={warningName}
                   onChange={this.warningNameChange}
                   className={styles.input}
-                />
+                  />
                 <DatePicker.RangePicker
                   value={warningTime}
                   onChange={this.warningTimeChange}
                   className={styles.date}
-                />
+                  />
                 <Button type="primary" icon="search" onClick={this.search}>
                   搜索
                 </Button>
@@ -366,19 +366,19 @@ export default class Node extends Component {
                   value={dataOriginName}
                   onChange={this.dataOriginNameChange}
                   className={styles.input}
-                />
+                  />
                 <Input
                   value={serverAddress}
                   onChange={this.serverAddressChagne}
                   className={styles.input}
-                />
+                  />
                 <Cascader
                   options={organizationList}
                   value={organization}
                   onChange={this.organizationChange}
                   placeholder="请选择机构"
                   className={styles.select}
-                />
+                  />
                 <Select value={state} onChange={this.stateChange} className={styles.select}>
                   {stateComs}
                 </Select>

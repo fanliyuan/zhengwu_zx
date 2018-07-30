@@ -56,13 +56,13 @@ export default class NewMenu extends PureComponent {
                   path={item.path}
                   component={item.component}
                   exact={item.exact}
-                />
+                  />
               ))}
               <Redirect
                 exact
                 from="/dataSourceManagement/newMenu"
                 to="/dataSourceManagement/newMenu/one"
-              />
+                />
             </Switch>
           </Fragment>
         </Card>

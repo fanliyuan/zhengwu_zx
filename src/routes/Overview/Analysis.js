@@ -32,8 +32,9 @@ for (let i = 0; i < 7; i += 1) {
 
 const Yuan = ({ children }) => (
   <span
-    dangerouslySetInnerHTML={{ __html: yuan(children) }} /* eslint-disable-line react/no-danger */
-  />
+    // eslint-disable-next-line
+    dangerouslySetInnerHTML={{ __html: yuan(children) }}
+    />
 )
 
 @connect(({ chart, loading }) => ({
@@ -166,7 +167,7 @@ export default class Analysis extends Component {
           value={rangePickerValue}
           onChange={this.handleRangePickerChange}
           style={{ width: 256 }}
-        />
+          />
       </div>
     )
 
@@ -217,7 +218,7 @@ export default class Analysis extends Component {
             gap={2}
             total={`${data.cvr * 100}%`}
             theme={currentKey !== data.name && 'light'}
-          />
+            />
         </Col>
         <Col span={12} style={{ paddingTop: 36 }}>
           <Pie
@@ -228,7 +229,7 @@ export default class Analysis extends Component {
             margin={[0, 0, 0, 0]}
             percent={data.cvr * 100}
             height={64}
-          />
+            />
         </Col>
       </Row>
     )
@@ -257,7 +258,7 @@ export default class Analysis extends Component {
               total={() => <Yuan>126560</Yuan>}
               footer={<Field label="日均销售额" value={`￥${numeral(12423).format('0,0')}`} />}
               contentHeight={46}
-            >
+              >
               <Trend flag="up" style={{ marginRight: 16 }}>
                 周同比
                 <span className={styles.trendText}>12%</span>
@@ -280,7 +281,7 @@ export default class Analysis extends Component {
               total={numeral(8846).format('0,0')}
               footer={<Field label="日访问量" value={numeral(1234).format('0,0')} />}
               contentHeight={46}
-            >
+              >
               <MiniArea color="#975FE4" data={visitData} />
             </ChartCard>
           </Col>
@@ -296,7 +297,7 @@ export default class Analysis extends Component {
               total={numeral(6560).format('0,0')}
               footer={<Field label="转化率" value="60%" />}
               contentHeight={46}
-            >
+              >
               <MiniBar data={visitData} />
             </ChartCard>
           </Col>
@@ -323,7 +324,7 @@ export default class Analysis extends Component {
                 </div>
               }
               contentHeight={46}
-            >
+              >
               <MiniProgress percent={78} strokeWidth={8} target={80} color="#13C2C2" />
             </ChartCard>
           </Col>
@@ -390,7 +391,7 @@ export default class Analysis extends Component {
               title="线上热门搜索"
               extra={iconGroup}
               style={{ marginTop: 24 }}
-            >
+              >
               <Row gutter={68}>
                 <Col sm={12} xs={24} style={{ marginBottom: 24 }}>
                   <NumberInfo
@@ -406,7 +407,7 @@ export default class Analysis extends Component {
                     total={numeral(12321).format('0,0')}
                     status="up"
                     subTotal={17.1}
-                  />
+                    />
                   <MiniArea line height={45} data={visitData2} />
                 </Col>
                 <Col sm={12} xs={24} style={{ marginBottom: 24 }}>
@@ -416,7 +417,7 @@ export default class Analysis extends Component {
                     status="down"
                     subTotal={26.2}
                     gap={8}
-                  />
+                    />
                   <MiniArea line height={45} data={visitData2} />
                 </Col>
               </Row>
@@ -429,7 +430,7 @@ export default class Analysis extends Component {
                   style: { marginBottom: 0 },
                   pageSize: 5,
                 }}
-              />
+                />
             </Card>
           </Col>
           <Col xl={12} lg={24} md={24} sm={24} xs={24}>
@@ -452,7 +453,7 @@ export default class Analysis extends Component {
                 </div>
               }
               style={{ marginTop: 24, minHeight: 509 }}
-            >
+              >
               <h4 style={{ marginTop: 8, marginBottom: 32 }}>销售额</h4>
               <Pie
                 hasLegend
@@ -462,7 +463,7 @@ export default class Analysis extends Component {
                 valueFormat={value => <Yuan>{value}</Yuan>}
                 height={248}
                 lineWidth={4}
-              />
+                />
             </Card>
           </Col>
         </Row>
@@ -473,7 +474,7 @@ export default class Analysis extends Component {
           bordered={false}
           bodyStyle={{ padding: '0 0 32px 0' }}
           style={{ marginTop: 32 }}
-        >
+          >
           <Tabs activeKey={activeKey} onChange={this.handleTabChange}>
             {offlineData.map(shop => (
               <TabPane tab={<CustomTab data={shop} currentTabKey={activeKey} />} key={shop.name}>
@@ -483,7 +484,7 @@ export default class Analysis extends Component {
                     data={offlineChartData}
                     titleMap={{ y1: '客流量', y2: '支付笔数' }}
                     showArea
-                  />
+                    />
                 </div>
               </TabPane>
             ))}

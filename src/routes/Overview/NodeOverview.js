@@ -263,7 +263,7 @@ export default class NodeOverview extends Component {
                     titleMap={{ y1: '交换量', y2: '计入量' }}
                     showArea
                     height={400}
-                  />
+                    />
                 </div>
               </Col>
               <Col span={8} className={styles.right}>
@@ -293,7 +293,7 @@ export default class NodeOverview extends Component {
                   }
                   hasLegend
                   height={294}
-                />
+                  />
                 <h3>平均传输速率</h3>
                 <Gauge
                   percent={87}
@@ -306,7 +306,7 @@ export default class NodeOverview extends Component {
                     { title: '最慢', value: '0.42MB/S' },
                     { title: '平均', value: '5.6MB/S' },
                   ]}
-                />
+                  />
               </Col>
             </Row>
           </Card>

@@ -237,7 +237,7 @@ export default class NewsLibrary extends Component {
               <Popconfirm
                 title={`是否要删除${row.title}?`}
                 onConfirm={() => message.success(`${row.title}删除成功`)}
-              >
+                >
                 <a>删除</a>
               </Popconfirm>
             </Fragment>
@@ -285,7 +285,7 @@ export default class NewsLibrary extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
-            />
+              />
             <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
               {typeComs}
             </Select>
@@ -295,7 +295,7 @@ export default class NewsLibrary extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleOperatorChange}
               className={styles.name}
-            />
+              />
             {/* <Select
               value={subscribe}
               onChange={this.handleSubscribeChange}
@@ -327,7 +327,7 @@ export default class NewsLibrary extends Component {
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
-            />
+              />
           </div>
         </div>
       </PageHeaderLayout>

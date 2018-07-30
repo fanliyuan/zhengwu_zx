@@ -281,21 +281,21 @@ export default class SourceAudit extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={dataType}
               onChange={this.dataTypeChange}
-            >
+              >
               {selectData}
             </Select>
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={nodeName}
               onChange={this.nodeNameChange}
-            >
+              >
               {selectData1}
             </Select>
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={owingJg}
               onChange={this.owingJgChange}
-            >
+              >
               {selectData2}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} />
@@ -303,7 +303,7 @@ export default class SourceAudit extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={status}
               onChange={this.statusChange}
-            >
+              >
               {selectData4}
             </Select>
             <Button type="primary">搜索</Button>
@@ -316,7 +316,7 @@ export default class SourceAudit extends Component {
               rowKey="id"
               rowSelection={rowSelection}
               bordered
-            />
+              />
           </div>
           <div>
             <Button type="primary">删除</Button>

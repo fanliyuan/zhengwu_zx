@@ -66,7 +66,8 @@ export default class DataInsert extends Component {
                 loading={loading}
                 title="接入数据量分布"
                 className={styles.card}
-                bordered={false}>
+                bordered={false}
+                >
                 <Pie
                   data={data1}
                   valueFormat={value => value}
@@ -76,7 +77,7 @@ export default class DataInsert extends Component {
                   hasLegend
                   showPercent
                   showValue={false}
-                />
+                  />
               </Card>
             </Col>
             <Col {...colResponsiveProps}>
@@ -98,7 +99,7 @@ export default class DataInsert extends Component {
                   hasLegend
                   showPercent
                   showValue={false}
-                />
+                  />
               </Card>
             </Col>
             <Col {...colResponsiveProps}>
@@ -108,7 +109,7 @@ export default class DataInsert extends Component {
                   data={data3}
                   titleMap={{ y1: '数据接入', y2: '表接入' }}
                   adjustType="stack"
-                />
+                  />
               </Card>
             </Col>
           </Row>
@@ -122,7 +123,7 @@ export default class DataInsert extends Component {
                   lineWidth={0}
                   offset={20}
                   padding={[24, 0, 24, 0]}
-                />
+                  />
               </Card>
             </Col>
             <Col {...colResponsiveProps}>
@@ -132,7 +133,7 @@ export default class DataInsert extends Component {
                   data={data3}
                   titleMap={{ y1: '数据接入', y2: '表接入' }}
                   adjustType="stack"
-                />
+                  />
               </Card>
             </Col>
           </Row>

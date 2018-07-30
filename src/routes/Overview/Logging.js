@@ -160,7 +160,7 @@ export default class Log extends Component {
               className={styles.picker}
               onChange={this.handlePick}
               style={{ widht: 200, marginRight: 20 }}
-            />
+              />
             <Input
               className={styles.IPInput}
               placeholder="IP地址"
@@ -168,12 +168,12 @@ export default class Log extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleIPChange}
               style={{ marginRight: 20 }}
-            />
+              />
             <Select
               value={state}
               onChange={this.handSelectChange}
               style={{ width: 112, marginRight: 20 }}
-            >
+              >
               {optionList}
             </Select>
             <Button type="primary" onClick={this.handleSearch} icon="search">
@@ -189,7 +189,7 @@ export default class Log extends Component {
               loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
-            />
+              />
           </div>
         </div>
       </PageHeaderLayout>

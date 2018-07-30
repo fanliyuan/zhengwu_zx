@@ -597,7 +597,7 @@ export default class ResourceConnectionData extends Component {
                 pagination={pagination}
                 rowKey="id"
                 bordered
-              />
+                />
             </Col>
             <Col span={4} style={{ textAlign: 'center' }}>
               <Row>
@@ -622,7 +622,7 @@ export default class ResourceConnectionData extends Component {
                   padding: '0 10px',
                   display: ItemConnect ? 'block' : 'none',
                 }}
-              >
+                >
                 <Col>
                   <img src="/src/assets/arrow.png" alt="arrow" style={{ width: '100%' }} />
                 </Col>
@@ -633,7 +633,7 @@ export default class ResourceConnectionData extends Component {
                   marginTop: 30,
                   display: ItemConnect ? 'block' : 'none',
                 }}
-              >
+                >
                 <Col>
                   <img src="/src/assets/arrow.png" alt="arrow" style={{ width: '100%' }} />
                 </Col>
@@ -644,7 +644,7 @@ export default class ResourceConnectionData extends Component {
                   marginTop: 30,
                   display: ItemConnect ? 'block' : 'none',
                 }}
-              >
+                >
                 <Col>
                   <img src="/src/assets/arrow.png" alt="arrow" style={{ width: '100%' }} />
                 </Col>
@@ -657,7 +657,7 @@ export default class ResourceConnectionData extends Component {
                 pagination={pagination}
                 rowKey="id"
                 bordered
-              />
+                />
             </Col>
           </Row>
           <Modal
@@ -666,7 +666,7 @@ export default class ResourceConnectionData extends Component {
             onOk={this.handleOk1}
             onCancel={this.handleCancel1}
             width={900}
-          >
+            >
             <Row style={{ marginBottom: 20 }}>
               <Col span={5}>
                 <Input placeholder="资源名称" />
@@ -687,7 +687,7 @@ export default class ResourceConnectionData extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </Modal>
           <Modal
             title="检索关系设置"
@@ -695,7 +695,7 @@ export default class ResourceConnectionData extends Component {
             onOk={this.handleOk2}
             onCancel={this.handleCancel2}
             width={900}
-          >
+            >
             <div>
               <h3>
                 数据表 共<span className={styles.spe}>32</span>张
@@ -713,7 +713,7 @@ export default class ResourceConnectionData extends Component {
                 bordered
                 components={components}
                 className={styles.table}
-              />
+                />
             </div>
           </Modal>
         </Card>

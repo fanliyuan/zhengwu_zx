@@ -172,20 +172,20 @@ export default class Logging extends Component {
               onPressEnter={this.handleSearch}
               className={styles.username}
               placeholder="用户名"
-            />
+              />
             {/* <Cascader options={organizationList} onChange={this.handleOrganizationChange} style={{width: 112, marginRight: 10}} placeholder="请选择机构" /> */}
             <Input
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
               placeholder="IP地址"
-            />
+              />
             <RangePicker onChange={this.handleDatePickerChange} className={styles.date} />
             <Select
               defaultValue={-1}
               onChange={this.handleResultChange}
               style={{ width: 112, marginRight: 10 }}
-            >
+              >
               {selectOptionList}
             </Select>
             <Button type="primary" onClick={this.handleSearch} icon="search">
@@ -200,7 +200,7 @@ export default class Logging extends Component {
               onChange={this.handleTableChange}
               loading={loading}
               rowKey="id"
-            />
+              />
           </div>
         </div>
       </PageHeaderLayout>

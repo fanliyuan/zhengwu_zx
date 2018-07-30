@@ -110,7 +110,7 @@ class StandardTable extends PureComponent {
             }
             type="info"
             showIcon
-          />
+            />
         </div>
         <Table
           loading={loading}
@@ -120,7 +120,7 @@ class StandardTable extends PureComponent {
           columns={columns}
           pagination={paginationProps}
           onChange={this.handleTableChange}
-        />
+          />
       </div>
     )
   }

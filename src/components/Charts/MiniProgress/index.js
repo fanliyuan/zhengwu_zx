@@ -19,7 +19,7 @@ const MiniProgress = ({ target, color = 'rgb(19, 194, 194)', strokeWidth, percen
           width: percent ? `${percent}%` : null,
           height: strokeWidth || null,
         }}
-      />
+        />
     </div>
   </div>
 )

@@ -13,7 +13,7 @@ const Exception = ({ className, linkElement = 'a', type, title, desc, img, actio
         <div
           className={styles.imgEle}
           style={{ backgroundImage: `url(${img || config[pageType].img})` }}
-        />
+          />
       </div>
       <div className={styles.content}>
         <h1>{title || config[pageType].title}</h1>

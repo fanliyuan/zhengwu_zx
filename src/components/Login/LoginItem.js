@@ -81,7 +81,7 @@ function generator({ defaultProps, defaultRules, type }) {
                     className={styles.getCaptcha}
                     size="large"
                     onClick={this.onGetCaptcha}
-                  >
+                    >
                     {count ? `${count} s` : '获取验证码'}
                   </Button>
                 </Col>

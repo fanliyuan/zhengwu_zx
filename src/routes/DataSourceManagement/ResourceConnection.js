@@ -127,7 +127,7 @@ export default class ResourceConnection extends Component {
             <Popconfirm
               title={`是否删除${row.fileName || '此行'}?`}
               onConfirm={() => message.info('删除成功!')}
-            >
+              >
               <a>删除</a>
             </Popconfirm>
           )
@@ -364,7 +364,7 @@ export default class ResourceConnection extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
           <Modal
             title="选择要挂接的资源"
@@ -372,7 +372,7 @@ export default class ResourceConnection extends Component {
             onOk={this.handleOk1}
             onCancel={this.handleCancel1}
             width={900}
-          >
+            >
             <Row style={{ marginBottom: 20 }}>
               <Col span={5}>
                 <Input placeholder="资源名称" />
@@ -393,7 +393,7 @@ export default class ResourceConnection extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </Modal>
           <Modal
             title="选择要挂接的资源文件"
@@ -401,14 +401,14 @@ export default class ResourceConnection extends Component {
             onOk={this.handleOk2}
             onCancel={this.handleCancel2}
             width={900}
-          >
+            >
             <Table
               columns={columnsModal2}
               dataSource={listModal2}
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </Modal>
         </Card>
       </PageHeaderLayout>

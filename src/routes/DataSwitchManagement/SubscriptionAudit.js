@@ -131,7 +131,7 @@ export default class SubscriptionAudit extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </Card>
       </PageHeaderLayout>

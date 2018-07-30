@@ -78,14 +78,14 @@ export default class Source extends Component {
                 className={styles.clickBtn}
                 onClick={() => that.handleView(row)}
                 style={view && row.id === showRow ? { cursor: 'default', color: 'silver' } : {}}
-              >
+                >
                 浏览
               </span>
               <span
                 className={styles.clickBtn}
                 onClick={() => that.handleAgency(row)}
                 style={agency && row.id === showRow ? { cursor: 'default', color: 'silver' } : {}}
-              >
+                >
                 结构
               </span>
             </div>
@@ -140,7 +140,7 @@ export default class Source extends Component {
                 truncateText="..."
                 textTruncateChild={<a href="#">read more</a>}
                 text={text}
-              />
+                />
             </Tooltip>
           )
         },
@@ -274,7 +274,7 @@ export default class Source extends Component {
                 rowSelection={rowSelection}
                 rowKey="id"
                 bordered
-              />
+                />
             </Col>
             {view && (
               <Col span={24}>
@@ -288,7 +288,7 @@ export default class Source extends Component {
                   rowSelection={rowSelection}
                   rowKey="id"
                   bordered
-                />
+                  />
               </Col>
             )}
             {agency && (
@@ -303,7 +303,7 @@ export default class Source extends Component {
                   rowSelection={rowSelection}
                   rowKey="id"
                   bordered
-                />
+                  />
               </Col>
             )}
           </Row>

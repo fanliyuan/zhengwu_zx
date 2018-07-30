@@ -130,7 +130,7 @@ class Bars extends Component {
             forceFit={forceFit}
             data={dv}
             padding={padding || 'auto'}
-          >
+            >
             {isVertical && <Coord transpose />}
             <Axis name="key" />
             <Axis name="value" />
@@ -141,7 +141,7 @@ class Bars extends Component {
               position={`${key}*${value}`}
               color={color}
               adjust={[{ type: 'dodge', marginRatio: 1 / 32 }]}
-            >
+              >
               <Label content={value} />
             </Geom>
           </Chart>

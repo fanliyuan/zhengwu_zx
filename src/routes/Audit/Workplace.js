@@ -129,7 +129,7 @@ export default class Workplace extends PureComponent {
                 {moment(item.updatedAt).fromNow()}
               </span>
             }
-          />
+            />
         </List.Item>
       )
     })
@@ -149,7 +149,7 @@ export default class Workplace extends PureComponent {
           <Avatar
             size="large"
             src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
-          />
+            />
         </div>
         <div className={styles.content}>
           <div className={styles.contentTitle}>早安，曲丽丽，祝你开心每一天！</div>
@@ -190,7 +190,7 @@ export default class Workplace extends PureComponent {
               extra={<Link to="/">全部项目</Link>}
               loading={projectLoading}
               bodyStyle={{ padding: 0 }}
-            >
+              >
               {notice.map(item => (
                 <Card.Grid className={styles.projectGrid} key={item.id}>
                   <Card bodyStyle={{ padding: 0 }} bordered={false}>
@@ -202,7 +202,7 @@ export default class Workplace extends PureComponent {
                         </div>
                       }
                       description={item.description}
-                    />
+                      />
                     <div className={styles.projectItemContent}>
                       <Link to={item.memberLink}>{item.member || ''}</Link>
                       {item.updatedAt && (
@@ -221,7 +221,7 @@ export default class Workplace extends PureComponent {
               className={styles.activeCard}
               title="动态"
               loading={activitiesLoading}
-            >
+              >
               <List loading={activitiesLoading} size="large">
                 <div className={styles.activitiesList}>{this.renderActivities()}</div>
               </List>
@@ -233,7 +233,7 @@ export default class Workplace extends PureComponent {
               title="快速开始 / 便捷导航"
               bordered={false}
               bodyStyle={{ padding: 0 }}
-            >
+              >
               <EditableLinkGroup onAdd={() => {}} links={links} linkElement={Link} />
             </Card>
             <Card
@@ -241,7 +241,7 @@ export default class Workplace extends PureComponent {
               bordered={false}
               title="XX 指数"
               loading={radarData.length === 0}
-            >
+              >
               <div className={styles.chart}>
                 <Radar hasLegend height={343} data={radarData} />
               </div>

@@ -277,7 +277,7 @@ export default class MenuManagement extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
-            />
+              />
             <Select value={state} onChange={this.handleStateChange} className={styles.select}>
               {getSelectOptions(stateList)}
             </Select>
@@ -290,7 +290,7 @@ export default class MenuManagement extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleOperatorChange}
               className={styles.name}
-            />
+              />
             <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
@@ -309,12 +309,13 @@ export default class MenuManagement extends Component {
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
-            />
+              />
           </div>
           <Modal
             visible={showModal}
             title={modalTitle || '确认执行此操作?'}
-            onCancel={() => this.setState({ showModal: false })}>
+            onCancel={() => this.setState({ showModal: false })}
+            >
             {modalTitle === '发布' ? (
               <Fragment>
                 <span className={styles.label}>是否推荐</span>

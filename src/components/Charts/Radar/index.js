@@ -119,7 +119,7 @@ export default class Radar extends Component {
           padding={padding}
           animate={animate}
           onGetG2Instance={this.getG2Instance}
-        >
+          >
           <Tooltip />
           <Coord type="polar" />
           <Axis
@@ -132,7 +132,7 @@ export default class Radar extends Component {
               },
               hideFirstLine: false,
             }}
-          />
+            />
           <Axis
             name="value"
             grid={{
@@ -141,7 +141,7 @@ export default class Radar extends Component {
                 lineDash: null,
               },
             }}
-          />
+            />
           <Geom type="line" position="label*value" color={['name', colors]} size={1} />
           <Geom
             type="point"
@@ -149,7 +149,7 @@ export default class Radar extends Component {
             color={['name', colors]}
             shape="circle"
             size={3}
-          />
+            />
         </Chart>
         {hasLegend && (
           <Row className={styles.legend}>
@@ -158,7 +158,7 @@ export default class Radar extends Component {
                 span={24 / legendData.length}
                 key={item.name}
                 onClick={() => this.handleLegendClick(item, i)}
-              >
+                >
                 <div className={styles.legendItem}>
                   <p>
                     <span
@@ -166,7 +166,7 @@ export default class Radar extends Component {
                       style={{
                         backgroundColor: !item.checked ? '#aaa' : item.color,
                       }}
-                    />
+                      />
                     <span>{item.name}</span>
                   </p>
                   <h6>{item.value}</h6>

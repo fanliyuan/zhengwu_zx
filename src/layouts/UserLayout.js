@@ -46,7 +46,7 @@ class UserLayout extends React.PureComponent {
                   <div>节点操作员 : operator-n</div>
                 </div>
               }
-            >
+              >
               <Icon type="question-circle-o" />
             </Tooltip>
             <div className={styles.top}>
@@ -66,7 +66,7 @@ class UserLayout extends React.PureComponent {
                   path={item.path}
                   component={item.component}
                   exact={item.exact}
-                />
+                  />
               ))}
               <Redirect exact from="/user" to="/user/login" />
             </Switch>

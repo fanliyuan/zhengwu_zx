@@ -101,7 +101,7 @@ export default class AddAccess extends Component {
                   ? '选择本地文件后,在资源注册时直接选择本地文件即可'
                   : ''
               }
-            >
+              >
               {getFieldDecorator('types')(<Cascader options={options} />)}
             </FormItem>
             <FormItem
@@ -115,7 +115,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('address')(<Input />)}
             </FormItem>
             <FormItem
@@ -129,7 +129,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('port')(<Input />)}
             </FormItem>
             <FormItem
@@ -143,7 +143,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('userName')(<Input />)}
             </FormItem>
             <FormItem
@@ -157,7 +157,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('psd')(<Input type="password" />)}
             </FormItem>
             <FormItem
@@ -171,7 +171,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('dataBaseAddress')(<Input />)}
             </FormItem>
             <FormItem
@@ -185,7 +185,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('dataBasePort')(<Input />)}
             </FormItem>
             <FormItem
@@ -199,7 +199,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('dataBaseUserName')(<Input />)}
             </FormItem>
             <FormItem
@@ -213,7 +213,7 @@ export default class AddAccess extends Component {
                       ? 'block'
                       : 'none',
               }}
-            >
+              >
               {getFieldDecorator('dataBasePassword')(<Input type="password" />)}
             </FormItem>
             <FormItem
@@ -225,7 +225,7 @@ export default class AddAccess extends Component {
                     ? 'none'
                     : 'block',
               }}
-            >
+              >
               <a onClick={() => message.info('点击了测试')}>测试</a>
             </FormItem>
 

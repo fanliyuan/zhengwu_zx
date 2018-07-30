@@ -210,7 +210,7 @@ export default class AccessManagement extends Component {
                 <Popconfirm
                   title={`此操作将删除${row.name},是否继续?`}
                   onConfirm={() => message.info('执行了删除操作')}
-                >
+                  >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
               </div>
@@ -224,7 +224,7 @@ export default class AccessManagement extends Component {
                 <Popconfirm
                   title={`此操作将删除${row.name},是否继续?`}
                   onConfirm={() => message.info('执行了删除操作')}
-                >
+                  >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
                 <span className={styles.editBtn} onClick={that.handleRegister}>
@@ -241,7 +241,7 @@ export default class AccessManagement extends Component {
                 <Popconfirm
                   title={`此操作将删除${row.name},是否继续?`}
                   onConfirm={() => message.info('执行了删除操作')}
-                >
+                  >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
                 <span className={styles.editBtn} onClick={that.handleRegister1}>
@@ -258,7 +258,7 @@ export default class AccessManagement extends Component {
                 <Popconfirm
                   title={`此操作将删除${row.name},是否继续?`}
                   onConfirm={() => message.info('执行了删除操作')}
-                >
+                  >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
                 <span className={styles.editBtn} onClick={that.handleRegister2}>
@@ -355,8 +355,7 @@ export default class AccessManagement extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-              // rowSelection={rowSelection}
-            />
+              />
           </div>
           {/* <div>
             <Button type="primary">删除</Button>

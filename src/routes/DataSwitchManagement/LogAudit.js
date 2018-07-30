@@ -78,7 +78,7 @@ export default class LogAudit extends Component {
                     <span>{item.content}</span>
                   </List.Item>
                 )}
-              />
+                />
             </Card>
             <Card style={{ width: 800, margin: '60px auto 0' }}>
               <List
@@ -90,7 +90,7 @@ export default class LogAudit extends Component {
                     <span>{item.content}</span>
                   </List.Item>
                 )}
-              />
+                />
             </Card>
           </Card>
         </div>

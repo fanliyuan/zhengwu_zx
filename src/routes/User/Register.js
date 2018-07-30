@@ -156,7 +156,7 @@ export default class Register extends Component {
           strokeWidth={6}
           percent={value.length * 10 > 100 ? 100 : value.length * 10}
           showInfo={false}
-        />
+          />
       </div>
     ) : null
   }
@@ -197,7 +197,7 @@ export default class Register extends Component {
               overlayStyle={{ width: 240 }}
               placement="right"
               visible={visible}
-            >
+              >
               {getFieldDecorator('password', {
                 rules: [
                   {
@@ -227,7 +227,7 @@ export default class Register extends Component {
                 value={prefix}
                 onChange={this.changePrefix}
                 style={{ width: '20%' }}
-              >
+                >
                 <Option value="86">+86</Option>
                 <Option value="87">+87</Option>
               </Select>
@@ -263,7 +263,7 @@ export default class Register extends Component {
                   disabled={count}
                   className={styles.getCaptcha}
                   onClick={this.onGetCaptcha}
-                >
+                  >
                   {count ? `${count} s` : '获取验证码'}
                 </Button>
               </Col>
@@ -276,7 +276,7 @@ export default class Register extends Component {
               className={styles.submit}
               type="primary"
               htmlType="submit"
-            >
+              >
               注册
             </Button>
             <Link className={styles.login} to="/user/login">

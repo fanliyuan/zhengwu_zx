@@ -93,7 +93,7 @@ export default class Source extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </Card>
       </PageHeaderLayout>

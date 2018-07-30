@@ -210,7 +210,7 @@ export default class Ellipsis extends Component {
           tooltip={tooltip}
           fullWidthRecognition={fullWidthRecognition}
           {...restProps}
-        />
+          />
       )
     }
 

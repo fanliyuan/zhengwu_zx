@@ -193,20 +193,20 @@ export default class Insert extends Component {
               onChange={this.nameChange}
               className={styles.input}
               placeholder="通道名称"
-            />
+              />
             <Input
               value={library}
               onChange={this.libraryChange}
               className={styles.input}
               placeholder="通道名称"
-            />
+              />
             <Cascader
               options={nodeList}
               value={node}
               onChange={this.nodeChange}
               className={styles.cascader}
               placeholder="请选择接入所属节点"
-            />
+              />
             <Select value={link} onChange={this.linkChange} className={styles.select}>
               {LinkComs}
             </Select>

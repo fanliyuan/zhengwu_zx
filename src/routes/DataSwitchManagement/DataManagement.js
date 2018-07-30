@@ -220,28 +220,28 @@ export default class DataManagement extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
-            />
+              />
             <Input
               className={styles.theme}
               placeholder="请输入主题"
               value={theme}
               onPressEnter={this.handleSearch}
               onChange={this.handleThemeChange}
-            />
+              />
             <Input
               className={styles.theme}
               placeholder="所属数据源"
               value={origin}
               onPressEnter={this.handleSearch}
               onChange={this.handleOriginChange}
-            />
+              />
             <Input
               className={styles.theme}
               placeholder="所属数据库"
               value={dataBase}
               onPressEnter={this.handleSearch}
               onChange={this.handleDataBaseChange}
-            />
+              />
             <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
@@ -253,7 +253,7 @@ export default class DataManagement extends Component {
               icon="download"
               className={styles.button}
               onClick={() => this.downloadFun(selectedRowKeys)}
-            >
+              >
               导出
             </Button>
           </div>
@@ -267,7 +267,7 @@ export default class DataManagement extends Component {
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
-            />
+              />
           </div>
         </div>
       </PageHeaderLayout>

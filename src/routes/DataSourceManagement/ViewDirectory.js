@@ -193,14 +193,14 @@ export default class ViewDirectory extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={dataType}
               onChange={this.selectDataTypeChange}
-            >
+              >
               {selectData}
             </Select>
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={nodeName}
               onChange={this.selectNodeChange}
-            >
+              >
               {selectData1}
             </Select>
             <Button type="primary">搜索</Button>
@@ -212,7 +212,7 @@ export default class ViewDirectory extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </div>
       </PageHeaderLayout>

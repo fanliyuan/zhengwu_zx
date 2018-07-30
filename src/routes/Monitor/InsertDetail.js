@@ -105,7 +105,7 @@ export default class InsertDetail extends Component {
               value={time}
               onChange={this.timeChange}
               className={styles.date}
-            />
+              />
             <Button type="primary" icon="search" onClick={this.search}>
               搜索
             </Button>

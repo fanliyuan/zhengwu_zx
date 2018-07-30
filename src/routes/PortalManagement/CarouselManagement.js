@@ -197,7 +197,8 @@ export default class CarouselManagement extends Component {
             title="确定删除此轮播图"
             okText="确定"
             okType="danger"
-            cancelText="取消">
+            cancelText="取消"
+            >
             <a style={{ marginRight: 8 }}>删除</a>
           </Popconfirm>
         </Fragment>
@@ -291,7 +292,7 @@ export default class CarouselManagement extends Component {
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
-            />
+              />
             {/* <Input
               placeholder="资源名称"
               value={resource}
@@ -322,7 +323,7 @@ export default class CarouselManagement extends Component {
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
-            />
+              />
           </div>
         </div>
       </PageHeaderLayout>

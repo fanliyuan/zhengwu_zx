@@ -112,7 +112,7 @@ class Login extends Component {
                 className={styles.tabs}
                 activeKey={type}
                 onChange={this.onSwitch}
-              >
+                >
                 {TabChildren}
               </Tabs>
               {otherChildren}

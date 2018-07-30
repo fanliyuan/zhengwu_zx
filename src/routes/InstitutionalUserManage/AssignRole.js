@@ -190,14 +190,14 @@ export default class AssignRole extends Component {
               style={{ marginRight: 20, width: 120 }}
               value={role}
               onChange={this.selectRoleChange}
-            >
+              >
               {selectData1}
             </Select>
             <Select
               style={{ marginRight: 20, width: 100 }}
               value={status}
               onChange={this.selectStatusChange}
-            >
+              >
               {selectData2}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} />
@@ -213,14 +213,14 @@ export default class AssignRole extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
           <Modal
             title="分配角色"
             visible={visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-          >
+            >
             <RadioGroup>
               <Radio value={1}>安全员</Radio>
               <Radio value={2}>管理员</Radio>

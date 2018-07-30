@@ -39,7 +39,7 @@ export default class MiniBar extends React.Component {
             forceFit={forceFit}
             data={data}
             padding={padding}
-          >
+            >
             <Tooltip showTitle={false} crosshairs={false} />
             <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />
           </Chart>

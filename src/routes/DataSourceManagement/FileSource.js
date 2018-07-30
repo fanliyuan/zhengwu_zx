@@ -123,7 +123,7 @@ export default class FileSource extends Component {
               rowKey="id"
               // rowSelection={rowSelection}
               bordered
-            />
+              />
           </div>
           {/* <div>
             <Button type="primary">删除</Button>

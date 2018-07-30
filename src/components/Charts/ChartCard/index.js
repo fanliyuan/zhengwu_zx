@@ -36,7 +36,7 @@ const ChartCard = ({
         className={classNames(styles.chartTop, {
           [styles.chartTopMargin]: !children && !footer,
         })}
-      >
+        >
         <div className={styles.avatar}>{avatar}</div>
         <div className={styles.metaWrap}>
           <div className={styles.meta}>
@@ -56,7 +56,7 @@ const ChartCard = ({
           className={classNames(styles.footer, {
             [styles.footerMargin]: !children,
           })}
-        >
+          >
           {footer}
         </div>
       )}

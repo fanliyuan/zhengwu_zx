@@ -61,13 +61,13 @@ class RoleLimit extends Component {
               <span
                 style={{ color: '#1890FF', cursor: 'pointer', marginRight: 8 }}
                 onClick={that.handleAdd}
-              >
+                >
                 查看
               </span>
               <span
                 style={{ color: '#1890FF', cursor: 'pointer' }}
                 onClick={that.setLimit.bind(null, row)}
-              >
+                >
                 权限
               </span>
             </div>
@@ -126,7 +126,7 @@ class RoleLimit extends Component {
               pagination={pagination}
               rowKey="id"
               bordered
-            />
+              />
           </div>
         </Card>
       </PageHeaderLayout>

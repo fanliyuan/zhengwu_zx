@@ -199,7 +199,7 @@ export default class ColumnPosition extends Component {
               onChange={this.nameChange}
               className={styles.input}
               placeholder="栏目名称"
-            />
+              />
             <Select value={page} onChange={this.pageChange} className={styles.input}>
               {pageComs}
             </Select>
@@ -208,12 +208,12 @@ export default class ColumnPosition extends Component {
               onChange={this.operatorChange}
               className={styles.input}
               placeholder="操作人"
-            />
+              />
             <DatePicker.RangePicker
               value={time}
               onChange={this.timeChange}
               className={styles.picker}
-            />
+              />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
             </Button>
@@ -225,7 +225,7 @@ export default class ColumnPosition extends Component {
             rowKey="id"
             bordered
             loading={loading}
-          />
+            />
           <Modal
             visible={editShow}
             title="修改栏目名称"
@@ -233,7 +233,8 @@ export default class ColumnPosition extends Component {
             onCancel={() => {
               this.setState({ editShow: false })
             }}
-            className={styles.modal}>
+            className={styles.modal}
+            >
             <Form>
               <Form.Item label="栏目名称" labelCol={{ span: 4 }} wrapperCol={{ span: 12 }}>
                 {getFieldDecorator('edit', {

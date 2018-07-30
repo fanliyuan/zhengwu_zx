@@ -243,10 +243,7 @@ export default class Pie extends Component {
               padding={padding}
               animate={animate}
               onGetG2Instance={this.getG2Instance}
-              // 以下事件可以触发,但是暂时不清楚参数ev
-              // onIntervalMouseenter={(ev) => {console.log(ev)}}
-              // onIntervalMouseleave={(ev) => {console.log(ev)}}
-            >
+              >
               {!!tooltip && <Tooltip showTitle={false} />}
               <Coord type="theta" innerRadius={inner} />
               <Geom
@@ -255,7 +252,8 @@ export default class Pie extends Component {
                 type="intervalStack"
                 position="percent"
                 color={['x', percent ? formatColor : defaultColors]}
-                selected={selected}>
+                selected={selected}
+                >
                 {/* 这里是label */}
                 <Label content="y" offset={offset} textStyle={textStyle} />
               </Geom>
@@ -282,7 +280,7 @@ export default class Pie extends Component {
                   style={{
                     backgroundColor: !item.checked ? '#aaa' : item.color,
                   }}
-                />
+                  />
                 <span className={styles.legendTitle}>{item.x}</span>
                 <Divider type="vertical" />
                 {showPercent && (

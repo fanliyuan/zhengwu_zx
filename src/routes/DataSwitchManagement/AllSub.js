@@ -215,7 +215,8 @@ export default class AllSub extends Component {
                       <div>停用后将暂停采集数据！</div>
                     </div>
                   }
-                  onConfirm={() => message.success('已停止')}>
+                  onConfirm={() => message.success('已停止')}
+                  >
                   <a className="mr16">停止</a>
                 </Popconfirm>
               )}
@@ -224,7 +225,8 @@ export default class AllSub extends Component {
                   to={`/dataSwitchManagement/${
                     row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
                   }/${row.id}`}
-                  className="mr8">
+                  className="mr8"
+                  >
                   查看
                 </Link>
               )}
@@ -242,7 +244,8 @@ export default class AllSub extends Component {
                       <div>启动后可进行采集数据！</div>
                     </div>
                   }
-                  onConfirm={() => message.success('已启动')}>
+                  onConfirm={() => message.success('已启动')}
+                  >
                   <a className="mr8">运行</a>
                 </Popconfirm>
               )}
@@ -251,14 +254,16 @@ export default class AllSub extends Component {
                   to={`/dataSwitchManagement/${
                     row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
                   }/${row.id}`}
-                  className="mr8">
+                  className="mr8"
+                  >
                   查看
                 </Link>
               )}
               {isNodeOperator && (
                 <Popconfirm
                   title={`是否取消${row.name}的订阅`}
-                  onConfirm={() => message.success('取消成功')}>
+                  onConfirm={() => message.success('取消成功')}
+                  >
                   <a className="mr8">取消订阅</a>
                 </Popconfirm>
               )}
@@ -423,21 +428,21 @@ export default class AllSub extends Component {
                   onPressEnter={this.handleSearch}
                   onChange={this.handleNameChange}
                   className={styles.name}
-                />
+                  />
                 <Input
                   className={styles.theme}
                   placeholder="请输入主题"
                   value={theme}
                   onPressEnter={this.handleSearch}
                   onChange={this.handleThemeChange}
-                />
+                  />
                 <Input
                   className={styles.name}
                   placeholder="订阅机构/发布机构"
                   value={organization}
                   onPressEnter={this.handleSearch}
                   onChange={this.handleOrganizationChange}
-                />
+                  />
                 <Select value={state} onChange={this.handSelectChange} className={styles.state}>
                   {optionComs1}
                 </Select>
@@ -461,7 +466,8 @@ export default class AllSub extends Component {
                         okText: '确定',
                         cancelText: '取消',
                       })
-                    }>
+                    }
+                    >
                     启动
                   </Button>
                   <Button
@@ -476,7 +482,8 @@ export default class AllSub extends Component {
                         okText: '确定',
                         cancelText: '取消',
                       })
-                    }>
+                    }
+                    >
                     停止
                   </Button>
                 </div>
@@ -489,7 +496,7 @@ export default class AllSub extends Component {
                   rowSelection={rowSelection}
                   rowKey="id"
                   onChange={this.handleStandardTableChange}
-                />
+                  />
               </div>
             </TabPane>
             {isNodeOperator && (
@@ -501,14 +508,14 @@ export default class AllSub extends Component {
                     onPressEnter={this.handleSearch}
                     onChange={this.handleNameChange}
                     className={styles.name}
-                  />
+                    />
                   <Input
                     className={styles.theme}
                     placeholder="请输入主题"
                     value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}
-                  />
+                    />
                   <Select value={state} onChange={this.handSelectChange} className={styles.state}>
                     {optionComs2}
                   </Select>
@@ -529,14 +536,14 @@ export default class AllSub extends Component {
                     onPressEnter={this.handleSearch}
                     onChange={this.handleNameChange}
                     className={styles.name}
-                  />
+                    />
                   <Input
                     className={styles.theme}
                     placeholder="请输入主题"
                     value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}
-                  />
+                    />
                   <Select value={state} onChange={this.handSelectChange} className={styles.state}>
                     {optionComs2}
                   </Select>

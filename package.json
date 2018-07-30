@@ -88,11 +88,10 @@
     "puppeteer": "^1.4.0"
   },
   "lint-staged": {
-    "**/*.{js,jsx,less}": [
-      "prettier --write",
+    "**/*.{js,jsx}": [
+      "eslint --fix --ext .js src mock tests",
       "git add"
     ],
-    "**/*.{js,jsx}": "npm run lint-staged:js",
     "**/*.less": "stylelint --syntax less"
   },
   "engines": {

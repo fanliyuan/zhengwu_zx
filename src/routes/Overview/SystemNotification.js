@@ -171,7 +171,7 @@ export default class SystemNotification extends PureComponent {
               bordered
               pagination={pagination}
               loading={loading}
-            />
+              />
           </div>
           <div className={styles.tableBtnsPro}>
             <Button onClick={this.handleDelete}>删除</Button>

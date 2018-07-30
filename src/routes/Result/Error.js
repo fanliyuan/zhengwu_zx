@@ -12,7 +12,7 @@ const extra = (
         fontWeight: '500',
         marginBottom: 16,
       }}
-    >
+      >
       您提交的内容有如下错误：
     </div>
     <div style={{ marginBottom: 16 }}>
@@ -44,7 +44,7 @@ export default () => (
         extra={extra}
         actions={actions}
         style={{ marginTop: 48, marginBottom: 16 }}
-      />
+        />
     </Card>
   </PageHeaderLayout>
 )

@@ -207,7 +207,7 @@ export default class AddSwitch extends Component {
               label="业务范围节点"
               style={{ display: getFieldValue('fieldJg') === undefined ? 'none' : 'block' }}
               {...FormItemLayout}
-            >
+              >
               {getFieldDecorator('fieldNode', {
                 rules: [
                   {
