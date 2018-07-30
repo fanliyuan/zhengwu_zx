@@ -1,6 +1,9 @@
 import React from 'react'
+import { Divider } from 'antd'
 import { Chart, Geom, Axis, Coord, Guide, Shape } from 'bizcharts'
 import autoHeight from '../autoHeight'
+
+import styles from './index.less'
 
 const { Arc, Html, Line } = Guide
 
@@ -73,6 +76,8 @@ export default class Gauge extends React.Component {
       color = '#2F9CFF',
       bgColor = '#F0F2F5',
       format = '',
+      hasLegend = false,
+      legendData = [],
     } = this.props
     const cols = {
       value: {
@@ -85,94 +90,114 @@ export default class Gauge extends React.Component {
     }
     const data = [{ value: percent / 10 }]
     return (
-      <Chart height={height} data={data} scale={cols} padding={[-16, 0, 16, 0]} forceFit={forceFit}>
-        <Coord type="polar" startAngle={-1.25 * Math.PI} endAngle={0.25 * Math.PI} radius={0.8} />
-        <Axis name="1" line={null} />
-        <Axis
-          line={null}
-          tickLine={null}
-          subTickLine={null}
-          name="value"
-          zIndex={2}
-          gird={null}
-          label={{
-            offset: -12,
-            formatter,
-            textStyle: {
-              fontSize: 12,
-              fill: 'rgba(0, 0, 0, 0.65)',
-              textAlign: 'center',
-            },
-          }}
-        />
-        <Guide>
-          <Line
-            start={[3, 0.905]}
-            end={[3, 0.85]}
-            lineStyle={{
-              stroke: color,
-              lineDash: null,
-              lineWidth: 2,
+      <div className={styles.chart}>
+        <Chart
+          height={height}
+          data={data}
+          scale={cols}
+          padding={[-16, 0, 16, 0]}
+          forceFit={forceFit}
+          style={{ marginLeft: hasLegend ? -180 : 0 }}>
+          <Coord type="polar" startAngle={-1.25 * Math.PI} endAngle={0.25 * Math.PI} radius={0.8} />
+          <Axis name="1" line={null} />
+          <Axis
+            line={null}
+            tickLine={null}
+            subTickLine={null}
+            name="value"
+            zIndex={2}
+            gird={null}
+            label={{
+              offset: -12,
+              formatter,
+              textStyle: {
+                fontSize: 12,
+                fill: 'rgba(0, 0, 0, 0.65)',
+                textAlign: 'center',
+              },
             }}
           />
-          <Line
-            start={[5, 0.905]}
-            end={[5, 0.85]}
-            lineStyle={{
-              stroke: color,
-              lineDash: null,
-              lineWidth: 3,
-            }}
-          />
-          <Line
-            start={[7, 0.905]}
-            end={[7, 0.85]}
-            lineStyle={{
-              stroke: color,
-              lineDash: null,
-              lineWidth: 3,
-            }}
-          />
-          <Arc
-            zIndex={0}
-            start={[0, 0.965]}
-            end={[10, 0.965]}
-            style={{
-              stroke: bgColor,
-              lineWidth: 10,
-            }}
-          />
-          <Arc
-            zIndex={1}
-            start={[0, 0.965]}
-            end={[data[0].value, 0.965]}
-            style={{
-              stroke: color,
-              lineWidth: 10,
-            }}
-          />
-          <Html
-            position={['50%', '95%']}
-            html={() => {
-              return `
+          <Guide>
+            <Line
+              start={[3, 0.905]}
+              end={[3, 0.85]}
+              lineStyle={{
+                stroke: color,
+                lineDash: null,
+                lineWidth: 2,
+              }}
+            />
+            <Line
+              start={[5, 0.905]}
+              end={[5, 0.85]}
+              lineStyle={{
+                stroke: color,
+                lineDash: null,
+                lineWidth: 3,
+              }}
+            />
+            <Line
+              start={[7, 0.905]}
+              end={[7, 0.85]}
+              lineStyle={{
+                stroke: color,
+                lineDash: null,
+                lineWidth: 3,
+              }}
+            />
+            <Arc
+              zIndex={0}
+              start={[0, 0.965]}
+              end={[10, 0.965]}
+              style={{
+                stroke: bgColor,
+                lineWidth: 10,
+              }}
+            />
+            <Arc
+              zIndex={1}
+              start={[0, 0.965]}
+              end={[data[0].value, 0.965]}
+              style={{
+                stroke: color,
+                lineWidth: 10,
+              }}
+            />
+            <Html
+              position={['50%', '95%']}
+              html={() => {
+                return `
                 <div style="width: 300px;text-align: center;font-size: 12px!important;">
                   <p style="font-size: 14px; color: rgba(0,0,0,0.43);margin: 0;">${title}</p>
                   <p style="font-size: 24px;color: rgba(0,0,0,0.85);margin: 0;">
                     ${format ? data[0].value + format : `${data[0].value * 10}%`}
                   </p>
                 </div>`
-            }}
+              }}
+            />
+          </Guide>
+          <Geom
+            line={false}
+            type="point"
+            position="value*1"
+            shape="pointer"
+            color={color}
+            active={false}
           />
-        </Guide>
-        <Geom
-          line={false}
-          type="point"
-          position="value*1"
-          shape="pointer"
-          color={color}
-          active={false}
-        />
-      </Chart>
+        </Chart>
+        {hasLegend && (
+          <ul className={styles.legend}>
+            {legendData.map(item => (
+              <li key={item.title}>
+                <span className={styles.dot} />
+                <span className={styles.legendTitle}>{item.title}</span>
+                <Divider type="vertical" />
+                <span>{item.value}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     )
   }
 }

@@ -135,6 +135,7 @@ export default class Pie extends Component {
       offset = -40,
       textStyle = { fontSize: 18 },
       listyle = {},
+      padding = [12, 0, 12, 0],
     } = this.props
 
     const { legendData, legendBlock } = this.state
@@ -222,8 +223,6 @@ export default class Pie extends Component {
     //   }),
     // ];
 
-    const padding = [12, 0, 12, 0]
-
     const dv = new DataView()
     dv.source(data).transform({
       type: 'percent',
@@ -256,8 +255,7 @@ export default class Pie extends Component {
                 type="intervalStack"
                 position="percent"
                 color={['x', percent ? formatColor : defaultColors]}
-                selected={selected}
-              >
+                selected={selected}>
                 {/* 这里是label */}
                 <Label content="y" offset={offset} textStyle={textStyle} />
               </Geom>

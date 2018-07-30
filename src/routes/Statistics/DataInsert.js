@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-15 17:29:48
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-16 17:39:04
+ * @Last Modified time: 2018-07-30 13:58:16
 */
 import React, { Component } from 'react'
 import { Row, Col, Card } from 'antd'
@@ -66,8 +66,7 @@ export default class DataInsert extends Component {
                 loading={loading}
                 title="接入数据量分布"
                 className={styles.card}
-                bordered={false}
-              >
+                bordered={false}>
                 <Pie
                   data={data1}
                   valueFormat={value => value}
@@ -116,7 +115,14 @@ export default class DataInsert extends Component {
           <Row gutter={16}>
             <Col {...colResponsiveProps}>
               <Card loading={loading} title="任务概况" className={styles.card} bordered={false}>
-                <Pie data={data4} height={400} inner={0} lineWidth={0} offset={20} />
+                <Pie
+                  data={data4}
+                  height={400}
+                  inner={0}
+                  lineWidth={0}
+                  offset={20}
+                  padding={[24, 0, 24, 0]}
+                />
               </Card>
             </Col>
             <Col {...colResponsiveProps}>

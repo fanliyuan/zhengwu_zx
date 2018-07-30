@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-16 15:15:00
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-30 11:30:36
+ * @Last Modified time: 2018-07-30 13:59:25
  * @描述: 节点概览
 */
 import React, { Component } from 'react'
@@ -279,7 +279,7 @@ export default class NodeOverview extends Component {
                   <h3 className="fl">最受欢迎的资源</h3>
                   <Select className={styles.select} defaultValue="amount">
                     <Select.Option value="amount">按内网订阅数量</Select.Option>
-                    <Select.Option value="download">按内网订下载量</Select.Option>
+                    <Select.Option value="download">按内网订阅下载量</Select.Option>
                   </Select>
                 </div>
                 <Table dataSource={data2} columns={columns2} pagination={false} rowKey="id" />
@@ -295,7 +295,18 @@ export default class NodeOverview extends Component {
                   height={294}
                 />
                 <h3>平均传输速率</h3>
-                <Gauge percent={87} title="传输速率" height={180} format="MB/S" />
+                <Gauge
+                  percent={87}
+                  title="传输速率"
+                  height={180}
+                  format="MB/S"
+                  hasLegend
+                  legendData={[
+                    { title: '最快', value: '9.61MB/S' },
+                    { title: '最慢', value: '0.42MB/S' },
+                    { title: '平均', value: '5.6MB/S' },
+                  ]}
+                />
               </Col>
             </Row>
           </Card>
