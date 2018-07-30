@@ -93,16 +93,16 @@ export default class AddArticle extends Component {
         [{ image: true }],
       ],
     }
-    const classifyList = [
-      {
-        value: 0,
-        label: '惠民',
-      },
-      {
-        value: 1,
-        label: '法规',
-      },
-    ]
+    // const classifyList = [
+    //   {
+    //     value: 0,
+    //     label: '惠民',
+    //   },
+    //   {
+    //     value: 1,
+    //     label: '法规',
+    //   },
+    // ]
     const columnList = [
       {
         value: 0,
@@ -139,11 +139,11 @@ export default class AddArticle extends Component {
         </Button>
       </Fragment>
     )
-    const classifyComs = classifyList.map(item => (
-      <Select.Option value={item.value} key={item.value}>
-        {item.label}
-      </Select.Option>
-    ))
+    // const classifyComs = classifyList.map(item => (
+    //   <Select.Option value={item.value} key={item.value}>
+    //     {item.label}
+    //   </Select.Option>
+    // ))
     const uploadButton = (
       <div>
         <Icon type="plus" />
@@ -172,7 +172,7 @@ export default class AddArticle extends Component {
                 ],
               })(<Input className={styles.input} />)}
             </Item>
-            <Item label="检索关键字" {...formItemLayout}>
+            <Item label="关键字" {...formItemLayout}>
               {getFieldDecorator('keyWord', {
                 initialValue: this.state.articleData.keyWords,
                 rules: [
@@ -181,7 +181,7 @@ export default class AddArticle extends Component {
                     message: '请输入检索关键字',
                   },
                 ],
-              })(<Input className={styles.input} />)}
+              })(<Input className={styles.input} placeholder="关键字1;关键字2" />)}
             </Item>
             <Item label="分类" {...formItemLayout}>
               {getFieldDecorator('classify', {
@@ -194,7 +194,7 @@ export default class AddArticle extends Component {
                 ],
               })(
                 <Fragment>
-                  <Select className={styles.select1}>{classifyComs}</Select>
+                  {/* <Select className={styles.select1}>{classifyComs}</Select> */}
                   <Select className={styles.select2}>{columnComs}</Select>
                 </Fragment>
               )}
@@ -210,7 +210,11 @@ export default class AddArticle extends Component {
                 ],
               })(<Input className={styles.input} />)}
             </Item>
-            <Item label="封面图" {...formItemLayout}>
+            <Item
+              label="封面图"
+              {...formItemLayout}
+              extra="说明:最大不超过5M,格式支持jpg、png、gif、bmp"
+            >
               <Upload
                 action="//jsonplaceholder.typicode.com/posts/" // 上传地址
                 onPreview={this.handlePreviewChange}

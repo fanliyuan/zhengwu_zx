@@ -37,9 +37,9 @@ export default class NewsLibrary extends Component {
   state = {
     name: '',
     operator: '',
-    type: -1,
-    subscribe: -1,
-    audit: -1,
+    type: '分类',
+    // subscribe: -1,
+    // audit: -1,
     date: [],
     isChanged: false,
   }
@@ -87,22 +87,22 @@ export default class NewsLibrary extends Component {
     })
   }
 
-  handleSubscribeChange = e => {
+  handleSubscribeChange = () => {
     this.setState({
       isChanged: true,
     })
-    this.setState({
-      subscribe: e,
-    })
+    // this.setState({
+    //   subscribe: e,
+    // })
   }
 
-  handleAuditChange = e => {
+  handleAuditChange = () => {
     this.setState({
       isChanged: true,
     })
-    this.setState({
-      audit: e,
-    })
+    // this.setState({
+    //   audit: e,
+    // })
   }
 
   handlePickChange = val => {
@@ -158,14 +158,10 @@ export default class NewsLibrary extends Component {
   }
 
   render() {
-    const { name, date, audit, subscribe, type, operator } = this.state
+    const { name, date, type, operator } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const typeList = [
-      {
-        value: -1,
-        label: '所有类型',
-      },
       {
         value: 0,
         label: '新闻',
@@ -175,38 +171,38 @@ export default class NewsLibrary extends Component {
         label: '政策',
       },
     ]
-    const subscribeList = [
-      {
-        value: -1,
-        label: '全部状态',
-      },
-      {
-        value: 0,
-        label: '已授权',
-      },
-      {
-        value: 1,
-        label: '未授权',
-      },
-    ]
-    const auditList = [
-      {
-        value: -1,
-        label: '全部状态',
-      },
-      {
-        value: 0,
-        label: '已审核',
-      },
-      {
-        value: 1,
-        label: '已拒绝',
-      },
-      {
-        value: 2,
-        label: '待审核',
-      },
-    ]
+    // const subscribeList = [
+    //   {
+    //     value: -1,
+    //     label: '全部状态',
+    //   },
+    //   {
+    //     value: 0,
+    //     label: '已授权',
+    //   },
+    //   {
+    //     value: 1,
+    //     label: '未授权',
+    //   },
+    // ]
+    // const auditList = [
+    //   {
+    //     value: -1,
+    //     label: '全部状态',
+    //   },
+    //   {
+    //     value: 0,
+    //     label: '已审核',
+    //   },
+    //   {
+    //     value: 1,
+    //     label: '已拒绝',
+    //   },
+    //   {
+    //     value: 2,
+    //     label: '待审核',
+    //   },
+    // ]
 
     const columns = [
       {
@@ -218,7 +214,7 @@ export default class NewsLibrary extends Component {
         dataIndex: 'title',
       },
       {
-        title: '类型',
+        title: '分类',
         dataIndex: 'type',
       },
       {
@@ -262,22 +258,22 @@ export default class NewsLibrary extends Component {
         </Option>
       )
     })
-    const subscribeComs = subscribeList.map(item => {
-      // eslint-disable-line
-      return (
-        <Option value={item.value} key={item.value}>
-          {item.label}
-        </Option>
-      )
-    })
-    const auditComs = auditList.map(item => {
-      // eslint-disable-line
-      return (
-        <Option value={item.value} key={item.value}>
-          {item.label}
-        </Option>
-      )
-    })
+    // const subscribeComs = subscribeList.map(item => {
+    //   // eslint-disable-line
+    //   return (
+    //     <Option value={item.value} key={item.value}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
+    // const auditComs = auditList.map(item => {
+    //   // eslint-disable-line
+    //   return (
+    //     <Option value={item.value} key={item.value}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
 
     return (
       <PageHeaderLayout>
@@ -290,6 +286,9 @@ export default class NewsLibrary extends Component {
               onChange={this.handleNameChange}
               className={styles.name}
             />
+            <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
+              {typeComs}
+            </Select>
             <Input
               placeholder="操作人"
               value={operator}
@@ -297,10 +296,7 @@ export default class NewsLibrary extends Component {
               onChange={this.handleOperatorChange}
               className={styles.name}
             />
-            <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
-              {typeComs}
-            </Select>
-            <Select
+            {/* <Select
               value={subscribe}
               onChange={this.handleSubscribeChange}
               className={styles.select}
@@ -309,7 +305,7 @@ export default class NewsLibrary extends Component {
             </Select>
             <Select value={audit} onChange={this.handleAuditChange} className={styles.select}>
               {auditComs}
-            </Select>
+            </Select> */}
             <RangePicker value={date} onChange={this.handlePickChange} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
