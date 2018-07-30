@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'dva/router'
 import { Card, Button, Steps, Upload, Icon, Message } from 'antd'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -44,7 +45,14 @@ export default class UpdataFile extends Component {
             <p>或选取文件</p>
           </Dragger>
           <p className={styles.extra}>最大上传文件大小:50MB</p>
-          <Button type="primary">提交</Button>
+          <div className="btnclsb">
+            <Button type="primary" className="mr64">
+              提交
+            </Button>
+            <Link to="/dataSourceManagement/accessManagement">
+              <Button>返回</Button>
+            </Link>
+          </div>
         </Card>
       </PageHeaderLayout>
     )

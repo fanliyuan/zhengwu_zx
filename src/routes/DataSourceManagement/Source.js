@@ -73,10 +73,10 @@ export default class Source extends Component {
     ]
     return (
       <PageHeaderLayout>
+        <div className="btncls clearfix">
+          <Button className="fr mr40">返回</Button>
+        </div>
         <Card>
-          <div className={styles.backBtn}>
-            <Button type="primary">返回</Button>
-          </div>
           <div className={styles.form}>
             <h3>
               目录编码:<span> 3300031306381126/00001</span>

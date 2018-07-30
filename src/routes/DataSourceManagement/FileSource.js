@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { routerRedux } from 'dva/router'
-import { Table, Card, Divider } from 'antd'
+import { routerRedux, Link } from 'dva/router'
+import { Table, Card, Divider, Button } from 'antd'
 import moment from 'moment'
 
 import styles from './FileSource.less'
@@ -101,6 +101,11 @@ export default class FileSource extends Component {
     // }
     return (
       <PageHeaderLayout>
+        <div className="btncls clearfix">
+          <Link to="/dataSourceManagement/sourceManagement" className="fr mr40">
+            <Button>返回</Button>
+          </Link>
+        </div>
         <Card>
           <div className={styles.form}>
             <h3>

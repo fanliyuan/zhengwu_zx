@@ -197,6 +197,7 @@ const menuData = [
         name: '文件资源',
         path: 'fileSource',
         hideInMenu: true,
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '资源审核',
@@ -207,6 +208,7 @@ const menuData = [
         name: '数据库资源',
         path: 'dataBaseSource',
         hideInMenu: true,
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '目录管理',
@@ -248,6 +250,7 @@ const menuData = [
         hideInMenu: true,
         authority: 'operator-n',
       },
+      // 这个是否多余?
       {
         name: '资源',
         path: 'source',
@@ -257,11 +260,13 @@ const menuData = [
         name: '资源挂接文件',
         path: 'resourceConnection',
         hideInMenu: true,
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '资源挂接数据',
         path: 'resourceConnectionData',
         hideInMenu: true,
+        authority: ['operator', 'operator-n'],
       },
       // {
       //   name: '新建目录',
@@ -271,6 +276,7 @@ const menuData = [
       {
         name: '导入目录',
         path: 'inputDirectory',
+        authority: 'operator-n',
         hideInMenu: true,
       },
       {
@@ -288,31 +294,37 @@ const menuData = [
         name: '录入数据库信息',
         path: 'inputDataInfo',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '设置同步计划',
         path: 'setPlan',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '上传本地文件',
         path: 'updataFile',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '设置同步计划',
         path: 'ftp',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '目录',
         path: 'catalog',
         hideInMenu: true,
+        authority: 'operator-n',
       },
       {
         name: '任务',
         path: 'task',
         hideInMenu: true,
+        authority: ['operator', 'operator-n'],
       },
       {
         name: '查看目录',

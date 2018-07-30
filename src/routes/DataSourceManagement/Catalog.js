@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card } from 'antd'
+import { Card, Button } from 'antd'
 import { Link } from 'dva/router'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -11,6 +11,11 @@ export default class Catalog extends Component {
   render() {
     return (
       <PageHeaderLayout>
+        <div className="btncls clearfix">
+          <Link to="/dataSourceManagement/sourceManagement" className="fr mr40">
+            <Button>返回</Button>
+          </Link>
+        </div>
         <Card>
           <p className={styles.titleName}>
             &nbsp;数据库: &nbsp;<span>Youedata_dig</span>
