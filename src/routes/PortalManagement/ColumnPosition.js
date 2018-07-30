@@ -13,10 +13,10 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './ColumnPosition.less'
 
 const pageData = [
-  {
-    value: 0,
-    label: '功能页面',
-  },
+  // {
+  //   value: 0,
+  //   label: '功能页面',
+  // },
   {
     value: 1,
     label: '首页',
@@ -34,7 +34,7 @@ const pageData = [
 const pageTemp = pageData.map(item => item.label)
 
 const data = []
-for (let i = 0; i < 132; i++) {
+for (let i = 1; i < 132; i++) {
   data.push({
     id: i,
     name: `重要新闻${i}`,
@@ -50,7 +50,7 @@ export default class ColumnPosition extends Component {
   state = {
     query: {
       name: '',
-      page: 1,
+      page: '功能页面',
       operator: '',
       time: [],
     },

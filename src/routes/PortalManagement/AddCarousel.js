@@ -94,7 +94,7 @@ export default class AddCarousel extends Component {
     name: '',
     column: { first: 1, second: 11 },
     sort: 1,
-    urlType: 0,
+    urlType: 1,
     url: '',
     image: false,
     previewVisible: false,

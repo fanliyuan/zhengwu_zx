@@ -20,11 +20,12 @@ const { Option } = Select
 const data = []
 
 for (let i = 0; i < 120; i++) {
+  const randomNum = Math.round(Math.random())
   data.push({
     id: i,
     name: `类型${i}`,
-    state: Math.round(Math.random()) === 1 ? '未发布' : '已发布',
-    recommend: Math.round(Math.random()) === 1 ? '是' : '否',
+    state: randomNum === 1 ? '未发布' : '已发布',
+    recommend: randomNum === 1 ? '否' : '是',
     time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
     operator: `操作人${i}`,
   })
@@ -38,14 +39,14 @@ export default class MenuManagement extends Component {
   state = {
     name: '',
     operator: '',
-    state: -1,
-    recommend: -1,
+    state: '发布状态',
+    recommend: '是否推荐',
     date: [],
     isChanged: false,
     showModal: false,
     modalTitle: '',
     // selectedRowKeys: [],
-    defaultValue: '是',
+    defaultValue: '否',
   }
 
   componentDidMount() {
@@ -177,10 +178,6 @@ export default class MenuManagement extends Component {
 
     const stateList = [
       {
-        value: -1,
-        label: '全部状态',
-      },
-      {
         value: 0,
         label: '已发布',
       },
@@ -190,10 +187,6 @@ export default class MenuManagement extends Component {
       },
     ]
     const recommendList = [
-      {
-        value: -1,
-        label: '是否推荐',
-      },
       {
         value: 0,
         label: '是',

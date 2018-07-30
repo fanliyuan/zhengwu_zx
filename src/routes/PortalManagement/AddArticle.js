@@ -6,9 +6,10 @@
  * @Description: 新增文章
  */
 import React, { Component, Fragment } from 'react'
-import { Link } from 'dva/router'
+import { Link, routerRedux } from 'dva/router'
 import { Form, Input, Select, Upload, Modal, Button, Icon, Radio } from 'antd'
 import ReactQuill from 'react-quill'
+import { connect } from 'dva'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import 'react-quill/dist/quill.snow.css'
@@ -33,6 +34,9 @@ const savaLayout = {
 }
 
 @Form.create()
+@connect(({ addArtice }) => ({
+  addArtice,
+}))
 export default class AddArticle extends Component {
   state = {
     quillText: '',
@@ -66,9 +70,11 @@ export default class AddArticle extends Component {
   }
 
   handleSave = () => {
-    this.setState({
-      saveVisible: true,
-    })
+    // this.setState({
+    //   saveVisible: true,
+    // })
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/portalManagement/newsLibrary'))
   }
 
   saveCancel = () => {
@@ -134,6 +140,7 @@ export default class AddArticle extends Component {
         <Link to="/portalManagement/newsLibrary" className={styles.fr}>
           <Button>返回</Button>
         </Link>
+        <Button className={styles.fr}>预览</Button>
         <Button type="primary" className={styles.fr} onClick={this.handleSave}>
           保存
         </Button>
@@ -213,7 +220,11 @@ export default class AddArticle extends Component {
             <Item
               label="封面图"
               {...formItemLayout}
-              extra="说明:最大不超过5M,格式支持jpg、png、gif、bmp"
+              extra={
+                <div style={{ color: '#e4393c' }}>
+                  说明：最大不超过5M,格式支持jpg、png、gif、bmp
+                </div>
+              }
             >
               <Upload
                 action="//jsonplaceholder.typicode.com/posts/" // 上传地址
@@ -238,7 +249,13 @@ export default class AddArticle extends Component {
                 className={styles.quill}
               />
             </Item>
-            <Item label="附件" {...formItemLayout}>
+            <Item
+              label="附件"
+              {...formItemLayout}
+              extra={
+                <div style={{ color: '#e4393c' }}>说明：单个文件最大不超过100M,最多上传5个文件</div>
+              }
+            >
               <Upload action="//jsonplaceholder.typicode.com/posts/">
                 <Button>
                   <Icon type="upload" /> Upload

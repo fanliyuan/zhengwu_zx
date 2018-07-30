@@ -8,21 +8,21 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
-import { DatePicker, Input, Select, Button, Table, Popconfirm, message } from 'antd'
+import { DatePicker, Input, Button, Table, Popconfirm, message, Cascader } from 'antd'
 import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './CarouselManagement.less'
 
 const { RangePicker } = DatePicker
-const { Option } = Select
+// const { Option } = Select
 
 @connect()
 export default class CarouselManagement extends Component {
   state = {
     name: '',
-    resource: '',
-    page: -1,
+    // resource: '',
+    // page: -1,
     date: [],
     isChanged: false,
   }
@@ -52,20 +52,20 @@ export default class CarouselManagement extends Component {
     })
   }
 
-  handleResourceChange = e => {
+  handleResourceChange = () => {
     this.setState({
       isChanged: true,
     })
-    this.setState({
-      resource: e.target.value.trim(),
-    })
+    // this.setState({
+    //   resource: e.target.value.trim(),
+    // })
   }
 
-  handlePageChange = e => {
-    this.setState({
-      page: e,
-      isChanged: true,
-    })
+  handlePageChange = () => {
+    // this.setState({
+    //   page: e,
+    //   isChanged: true,
+    // })
   }
 
   handlePick = val => {
@@ -141,12 +141,12 @@ export default class CarouselManagement extends Component {
   }
 
   render() {
-    const { name, date, resource, page } = this.state
+    const { name, date } = this.state
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const data = []
 
-    for (let i = 0; i < 120; i++) {
+    for (let i = 1; i < 120; i++) {
       data.push({
         id: i,
         name: `类型${i}`,
@@ -159,33 +159,33 @@ export default class CarouselManagement extends Component {
       })
     }
 
-    const pageList = [
-      {
-        value: -1,
-        label: '全部页面',
-      },
-      {
-        value: 0,
-        label: '首页',
-      },
-      {
-        value: 1,
-        label: '开放动态',
-      },
-    ]
+    // const pageList = [
+    //   {
+    //     value: -1,
+    //     label: '全部页面',
+    //   },
+    //   {
+    //     value: 0,
+    //     label: '首页',
+    //   },
+    //   {
+    //     value: 1,
+    //     label: '开放动态',
+    //   },
+    // ]
 
     const state1Coms = row => {
       return (
-        <a onClick={() => this.startCaroulse(row)} style={{ marginRight: 8 }}>
-          启用
+        <a onClick={() => this.endCaroulse(row)} style={{ marginRight: 8 }}>
+          停用
         </a>
       )
     }
     const state0Coms = row => {
       return (
         <Fragment>
-          <a onClick={() => this.endCaroulse(row)} style={{ marginRight: 8, color: 'red' }}>
-            停用
+          <a onClick={() => this.startCaroulse(row)} style={{ marginRight: 8 }}>
+            启用
           </a>
           <a onClick={() => this.editCaroulse(row)} style={{ marginRight: 8 }}>
             修改
@@ -204,6 +204,36 @@ export default class CarouselManagement extends Component {
         </Fragment>
       )
     }
+    const options = [
+      {
+        value: '0-0',
+        label: '开放动态',
+        children: [
+          {
+            value: '0-0-1',
+            label: '重要新闻',
+            // children: [{
+            //   value: 'xihu',
+            //   label: 'West Lake',
+            // }],
+          },
+        ],
+      },
+      {
+        value: '0-1',
+        label: '首页',
+        children: [
+          {
+            value: '0-1-0',
+            label: '通知公告',
+            // children: [{
+            //   value: 'zhonghuamen',
+            //   label: 'Zhong Hua Men',
+            // }],
+          },
+        ],
+      },
+    ]
 
     const columns = [
       {
@@ -223,7 +253,7 @@ export default class CarouselManagement extends Component {
         dataIndex: 'sort',
       },
       {
-        title: '资源名称',
+        title: '资源地址',
         dataIndex: 'resource',
       },
       {
@@ -243,36 +273,37 @@ export default class CarouselManagement extends Component {
       item.align = 'center'
     })
 
-    const pageComs = pageList.map(item => {
-      // eslint-disable-line
-      return (
-        <Option value={item.value} key={item.value}>
-          {item.label}
-        </Option>
-      )
-    })
+    // const pageComs = pageList.map(item => {
+    //   // eslint-disable-line
+    //   return (
+    //     <Option value={item.value} key={item.value}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
 
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
           <div className={styles.search}>
             <Input
-              placeholder="类型名称"
+              placeholder="名称"
               value={name}
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
             />
-            <Input
+            {/* <Input
               placeholder="资源名称"
               value={resource}
               onPressEnter={this.handleSearch}
               onChange={this.handleResourceChange}
               className={styles.name}
-            />
-            <Select value={page} onChange={this.handlePageChange} className={styles.select}>
+            /> */}
+            {/* <Select value={page} onChange={this.handlePageChange} className={styles.select}>
               {pageComs}
-            </Select>
+            </Select> */}
+            <Cascader options={options} placeholder="栏目" style={{ marginRight: 16 }} />
             <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
