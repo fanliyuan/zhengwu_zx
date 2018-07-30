@@ -83,6 +83,9 @@ export const getRouterData = app => {
     '/overview/platformOverview': {
       component: dynamicWrapper(app, [], () => import('../routes/Overview/PlatformOverview')),
     },
+    '/overview/nodeOverview': {
+      component: dynamicWrapper(app, [], () => import('../routes/Overview/NodeOverview')),
+    },
     // '/overview/workplace': {
     //   component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
     //     import('../routes/Dashboard/Workplace')

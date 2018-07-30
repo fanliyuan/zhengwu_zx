@@ -17,7 +17,12 @@ const menuData = [
       {
         name: '平台概览',
         path: 'platformOverview',
-        authority: ['operator', 'operator-n'],
+        authority: ['operator'],
+      },
+      {
+        name: '节点概览',
+        path: 'nodeOverview',
+        authority: ['operator-n'],
       },
       {
         name: '系统通知',
