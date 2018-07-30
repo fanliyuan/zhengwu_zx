@@ -2,7 +2,8 @@
  * @Author: ChouEric
  * @Date: 2018-07-16 15:15:00
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-29 20:38:40
+ * @Last Modified time: 2018-07-30 11:30:36
+ * @描述: 节点概览
 */
 import React, { Component } from 'react'
 import { Card, Row, Col, Table, Select } from 'antd'
@@ -15,8 +16,8 @@ import img from '../../assets/platOvewview.png'
 
 function rendCard(data = []) {
   return data.map(item => (
-    <Col span={6}>
-      <Card className={styles.card} key={item.value}>
+    <Col span={6} key={item.name}>
+      <Card className={styles.card} key={item.name}>
         <span>{item.name}</span>
         <p>{item.value}</p>
       </Card>
