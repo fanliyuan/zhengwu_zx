@@ -117,14 +117,54 @@ export default class SourceSubscription extends Component {
           return +text === 0 ? '否' : '是'
         },
       },
-      {
+      // {
+      //   title: '是否已订阅',
+      //   dataIndex: 'isSubscription',
+      //   render(text) {
+      //     return +text === 0 ? '否' : '是'
+      //   },
+      // },
+      // {
+      //   title: '操作',
+      //   render(text, row) {
+      //     if (row.isSubscription === '0') {
+      //       if (!isNodeOperator) {
+      //         return <span>--</span>
+      //       }
+      //       return (
+      //         <div>
+      //           {row.dataType === '数据库' ? (
+      //             <Link to={`/dataSwitchManagement/subscriptionTable/${row.id}`}>订阅</Link>
+      //           ) : null}
+      //           {row.dataType === '文件' ? (
+      //             <Link to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>订阅</Link>
+      //           ) : null}
+      //         </div>
+      //       )
+      //     } else {
+      //       return (
+      //         <div>
+      //           {row.dataType === '数据库' ? (
+      //             <Link to={`/dataSwitchManagement/subscriptionTable/${row.id}`}>详情</Link>
+      //           ) : null}
+      //           {row.dataType === '文件' ? (
+      //             <Link to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>详情</Link>
+      //           ) : null}
+      //         </div>
+      //       )
+      //     }
+      //   },
+      // },
+    ]
+    if (isNodeOperator) {
+      columns.push({
         title: '是否已订阅',
         dataIndex: 'isSubscription',
         render(text) {
           return +text === 0 ? '否' : '是'
         },
-      },
-      {
+      })
+      columns.push({
         title: '操作',
         render(text, row) {
           if (row.isSubscription === '0') {
@@ -154,8 +194,13 @@ export default class SourceSubscription extends Component {
             )
           }
         },
-      },
-    ]
+      })
+    } else {
+      columns.push({
+        title: '订阅数',
+        dataIndex: 'subscriptionNum',
+      })
+    }
     columns.forEach(item => {
       item.align = 'center'
     })
@@ -233,6 +278,7 @@ export default class SourceSubscription extends Component {
         publicTime: 334444443,
         isAudit: '0',
         isSubscription: '1',
+        subscriptionNum: 6,
       },
       {
         id: 1,
@@ -245,6 +291,7 @@ export default class SourceSubscription extends Component {
         publicTime: 334444443,
         isAudit: '1',
         isSubscription: '0',
+        subscriptionNum: 8,
       },
       {
         id: 2,
@@ -257,6 +304,7 @@ export default class SourceSubscription extends Component {
         publicTime: 334444443,
         isAudit: '0',
         isSubscription: '1',
+        subscriptionNum: 10,
       },
     ]
     return (
@@ -290,12 +338,14 @@ export default class SourceSubscription extends Component {
                 value={selectJg}>
                 {selectData}
               </Select>
-              <Select
-                style={{ marginRight: 20, width: 120 }}
-                onChange={this.handleSelectChangedy}
-                value={selectDy}>
-                {selectData1}
-              </Select>
+              {isNodeOperator && (
+                <Select
+                  style={{ marginRight: 20, width: 120 }}
+                  onChange={this.handleSelectChangedy}
+                  value={selectDy}>
+                  {selectData1}
+                </Select>
+              )}
               <RangePicker style={{ marginRight: 20, width: 200 }} />
               {/* <DatePicker style={{marginRight:20,width:250}} placeholder="发布时间"/> */}
               <Button type="primary">搜索</Button>
