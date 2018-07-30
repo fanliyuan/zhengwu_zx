@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Card, Row, Col, List } from 'antd'
 import { Pie, TimelineChart, Gauge } from 'components/Charts'
+import numeral from 'numeral'
 
 import styles from './PlatformOverview.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -90,6 +91,28 @@ export default class PlatformOverview extends Component {
         y: 14,
       },
     ]
+    const rankingListData = []
+    for (let i = 1; i < 7; i += 1) {
+      rankingListData.push({
+        id: i,
+        title: '石家庄市民政局',
+        jg: '石家庄市民政',
+        total: 10000,
+      })
+    }
+    const rankingListData1 = []
+    for (let i = 1; i < 7; i += 1) {
+      rankingListData1.push({
+        id: i,
+        title: '人口普查信息',
+        jg: '石家庄市民政',
+        total: 10000,
+      })
+    }
+    // const data1 = ["按资源量","按发布数","按订阅数"]
+    // const nodeSelect = data1.map((item) => {
+    //   return (<Select.Option>{item}</Select.Option>)
+    // })
     return (
       <PageHeaderLayout>
         <Card>
@@ -122,6 +145,53 @@ export default class PlatformOverview extends Component {
               </div>
             </Col>
             <Col span={9} className={styles.rightBox}>
+              <div>
+                <div className={styles.salesRank}>
+                  <h3 className={styles.rankingTitle}>
+                    最活跃的节点
+                    {/* <Select>
+                      {nodeSelect}
+                    </Select> */}
+                  </h3>
+                  <ul className={styles.rankingList}>
+                    <li className={styles.titles}>
+                      <span>1</span>
+                      <span>节点名称</span>
+                      <span>所属机构</span>
+                      <span>订阅数</span>
+                    </li>
+                    {rankingListData.map((item, i) => (
+                      <li key={item.id}>
+                        <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
+                        <span>{item.title}</span>
+                        <span>{item.jg}</span>
+                        <span>{numeral(item.total).format('0,0')}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <div className={styles.salesRank}>
+                  <h3 className={styles.rankingTitle}>最受欢迎的资源</h3>
+                  <ul className={styles.rankingList}>
+                    <li className={styles.titles}>
+                      <span>1</span>
+                      <span>节点名称</span>
+                      <span>所属机构</span>
+                      <span>订阅数</span>
+                    </li>
+                    {rankingListData1.map((item, i) => (
+                      <li key={item.id}>
+                        <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
+                        <span>{item.title}</span>
+                        <span>{item.jg}</span>
+                        <span>{numeral(item.total).format('0,0')}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
               <div>
                 <h3>目录分类占比</h3>
                 <Card bordered={false}>

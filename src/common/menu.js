@@ -11,13 +11,13 @@ const menuData = [
       //   path: 'analysis',
       // },
       {
-        name: '登录日志',
-        path: 'logging',
-      },
-      {
         name: '平台概览',
         path: 'platformOverview',
         authority: ['operator'],
+      },
+      {
+        name: '登录日志',
+        path: 'logging',
       },
       {
         name: '节点概览',

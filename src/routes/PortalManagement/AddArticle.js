@@ -2,14 +2,15 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-30 17:36:41
+ * @Last Modified time: 2018-07-30 17:44:50
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  */
 import React, { Component, Fragment } from 'react'
-import { Link } from 'dva/router'
+import { Link, routerRedux } from 'dva/router'
 import { Form, Input, Select, Upload, Modal, Button, Icon, Radio } from 'antd'
 import ReactQuill from 'react-quill'
+import { connect } from 'dva'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import 'react-quill/dist/quill.snow.css'
@@ -51,6 +52,9 @@ const convertBase64UrlToBlob = urlData => {
 }
 
 @Form.create()
+@connect(({ addArtice }) => ({
+  addArtice,
+}))
 export default class AddArticle extends Component {
   state = {
     quillText: '',
@@ -101,9 +105,11 @@ export default class AddArticle extends Component {
   }
 
   handleSave = () => {
-    this.setState({
-      saveVisible: true,
-    })
+    // this.setState({
+    //   saveVisible: true,
+    // })
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/portalManagement/newsLibrary'))
   }
 
   saveCancel = () => {
@@ -169,6 +175,7 @@ export default class AddArticle extends Component {
         <Link to="/portalManagement/newsLibrary" className={styles.fr}>
           <Button>返回</Button>
         </Link>
+        <Button className={styles.fr}>预览</Button>
         <Button type="primary" className={styles.fr} onClick={this.handleSave}>
           保存
         </Button>
@@ -248,7 +255,11 @@ export default class AddArticle extends Component {
             <Item
               label="封面图"
               {...formItemLayout}
-              extra="说明:最大不超过5M,格式支持jpg、png、gif、bmp">
+              extra={
+                <div style={{ color: '#e4393c' }}>
+                  说明：最大不超过5M,格式支持jpg、png、gif、bmp
+                </div>
+              }>
               <Upload
                 action="//jsonplaceholder.typicode.com/posts/" // 上传地址
                 onPreview={this.handlePreviewChange}
@@ -272,7 +283,12 @@ export default class AddArticle extends Component {
                 className={styles.quill}
               />
             </Item>
-            <Item label="附件" {...formItemLayout}>
+            <Item
+              label="附件"
+              {...formItemLayout}
+              extra={
+                <div style={{ color: '#e4393c' }}>说明：单个文件最大不超过100M,最多上传5个文件</div>
+              }>
               <Upload action="//jsonplaceholder.typicode.com/posts/">
                 <Button>
                   <Icon type="upload" /> Upload

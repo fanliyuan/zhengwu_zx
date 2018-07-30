@@ -88,7 +88,7 @@ export default class AllSub extends Component {
   state = {
     name: '',
     theme: '',
-    state: -1,
+    state: '全部状态',
     date: [],
     isChanged: false,
     selectKeys: [],
@@ -155,10 +155,6 @@ export default class AllSub extends Component {
 
     const stateList = [
       {
-        value: -1,
-        label: '全部状态',
-      },
-      {
         value: 0,
         label: '运行中',
       },
@@ -219,8 +215,7 @@ export default class AllSub extends Component {
                       <div>停用后将暂停采集数据！</div>
                     </div>
                   }
-                  onConfirm={() => message.success('已停止')}
-                >
+                  onConfirm={() => message.success('已停止')}>
                   <a className="mr16">停止</a>
                 </Popconfirm>
               )}
@@ -229,8 +224,7 @@ export default class AllSub extends Component {
                   to={`/dataSwitchManagement/${
                     row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
                   }/${row.id}`}
-                  className="mr8"
-                >
+                  className="mr8">
                   查看
                 </Link>
               )}
@@ -248,8 +242,7 @@ export default class AllSub extends Component {
                       <div>启动后可进行采集数据！</div>
                     </div>
                   }
-                  onConfirm={() => message.success('已启动')}
-                >
+                  onConfirm={() => message.success('已启动')}>
                   <a className="mr8">运行</a>
                 </Popconfirm>
               )}
@@ -258,16 +251,14 @@ export default class AllSub extends Component {
                   to={`/dataSwitchManagement/${
                     row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
                   }/${row.id}`}
-                  className="mr8"
-                >
+                  className="mr8">
                   查看
                 </Link>
               )}
               {isNodeOperator && (
                 <Popconfirm
                   title={`是否取消${row.name}的订阅`}
-                  onConfirm={() => message.success('取消成功')}
-                >
+                  onConfirm={() => message.success('取消成功')}>
                   <a className="mr8">取消订阅</a>
                 </Popconfirm>
               )}
@@ -470,8 +461,7 @@ export default class AllSub extends Component {
                         okText: '确定',
                         cancelText: '取消',
                       })
-                    }
-                  >
+                    }>
                     启动
                   </Button>
                   <Button
@@ -486,8 +476,7 @@ export default class AllSub extends Component {
                         okText: '确定',
                         cancelText: '取消',
                       })
-                    }
-                  >
+                    }>
                     停止
                   </Button>
                 </div>
