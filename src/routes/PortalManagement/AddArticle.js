@@ -2,8 +2,9 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-30 09:20:29
+ * @Last Modified time: 2018-07-30 17:36:41
  * @Description: 新增文章
+ *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  */
 import React, { Component, Fragment } from 'react'
 import { Link } from 'dva/router'
@@ -32,6 +33,23 @@ const savaLayout = {
   },
 }
 
+const convertBase64UrlToBlob = urlData => {
+  // 去掉url的头，并转换为byte
+  const bytes = window.atob(urlData.split(',')[1])
+  // 处理异常,将ascii码小于0的转换为大于0
+  const ab = new ArrayBuffer(bytes.length)
+  const ia = new Uint8Array(ab)
+  ia.forEach((i, index) => {
+    ia[index] = bytes.charCodeAt(index)
+  })
+  return new Blob([ia], {
+    type: urlData
+      .split(',')[0]
+      .split(':')[1]
+      .split(';')[0],
+  })
+}
+
 @Form.create()
 export default class AddArticle extends Component {
   state = {
@@ -44,10 +62,27 @@ export default class AddArticle extends Component {
     saveVisible: false,
   }
 
-  handleQuillChange = value => {
+  // eslint-disable-next-line
+  handleQuillChange = (value, delta, source, editor) => {
     this.setState({
       quillText: value,
     })
+    try {
+      // editor.getContents() 这个获取delta
+      const { ops } = delta
+      if (
+        ops &&
+        ops[ops.length - 1] &&
+        ops[ops.length - 1].insert &&
+        ops[ops.length - 1].insert.image
+      ) {
+        const imgURL = ops[ops.length - 1].insert.image
+        console.log(convertBase64UrlToBlob(imgURL)) // eslint-disable-line
+      }
+    } catch (error) {
+      // eslint-disable-next-line
+      console.log(error)
+    }
   }
 
   handleUploadChange = ({ fileList }) => this.setState({ fileList })
@@ -213,8 +248,7 @@ export default class AddArticle extends Component {
             <Item
               label="封面图"
               {...formItemLayout}
-              extra="说明:最大不超过5M,格式支持jpg、png、gif、bmp"
-            >
+              extra="说明:最大不超过5M,格式支持jpg、png、gif、bmp">
               <Upload
                 action="//jsonplaceholder.typicode.com/posts/" // 上传地址
                 onPreview={this.handlePreviewChange}
