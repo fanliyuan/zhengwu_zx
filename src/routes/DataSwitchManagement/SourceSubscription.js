@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
-import { Table, Button, Input, Select, Card, DatePicker } from 'antd'
+import { Table, Button, Input, Select, DatePicker, Row, Col, Icon, Tooltip, Tree } from 'antd'
+import { isArray } from 'util'
 import moment from 'moment'
 
 import styles from './SourceSubscription.less'
@@ -8,10 +9,28 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
+const { DirectoryTree, TreeNode } = Tree
+
+function renderTreeNode(renderList) {
+  if (!isArray(renderList)) {
+    return null
+  }
+  return renderList.map(item => {
+    if (!isArray(item.children)) {
+      return <TreeNode title={item.title || '佚名'} key={item.key} isLeaf />
+    } else {
+      return (
+        <TreeNode title={item.title || '佚名'} key={item.key}>
+          {renderTreeNode(item.children)}
+        </TreeNode>
+      )
+    }
+  })
+}
 export default class SourceSubscription extends Component {
   state = {
-    selectJg: '0',
-    selectDy: '0',
+    selectJg: '发布机构',
+    selectDy: '是否订阅',
     isNodeOperator: false,
   }
 
@@ -35,10 +54,7 @@ export default class SourceSubscription extends Component {
 
   render() {
     const { selectJg, selectDy, isNodeOperator } = this.state
-    const data = [
-      { value: '0', id: 0, label: '发布机构' },
-      { value: '1', id: 1, label: '发布机构1' },
-    ]
+    const data = [{ value: '0', id: 0, label: '机构1' }, { value: '1', id: 1, label: '机构2' }]
     const selectData = data.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -46,11 +62,7 @@ export default class SourceSubscription extends Component {
         </Option>
       )
     })
-    const data1 = [
-      { value: '0', id: 0, label: '是否订阅' },
-      { value: '1', id: 1, label: '是' },
-      { value: '2', id: 2, label: '否' },
-    ]
+    const data1 = [{ value: '1', id: 1, label: '是' }, { value: '2', id: 2, label: '否' }]
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -60,33 +72,36 @@ export default class SourceSubscription extends Component {
     })
     const pagination = { pageSize: 10, current: 1 }
     const columns = [
-      {
-        title: 'ID',
-        dataIndex: 'id',
-      },
+      // {
+      //   title: 'ID',
+      //   dataIndex: 'id',
+      //   render(text){
+      //     return (text+1)
+      //   },
+      // },
       {
         title: '目录名称',
         dataIndex: 'name',
       },
-      {
-        title: '目录资源',
-        dataIndex: 'catalogSource',
-      },
-      {
-        title: '所属主题',
-        dataIndex: 'subject',
-      },
-      {
-        title: '所属分类2',
-        dataIndex: 'category2',
-      },
-      {
-        title: '所属分类3',
-        dataIndex: 'category3',
-      },
+      // {
+      //   title: '所属主题',
+      //   dataIndex: 'subject',
+      // },
+      // {
+      //   title: '所属分类2',
+      //   dataIndex: 'category2',
+      // },
+      // {
+      //   title: '所属分类3',
+      //   dataIndex: 'category3',
+      // },
       {
         title: '数据类型',
         dataIndex: 'dataType',
+      },
+      {
+        title: '发布机构',
+        dataIndex: 'catalogSource',
       },
       {
         title: '发布时间',
@@ -144,6 +159,68 @@ export default class SourceSubscription extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
+    const menuData = [
+      {
+        title: '文件夹1',
+        key: '1',
+        children: [
+          {
+            title: '文件1',
+            key: '1-1',
+          },
+          {
+            title: '文件2',
+            key: '1-2',
+          },
+          {
+            title: '文件3',
+            key: '1-3',
+          },
+        ],
+      },
+      {
+        title: '文件夹2',
+        key: '2',
+        children: [
+          {
+            title: '数据1',
+            key: '2-1',
+            children: [
+              {
+                title: '文件1',
+                key: '2-1-1',
+              },
+              {
+                title: '文件2',
+                key: '2-1-2',
+              },
+              {
+                title: '文件3',
+                key: '2-1-3',
+              },
+            ],
+          },
+          {
+            title: '数据2',
+            key: '2-2',
+            children: [
+              {
+                title: '文件1',
+                key: '2-2-1',
+              },
+              {
+                title: '文件2',
+                key: '2-2-2',
+              },
+              {
+                title: '文件3',
+                key: '2-2-3',
+              },
+            ],
+          },
+        ],
+      },
+    ]
     const list = [
       {
         id: 0,
@@ -184,38 +261,56 @@ export default class SourceSubscription extends Component {
     ]
     return (
       <PageHeaderLayout>
-        <Card>
-          <div className={styles.form}>
-            <Input placeholder="发布名称" style={{ width: 150, marginRight: 20 }} />
-            <Input placeholder="发布主题" style={{ width: 150, marginRight: 20 }} />
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              onChange={this.handleSelectChangejg}
-              value={selectJg}
-            >
-              {selectData}
-            </Select>
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              onChange={this.handleSelectChangedy}
-              value={selectDy}
-            >
-              {selectData1}
-            </Select>
-            <RangePicker style={{ marginRight: 20, width: 250 }} />
-            {/* <DatePicker style={{marginRight:20,width:250}} placeholder="发布时间"/> */}
-            <Button type="primary">搜索</Button>
-          </div>
-          <div>
-            <Table
-              columns={columns}
-              dataSource={list}
-              pagination={pagination}
-              rowKey="id"
-              bordered
-            />
-          </div>
-        </Card>
+        <Row>
+          <Col style={{ padding: 20, background: '#fff' }} span={6}>
+            <div>
+              <div className={styles.search}>
+                <Input placeholder="请输入关键词" className={styles.input} />
+                <Button type="primary" icon="search" />
+              </div>
+              <div>
+                <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8 mb16">
+                  <Icon type="question-circle-o" />
+                </Tooltip>
+                <DirectoryTree
+                  defaultExpandAll
+                  onRightClick={this.directoryChange}
+                  className={styles.tree}>
+                  {renderTreeNode(menuData)}
+                </DirectoryTree>
+              </div>
+            </div>
+          </Col>
+          <Col style={{ padding: 20, background: '#fff' }} span={17} offset={1}>
+            <div className={styles.form}>
+              <Input placeholder="发布名称" style={{ width: 120, marginRight: 20 }} />
+              <Select
+                style={{ marginRight: 20, width: 120 }}
+                onChange={this.handleSelectChangejg}
+                value={selectJg}>
+                {selectData}
+              </Select>
+              <Select
+                style={{ marginRight: 20, width: 120 }}
+                onChange={this.handleSelectChangedy}
+                value={selectDy}>
+                {selectData1}
+              </Select>
+              <RangePicker style={{ marginRight: 20, width: 200 }} />
+              {/* <DatePicker style={{marginRight:20,width:250}} placeholder="发布时间"/> */}
+              <Button type="primary">搜索</Button>
+            </div>
+            <div>
+              <Table
+                columns={columns}
+                dataSource={list}
+                pagination={pagination}
+                rowKey="id"
+                bordered
+              />
+            </div>
+          </Col>
+        </Row>
       </PageHeaderLayout>
     )
   }
