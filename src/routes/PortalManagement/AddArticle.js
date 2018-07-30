@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-24 18:13:18
+ * @Last Modified time: 2018-07-30 09:20:29
  * @Description: 新增文章
  */
 import React, { Component, Fragment } from 'react'
@@ -267,8 +267,7 @@ export default class AddArticle extends Component {
             visible={saveVisible}
             onCancel={this.saveCancel}
             title="保存"
-            className={styles.box}
-          >
+            className={styles.box}>
             <Form>
               <Item label="保存类型" {...savaLayout}>
                 {getFieldDecorator('saveType', {

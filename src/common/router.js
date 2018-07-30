@@ -267,6 +267,7 @@ export const getRouterData = app => {
     //     import('../routes/DataSourceManagement/SearchRelationship')
     //   ),
     // },
+    // 这个是否多余?
     '/dataSourceManagement/source': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Source')),
     },

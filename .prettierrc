@@ -9,4 +9,5 @@
     }
   ],
   "semi": false,
+  "jsxBracketSameLine": true
 }

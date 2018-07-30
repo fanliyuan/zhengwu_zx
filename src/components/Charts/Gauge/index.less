@@ -1,0 +1,31 @@
+.chart {
+  position: relative;
+}
+.legend {
+  position: absolute;
+  right: 0;
+  min-width: 140px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0 20px;
+  list-style: none;
+  padding: 0;
+  li {
+    cursor: pointer;
+    margin-bottom: 16px;
+    height: 22px;
+    line-height: 22px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+.dot {
+  border-radius: 8px;
+  display: inline-block;
+  margin-right: 8px;
+  position: relative;
+  top: -1px;
+  height: 8px;
+  width: 8px;
+}
