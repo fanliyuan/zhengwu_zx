@@ -14,10 +14,10 @@ const { RangePicker } = DatePicker
 }))
 export default class AccessManagement extends Component {
   state = {
-    dataType: '0',
+    dataType: '数据类型',
     // nodeName:'0',
     // owingJg: '0',
-    creater: '0',
+    creater: '创建人',
     // status:'0',
     isNodeOperator: false,
   }
@@ -87,8 +87,8 @@ export default class AccessManagement extends Component {
     const that = this
     const { dataType, creater, isNodeOperator } = this.state
     const data = [
-      { value: '0', id: 0, label: '数据类型' },
-      { value: '1', id: 1, label: '数据类型1' },
+      { value: '0', id: 0, label: '类型1' },
+      { value: '1', id: 1, label: '类型2' },
     ]
     const selectData = data.map(item => {
       return (
@@ -145,7 +145,7 @@ export default class AccessManagement extends Component {
         ],
       },
     ]
-    const data3 = [{ value: '0', id: 0, label: '创建人' }, { value: '1', id: 1, label: '创建人1' }]
+    const data3 = [{ value: '0', id: 0, label: '创建人1' }, { value: '1', id: 1, label: '创建人2' }]
     const selectData3 = data3.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -174,10 +174,10 @@ export default class AccessManagement extends Component {
       //   title: '节点',
       //   dataIndex: 'node',
       // },
-      {
-        title: '所属节点',
-        dataIndex: 'institution',
-      },
+      // {
+      //   title: '所属节点',
+      //   dataIndex: 'institution',
+      // },
       {
         title: '创建人',
         dataIndex: 'creater',
@@ -269,6 +269,11 @@ export default class AccessManagement extends Component {
           }
         },
       })
+    }else{
+      columns.splice(2,0,{
+        title: '所属节点',
+        dataIndex: 'institution',
+      })    
     }
     columns.forEach(item => {
       item.align = 'center'
@@ -334,7 +339,7 @@ export default class AccessManagement extends Component {
             <Select value={dataType} onChange={this.selectDataTypeChange} className={styles.select}>
               {selectData}
             </Select>
-            <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
+            {!isNodeOperator && <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />}
             <Select value={creater} onChange={this.selectCreaterChange} className={styles.select}>
               {selectData3}
             </Select>

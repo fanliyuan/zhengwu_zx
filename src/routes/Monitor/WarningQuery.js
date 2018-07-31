@@ -18,14 +18,14 @@ export default class WarningQuery extends Component {
       taskName: '',
       originName: '',
       nodeSer: [],
-      originSer: -1,
-      typeSer: -1,
+      originSer: '告警来源',
+      typeSer: '告警类型',
     },
     queryDat: {
       name: '',
       nodeDat: [],
-      originDat: -1,
-      typeDat: -1,
+      originDat: '数据来源',
+      typeDat: '操作类型',
       time: [],
     },
     serIsChanged: false,
@@ -191,10 +191,6 @@ export default class WarningQuery extends Component {
     ]
     const originList = [
       {
-        value: -1,
-        label: '全部来源',
-      },
-      {
         value: 0,
         label: '数据源',
       },
@@ -204,10 +200,6 @@ export default class WarningQuery extends Component {
       },
     ]
     const typeList = [
-      {
-        value: -1,
-        label: '全部类型',
-      },
       {
         value: 0,
         label: '更新',
@@ -222,10 +214,6 @@ export default class WarningQuery extends Component {
       },
     ]
     const methodList = [
-      {
-        value: -1,
-        label: '全部类型',
-      },
       {
         value: 0,
         label: '连通',
@@ -345,9 +333,9 @@ export default class WarningQuery extends Component {
       dataSer.push({
         id: i,
         nodeName: `节点名${i}`,
-        origin: originList[random + 1].label + i,
+        origin: originList[random].label + i,
         originName: random === 1 ? `通道${i}订阅${i}` : `数据源名${i}`,
-        type: methodList[(i % 3) + 1].label,
+        type: methodList[(i % 3)].label,
         code: 500 + random,
         description: `描述${i}`,
         time: moment(new Date() - 1000 * 60 * 60 * 15 * i, 'x').format('lll'),
@@ -355,9 +343,9 @@ export default class WarningQuery extends Component {
       dataDat.push({
         id: i,
         nodeName: `节点${i}`,
-        origin: originList[random + 1].label + i,
+        origin: originList[random].label + i,
         originName: random === 1 ? `通道${i}订阅${i}` : `数据源名${i}`,
-        type: typeList[(i % 3) + 1].label,
+        type: typeList[(i % 3)].label,
         cause: random === 1 ? '数据不存在' : 'nage”非法值',
         time: moment(new Date() - 1000 * 60 * 60 * 25 * i, 'x').format('lll'),
         key: `id=${i}`,
@@ -378,7 +366,7 @@ export default class WarningQuery extends Component {
                     value={nodeSer}
                     onChange={this.nodeSerChange}
                     className={styles.cascader}
-                    placeholder="请选择节点名称"
+                    placeholder="节点名称"
                     />
                   <Select
                     value={originSer}
@@ -391,7 +379,7 @@ export default class WarningQuery extends Component {
                     value={originName}
                     onChange={this.originNameChange}
                     className={styles.input}
-                    placeholder="告警来源名称"
+                    placeholder="告警来源/来源名称"
                     />
                   <Select value={typeSer} onChange={this.typeSerChange} className={styles.select}>
                     {methodComs}
@@ -417,7 +405,7 @@ export default class WarningQuery extends Component {
                     value={nodeDat}
                     onChange={this.nodeDatChange}
                     className={styles.cascader}
-                    placeholder="请选择节点名称"
+                    placeholder="节点名称"
                     />
                   <Select
                     value={originDat}

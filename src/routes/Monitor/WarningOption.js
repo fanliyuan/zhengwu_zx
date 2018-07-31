@@ -30,9 +30,9 @@ export default class WarningOption extends Component {
     query: {
       name: '',
       target: '',
-      method: -1,
+      method: '告警方式',
       node: [],
-      state: -1,
+      state: '状态',
     },
     isChanged: false,
   }
@@ -135,12 +135,10 @@ export default class WarningOption extends Component {
       },
     ]
     const methodList = [
-      { value: -1, label: '全部方式' },
       { value: 0, label: '短信告警' },
       { value: 1, label: '邮件告警' },
     ]
     const stateList = [
-      { value: -1, label: '全部状态' },
       { value: 0, label: '运行中' },
       { value: 1, label: '已停止' },
     ]

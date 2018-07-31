@@ -15,8 +15,8 @@ export default class Pass extends Component {
   state = {
     query: {
       name: '',
-      state: -1,
-      link: -1,
+      state: '状态',
+      link: '连通性',
     },
     isChanged: false,
   }
@@ -67,10 +67,6 @@ export default class Pass extends Component {
 
     const stateList = [
       {
-        value: -1,
-        label: '全部状态',
-      },
-      {
         value: 0,
         label: '启用',
       },
@@ -80,10 +76,6 @@ export default class Pass extends Component {
       },
     ]
     const linkList = [
-      {
-        value: -1,
-        label: '全部状态',
-      },
       {
         value: 0,
         label: '连接正常',

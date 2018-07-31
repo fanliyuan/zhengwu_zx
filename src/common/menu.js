@@ -297,6 +297,12 @@ const menuData = [
         authority: 'operator-n',
       },
       {
+        name: '编辑数据',
+        path: 'EditData',
+        hideInMenu: true,
+        authority: 'operator-n',
+      },
+      {
         name: '设置同步计划',
         path: 'setPlan',
         hideInMenu: true,
@@ -450,8 +456,34 @@ const menuData = [
     path: 'monitor',
     children: [
       {
+        name: '节点监控',
+        path: 'nodeMonitor',
+      },
+      {
+        name: '通道监控',
+        path: 'pass',
+      },
+      {
+        name: '接入监控',
+        path: 'insert',
+      },
+      {
+        name: '交换监控',
+        path: 'task',
+      },
+      {
         name: '告警配置',
         path: 'warningOption',
+      },
+      {
+        name: '告警查看',
+        path: 'warningQuery',
+        // hideInMenu: true,
+      },
+      {
+        name: '告警设置',
+        path: 'editOption',
+        hideInMenu: true,
       },
       {
         name: '新增告警配置',
@@ -464,40 +496,14 @@ const menuData = [
         hideInMenu: true,
       },
       {
-        name: '节点监控',
-        path: 'nodeMonitor',
-      },
-      {
         name: '监控详情',
         path: 'node',
         hideInMenu: true,
       },
       {
-        name: '告警设置',
-        path: 'editOption',
-        hideInMenu: true,
-      },
-      {
-        name: '通道监控',
-        path: 'pass',
-      },
-      {
-        name: '接入监控',
-        path: 'insert',
-      },
-      {
         name: '接入源数据监控',
         path: 'insertDetail',
         hideInMenu: true,
-      },
-      {
-        name: '任务监控',
-        path: 'task',
-      },
-      {
-        name: '告警查询',
-        path: 'warningQuery',
-        // hideInMenu: true,
       },
     ],
     authority: ['operator', 'operator-n'],

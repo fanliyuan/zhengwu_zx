@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber, message } from 'antd'
+import { Input, Card, Form, Button, Steps, Select, Cascader, InputNumber, message, Tooltip, Icon } from 'antd'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -128,7 +128,18 @@ export default class SetPlan extends Component {
             <FormItem label="同步频率" {...formItemLayout}>
               {getFieldDecorator('rate')(<Select disabled={disabled}>{optionSelect}</Select>)}
             </FormItem>
-            <FormItem label="定时设置" {...formItemLayout}>
+            <FormItem 
+              label="定时设置"
+              {...formItemLayout}
+              extra={
+                <span style={{color:'#007ACC'}}>
+                  是否新建目录&nbsp;
+                  <Tooltip title="说明:  可输入数字，语法如下：“*” 代表取值范围内的全部数字,“/” 代表“每”,“-” 代表从某个数字到某个数字,“,” 分开几个离散的数字">
+                    <Icon type="question-circle-o" />
+                  </Tooltip>
+                </span>
+              }
+              >
               <InputGroup compact>
                 <Input style={{ width: '20%' }} placeholder="分钟" disabled={disabled} />
                 <Input style={{ width: '20%' }} placeholder="小时" disabled={disabled} />

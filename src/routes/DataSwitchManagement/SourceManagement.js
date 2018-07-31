@@ -1,20 +1,41 @@
 import React, { Component } from 'react'
-import { Table, Card, Tabs, Input, DatePicker, Row, Col, Button } from 'antd'
+import { Table, Card, Tabs, Input, DatePicker, Row, Col, Button, Modal, Tooltip, Tree, Icon, Select } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
+import { isArray } from 'util'
 
 import styles from './SourceManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { TabPane } = Tabs
+const { Option } = Select
 const { RangePicker } = DatePicker
+const { DirectoryTree, TreeNode } = Tree
+function renderTreeNode(renderList) {
+  if (!isArray(renderList)) {
+    return null
+  }
+  return renderList.map(item => {
+    if (!isArray(item.children)) {
+      return <TreeNode title={item.title || '佚名'} key={item.key} isLeaf />
+    } else {
+      return (
+        <TreeNode title={item.title || '佚名'} key={item.key}>
+          {renderTreeNode(item.children)}
+        </TreeNode>
+      )
+    }
+  })
+}
 @connect(({ sourceManagement }) => ({
   sourceManagement,
 }))
 export default class SourceManagement extends Component {
   state = {
     loading: false,
+    modalVisible:false,
+    selectJg: '所属机构',
   }
 
   handleCataLog = () => {
@@ -22,18 +43,137 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSwitchManagement/viewDirectory'))
   }
 
+  handleSelectChangejg = val => {
+    this.setState({
+      selectJg: val,
+    })
+  }
+
   handleSource = () => {
     const { dispatch } = this.props
     dispatch(routerRedux.push('/dataSwitchManagement/source'))
   }
 
+  handleClassify = () => {
+    this.modalShow()
+  }
+
+  modalOk = () => {
+    this.setState({
+      modalVisible:false,
+    })
+  }
+
+  modalCancel = () => {
+    this.setState({
+      modalVisible:false,
+    })
+  }
+
+  modalShow = () => {
+    this.setState({
+      modalVisible:true,
+    })
+  }
+
   render() {
     const that = this
-    const { loading } = this.state
+    const { loading, modalVisible, selectJg } = this.state
+    const data = [{ value: '0', id: 0, label: '机构1' }, { value: '1', id: 1, label: '机构2' }]
+    const selectData = data.map(item => {
+      return (
+        <Option value={item.value} key={item.id} title={item.label}>
+          {item.label}
+        </Option>
+      )
+    })
+    const menuData = [
+      {
+        title: '01|-雄安政务信息资源',
+        key: '4',
+      },
+      {
+        title: '02|-雄安市民服务中心信息资源',
+        key: '5',
+      },
+      {
+        title: '03|-雄安个人数据信息资源',
+        key: '6',
+      },
+      {
+        title: '001|-药品局',
+        key: '7',
+      },
+      {
+        title: '002|-医疗器械',
+        key: '8',
+      },
+      {
+        title: '130|-保定',
+        key: '1',
+        children: [
+          {
+            title: '638|-雄县',
+            key: '1-1',
+          },
+          {
+            title: '632|-安新县',
+            key: '1-2',
+          },
+          {
+            title: '629|-容城县',
+            key: '1-3',
+          },
+        ],
+      },
+      {
+        title: '132|-雄安新区',
+        key: '2',
+        children: [
+          {
+            title: '1|-政府',
+            key: '2-1',
+          },
+          {
+            title: '1|-政府',
+            key: '2-2',
+          },
+        ],
+      },
+      {
+        title: '1306|-XA政务信息资源',
+        key: '3',
+        children: [
+          {
+            title: '1|-直属委办局',
+            key: '3-1',
+          },
+          {
+            title: '123|住房和城乡建设局',
+            key: '3-2',
+          },
+          {
+            title: '124|环境保护局',
+            key: '3-3',
+          },
+          {
+            title: '125|旅游文物局',
+            key: '3-4',
+          },
+          {
+            title: '126|规划局',
+            key: '3-5',
+          },
+        ],
+      },
+    ]
     const columns = [
       {
         title: '序号',
         dataIndex: 'id',
+        render(text){
+          return (<span><input type="checkbox" style={{marginRight:5}} />{text}</span>)
+        },
       },
       {
         title: '目录名称',
@@ -102,6 +242,9 @@ export default class SourceManagement extends Component {
       {
         title: '序号',
         dataIndex: 'id',
+        render(text){
+          return (<span><input type="checkbox" style={{marginRight:5}} />{text}</span>)
+        },
       },
       {
         title: '目录名称',
@@ -173,10 +316,10 @@ export default class SourceManagement extends Component {
       current: 1,
       pageSize: 10,
     }
-    const rowSelection = {
-      // selectedRowKeys,
-      onChange: () => {},
-    }
+    // const rowSelection = {
+    //   // selectedRowKeys,
+    //   onChange: () => {},
+    // }
     return (
       <PageHeaderLayout>
         <Card loading={loading}>
@@ -185,13 +328,19 @@ export default class SourceManagement extends Component {
               <TabPane tab="数据库" key="1">
                 <Row style={{ marginBottom: 20 }}>
                   <Col span={3}>
+                    <Input placeholder="目录分类" onClick={this.handleClassify} />
+                  </Col>
+                  <Col span={3} offset={1}>
                     <Input placeholder="目录名称" />
                   </Col>
                   <Col span={3} offset={1}>
-                    <Input placeholder="所属主题" />
-                  </Col>
-                  <Col span={3} offset={1}>
-                    <Input placeholder="所属机构" />
+                    <Select
+                      style={{ marginRight: 20, width: 120 }}
+                      onChange={this.handleSelectChangejg}
+                      value={selectJg}
+                      >
+                      {selectData}
+                    </Select>
                   </Col>
                   <Col span={4} offset={1}>
                     <RangePicker />
@@ -208,7 +357,7 @@ export default class SourceManagement extends Component {
                     columns={columns}
                     dataSource={list}
                     pagination={pagination}
-                    rowSelection={rowSelection}
+                    // rowSelection={rowSelection}
                     rowKey="id"
                     bordered
                     />
@@ -217,13 +366,19 @@ export default class SourceManagement extends Component {
               <TabPane tab="数据文件" key="2">
                 <Row style={{ marginBottom: 20 }}>
                   <Col span={3}>
+                    <Input placeholder="目录分类" onClick={this.handleClassify} />
+                  </Col>
+                  <Col span={3} offset={1}>
                     <Input placeholder="目录名称" />
                   </Col>
                   <Col span={3} offset={1}>
-                    <Input placeholder="所属主题" />
-                  </Col>
-                  <Col span={3} offset={1}>
-                    <Input placeholder="所属机构" />
+                    <Select
+                      style={{ marginRight: 20, width: 120 }}
+                      onChange={this.handleSelectChangejg}
+                      value={selectJg}
+                      >
+                      {selectData}
+                    </Select>
                   </Col>
                   <Col span={4} offset={1}>
                     <RangePicker />
@@ -239,7 +394,7 @@ export default class SourceManagement extends Component {
                   <Table
                     columns={columns1}
                     dataSource={list1}
-                    rowSelection={rowSelection}
+                    // rowSelection={rowSelection}
                     pagination={pagination}
                     rowKey="id"
                     bordered
@@ -248,6 +403,31 @@ export default class SourceManagement extends Component {
               </TabPane>
             </Tabs>
           </div>
+          <Modal
+            title="分类"
+            visible={modalVisible}
+            onOk={this.modalOk}
+            onCancel={this.modalCancel}
+            >
+            {/* <div> */}
+            <div className={styles.search}>
+              <Input placeholder="请输入关键词" className={styles.input} />
+              <Button type="primary" icon="search" />
+            </div>
+            <div>
+              <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8 mb16">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+              <DirectoryTree
+                defaultExpandAll
+                onRightClick={this.directoryChange}
+                className={styles.tree}
+                >
+                {renderTreeNode(menuData)}
+              </DirectoryTree>
+            </div>
+            {/* </div> */}
+          </Modal>
         </Card>
       </PageHeaderLayout>
     )

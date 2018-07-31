@@ -41,12 +41,12 @@ export default class Task extends Component {
     queryPub: {
       namePub: '',
       node: [],
-      statePub: -1,
+      statePub: '是否正在执行',
       time: [],
     },
     querySub: {
       nameSub: '',
-      stateSub: -1,
+      stateSub: '状态',
     },
     pubIsChanged: false,
     subIsChanged: false,
@@ -167,13 +167,11 @@ export default class Task extends Component {
       },
     ]
     const statePubList = [
-      { value: -1, label: '全部状态' },
       { value: 0, label: '是' },
       { value: 1, label: '否' },
     ]
 
     const stateSubList = [
-      { value: -1, label: '全部状态' },
       { value: 0, label: '启用' },
       { value: 1, label: '停用' },
     ]
@@ -284,7 +282,7 @@ export default class Task extends Component {
           <Tabs>
             <Tabs.TabPane tab="任务监控列表（发布）" key="pub">
               <Form className={styles.search}>
-                <Input value={namePub} onChange={this.namePubChange} className={styles.input} />
+                <Input value={namePub} onChange={this.namePubChange} className={styles.input} placeholder="发布名称" />
                 <Cascader
                   options={nodeList}
                   value={node}
@@ -308,7 +306,7 @@ export default class Task extends Component {
             </Tabs.TabPane>
             <Tabs.TabPane tab="任务监控列表（订阅）" key="sub">
               <Form className={styles.search}>
-                <Input value={nameSub} onChange={this.nameSubChange} className={styles.input} />
+                <Input value={nameSub} onChange={this.nameSubChange} className={styles.input} placeholder="订阅/发布名称" />
                 <Select value={stateSub} onChange={this.stateSubChange} className={styles.select}>
                   {stateSubComs}
                 </Select>

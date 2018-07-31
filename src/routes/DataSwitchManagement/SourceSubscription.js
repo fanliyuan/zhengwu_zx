@@ -206,62 +206,80 @@ export default class SourceSubscription extends Component {
     })
     const menuData = [
       {
-        title: '文件夹1',
+        title: '01|-雄安政务信息资源',
+        key: '4',
+      },
+      {
+        title: '02|-雄安市民服务中心信息资源',
+        key: '5',
+      },
+      {
+        title: '03|-雄安个人数据信息资源',
+        key: '6',
+      },
+      {
+        title: '001|-药品局',
+        key: '7',
+      },
+      {
+        title: '002|-医疗器械',
+        key: '8',
+      },
+      {
+        title: '130|-保定',
         key: '1',
         children: [
           {
-            title: '文件1',
+            title: '638|-雄县',
             key: '1-1',
           },
           {
-            title: '文件2',
+            title: '632|-安新县',
             key: '1-2',
           },
           {
-            title: '文件3',
+            title: '629|-容城县',
             key: '1-3',
           },
         ],
       },
       {
-        title: '文件夹2',
+        title: '132|-雄安新区',
         key: '2',
         children: [
           {
-            title: '数据1',
+            title: '1|-政府',
             key: '2-1',
-            children: [
-              {
-                title: '文件1',
-                key: '2-1-1',
-              },
-              {
-                title: '文件2',
-                key: '2-1-2',
-              },
-              {
-                title: '文件3',
-                key: '2-1-3',
-              },
-            ],
           },
           {
-            title: '数据2',
+            title: '2|-政府',
             key: '2-2',
-            children: [
-              {
-                title: '文件1',
-                key: '2-2-1',
-              },
-              {
-                title: '文件2',
-                key: '2-2-2',
-              },
-              {
-                title: '文件3',
-                key: '2-2-3',
-              },
-            ],
+          },
+        ],
+      },
+      {
+        title: '1306|-XA政务信息资源',
+        key: '3',
+        children: [
+          {
+            title: '1|-直属委办局',
+            key: '3-1',
+          },
+          {
+            title: '123|住房和城乡建设局',
+            key: '3-2',
+          },
+          {
+            title: '124|环境保护局',
+            key: '3-3',
+          },
+          {
+            title: '125|旅游文物局',
+            key: '3-4',
+          },
+          {
+            title: '126|规划局',
+            key: '3-5',
           },
         ],
       },
@@ -310,7 +328,7 @@ export default class SourceSubscription extends Component {
     return (
       <PageHeaderLayout>
         <Row>
-          <Col style={{ padding: 20, background: '#fff' }} span={6}>
+          <Col style={{ padding: 20, background: '#fff' }} span={7}>
             <div>
               <div className={styles.search}>
                 <Input placeholder="请输入关键词" className={styles.input} />
@@ -330,7 +348,7 @@ export default class SourceSubscription extends Component {
               </div>
             </div>
           </Col>
-          <Col style={{ padding: 20, background: '#fff' }} span={17} offset={1}>
+          <Col style={{ padding: 20, background: '#fff' }} span={16} offset={1}>
             <div className={styles.form}>
               <Input placeholder="发布名称" style={{ width: 120, marginRight: 20 }} />
               <Select

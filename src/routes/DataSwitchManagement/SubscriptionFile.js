@@ -7,7 +7,7 @@
 */
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
-import { Form, Input, Select, Radio, Button, Tooltip, Icon, InputNumber } from 'antd'
+import { Form, Input, Select, Radio, Button, InputNumber, Upload } from 'antd'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './SubscriptionFile.less'
@@ -19,6 +19,20 @@ const itemLayout = {
   },
   wrapperCol: {
     span: 10,
+  },
+}
+const itemLayout1 = {
+  labelCol: {
+    span: 3,
+  },
+  wrapperCol: {
+    span: 10,
+  },
+}
+const itemLayout2 = {
+  wrapperCol: {
+    span: 10,
+    offset:3,
   },
 }
 
@@ -52,6 +66,7 @@ function hasErrors(errors) {
 export default class SubscriptionFile extends Component {
   state = {
     isNodeOperator: false,
+    addFileName:false,
   }
 
   componentDidMount() {
@@ -65,10 +80,22 @@ export default class SubscriptionFile extends Component {
     )
   }
 
+  handleAddFile = (e) => {
+    if(+e.target.value === 0){
+      this.setState({
+        addFileName:true,
+      })
+    }
+  }
+
+  handleUpload = () => {
+
+  }
+
   handleSave = () => {}
 
   render() {
-    const { isNodeOperator } = this.state
+    const { isNodeOperator, addFileName } = this.state
     const { getFieldDecorator, isFieldTouched, getFieldError, getFieldsError } = this.props.form
 
     const nameError =
@@ -77,7 +104,7 @@ export default class SubscriptionFile extends Component {
 
     return (
       <PageHeaderLayout>
-        <div className="common-layout">
+        <div className="common-layout" style={{overflowX:'hidden'}}>
           <ButtonList
             onClick={this.handleSave}
             isNodeOperator={isNodeOperator}
@@ -89,6 +116,7 @@ export default class SubscriptionFile extends Component {
               label="订阅名称"
               validateStatus={nameError ? 'error' : ''}
               help={nameError ? '请输入名称' : ''}
+              style={{width:1500}}
               >
               {getFieldDecorator('name', {
                 rules: [{ required: true, message: '请输入名称' }],
@@ -100,21 +128,21 @@ export default class SubscriptionFile extends Component {
             </Item>
             <Item>
               <span className={styles.span1}>
-                <span className={styles.label}>目录发布机构</span>:
+                <span className={styles.label}>发布机构</span>:
                 <span className={styles.value}>石家庄东城区</span>
               </span>
               <span className={styles.span2}>
-                <span className={styles.label}>目录数据类型</span>:
+                <span className={styles.label}>数据类型</span>:
                 <span className={styles.value}>数据库</span>
               </span>
             </Item>
             <Item>
               <span className={styles.span1}>
-                <span className={styles.label}>目录所属主题</span>:
+                <span className={styles.label}>所属分类</span>:
                 <span className={styles.value}>国土数据</span>
               </span>
               <span className={styles.span2}>
-                <span className={styles.label}>目录详情</span>:<a className={styles.value}>查看</a>
+                <span className={styles.label}>详情</span>:<Link to="/dataSourceManagement/viewDirectory" className={styles.value}>查看</Link>
               </span>
             </Item>
             <Item label="发布模式" {...itemLayout}>
@@ -149,20 +177,21 @@ export default class SubscriptionFile extends Component {
               <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
             </Item>
             <Item
-              label={
-                <span>
-                  是否新建目录&nbsp;
-                  <Tooltip title="是否需要在当前路径下创建新文件夹">
-                    <Icon type="question-circle-o" />
-                  </Tooltip>
-                </span>
-              }
-              {...itemLayout}
+              label="订阅存储路径"
+              {...itemLayout1}
+              extra={<span>是否需要在当前路径下创建新文件夹</span>}
               >
-              <Radio.Group defaultValue="0" disabled={!isNodeOperator}>
+              <Upload onChange={this.handleUpload} disabled={!isNodeOperator}>
+                <Input className={styles.input} style={{marginRight:30}} disabled={!isNodeOperator} />
+                <Button type="primary">选择</Button>
+              </Upload>
+            </Item>
+            <Item {...itemLayout2} style={{marginTop:'-30px'}}>
+              <Radio.Group defaultValue="1" onChange={this.handleAddFile} disabled={!isNodeOperator}>
                 <Radio value="0">是</Radio>
                 <Radio value="1">否</Radio>
               </Radio.Group>
+              <Input style={{display:addFileName ? 'block' :'none'}} placeholder="请输入文件夹名称" />
             </Item>
           </Form>
         </div>

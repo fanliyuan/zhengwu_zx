@@ -18,7 +18,7 @@ export default class Insert extends Component {
       name: '',
       library: '',
       node: [],
-      link: -1,
+      link: '连通性',
     },
     isChanged: false,
   }
@@ -113,10 +113,6 @@ export default class Insert extends Component {
       },
     ]
     const linkList = [
-      {
-        value: -1,
-        label: '全部状态',
-      },
       {
         value: 0,
         label: '连接正常',

@@ -8,8 +8,9 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
 import { Link } from 'dva/router'
-import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal } from 'antd'
+import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal, Tooltip, Tree, Icon } from 'antd'
 import moment from 'moment'
+import { isArray } from 'util'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import { getName, getAddress, getDepartment } from '../../utils/faker'
@@ -19,7 +20,24 @@ const { RangePicker } = DatePicker
 const { Option } = Select
 const { TabPane } = Tabs
 const { confirm } = Modal
+const { DirectoryTree, TreeNode } = Tree
 
+function renderTreeNode(renderList) {
+  if (!isArray(renderList)) {
+    return null
+  }
+  return renderList.map(item => {
+    if (!isArray(item.children)) {
+      return <TreeNode title={item.title || '佚名'} key={item.key} isLeaf />
+    } else {
+      return (
+        <TreeNode title={item.title || '佚名'} key={item.key}>
+          {renderTreeNode(item.children)}
+        </TreeNode>
+      )
+    }
+  })
+}
 function getData1() {
   const data = []
   for (let i = 0; i < 120; i++) {
@@ -93,6 +111,7 @@ export default class AllSub extends Component {
     isChanged: false,
     selectKeys: [],
     isNodeOperator: false,
+    modalVisible:false,
   }
 
   componentDidMount() {
@@ -144,12 +163,34 @@ export default class AllSub extends Component {
     })
   }
 
+  handleFocus = () => {
+    this.modalShow()
+  }
+
   handleStandardTableChange = pagination => {
     console.log(pagination) // eslint-disable-line
   }
 
+  modalOk = () => {
+    this.setState({
+      modalVisible:false,
+    })
+  }
+
+  modalCancel = () => {
+    this.setState({
+      modalVisible:false,
+    })
+  }
+
+  modalShow = () => {
+    this.setState({
+      modalVisible:true,
+    })
+  }
+
   render() {
-    const { name, date, state, theme, selectKeys, organization, isNodeOperator } = this.state
+    const { name, date, state, theme, selectKeys, organization, isNodeOperator, modalVisible } = this.state
 
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
@@ -165,10 +206,10 @@ export default class AllSub extends Component {
     ]
 
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      // },
       {
         title: '订阅名称',
         dataIndex: 'name',
@@ -181,10 +222,10 @@ export default class AllSub extends Component {
         title: '订阅时间',
         dataIndex: 'time',
       },
-      {
-        title: '目录名称',
-        dataIndex: 'menu',
-      },
+      // {
+      //   title: '目录名称',
+      //   dataIndex: 'menu',
+      // },
       {
         title: '订阅机构',
         dataIndex: 'organization',
@@ -194,7 +235,7 @@ export default class AllSub extends Component {
         dataIndex: 'menuName',
       },
       {
-        title: '目录发布机构',
+        title: '发布机构',
         dataIndex: 'menuOrganization',
       },
       {
@@ -416,6 +457,87 @@ export default class AllSub extends Component {
 
     const tabscls = isNodeOperator ? '' : styles.tabscls
 
+    const menuData = [
+      {
+        title: '01|-雄安政务信息资源',
+        key: '4',
+      },
+      {
+        title: '02|-雄安市民服务中心信息资源',
+        key: '5',
+      },
+      {
+        title: '03|-雄安个人数据信息资源',
+        key: '6',
+      },
+      {
+        title: '001|-药品局',
+        key: '7',
+      },
+      {
+        title: '002|-医疗器械',
+        key: '8',
+      },
+      {
+        title: '130|-保定',
+        key: '1',
+        children: [
+          {
+            title: '638|-雄县',
+            key: '1-1',
+          },
+          {
+            title: '632|-安新县',
+            key: '1-2',
+          },
+          {
+            title: '629|-容城县',
+            key: '1-3',
+          },
+        ],
+      },
+      {
+        title: '132|-雄安新区',
+        key: '2',
+        children: [
+          {
+            title: '1|-政府',
+            key: '2-1',
+          },
+          {
+            title: '1|-政府',
+            key: '2-2',
+          },
+        ],
+      },
+      {
+        title: '1306|-XA政务信息资源',
+        key: '3',
+        children: [
+          {
+            title: '1|-直属委办局',
+            key: '3-1',
+          },
+          {
+            title: '123|住房和城乡建设局',
+            key: '3-2',
+          },
+          {
+            title: '124|环境保护局',
+            key: '3-3',
+          },
+          {
+            title: '125|旅游文物局',
+            key: '3-4',
+          },
+          {
+            title: '126|规划局',
+            key: '3-5',
+          },
+        ],
+      },
+    ]
+
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
@@ -423,18 +545,19 @@ export default class AllSub extends Component {
             <TabPane tab="已订阅" key="hasSubscribed">
               <div className={styles.search}>
                 <Input
+                  className={styles.theme}
+                  placeholder="搜索分类"
+                  value={theme}
+                  onPressEnter={this.handleSearch}
+                  onChange={this.handleThemeChange}
+                  onClick={this.handleFocus}
+                  />
+                <Input
                   placeholder="订阅名称/发布名称"
                   value={name}
                   onPressEnter={this.handleSearch}
                   onChange={this.handleNameChange}
                   className={styles.name}
-                  />
-                <Input
-                  className={styles.theme}
-                  placeholder="请输入主题"
-                  value={theme}
-                  onPressEnter={this.handleSearch}
-                  onChange={this.handleThemeChange}
                   />
                 <Input
                   className={styles.name}
@@ -501,7 +624,7 @@ export default class AllSub extends Component {
             </TabPane>
             {isNodeOperator && (
               <TabPane tab="待审核" key="willAudit">
-                <div className={styles.search}>
+                <div className={styles.search1}>
                   <Input
                     placeholder="订阅名称/发布名称"
                     value={name}
@@ -556,6 +679,31 @@ export default class AllSub extends Component {
               </TabPane>
             )}
           </Tabs>
+          <Modal
+            title="分类"
+            visible={modalVisible}
+            onOk={this.modalOk}
+            onCancel={this.modalCancel}
+            >
+            {/* <div> */}
+            <div className={styles.search}>
+              <Input placeholder="请输入关键词" className={styles.input} />
+              <Button type="primary" icon="search" />
+            </div>
+            <div>
+              <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8 mb16">
+                <Icon type="question-circle-o" />
+              </Tooltip>
+              <DirectoryTree
+                defaultExpandAll
+                onRightClick={this.directoryChange}
+                className={styles.tree}
+                >
+                {renderTreeNode(menuData)}
+              </DirectoryTree>
+            </div>
+            {/* </div> */}
+          </Modal>
         </div>
       </PageHeaderLayout>
     )

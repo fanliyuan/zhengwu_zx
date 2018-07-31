@@ -12,7 +12,9 @@ const FormItem = Form.Item
 }))
 @Form.create()
 export default class AddAccess extends Component {
-  state = {}
+  state = {
+    typess:['1','0-0'],
+  }
 
   handleSubmit = e => {
     e.preventDefault()
@@ -29,6 +31,7 @@ export default class AddAccess extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form
+    const { typess } = this.state
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -41,24 +44,6 @@ export default class AddAccess extends Component {
       },
     }
     const options = [
-      {
-        label: '半结构化存储',
-        value: '0',
-        children: [
-          {
-            label: 'FTP',
-            value: '0-0',
-          },
-          {
-            label: 'SFTP',
-            value: '0-1',
-          },
-          {
-            label: '本地文件',
-            value: '0-2',
-          },
-        ],
-      },
       {
         label: '关系型数据库',
         value: '1',
@@ -85,13 +70,36 @@ export default class AddAccess extends Component {
           },
         ],
       },
+      {
+        label: '半结构化存储',
+        value: '0',
+        children: [
+          {
+            label: 'FTP',
+            value: '0-0',
+          },
+          {
+            label: 'SFTP',
+            value: '0-1',
+          },
+          {
+            label: '本地文件',
+            value: '0-2',
+          },
+        ],
+      },
     ]
     return (
       <PageHeaderLayout>
         <Card>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="名称" {...formItemLayout}>
-              {getFieldDecorator('name')(<Input placeholder="名称" />)}
+              {getFieldDecorator('name',{
+                rules:[{
+                  required:true,
+                },
+              ],
+              })(<Input placeholder="名称" />)}
             </FormItem>
             <FormItem
               label="类型"
@@ -102,7 +110,13 @@ export default class AddAccess extends Component {
                   : ''
               }
               >
-              {getFieldDecorator('types')(<Cascader options={options} />)}
+              {getFieldDecorator('types',{
+                initialValue:typess,
+                rules:[{
+                  required:true,
+                },
+              ],
+              })(<Cascader options={options} />)}
             </FormItem>
             <FormItem
               label="FTP地址"
@@ -116,7 +130,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('address')(<Input />)}
+              {getFieldDecorator('address',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input />)}
             </FormItem>
             <FormItem
               label="FTP端口"
@@ -130,7 +149,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('port')(<Input />)}
+              {getFieldDecorator('port',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input />)}
             </FormItem>
             <FormItem
               label="用户名"
@@ -144,7 +168,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('userName')(<Input />)}
+              {getFieldDecorator('userName',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input />)}
             </FormItem>
             <FormItem
               label="密码"
@@ -158,7 +187,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('psd')(<Input type="password" />)}
+              {getFieldDecorator('psd',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input type="password" />)}
             </FormItem>
             <FormItem
               label="数据库地址"
@@ -172,7 +206,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('dataBaseAddress')(<Input />)}
+              {getFieldDecorator('dataBaseAddress',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input />)}
             </FormItem>
             <FormItem
               label="数据库端口"
@@ -186,7 +225,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('dataBasePort')(<Input />)}
+              {getFieldDecorator('dataBasePort',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input />)}
             </FormItem>
             <FormItem
               label="数据库用户名"
@@ -200,7 +244,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('dataBaseUserName')(<Input />)}
+              {getFieldDecorator('dataBaseUserName',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input />)}
             </FormItem>
             <FormItem
               label="数据库密码"
@@ -214,7 +263,12 @@ export default class AddAccess extends Component {
                       : 'none',
               }}
               >
-              {getFieldDecorator('dataBasePassword')(<Input type="password" />)}
+              {getFieldDecorator('dataBasePassword',{
+                rules:[{
+                    required:true,
+                  },
+                ],
+              })(<Input type="password" />)}
             </FormItem>
             <FormItem
               label="连通性测试"

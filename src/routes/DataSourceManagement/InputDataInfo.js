@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, Button, Steps, Select } from 'antd'
+import { Input, Card, Form, Button, Steps, Select, Modal, Row, Col, Table } from 'antd'
 import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
 
@@ -17,6 +17,7 @@ const { TextArea } = Input
 export default class InputDataInfo extends Component {
   state = {
     disabled: true,
+    visible: false,
   }
 
   componentDidMount() {
@@ -25,6 +26,24 @@ export default class InputDataInfo extends Component {
         disabled: false,
       })
     }
+  }
+
+  handleShowModal= () => {
+    this.setState({
+      visible: true,
+    })
+  }
+
+  handleOk = () => {
+    this.setState({
+      visible: false,
+    })
+  }
+
+  handleCancel = () => {
+    this.setState({
+      visible: false,
+    })
   }
 
   handleSubmit = () => {}
@@ -44,8 +63,8 @@ export default class InputDataInfo extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form
-    const { disabled } = this.state
+    const { getFieldDecorator, getFieldValue } = this.props.form
+    const { disabled, visible } = this.state
     const optionData = [
       { label: 'Youedata_dig', value: '0', id: '0' },
       { label: 'Youedata_hig', value: '1', id: '1' },
@@ -68,6 +87,89 @@ export default class InputDataInfo extends Component {
         md: { span: 10 },
       },
     }
+    const pagination = {
+      current: 1,
+      pageSize: 10,
+    }
+    const columns = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+        render(text){
+          return(<div><input type="checkbox" style={{marginRight:5}} />{text}</div>)
+        },
+      },
+      {
+        title: '表名称',
+        dataIndex: 'tableName',
+      },
+      {
+        title: '中文标注',
+        dataIndex: 'chineseLabel',
+      },
+    ]
+    const list = [
+      {
+        id: 0,
+        tableName: 'dig_user',
+        chineseLabel: '用户表',
+      },
+      {
+        id: 1,
+        tableName: 'dig_order',
+        chineseLabel: '订单表',
+      },
+    ]
+    const columns1 = [
+      {
+        title: '序号',
+        dataIndex: 'id',
+        render(text){
+          return(<div><input type="checkbox" style={{marginRight:5}} />{text}</div>)
+        },
+      },
+      {
+        title: '字段名称',
+        dataIndex: 'public',
+      },
+      {
+        title: '数据类型',
+        dataIndex: 'post_title',
+      },
+      {
+        title: '中文标注',
+        dataIndex: 'post_content',
+      },
+    ]
+    const list1 = [
+      {
+        id: 0,
+        blog_id: 1,
+        public: 'blog_id',
+        last_updated: 21111277,
+        post_title: 'bigint(20)',
+        post_content:
+          '',
+      },
+      {
+        id: 1,
+        blog_id: 2,
+        public: 'public',
+        last_updated: 21111277,
+        post_title: 'tinyint(2)',
+        post_content:
+          '',
+      },
+      {
+        id: 2,
+        blog_id: 2,
+        public: 'last_updated',
+        last_updated: 21111277,
+        post_title: 'datetime',
+        post_content:
+          '',
+      },
+    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -86,6 +188,7 @@ export default class InputDataInfo extends Component {
                   },
                 ],
               })(<Select disabled={disabled}>{optionSelect}</Select>)}
+              <span onClick={this.handleShowModal} style={{color:'#1890FF',display:getFieldValue('dataBase') ? 'block' : 'none'}}>编辑数据</span>
             </FormItem>
             <FormItem label="类型" {...formItemLayout}>
               {getFieldDecorator('types')(<Input disabled={disabled} />)}
@@ -118,6 +221,36 @@ export default class InputDataInfo extends Component {
               <Button onClick={this.handleBack}>返回</Button>
             </div>
           </Form>
+          <Modal title="数据库：Youedata_dig" visible={visible} onOk={this.handleOk} onCancel={this.handleCancel} width={800}>
+            <Row>
+              <Col span={9}>
+                <h3>
+                  数据表 共<span className={styles.spe}>32</span>张
+                </h3>
+                <Table
+                  columns={columns}
+                  dataSource={list}
+                  pagination={pagination}
+                  // rowSelection={rowSelection}
+                  rowKey="id"
+                  bordered
+                  />
+              </Col>
+              <Col span={14} offset={1}>
+                <h3>
+                  数据 共<span className={styles.spe}>32</span>行
+                </h3>
+                <Table
+                  columns={columns1}
+                  dataSource={list1}
+                  pagination={pagination}
+                  // rowSelection={rowSelection}
+                  rowKey="id"
+                  bordered
+                  />
+              </Col>
+            </Row>
+          </Modal>
         </Card>
       </PageHeaderLayout>
     )

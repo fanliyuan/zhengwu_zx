@@ -114,13 +114,13 @@ export default class SubscriptionTable extends Component {
             <Label label="目录名称">石家庄东城区国土数据</Label>
           </div>
           <div>
-            <Label label="目录发布机构">石家庄东城区</Label>
-            <Label label="目录数据类型">数据库</Label>
+            <Label label="发布机构">石家庄东城区</Label>
+            <Label label="数据类型">数据库</Label>
           </div>
           <div>
-            <Label label="目录所属主题">国土数据</Label>
-            <Label label="目录详情">
-              <Link to="/">查看</Link>
+            <Label label="所属分类">国土数据</Label>
+            <Label label="详情">
+              <Link to="/dataSourceManagement/viewDirectory">查看</Link>
             </Label>
           </div>
           <div>
