@@ -2,15 +2,16 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-30 17:44:50
+ * @Last Modified time: 2018-07-31 18:48:49
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  */
 import React, { Component, Fragment } from 'react'
 import { Link, routerRedux } from 'dva/router'
-import { Form, Input, Select, Upload, Modal, Button, Icon, Radio } from 'antd'
+import { Form, Input, Select, Upload, Modal, Button, Icon, Radio, message } from 'antd'
 import ReactQuill from 'react-quill'
 import { connect } from 'dva'
+import fetch from 'dva/fetch'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import 'react-quill/dist/quill.snow.css'
@@ -34,6 +35,7 @@ const savaLayout = {
   },
 }
 
+// base64转换为blob流
 const convertBase64UrlToBlob = urlData => {
   // 去掉url的头，并转换为byte
   const bytes = window.atob(urlData.split(',')[1])
@@ -50,6 +52,58 @@ const convertBase64UrlToBlob = urlData => {
       .split(';')[0],
   })
 }
+// 上传图片成功后替换img的url地址
+/**
+ * 
+ * @param {string} value quill组件onChange事件传入的html字符串
+ * @param {object} delta quill组件onChange事件出入的delta对象,包含当前插入的对象
+ * @param {object} _this 当前页面组件的this,不传或者传入错误,函数将报错
+ */
+const base64UrlToUrl = (value, delta, _this) => {
+  try {
+    const { ops } = delta
+    const uploadURL = 'http://192.168.100.16:8804/uploadImage' // 图片上传文件服务器
+    const downloadURL = 'http://192.168.100.16:8804/uploadImage' // 图片下载文件服务器
+    if (
+      ops &&
+      ops[ops.length - 1] &&
+      ops[ops.length - 1].insert &&
+      ops[ops.length - 1].insert.image
+    ) {
+      const imgURL = ops[ops.length - 1].insert.image
+      const image = convertBase64UrlToBlob(imgURL)
+      const formData = new FormData()
+      formData.append('file', image, 'image.jpg')
+      fetch(uploadURL,{
+          method: 'POST',
+          body: formData,
+        }
+      ).then(res => {
+        return res.json()
+      }).then(res => {
+        if (res.code !== 200) {
+          message.error('图片上传失败,请删除图片重试!')
+          console.log('返回结果非200')// eslint-disable-line
+          return null
+        }
+        // 这里是替换地址操作
+        _this.setState({
+          quillText: value.replace(imgURL, downloadURL+res.result.data),
+        }, () => {
+          if (_this.state.hasSubmit) {
+            // 这里跳转
+          }
+        })
+      }).catch(err => {
+        message.error('图片上传失败,网络不通或者请求错误!')
+        console.log('请求错误')// eslint-disable-line
+        console.log(err)// eslint-disable-line
+      })
+    }
+  } catch (error) {
+    console.log(error)// eslint-disable-line
+  }
+}
 
 @Form.create()
 @connect(({ addArtice }) => ({
@@ -64,6 +118,10 @@ export default class AddArticle extends Component {
     previewVisible: false,
     previewImage: '',
     saveVisible: false,
+    hasSubmit: false,// eslint-disable-line
+  }
+
+  componentDidMount() {
   }
 
   // eslint-disable-next-line
@@ -71,22 +129,7 @@ export default class AddArticle extends Component {
     this.setState({
       quillText: value,
     })
-    try {
-      // editor.getContents() 这个获取delta
-      const { ops } = delta
-      if (
-        ops &&
-        ops[ops.length - 1] &&
-        ops[ops.length - 1].insert &&
-        ops[ops.length - 1].insert.image
-      ) {
-        const imgURL = ops[ops.length - 1].insert.image
-        console.log(convertBase64UrlToBlob(imgURL)) // eslint-disable-line
-      }
-    } catch (error) {
-      // eslint-disable-next-line
-      console.log(error)
-    }
+    base64UrlToUrl(value, delta, this)
   }
 
   handleUploadChange = ({ fileList }) => this.setState({ fileList })
@@ -109,6 +152,9 @@ export default class AddArticle extends Component {
     //   saveVisible: true,
     // })
     const { dispatch } = this.props
+    // 这里是base64的正则,提交前需要保证所有地址被替换,也就是需要个标识符,代表是否已经提交
+    const base64Reg = /src="data:image\/[a-z]{3,4};base64,.*"/
+    console.log(base64Reg.test('<p>111<img src="data:image/jpeg;base64,/1231231231321">'))// eslint-disable-line
     dispatch(routerRedux.push('/portalManagement/newsLibrary'))
   }
 
@@ -274,12 +320,12 @@ export default class AddArticle extends Component {
               </Modal>
             </Item>
             <Item label="内容" {...formItemLayout}>
-              <ReactQuill
+              {<ReactQuill
                 value={this.state.quillText}
                 modules={quillModules}
                 onChange={this.handleQuillChange}
                 className={styles.quill}
-                />
+                />}
             </Item>
             <Item
               label="附件"
