@@ -111,16 +111,16 @@ export default class OpenShare extends Component {
       <PageHeaderLayout>
         <Card>
           <Form onSubmit={this.handleSubmit}>
-            <FormItem label="是否开放" {...formItemLayout}>
-              {getFieldDecorator('isOpen')(
+            <FormItem label="是否共享" {...formItemLayout}>
+              {getFieldDecorator('isShare')(
                 <RadioGroup>
                   <Radio value={0}>是</Radio>
                   <Radio value={1}>否</Radio>
                 </RadioGroup>
               )}
             </FormItem>
-            <FormItem label="是否共享" {...formItemLayout}>
-              {getFieldDecorator('isShare')(
+            <FormItem label="是否开放" {...formItemLayout}>
+              {getFieldDecorator('isOpen')(
                 <RadioGroup>
                   <Radio value={0}>是</Radio>
                   <Radio value={1}>否</Radio>

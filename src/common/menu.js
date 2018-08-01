@@ -184,6 +184,12 @@ const menuData = [
         hideInMenu: true,
         authority: 'operator-n',
       },
+      {
+        name: '导出',
+        path: 'exports',
+        hideInMenu: true,
+        authority: 'operator-n',
+      },
       // {
       //   name: '接入审核',
       //   path: 'accessAudit', //这个原型里边删除了
@@ -282,7 +288,7 @@ const menuData = [
       {
         name: '订阅审核',
         path: 'subscriptionAudit',
-        authority: ['assessor-n', 'operator-n'],
+        authority: ['assessor-n'],
       },
       {
         name: '查看授权',

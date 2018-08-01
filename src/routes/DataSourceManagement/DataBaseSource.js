@@ -23,6 +23,13 @@ export default class DataBaseSource extends Component {
     view: false,
     agency: true,
     showRow: 0,
+    isNodeOperator: false,
+  }
+
+  componentDidMount() {
+    this.setState({
+      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    })
   }
 
   handleBack = () => {
@@ -48,11 +55,11 @@ export default class DataBaseSource extends Component {
 
   handleExport = () => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push(''))
+    dispatch(routerRedux.push('/dataSourceManagement/exports'))
   }
 
   render() {
-    const { view, agency, showRow } = this.state
+    const { view, agency, showRow, isNodeOperator } = this.state
     const that = this
     const pagination = {
       current: 1,
@@ -232,9 +239,12 @@ export default class DataBaseSource extends Component {
           <Button onClick={this.handleBack} className="fr mr40">
             返回
           </Button>
-          <Button onClick={this.handleExport} className="fr mr40">
+          { isNodeOperator &&
+            (
+            <Button onClick={this.handleExport} className="fr mr40">
             导出
-          </Button>
+            </Button>
+          )}
         </div>
         <Card>
           <Row>

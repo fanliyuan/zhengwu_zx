@@ -64,7 +64,7 @@ function getData2() {
       name: `订阅名${i}`,
       operator: getName(),
       publicationName: `${getAddress()}发布${i}`,
-      theme: `主题${i}`,
+      theme: `机构${i}`,
       state: i % 3 === 0 ? '上级待审核' : '发布方待审核',
       time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
       menu: `目录名${i}`,
@@ -82,7 +82,7 @@ function getData3() {
       operator: getName(),
       organization: `订阅机构${i}`,
       publicationName: `${getAddress()}发布${i}`,
-      theme: `主题${i}`,
+      theme: `机构${i}`,
       menuName: `目录名称${i}`,
       munuOrganization: `目录发布机构${i}`,
       state: i % 3 === 0 ? '上级审核拒绝' : '发布方审核拒绝',
@@ -106,7 +106,7 @@ export default class AllSub extends Component {
   state = {
     name: '',
     theme: '',
-    state: '全部状态',
+    state: '运行状态',
     date: [],
     isChanged: false,
     selectKeys: [],
@@ -226,10 +226,10 @@ export default class AllSub extends Component {
       //   title: '目录名称',
       //   dataIndex: 'menu',
       // },
-      {
-        title: '订阅机构',
-        dataIndex: 'organization',
-      },
+      // {
+      //   title: '订阅机构',
+      //   dataIndex: 'organization',
+      // },
       {
         title: '目录名称',
         dataIndex: 'menuName',
@@ -248,19 +248,6 @@ export default class AllSub extends Component {
         render: (text, row) => {
           return row.state === '运行中' ? (
             <Fragment>
-              {isNodeOperator && (
-                <Popconfirm
-                  title={
-                    <div>
-                      <div>您是否确定停用？</div>
-                      <div>停用后将暂停采集数据！</div>
-                    </div>
-                  }
-                  onConfirm={() => message.success('已停止')}
-                  >
-                  <a className="mr16">停止</a>
-                </Popconfirm>
-              )}
               {!isNodeOperator && (
                 <Link
                   to={`/dataSwitchManagement/${
@@ -278,18 +265,20 @@ export default class AllSub extends Component {
           ) : (
             <Fragment>
               {isNodeOperator && (
-                <Popconfirm
-                  title={
-                    <div>
-                      <div>您是否确定启动？</div>
-                      <div>启动后可进行采集数据！</div>
-                    </div>
-                  }
-                  onConfirm={() => message.success('已启动')}
-                  >
-                  <a className="mr8">运行</a>
-                </Popconfirm>
-              )}
+                // <Popconfirm
+                //   title={
+                //     <div>
+                //       <div>您是否确定启动？</div>
+                //       <div>启动后可进行采集数据！</div>
+                //     </div>
+                //   }
+                //   onConfirm={() => message.success('已启动')}
+                //   >
+                +row.id % 2 === 0 ?
+                  <Link className="mr8" to={`/dataSwitchManagement/subscriptionTable/${row.id}`}>修改</Link>
+                  :
+                  <Link className="mr8" to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>修改</Link>
+                )}
               {!isNodeOperator && (
                 <Link
                   to={`/dataSwitchManagement/${
@@ -316,6 +305,12 @@ export default class AllSub extends Component {
         },
       },
     ]
+    if(!isNodeOperator){
+      columns.splice(3,0,{
+        title: '订阅机构',
+        dataIndex: 'organization',
+      })
+    }
     const willAuditColumns = [
       {
         title: '序号',
@@ -334,11 +329,11 @@ export default class AllSub extends Component {
         dataIndex: 'time',
       },
       {
-        title: '发布名称',
+        title: '目录名称',
         dataIndex: 'publicationName',
       },
       {
-        title: '所属主题',
+        title: '发布机构',
         dataIndex: 'theme',
       },
       {
@@ -384,11 +379,11 @@ export default class AllSub extends Component {
         dataIndex: 'time',
       },
       {
-        title: '发布名称',
+        title: '目录名称',
         dataIndex: 'publicationName',
       },
       {
-        title: '所属主题',
+        title: '发布机构',
         dataIndex: 'theme',
       },
       {
@@ -553,7 +548,7 @@ export default class AllSub extends Component {
                   onClick={this.handleFocus}
                   />
                 <Input
-                  placeholder="订阅名称/发布名称"
+                  placeholder="订阅名称/目录名称"
                   value={name}
                   onPressEnter={this.handleSearch}
                   onChange={this.handleNameChange}
@@ -561,7 +556,7 @@ export default class AllSub extends Component {
                   />
                 <Input
                   className={styles.name}
-                  placeholder="订阅机构/发布机构"
+                  placeholder={isNodeOperator ? '发布机构' : '订阅机构/发布机构'}
                   value={organization}
                   onPressEnter={this.handleSearch}
                   onChange={this.handleOrganizationChange}
@@ -626,7 +621,15 @@ export default class AllSub extends Component {
               <TabPane tab="待审核" key="willAudit">
                 <div className={styles.search1}>
                   <Input
-                    placeholder="订阅名称/发布名称"
+                    className={styles.theme}
+                    placeholder="搜索分类"
+                    value={theme}
+                    onPressEnter={this.handleSearch}
+                    onChange={this.handleThemeChange}
+                    onClick={this.handleFocus}
+                    />
+                  <Input
+                    placeholder="订阅名称/目录名称"
                     value={name}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleNameChange}
@@ -634,7 +637,7 @@ export default class AllSub extends Component {
                     />
                   <Input
                     className={styles.theme}
-                    placeholder="请输入主题"
+                    placeholder="发布机构"
                     value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}
@@ -654,7 +657,15 @@ export default class AllSub extends Component {
               <TabPane tab="订阅失败" key="failSubcribed">
                 <div className={styles.search}>
                   <Input
-                    placeholder="订阅名称/发布名称"
+                    className={styles.theme}
+                    placeholder="搜索分类"
+                    value={theme}
+                    onPressEnter={this.handleSearch}
+                    onChange={this.handleThemeChange}
+                    onClick={this.handleFocus}
+                    />
+                  <Input
+                    placeholder="订阅名称/目录名称"
                     value={name}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleNameChange}
@@ -662,7 +673,7 @@ export default class AllSub extends Component {
                     />
                   <Input
                     className={styles.theme}
-                    placeholder="请输入主题"
+                    placeholder="发布机构"
                     value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}

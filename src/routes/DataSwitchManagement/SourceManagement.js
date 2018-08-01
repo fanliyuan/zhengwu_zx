@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Card, Tabs, Input, DatePicker, Row, Col, Button, Modal, Tooltip, Tree, Icon, Select } from 'antd'
+import { Table, Card, Tabs, Input, DatePicker, Row, Col, Button, Modal, Tooltip, Tree, Icon, Cascader } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -9,7 +9,7 @@ import styles from './SourceManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { TabPane } = Tabs
-const { Option } = Select
+// const { Option } = Select
 const { RangePicker } = DatePicker
 const { DirectoryTree, TreeNode } = Tree
 function renderTreeNode(renderList) {
@@ -35,7 +35,7 @@ export default class SourceManagement extends Component {
   state = {
     loading: false,
     modalVisible:false,
-    selectJg: '所属机构',
+    // selectJg: '发布机构',
   }
 
   handleCataLog = () => {
@@ -43,15 +43,20 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSwitchManagement/viewDirectory'))
   }
 
-  handleSelectChangejg = val => {
-    this.setState({
-      selectJg: val,
-    })
+  handleSelectChangejg = () => {
+    // this.setState({
+    //   selectJg: val,
+    // })
   }
 
   handleSource = () => {
     const { dispatch } = this.props
     dispatch(routerRedux.push('/dataSwitchManagement/source'))
+  }
+
+  handleSource1 = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/fileSource'))
   }
 
   handleClassify = () => {
@@ -78,15 +83,15 @@ export default class SourceManagement extends Component {
 
   render() {
     const that = this
-    const { loading, modalVisible, selectJg } = this.state
-    const data = [{ value: '0', id: 0, label: '机构1' }, { value: '1', id: 1, label: '机构2' }]
-    const selectData = data.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
+    const { loading, modalVisible } = this.state
+    // const data = [{ value: '0', id: 0, label: '机构1' }, { value: '1', id: 1, label: '机构2' }]
+    // const selectData = data.map(item => {
+    //   return (
+    //     <Option value={item.value} key={item.id} title={item.label}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
     const menuData = [
       {
         title: '01|-雄安政务信息资源',
@@ -176,6 +181,10 @@ export default class SourceManagement extends Component {
         },
       },
       {
+        title: '订阅名称',
+        dataIndex: 'jyName',
+      },
+      {
         title: '目录名称',
         dataIndex: 'catalog',
       },
@@ -184,17 +193,13 @@ export default class SourceManagement extends Component {
         dataIndex: 'count',
       },
       {
-        title: '所属主题',
+        title: '发布机构',
         dataIndex: 'oweZt',
       },
-      {
-        title: '所属机构',
-        dataIndex: 'oweJg',
-      },
-      {
-        title: '存储数据库',
-        dataIndex: 'storeData',
-      },
+      // {
+      //   title: '存储数据库',
+      //   dataIndex: 'storeData',
+      // },
       {
         title: '更新时间',
         dataIndex: 'upTime',
@@ -247,6 +252,10 @@ export default class SourceManagement extends Component {
         },
       },
       {
+        title: '订阅名称',
+        dataIndex: 'jyName',
+      },
+      {
         title: '目录名称',
         dataIndex: 'catalog',
       },
@@ -255,13 +264,13 @@ export default class SourceManagement extends Component {
         dataIndex: 'dataSize',
       },
       {
-        title: '所属主题',
+        title: '发布机构',
         dataIndex: 'oweZt',
       },
-      {
-        title: '所属机构',
-        dataIndex: 'oweJg',
-      },
+      // {
+      //   title: '所属机构',
+      //   dataIndex: 'oweJg',
+      // },
       {
         title: '存储文件路径',
         dataIndex: 'storeRouter',
@@ -285,9 +294,42 @@ export default class SourceManagement extends Component {
               <span className={styles.clickBtn} onClick={that.handleCataLog}>
                 目录
               </span>
+              <span className={styles.clickBtn} onClick={that.handleSource1}>
+                资源
+              </span>
             </div>
           )
         },
+      },
+    ]
+    const options = [
+      {
+        value: '0-0',
+        label: '北京国土局',
+        children: [
+          {
+            value: '0-0-1',
+            label: '海淀国土局',
+            // children: [{
+            //   value: 'xihu',
+            //   label: 'West Lake',
+            // }],
+          },
+        ],
+      },
+      {
+        value: '0-1',
+        label: '河北国土局',
+        children: [
+          {
+            value: '0-1-0',
+            label: '保定国土局',
+            // children: [{
+            //   value: 'zhonghuamen',
+            //   label: 'Zhong Hua Men',
+            // }],
+          },
+        ],
       },
     ]
     const list1 = [
@@ -331,16 +373,17 @@ export default class SourceManagement extends Component {
                     <Input placeholder="目录分类" onClick={this.handleClassify} />
                   </Col>
                   <Col span={3} offset={1}>
-                    <Input placeholder="目录名称" />
+                    <Input placeholder="订阅名称/目录名称" />
                   </Col>
                   <Col span={3} offset={1}>
-                    <Select
+                    <Cascader options={options} placeholder="发布机构" style={{ marginRight: 16 }} />
+                    {/* <Select
                       style={{ marginRight: 20, width: 120 }}
                       onChange={this.handleSelectChangejg}
                       value={selectJg}
                       >
                       {selectData}
-                    </Select>
+                    </Select> */}
                   </Col>
                   <Col span={4} offset={1}>
                     <RangePicker />
@@ -349,9 +392,6 @@ export default class SourceManagement extends Component {
                     <Button type="primary">搜素</Button>
                   </Col>
                 </Row>
-                <div className={styles.importBtn}>
-                  <Button type="primary">导出</Button>
-                </div>
                 <div>
                   <Table
                     columns={columns}
@@ -369,16 +409,17 @@ export default class SourceManagement extends Component {
                     <Input placeholder="目录分类" onClick={this.handleClassify} />
                   </Col>
                   <Col span={3} offset={1}>
-                    <Input placeholder="目录名称" />
+                    <Input placeholder="订阅名称/目录名称" />
                   </Col>
                   <Col span={3} offset={1}>
-                    <Select
+                    {/* <Select
                       style={{ marginRight: 20, width: 120 }}
                       onChange={this.handleSelectChangejg}
                       value={selectJg}
                       >
                       {selectData}
-                    </Select>
+                    </Select> */}
+                    <Cascader options={options} placeholder="发布机构" style={{ marginRight: 16 }} />
                   </Col>
                   <Col span={4} offset={1}>
                     <RangePicker />
@@ -387,9 +428,6 @@ export default class SourceManagement extends Component {
                     <Button type="primary">搜素</Button>
                   </Col>
                 </Row>
-                <div className={styles.importBtn}>
-                  <Button type="primary">导出</Button>
-                </div>
                 <div>
                   <Table
                     columns={columns1}

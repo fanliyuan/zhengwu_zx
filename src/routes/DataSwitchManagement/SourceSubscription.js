@@ -185,10 +185,12 @@ export default class SourceSubscription extends Component {
             return (
               <div>
                 {row.dataType === '数据库' ? (
-                  <Link to={`/dataSwitchManagement/subscriptionTable/${row.id}`}>详情</Link>
+                  // <Link to={`/dataSwitchManagement/subscriptionTable/${row.id}`}>详情</Link>
+                  '-'
                 ) : null}
                 {row.dataType === '文件' ? (
-                  <Link to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>详情</Link>
+                  // <Link to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>详情</Link>
+                  '-'
                 ) : null}
               </div>
             )
@@ -306,6 +308,19 @@ export default class SourceSubscription extends Component {
         category2: '',
         category3: '',
         dataType: '文件',
+        publicTime: 334444443,
+        isAudit: '1',
+        isSubscription: '0',
+        subscriptionNum: 8,
+      },
+      {
+        id: 3,
+        name: '石家庄东城区国土数据3',
+        catalogSource: '',
+        subject: '',
+        category2: '',
+        category3: '',
+        dataType: '数据库',
         publicTime: 334444443,
         isAudit: '1',
         isSubscription: '0',

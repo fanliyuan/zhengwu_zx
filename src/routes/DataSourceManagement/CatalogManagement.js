@@ -263,7 +263,7 @@ export default class CatalogManagement extends Component {
       )
     })
     const pagination = { pageSize: 10, current: 1 }
-    let columns = [
+    const columns = [
       // {
       //   title: '目录编码',
       //   dataIndex: 'catalogEncoding',
@@ -276,26 +276,26 @@ export default class CatalogManagement extends Component {
         title: '提供方',
         dataIndex: 'provider',
       },
+      // {
+      //   title: '所属节点',
+      //   dataIndex: 'oweNode',
+      // },
+      // {
+      //   title: '目录节点',
+      //   dataIndex: 'nodes',
+      // },
       {
-        title: '所属节点',
-        dataIndex: 'oweNode',
+        title: '审核状态',
+        dataIndex: 'status',
+        render(text) {
+          return +text === 0 ? '待审核' : '已通过'
+        },
       },
       {
         title: '注册时间',
         dataIndex: 'createTime',
         render(text) {
           return moment(text).format('YYYY-MM-DD HH:mm:ss')
-        },
-      },
-      {
-        title: '目录节点',
-        dataIndex: 'node',
-      },
-      {
-        title: '审核状态',
-        dataIndex: 'status',
-        render(text) {
-          return +text === 0 ? '待审核' : '已通过'
         },
       },
       {
@@ -316,7 +316,7 @@ export default class CatalogManagement extends Component {
               </span>
               {isNodeOperator && (
                 <span className={styles.clickBtn} onClick={that.handleOpenShare.bind(null, row.id)}>
-                  开放设置
+                  共享开放
                 </span>
               )}
               {isNodeOperator ? (
@@ -341,6 +341,12 @@ export default class CatalogManagement extends Component {
         },
       },
     ]
+    if(!isNodeOperator){
+      columns.splice(2,0,{
+          title: '目录节点',
+          dataIndex: 'nodes',
+        })
+    }
     columns.forEach(item => {
       item.align = 'center'
     })
@@ -356,7 +362,7 @@ export default class CatalogManagement extends Component {
         isOpen: 1,
         information: 14,
         status: '0',
-        node: '节点1',
+        nodes: '节点1',
         type: 'file',
       },
       {
@@ -370,7 +376,7 @@ export default class CatalogManagement extends Component {
         isOpen: 0,
         information: 6,
         status: '1',
-        node: '节点2',
+        nodes: '节点2',
         type: 'table',
       },
       {
@@ -384,22 +390,22 @@ export default class CatalogManagement extends Component {
         isOpen: 0,
         information: 2,
         status: '1',
-        node: '节点3',
+        nodes: '节点3',
         type: 'file',
       },
     ]
-    let rowSelection = {
-      // onChange: selectedRows => {
-      // },
-      // getCheckboxProps: record => ({
-      //   disabled: record.name === 'Disabled User',
-      //   name: record.name,
-      // }),
-    }
-    if (!isNodeOperator) {
-      rowSelection = null
-      columns = columns.filter(item => item.title !== '目录节点')
-    }
+    // let rowSelection = {
+    //   // onChange: selectedRows => {
+    //   // },
+    //   // getCheckboxProps: record => ({
+    //   //   disabled: record.name === 'Disabled User',
+    //   //   name: record.name,
+    //   // }),
+    // }
+    // if (!isNodeOperator) {
+    //   // rowSelection = null
+    //   columns = columns.filter(item => item.title !== '目录节点')
+    // }
     return (
       <PageHeaderLayout>
         <div className="clearfix">
@@ -437,7 +443,6 @@ export default class CatalogManagement extends Component {
               {
                 !isNodeOperator && <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
               }
-              <RangePicker style={{ marginRight: 20, width: 200 }} />
               <Select
                 style={{ marginRight: 20, width: 120 }}
                 value={status}
@@ -445,6 +450,7 @@ export default class CatalogManagement extends Component {
                 >
                 {selectData1}
               </Select>
+              <RangePicker style={{ marginRight: 20, width: 200 }} />
               <Checkbox style={{ marginRight: 10 }}>已挂接资源</Checkbox>
               <Button type="primary">搜索</Button>
             </div>
@@ -474,12 +480,12 @@ export default class CatalogManagement extends Component {
                 dataSource={list}
                 pagination={pagination}
                 rowKey="id"
-                rowSelection={rowSelection}
+                // rowSelection={rowSelection}
                 loading={this.state.loading}
                 bordered
                 />
             </div>
-            <div>{isNodeOperator && <Button type="primary">删除</Button>}</div>
+            {/* <div>{isNodeOperator && <Button type="primary">删除</Button>}</div> */}
           </div>
         </div>
       </PageHeaderLayout>

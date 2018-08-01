@@ -194,6 +194,9 @@ export const getRouterData = app => {
     '/dataSourceManagement/editAccess': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/AddAccess')),
     },
+    '/dataSourceManagement/exports': {
+      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Export')),
+    },
     '/dataSourceManagement/inputDataInfo': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/InputDataInfo')

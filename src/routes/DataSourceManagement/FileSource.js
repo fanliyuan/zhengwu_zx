@@ -105,6 +105,7 @@ export default class FileSource extends Component {
           <Link to="/dataSourceManagement/sourceManagement" className="fr mr40">
             <Button>返回</Button>
           </Link>
+          <Button style={{marginRight:20}}>下载</Button>
         </div>
         <Card>
           <div className={styles.form}>

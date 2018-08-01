@@ -134,7 +134,7 @@ export default class SetPlan extends Component {
               extra={
                 <span style={{color:'#007ACC'}}>
                   是否新建目录&nbsp;
-                  <Tooltip title="说明:  可输入数字，语法如下：“*” 代表取值范围内的全部数字,“/” 代表“每”,“-” 代表从某个数字到某个数字,“,” 分开几个离散的数字">
+                  <Tooltip title="说明:可输入数字，语法如下：“*” 代表取值范围内的全部数字,“/” 代表“每”,“-” 代表从某个数字到某个数字,“,” 分开几个离散的数字">
                     <Icon type="question-circle-o" />
                   </Tooltip>
                 </span>

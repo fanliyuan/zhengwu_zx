@@ -46,6 +46,11 @@ export default class Source extends Component {
     })
   }
 
+  handleExport = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/exports'))
+  }
+
   render() {
     const { view, agency, showRow } = this.state
     const that = this
@@ -226,6 +231,9 @@ export default class Source extends Component {
         <div className="btncls clearfix">
           <Button onClick={this.handleBack} className="fr mr40">
             返回
+          </Button>
+          <Button onClick={this.handleExport} className="fr mr40">
+            导出
           </Button>
         </div>
         <Card>

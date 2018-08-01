@@ -10,53 +10,53 @@ export default class LogAudit extends Component {
     const data = [
       {
         title: '申请人',
-        content: '',
+        content: '张三',
       },
       {
         title: '申请时间',
-        content: '',
+        content: '2018年8月1日 12:00:00',
       },
       {
         title: '审核人',
-        content: '',
+        content: '石家庄东城区',
       },
       {
         title: '审核时间',
-        content: '',
+        content: '2018年8月7日 12:00:00',
       },
       {
         title: '审核结果',
-        content: '',
+        content: '拒绝',
       },
       {
         title: '拒绝理由',
-        content: '',
+        content: '无条件拒绝',
       },
     ]
     const data1 = [
       {
         title: '申请人',
-        content: '',
+        content: '张三',
       },
       {
         title: '申请时间',
-        content: '',
+        content: '2018年8月1日 12:00:00',
       },
       {
         title: '审核人',
-        content: '',
+        content: '李四',
       },
       {
         title: '审核时间',
-        content: '',
+        content: '2018年8月7日 12:00:00',
       },
       {
         title: '审核结果',
-        content: '',
+        content: '通过',
       },
       {
         title: '拒绝理由',
-        content: '',
+        content: '无',
       },
     ]
     return (
