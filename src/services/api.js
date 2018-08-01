@@ -1,20 +1,24 @@
 import { stringify } from 'qs'
 import request from '../utils/request'
+import config from '../../apiconfig'
+
+const { apiServer } = config
+
 
 export async function queryProjectNotice() {
-  return request('/api/project/notice')
+  return request(`${apiServer}/api/project/notice`)
 }
 
 export async function queryActivities() {
-  return request('/api/activities')
+  return request(`${apiServer}/api/activities`)
 }
 
 export async function queryRule(params) {
-  return request(`/api/rule?${stringify(params)}`)
+  return request(`${apiServer}/api/rule?${stringify(params)}`)
 }
 
 export async function removeRule(params) {
-  return request('/api/rule', {
+  return request(`${apiServer}/api/rule`, {
     method: 'POST',
     body: {
       ...params,
@@ -24,7 +28,7 @@ export async function removeRule(params) {
 }
 
 export async function addRule(params) {
-  return request('/api/rule', {
+  return request(`${apiServer}/api/rule`, {
     method: 'POST',
     body: {
       ...params,
@@ -34,134 +38,134 @@ export async function addRule(params) {
 }
 
 export async function fakeSubmitForm(params) {
-  return request('/api/forms', {
+  return request(`${apiServer}/api/forms`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function fakeChartData() {
-  return request('/api/fake_chart_data')
+  return request(`${apiServer}/api/fake_chart_data`)
 }
 
 export async function queryTags() {
-  return request('/api/tags')
+  return request(`${apiServer}/api/tags`)
 }
 
 export async function queryBasicProfile() {
-  return request('/api/profile/basic')
+  return request(`${apiServer}/api/profile/basic`)
 }
 
 export async function queryAdvancedProfile() {
-  return request('/api/profile/advanced')
+  return request(`${apiServer}/api/profile/advanced`)
 }
 
 export async function queryFakeList(params) {
-  return request(`/api/fake_list?${stringify(params)}`)
+  return request(`${apiServer}/api/fake_list?${stringify(params)}`)
 }
 
 export async function fakeAccountLogin(params) {
-  return request('/api/login/account', {
+  return request(`${apiServer}/api/login/account`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function fakeRegister(params) {
-  return request('/api/register', {
+  return request(`${apiServer}/api/register`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function queryNotices() {
-  return request('/api/notices')
+  return request(`${apiServer}/api/notices`)
 }
 
 export async function getLog(params) {
-  return request('/api/log', {
+  return request(`${apiServer}/api/log`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function getNotices(params) {
-  return request('/api/sysNotices', {
+  return request(`${apiServer}/api/sysNotices`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function deleteTableRows(params) {
-  return request('/api/deleteRows', {
+  return request(`${apiServer}/api/deleteRows`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function changeTableStates(params) {
-  return request('/api/changeRows', {
+  return request(`${apiServer}/api/changeRows`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function selectInfos(params) {
-  return request('/api/selectTableInfo', {
+  return request(`${apiServer}/api/selectTableInfo`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function getLogState() {
-  return request('/api/log/state')
+  return request(`${apiServer}/api/log/state`)
 }
 
 export async function getOrganization() {
-  return request('/api/organization')
+  return request(`${apiServer}/api/organization`)
 }
 
 export async function getAuditLog(params) {
-  return request('/api/audit/logging', {
+  return request(`${apiServer}/api/audit/logging`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function getAuditOperation(params) {
-  return request('/api/audit/operation', {
+  return request(`${apiServer}/api/audit/operation`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function getOperationList() {
-  return request('/api/audit/operation-list')
+  return request(`${apiServer}/api/audit/operation-list`)
 }
 
 export async function getNodeList() {
-  return request('/api/node/list')
+  return request(`${apiServer}/api/node/list`)
 }
 
 export async function getState() {
-  return request('/api/state/list')
+  return request(`${apiServer}/api/state/list`)
 }
 
 export async function getInfrastructureManagementNode(params) {
-  return request('/api/infrastructure/node', {
+  return request(`${apiServer}/api/infrastructure/node`, {
     method: 'POST',
     body: params,
   })
 }
 
 export async function deleteInfrastructureManagementNode(params) {
-  return request(`/api/infrastructure/delnode/${params.id}`, {
+  return request(`${apiServer}/api/infrastructure/delnode/${params.id}`, {
     method: 'DELETE',
   })
 }
 
 export async function deleteInfrastructureManagementNodeSome(params) {
-  return request('/api/infrastructure/delnodes', {
+  return request(`${apiServer}/api/infrastructure/delnodes`, {
     method: 'POST',
     body: params,
   })
