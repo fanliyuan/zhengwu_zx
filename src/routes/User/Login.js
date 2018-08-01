@@ -5,6 +5,9 @@ import { Alert } from 'antd'
 import Login from 'components/Login'
 import styles from './Login.less'
 
+const sha = require('sha.js')
+// sha('sha1').update('1993520').digest('hex')  用法,update()参数是需要加密的字符串
+
 const { UserName, Password, Submit } = Login
 
 @connect(({ login, loading }) => ({
@@ -17,6 +20,11 @@ export default class LoginPage extends Component {
     // autoLogin: true,
     isEmpty: false,
     isError: true,
+    expireTime: 0,
+    refreshTime:0,
+  }
+
+  componentDidMount() {
   }
 
   onTabChange = type => {
@@ -35,14 +43,17 @@ export default class LoginPage extends Component {
       isEmpty: false,
       isError: true,
     })
-    const { type } = this.state
+    const { expireTime, refreshTime } = this.state
     const { dispatch } = this.props
     if (!err) {
+      const sha1Password = sha('sha1').update(values.password).digest('hex')
       dispatch({
         type: 'login/login',
         payload: {
-          ...values,
-          type,
+          accountName: values.userName,
+          accountPasswd: sha1Password,
+          expireTime,
+          refreshTime,
         },
       })
     }
