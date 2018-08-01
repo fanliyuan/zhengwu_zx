@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-27 17:20:10
+ * @Last Modified time: 2018-07-31 23:19:21
  * @Description: 删除底部蚂蚁金服相关信息
  */
 import React, { Fragment } from 'react'
@@ -91,6 +91,11 @@ enquireScreen(b => {
   isMobile = b
 })
 
+
+
+const platforms = ['admin', 'security', 'auditor', 'operator']
+const nodes = ['admin-n', 'security-n', 'auditor-n', 'operator-n', 'assessor-n']
+
 class BasicLayout extends React.PureComponent {
   static childContextTypes = {
     location: PropTypes.object,
@@ -146,18 +151,26 @@ class BasicLayout extends React.PureComponent {
     // According to the url parameter to redirect
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href)
-
     const redirect = urlParams.searchParams.get('redirect')
     // Remove the parameters in the url
     if (redirect) {
+      console.log(urlParams.searchParams)
       urlParams.searchParams.delete('redirect')
       window.history.replaceState(null, 'redirect', urlParams.href)
+      console.log('重定向到'+redirect)// eslint-disable-line
     } else {
-      const { routerData } = this.props
+      const { routerData, location: { pathname } } = this.props
       // get the first authorized route path in routerData
       const authorizedPath = Object.keys(routerData).find(
         item => check(routerData[item].authority, item) && item !== '/'
       )
+      if (pathname === '/') {
+        if (platforms.indexOf(localStorage.getItem('antd-pro-authority')) > -1) {
+          return '/overview/platformOverview'
+        } else if (nodes.indexOf(localStorage.getItem('antd-pro-authority')) > -1) {
+          return '/overview/nodeOverview'
+        }
+      }
       return authorizedPath
     }
     return redirect
@@ -258,7 +271,7 @@ class BasicLayout extends React.PureComponent {
                   redirectPath="/exception/403"
                   />
               ))}
-              <Redirect exact from="/" to={bashRedirect} />
+              <Redirect exact from='/' to={bashRedirect} />
               <Route render={NotFound} />
             </Switch>
           </Content>
