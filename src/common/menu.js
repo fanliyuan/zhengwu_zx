@@ -11,18 +11,18 @@ const menuData = [
       //   path: 'analysis',
       // },
       {
-        name: '平台概览',
-        path: 'platformOverview',
-        authority: ['operator'],
-      },
-      {
         name: '登录日志',
         path: 'logging',
       },
       {
+        name: '平台概览',
+        path: 'platformOverview',
+        authority: ['operator', 'admin', 'security', 'auditor'],
+      },
+      {
         name: '节点概览',
         path: 'nodeOverview',
-        authority: ['operator-n'],
+        authority: ['operator-n', 'admin-n', 'security-n', 'auditor-n', 'assessor-n'],
       },
       {
         name: '系统通知',
