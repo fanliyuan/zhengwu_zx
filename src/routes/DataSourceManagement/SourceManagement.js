@@ -174,10 +174,10 @@ export default class SourceManagement extends Component {
         title: '数据类型',
         dataIndex: 'dataType',
       },
-      {
-        title: '所属节点',
-        dataIndex: 'node',
-      },
+      // {
+      //   title: '所属节点',
+      //   dataIndex: 'node',
+      // },
       // {
       //   title: '所属机构',
       //   dataIndex: 'institution',
@@ -187,7 +187,7 @@ export default class SourceManagement extends Component {
       //   dataIndex: 'applicationSystemName',
       // },
       {
-        title: '注册时间',
+        title: '数据更新时间',
         dataIndex: 'createTime',
         render(text) {
           return moment(text).format('YYYY-MM-DD HH:mm:ss')
@@ -333,6 +333,10 @@ export default class SourceManagement extends Component {
     }
     if (!isNodeOperator) {
       rowSelection = null
+      columns.splice(2,0,{
+        title: '所属节点',
+        dataIndex: 'institution',
+      })    
     }
     return (
       <PageHeaderLayout>
@@ -354,7 +358,7 @@ export default class SourceManagement extends Component {
             >
               {selectData1}
             </Select> */}
-            <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
+            {!isNodeOperator && <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />}
             {/* <Select
               style={{ marginRight: 20, width: 120 }}
               value={owingJg}

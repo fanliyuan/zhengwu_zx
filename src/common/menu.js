@@ -296,12 +296,12 @@ const menuData = [
         hideInMenu: true,
         authority: 'operator-n',
       },
-      {
-        name: '编辑数据',
-        path: 'EditData',
-        hideInMenu: true,
-        authority: 'operator-n',
-      },
+      // {
+      //   name: '编辑数据',
+      //   path: 'EditData',
+      //   hideInMenu: true,
+      //   authority: 'operator-n',
+      // },
       {
         name: '设置同步计划',
         path: 'setPlan',

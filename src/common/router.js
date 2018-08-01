@@ -199,11 +199,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/InputDataInfo')
       ),
     },
-    '/dataSourceManagement/editData': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/EditData')
-      ),
-    },
+    // '/dataSourceManagement/editData': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataSourceManagement/EditData')
+    //   ),
+    // },
     '/dataSourceManagement/checkDataInfo': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/InputDataInfo')

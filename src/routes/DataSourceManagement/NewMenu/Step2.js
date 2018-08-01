@@ -160,7 +160,7 @@ export default class Step2 extends PureComponent {
           <Item lable="名称">
             <Radio.Group value={data.method} onChange={this.methodChange} disabled={disabled}>
               <Radio value={1}>从数据资源导入</Radio>
-              <Radio value={2}>导入已有目录</Radio>
+              <Radio value={2}>模板导入</Radio>
               <Radio value={3}>手工建立</Radio>
             </Radio.Group>
           </Item>
