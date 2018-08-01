@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-31 23:19:21
+ * @Last Modified time: 2018-08-01 15:13:13
  * @Description: 删除底部蚂蚁金服相关信息
  */
 import React, { Fragment } from 'react'
@@ -151,10 +151,11 @@ class BasicLayout extends React.PureComponent {
     // According to the url parameter to redirect
     // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
     const urlParams = new URL(window.location.href)
+    // 这里用的sessionStorage,应该用models
     const redirect = urlParams.searchParams.get('redirect')
+    sessionStorage.clear()
     // Remove the parameters in the url
     if (redirect) {
-      console.log(urlParams.searchParams)
       urlParams.searchParams.delete('redirect')
       window.history.replaceState(null, 'redirect', urlParams.href)
       console.log('重定向到'+redirect)// eslint-disable-line
@@ -226,6 +227,7 @@ class BasicLayout extends React.PureComponent {
       location,
     } = this.props
     const { isMobile: mb } = this.state
+    const redirect = sessionStorage.getItem('redirect')
     const bashRedirect = this.getBaseRedirect()
     const layout = (
       <Layout>
@@ -258,6 +260,7 @@ class BasicLayout extends React.PureComponent {
           </Header>
           <Content style={{ margin: '24px 24px 0', height: '100%' }}>
             <Switch>
+              { redirect &&  <Redirect exact to={redirect} />}
               {redirectData.map(item => (
                 <Redirect key={item.from} exact from={item.from} to={item.to} />
               ))}

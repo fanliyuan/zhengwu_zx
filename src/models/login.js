@@ -21,7 +21,12 @@ export default {
       // Login successfully
       if (response.status === 'ok') {
         reloadAuthorized()
-        yield put(routerRedux.push('/'))
+        if (sessionStorage.getItem('rootRedirect')) {
+          yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
+          yield sessionStorage.clear()
+        } else {
+          yield put(routerRedux.push('/'))
+        }
       }
     },
     *logout(_, { put, select }) {

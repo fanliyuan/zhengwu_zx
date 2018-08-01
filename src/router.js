@@ -17,6 +17,12 @@ function RouterConfig({ history, app }) {
   const routerData = getRouterData(app)
   const UserLayout = routerData['/user'].component
   const BasicLayout = routerData['/'].component
+  // 这里用的sessionStorage,应该用models
+  let redirect
+  if (window.location.search) {
+    redirect = window.location.search.substring(10)
+    sessionStorage.setItem('redirect', redirect)
+  }
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
