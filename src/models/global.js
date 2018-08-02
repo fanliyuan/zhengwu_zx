@@ -1,5 +1,5 @@
 // import key from 'keymaster'
-import { queryNotices } from '../api'
+import { queryNotices } from '../api/test'
 
 export default {
   namespace: 'global',

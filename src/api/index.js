@@ -1,172 +1,74 @@
-import { stringify } from 'qs'
-import request from '../utils/request'
-// import config from './config'
+/*
+ * @Author: ChouEric
+ * @Date: 2018-08-02 16:47:50
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-08-02 18:05:08
+ * @Description: 描述请求配置,以及请求生成.
+ */
+import apiBase from './apiBase'
+import apiFactory from './apiFactory'
 
-// const { apiHost } = config
-const apiHost = ''
-
-export async function queryProjectNotice() {
-  return request(`${apiHost}/api/project/notice`)
-}
-
-export async function queryActivities() {
-  return request(`${apiHost}/api/activities`)
-}
-
-export async function queryRule(params) {
-  return request(`${apiHost}/api/rule?${stringify(params)}`)
-}
-
-export async function removeRule(params) {
-  return request(`${apiHost}/api/rule`, {
-    method: 'POST',
-    body: {
-      ...params,
-      method: 'delete',
-    },
-  })
-}
-
-export async function addRule(params) {
-  return request(`${apiHost}/api/rule`, {
-    method: 'POST',
-    body: {
-      ...params,
+const userModule = {
+  moduleName: 'user',
+  apis: [
+    // 配置示例
+    // {
+    //   name: 'getRoleList', // 函数名称,如果不写将和url同名
+    //   url: 'projects', // 请求地址,没有前后没有 /
+    //   method: 'post', // 请求方式,不写将为GET,做了小写兼容.
+    //   baseUrl: 'yyzhzx/api/v1', //请求的地址的前缀,可以为空
+    // },
+    {
+      name: 'accountLogin',
       method: 'post',
+      url: 'session',
     },
-  })
+  ],
+}
+userModule.apis.forEach(item => {
+  if (!item.baseUrl) {
+    item.baseUrl = 'yyzhzx/api/v1'
+  }
+  if (!item.basePort) {
+    item.basePort = '32404'
+  }
+})
+
+const roleModule = {
+  moduleName: 'role',
+  apis: [
+    {
+      name: 'getRoleName',
+      url: 'roles',
+      path: '2',
+    },
+  ],
+}
+roleModule.apis.forEach(item => {
+  if (!item.baseUrl) {
+    item.baseUrl = 'yyqxzx/api/v1'
+  }
+  if (!item.basePort) {
+    item.basePort = '32201'
+  }
+})
+
+// 使用方法  
+// import { getRoleList } from '这个文件'
+// getRoleList({
+//  params: {} //请求参数,键值对形式
+//  headers: {'accessToken': '1231231',} //请求头, 可以不写
+// })
+
+class ApiSub extends apiBase {
+  constructor (module) {
+    super()
+    this.module = module.module
+    this.apis = module.apis
+  }
 }
 
-export async function fakeSubmitForm(params) {
-  return request(`${apiHost}/api/forms`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function fakeChartData() {
-  return request(`${apiHost}/api/fake_chart_data`)
-}
-
-export async function queryTags() {
-  return request(`${apiHost}/api/tags`)
-}
-
-export async function queryBasicProfile() {
-  return request(`${apiHost}/api/profile/basic`)
-}
-
-export async function queryAdvancedProfile() {
-  return request(`${apiHost}/api/profile/advanced`)
-}
-
-export async function queryFakeList(params) {
-  return request(`${apiHost}/api/fake_list?${stringify(params)}`)
-}
-
-export async function fakeAccountLogin(params) {
-  return request(`${apiHost}/api/login/account`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function fakeRegister(params) {
-  return request(`${apiHost}/api/register`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function queryNotices() {
-  return request(`${apiHost}/api/notices`)
-}
-
-export async function getLog(params) {
-  return request(`${apiHost}/api/log`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function getNotices(params) {
-  return request(`${apiHost}/api/sysNotices`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function deleteTableRows(params) {
-  return request(`${apiHost}/api/deleteRows`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function changeTableStates(params) {
-  return request(`${apiHost}/api/changeRows`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function selectInfos(params) {
-  return request(`${apiHost}/api/selectTableInfo`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function getLogState() {
-  return request(`${apiHost}/api/log/state`)
-}
-
-export async function getOrganization() {
-  return request(`${apiHost}/api/organization`)
-}
-
-export async function getAuditLog(params) {
-  return request(`${apiHost}/api/audit/logging`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function getAuditOperation(params) {
-  return request(`${apiHost}/api/audit/operation`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function getOperationList() {
-  return request(`${apiHost}/api/audit/operation-list`)
-}
-
-export async function getNodeList() {
-  return request(`${apiHost}/api/node/list`)
-}
-
-export async function getState() {
-  return request(`${apiHost}/api/state/list`)
-}
-
-export async function getInfrastructureManagementNode(params) {
-  return request(`${apiHost}/api/infrastructure/node`, {
-    method: 'POST',
-    body: params,
-  })
-}
-
-export async function deleteInfrastructureManagementNode(params) {
-  return request(`${apiHost}/api/infrastructure/delnode/${params.id}`, {
-    method: 'DELETE',
-  })
-}
-
-export async function deleteInfrastructureManagementNodeSome(params) {
-  return request(`${apiHost}/api/infrastructure/delnodes`, {
-    method: 'POST',
-    body: params,
-  })
+export default {
+  ...apiFactory(new ApiSub(userModule)),
+  ...apiFactory(new ApiSub(roleModule)),
 }

@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { getNotices, deleteTableRows, changeTableStates, selectInfos } from '../api'
+import { getNotices, deleteTableRows, changeTableStates, selectInfos } from '../api/test'
 
 export default {
   namespace: 'SystemNotification',

@@ -13,7 +13,7 @@ import {
   getInfrastructureManagementNode,
   deleteInfrastructureManagementNode,
   deleteInfrastructureManagementNodeSome,
-} from '../api'
+} from '../api/test'
 
 export default {
   namespace: 'infrastructureManagementNode',

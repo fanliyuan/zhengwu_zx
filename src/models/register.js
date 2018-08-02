@@ -1,4 +1,4 @@
-import { fakeRegister } from '../api'
+import { fakeRegister } from '../api/test'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
 

@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router'
 import { message } from 'antd'
-import { fakeSubmitForm } from '../api'
+import { fakeSubmitForm } from '../api/test'
 
 export default {
   namespace: 'form',

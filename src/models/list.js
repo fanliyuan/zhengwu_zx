@@ -1,4 +1,4 @@
-import { queryFakeList } from '../api'
+import { queryFakeList } from '../api/test'
 
 export default {
   namespace: 'list',

@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { getLog, getLogState } from '../api'
+import { getLog, getLogState } from '../api/test'
 
 export default {
   namespace: 'overviewLogging',
