@@ -3,6 +3,6 @@ export function getAuthority() {
   return localStorage.getItem('antd-pro-authority') || 'guest'
 }
 
-export function setAuthority(authority) {
+export function setAuthority(authority = 'guest') {
   return localStorage.setItem('antd-pro-authority', authority)
 }

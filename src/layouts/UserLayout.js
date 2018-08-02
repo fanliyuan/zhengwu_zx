@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { Link, Redirect, Switch, Route } from 'dva/router'
 import DocumentTitle from 'react-document-title'
-import { Icon, Tooltip } from 'antd'
+import { Icon } from 'antd'
 import GlobalFooter from '../components/GlobalFooter'
 import styles from './UserLayout.less'
 import logo from '../assets/logo.svg'
@@ -32,7 +32,8 @@ class UserLayout extends React.PureComponent {
       <DocumentTitle title={this.getPageTitle()}>
         <div className={styles.container}>
           <div className={styles.content}>
-            <Tooltip
+            {/* 禁用提示 */}
+            {/* <Tooltip
               title={
                 <div>
                   <div>管理员 : admin</div>
@@ -48,7 +49,7 @@ class UserLayout extends React.PureComponent {
               }
               >
               <Icon type="question-circle-o" />
-            </Tooltip>
+            </Tooltip> */}
             <div className={styles.top}>
               <div className={styles.header}>
                 <Link to="/">

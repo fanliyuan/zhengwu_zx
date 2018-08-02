@@ -1,4 +1,5 @@
 import { routerRedux } from 'dva/router'
+import { message } from 'antd'
 import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
@@ -15,19 +16,21 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
+      let response
       try {
-        const response = yield call(accountLogin, {body: payload})
+        response = yield call(accountLogin, {body: payload})
+        const { accountId, accessToken, accountName } = response.result.datas
         // Login successfully
         yield put({
           type: 'token',
           payload: {
-            filter: response.result.datas.accountId,
+            filter: accountId,
           },
         })
         if (response.code === 0) {
-          localStorage.setItem('accessToken', response.result.datas.accessToken)
-          localStorage.setItem('accountId', response.result.datas.accountId)
-          localStorage.setItem('accountName', response.result.datas.accountName)
+          localStorage.setItem('accessToken', accessToken)
+          localStorage.setItem('accountId', accountId)
+          localStorage.setItem('accountName', accountName)
           reloadAuthorized()
           if (sessionStorage.getItem('rootRedirect')) {
             yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
@@ -36,16 +39,26 @@ export default {
             yield put(routerRedux.push('/'))
           }
         }
-      } catch (error) {console.log('登录失败,有报错')} // eslint-disable-line
+      } catch (error) {
+        message.error(response.msg)
+      } // eslint-disable-line
     },
     *token({ payload }, { call, put }) {
-      const response = yield call(getRoleName, {body: payload})
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      })
-      if (response.code === 0) {
-        localStorage.setItem('antd-pro-authority', response.result.datas.rolename)
+      let currentAuthority = 'guest'
+      try {
+        const response = yield call(getRoleName, {body: payload})
+        currentAuthority = response.result.datas.rolename
+        if (response.code === 0) {
+          localStorage.setItem('antd-pro-authority', response.result.datas.rolename)
+        }
+      } catch (error) {
+        console.log('验证token出错')// eslint-disable-line
+        currentAuthority = 'guest'
+      } finally {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: { currentAuthority },
+        })
       }
     },
     *logout(_, { put, select }) {
@@ -73,13 +86,21 @@ export default {
   reducers: {
     changeLoginStatus(state, { payload }) {
       try {
-        setAuthority(payload.result.datas.roleName)
+        setAuthority(payload.currentAuthority)
         return {
           ...state,
-          status: payload.status || 'ok',
-          type: payload.type || 'guest',
+          status: payload.status,
+          type: payload.type || 'account',
         }
-      } catch (error) {console.log('登录之后检测role,返回结果接口不一致')} // eslint-disable-line
+      } catch (error) {
+        console.log('登录之后检测role,返回结果接口不一致') // eslint-disable-line
+        setAuthority('guest')
+        return {
+          ...state,
+          status: 'ok',
+          type: 'account',
+        }
+      }
     },
   },
 }
