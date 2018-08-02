@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-31 18:48:49
+ * @Last Modified time: 2018-08-02 16:14:00
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  */
@@ -13,6 +13,7 @@ import ReactQuill from 'react-quill'
 import { connect } from 'dva'
 import fetch from 'dva/fetch'
 
+import apis from '../../api/index.1'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import 'react-quill/dist/quill.snow.css'
 import styles from './AddArticle.less'
@@ -122,6 +123,24 @@ export default class AddArticle extends Component {
   }
 
   componentDidMount() {
+    apis.session({
+      params: {
+        name: 'SB',
+      },
+      headers: {
+        'accessToken': localStorage.getItem('accessToken'),
+      },
+    })
+    apis.getRoleList({
+      params: {
+        name: '张三',
+        age: 12,
+      },
+      headers: {
+        'accessToken': '1231231',
+        'projectId': '99999999',
+      },
+    })
   }
 
   // eslint-disable-next-line

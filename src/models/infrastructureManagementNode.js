@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:26:50
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-12 18:09:50
+ * @Last Modified time: 2018-08-02 11:08:28
 */
 import { message } from 'antd'
 
@@ -13,7 +13,7 @@ import {
   getInfrastructureManagementNode,
   deleteInfrastructureManagementNode,
   deleteInfrastructureManagementNodeSome,
-} from '../services/api'
+} from '../api'
 
 export default {
   namespace: 'infrastructureManagementNode',

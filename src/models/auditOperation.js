@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { getAuditOperation, getOperationList } from '../services/api'
+import { getAuditOperation, getOperationList } from '../api'
 
 export default {
   namespace: 'auditOperation',

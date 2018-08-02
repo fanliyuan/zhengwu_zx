@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import { getOrganization, getLogState, getAuditLog } from '../services/api'
+import { getOrganization, getLogState, getAuditLog } from '../api'
 
 export default {
   namespace: 'auditLogging',
