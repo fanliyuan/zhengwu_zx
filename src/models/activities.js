@@ -1,4 +1,4 @@
-import { queryActivities } from '../api'
+import { queryActivities } from '../api/test'
 
 export default {
   namespace: 'activities',

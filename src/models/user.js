@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent } from '../api/user'
+import { query as queryUsers, queryCurrent } from '../api/test/user'
 
 export default {
   namespace: 'user',

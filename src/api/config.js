@@ -1,7 +1,7 @@
 const baseConfig = {
   uploadServer: 'http://www.baidu.com',
   downloadServer: 'http://www.baidu.com',
-  apiHost: 'http://210.13.50.105:32404',
+  apiHost: 'http://210.13.50.105',
 }
 const devConfig = {
 }

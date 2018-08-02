@@ -1,7 +1,9 @@
 import { routerRedux } from 'dva/router'
-import { fakeAccountLogin } from '../api'
+import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
+
+const { accountLogin, getRoleName } = apis
 
 export default {
   namespace: 'login',
@@ -13,20 +15,37 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload)
+      try {
+        const response = yield call(accountLogin, {body: payload})
+        // Login successfully
+        yield put({
+          type: 'token',
+          payload: {
+            filter: response.result.datas.accountId,
+          },
+        })
+        if (response.code === 0) {
+          localStorage.setItem('accessToken', response.result.datas.accessToken)
+          localStorage.setItem('accountId', response.result.datas.accountId)
+          localStorage.setItem('accountName', response.result.datas.accountName)
+          reloadAuthorized()
+          if (sessionStorage.getItem('rootRedirect')) {
+            yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
+            yield sessionStorage.clear()
+          } else {
+            yield put(routerRedux.push('/'))
+          }
+        }
+      } catch (error) {console.log('登录失败,有报错')} // eslint-disable-line
+    },
+    *token({ payload }, { call, put }) {
+      const response = yield call(getRoleName, {body: payload})
       yield put({
         type: 'changeLoginStatus',
         payload: response,
       })
-      // Login successfully
-      if (response.status === 'ok') {
-        reloadAuthorized()
-        if (sessionStorage.getItem('rootRedirect')) {
-          yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
-          yield sessionStorage.clear()
-        } else {
-          yield put(routerRedux.push('/'))
-        }
+      if (response.code === 0) {
+        localStorage.setItem('antd-pro-authority', response.result.datas.rolename)
       }
     },
     *logout(_, { put, select }) {
@@ -53,12 +72,14 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority)
-      return {
-        ...state,
-        status: payload.status,
-        type: payload.type,
-      }
+      try {
+        setAuthority(payload.result.datas.roleName)
+        return {
+          ...state,
+          status: payload.status || 'ok',
+          type: payload.type || 'guest',
+        }
+      } catch (error) {console.log('登录之后检测role,返回结果接口不一致')} // eslint-disable-line
     },
   },
 }

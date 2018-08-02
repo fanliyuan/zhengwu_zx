@@ -6,7 +6,7 @@ import moment from 'moment'
 // import { getTimeDistance } from '../../utils/utils'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Logging.less'
-// import { getLogState } from '../../api';
+// import { getLogState } from '../../api/test';
 
 const { RangePicker } = DatePicker
 const { Option } = Select
