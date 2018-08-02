@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router'
-import { query } from '../api/test/error'
+import { query } from '../api/error'
 
 export default {
   namespace: 'error',
