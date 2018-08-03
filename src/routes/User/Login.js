@@ -20,8 +20,6 @@ export default class LoginPage extends Component {
     // autoLogin: true,
     isEmpty: false,
     isError: true,
-    expireTime: 0,
-    refreshTime:0,
   }
 
   componentDidMount() {

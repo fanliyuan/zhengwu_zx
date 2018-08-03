@@ -20,6 +20,7 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 }
+const tokenErrorList = [11030110, 11030111, 11030112, 11030113]
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -33,6 +34,28 @@ function checkStatus(response) {
   error.name = response.status
   error.response = response
   throw error
+}
+
+// 全局验证token,是否失效
+async function checkToken(response) {
+  try {
+    // 需要克隆response,否则会报错,提示response只能读取一次.
+    response.clone().json()
+    .then(data => {
+      if (tokenErrorList.indexOf(data.code) > -1) {
+        notification.error({
+          message: '登录已失效,请重新登录',
+        })
+        store.dispatch(
+          routerRedux.push(`/user/login?redirect=${window.location.pathname}`)
+        )
+      }
+    })
+    .catch(err => {
+      console.log(err) // eslint-disable-line
+    })
+  } catch (error) {console.log(error)} // eslint-disable-line
+  return response
 }
 
 /**
@@ -71,6 +94,7 @@ export default function request(url, options) {
 
   return fetch(url, newOptions)
     .then(checkStatus)
+    .then(checkToken)
     .then(response => {
       if (newOptions.method === 'DELETE' || response.status === 204) {
         return response.text()

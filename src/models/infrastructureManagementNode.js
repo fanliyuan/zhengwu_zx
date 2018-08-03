@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:26:50
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-02 11:08:28
+ * @Last Modified time: 2018-08-03 11:18:44
 */
 import { message } from 'antd'
 
@@ -72,8 +72,7 @@ export default {
           pre[cur.value] = cur.label
           return pre
         }, {})
-
-        yield response.data.list.forEach(item => {
+        response.data.list.forEach(item => {
           item.parentNode = nodeObject[item.parentNode]
           item.organization = organizationObject[item.organization]
           item.state = stateObject[item.state]

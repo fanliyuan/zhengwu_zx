@@ -148,7 +148,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/institutionalManage': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['accounts'], () =>
         import('../routes/InstitutionalUserManage/InstitutionalManage')
       ),
     },

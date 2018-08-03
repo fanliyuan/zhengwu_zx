@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 11:20:49
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-02 17:39:26
+ * @Last Modified time: 2018-08-03 18:03:15
  * @Description: 请求工厂函数
  */
 import { stringify } from 'qs'
@@ -24,12 +24,12 @@ export default (module) => {
       item.name = item.url
     }
     apiObject[item.name] = async (params = {}) => {
-      const apiUrl =` ${apiHost?`${apiHost}:`:''}${moduleHost?`${moduleHost}:`:''}${apiPort?`${apiPort}/`:''}${modulePort?`${modulePort}/`:''}${moduleUrl?`${moduleUrl}/`:''}${item.url}${item.path?`/${item.path}`:''}`
+      const apiUrl =` ${apiHost?`${apiHost}`:''}${moduleHost?`${moduleHost}:`:''}${apiPort?`:${apiPort}/`:''}${modulePort?`:${modulePort}/`:''}${moduleUrl?`${moduleUrl}/`:''}${item.url}${item.path?`/${item.path}`:''}`
       const headers = params.headers || {
         projectId,
-        assessToken: localStorage.getItem('accessToken') || 0,
+        accessToken: localStorage.getItem('accessToken') || 0,
       }
-      if (!item.method || item.method.toUpperCase === 'GET') {
+      if (!item.method || item.method.toUpperCase() === 'GET') {
         if (!params.params) {
           return request(`${apiUrl}`, {
             headers: {...headers},

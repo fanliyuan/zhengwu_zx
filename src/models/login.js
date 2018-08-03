@@ -31,23 +31,17 @@ export default {
           localStorage.setItem('accessToken', accessToken)
           localStorage.setItem('accountId', accountId)
           localStorage.setItem('accountName', accountName)
-          reloadAuthorized()
-          if (sessionStorage.getItem('rootRedirect')) {
-            yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
-            yield sessionStorage.clear()
-          } else {
-            yield put(routerRedux.push('/'))
-          }
         }
       } catch (error) {
-        message.error(response.msg)
+        message.error('登录失败')
       } // eslint-disable-line
     },
     *token({ payload }, { call, put }) {
       let currentAuthority = 'guest'
+      let response
       try {
-        const response = yield call(getRoleName, {body: payload})
-        currentAuthority = response.result.datas.rolename
+        response = yield call(getRoleName, {params: payload})
+        currentAuthority = response.result.datas[0].rolename
         if (response.code === 0) {
           localStorage.setItem('antd-pro-authority', response.result.datas.rolename)
         }
@@ -59,6 +53,15 @@ export default {
           type: 'changeLoginStatus',
           payload: { currentAuthority },
         })
+        reloadAuthorized()
+        if (response.code === 0) {
+          if (sessionStorage.getItem('rootRedirect')) {
+            yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
+            yield sessionStorage.clear()
+          } else {
+            yield put(routerRedux.push('/'))
+          }
+        }
       }
     },
     *logout(_, { put, select }) {
@@ -77,6 +80,9 @@ export default {
             currentAuthority: 'guest',
           },
         })
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('accountId')
+        localStorage.removeItem('accountName')
         reloadAuthorized()
         yield put(routerRedux.push('/user/login'))
       }

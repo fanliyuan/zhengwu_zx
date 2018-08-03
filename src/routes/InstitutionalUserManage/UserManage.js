@@ -9,8 +9,17 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
-@connect(({ userManage }) => ({
-  userManage,
+
+const roleObject = {
+  admin: '管理员',
+  security: '安全员',
+  auditor: '审计员',
+  operator: '操作员',
+}
+
+@connect(({ accounts, loading }) => ({
+  accounts,
+  loading: loading.models.accounts,
 }))
 export default class UserManage extends Component {
   state = {
@@ -19,13 +28,43 @@ export default class UserManage extends Component {
     isEnable: '状态',
     isStart: true,
     isStart1: false,
+    isChanged: false,
+    queryData: {
+      accountNames: '',
+      telephone: '',
+      createTime: [],
+    },
   }
 
-  // selectOwingJg = (val) => {
-  //   this.setState({
-  //     owingJg:val,
-  //   })
-  // }
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'accounts/getAccounts',
+      payload: {},
+    })
+  }
+
+  nameChange = (e) => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        accountNames: e.target.value.trim(),
+      },
+      isChanged: true,
+    })
+  }
+
+  telephoneChange = (e) => {
+    const { queryData } = this.state
+    if (e.target.value.trim().length > 11) return false
+    this.setState({
+      queryData: {
+        ...queryData,
+        telephone: e.target.value.trim(),
+      },
+      isChanged: true,
+    })
+  }
 
   selectrole = val => {
     this.setState({
@@ -74,9 +113,22 @@ export default class UserManage extends Component {
     }
   }
 
+  handleSearch = () => {
+    if (!this.state.isChanged) return null
+    this.props.dispatch({
+      type: 'accounts/getAccounts',
+      payload: this.state.queryData,
+    })
+    console.log(this.state.queryData)
+    this.setState({
+      isChanged: false,
+    })
+  }
+
   render() {
     const that = this
-    const { role, isEnable, isStart, isStart1 } = this.state
+    const { role, isEnable, isStart, isStart1, queryData: { accountNames, telephone } } = this.state
+    const { accounts: { accountList, roleNameList, pagination = false }, loading } = this.props
     // const data=[
     //   {value:'0',id:0,label:'所属机构'},
     //   {value:'1',id:1,label:'XXX机构'},
@@ -84,6 +136,11 @@ export default class UserManage extends Component {
     // const selectData = data.map(item => {
     //   return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
     // })
+    const roleNameObject = roleNameList.reduce((pre, cur) => {
+      pre[cur.userid] = cur.rolename
+      return pre
+    },{})
+    accountList.forEach(item => item.role = roleObject[roleNameObject[item.accountId]]) // eslint-disable-line
     const data1 = [
       // {value:'0',id:0,label:'角色'},
       { value: '0', id: 0, label: '平台管理员' },
@@ -106,7 +163,6 @@ export default class UserManage extends Component {
         </Option>
       )
     })
-    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       // {
       //   title:'ID',
@@ -114,7 +170,7 @@ export default class UserManage extends Component {
       // },
       {
         title: '用户名',
-        dataIndex: 'userName',
+        dataIndex: 'accountName',
       },
       {
         title: '姓名',
@@ -122,7 +178,7 @@ export default class UserManage extends Component {
       },
       {
         title: '电话',
-        dataIndex: 'tel',
+        dataIndex: 'telephone',
       },
       {
         title: '所属机构',
@@ -194,37 +250,13 @@ export default class UserManage extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const list = [
-      {
-        id: 0,
-        userName: 'zhangsan',
-        name: '张三',
-        tel: '12654887555',
-        institution: '河北省大数据局',
-        oweNode: '',
-        role: '平台管理员',
-        createTime: 453353535,
-        status: '0',
-      },
-      {
-        id: 1,
-        userName: 'lisi',
-        name: '李四',
-        tel: '16654887555',
-        institution: '河北省大数据局',
-        oweNode: '',
-        role: '平台管理员',
-        createTime: 454453353535,
-        status: '1',
-      },
-    ]
     return (
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
-            <Input placeholder="用户名/姓名" style={{ width: 100, marginRight: 20 }} />
+            <Input value={accountNames} placeholder="用户名/姓名" style={{ width: 100, marginRight: 20 }} onChange={this.nameChange} />
             {/* <Input placeholder="姓名" style={{width:100,marginRight:20}}/> */}
-            <Input placeholder="电话" style={{ width: 100, marginRight: 20 }} />
+            <Input value={telephone} placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} />
             {/* <Select style={{marginRight:20,width:100}} value={owingJg} onChange={this.selectOwingJg}>
               {selectData}
             </Select> */}
@@ -244,7 +276,7 @@ export default class UserManage extends Component {
               {selectData2}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} />
-            <Button type="primary">搜索</Button>
+            <Button type="primary" onClick={this.handleSearch} icon='search'>搜索</Button>
           </div>
           <div className={styles.createBtn}>
             <Button icon="plus" type="primary" onClick={this.handleAdd}>
@@ -254,10 +286,11 @@ export default class UserManage extends Component {
           <div>
             <Table
               columns={columns}
-              dataSource={list}
+              dataSource={accountList}
               pagination={pagination}
-              rowKey="id"
+              rowKey="accountId"
               bordered
+              loading={loading}
               />
           </div>
         </Card>
