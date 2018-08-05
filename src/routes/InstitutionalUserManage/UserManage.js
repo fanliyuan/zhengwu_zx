@@ -119,7 +119,7 @@ export default class UserManage extends Component {
       type: 'accounts/getAccounts',
       payload: this.state.queryData,
     })
-    console.log(this.state.queryData)
+    // console.log(this.state.queryData,)
     this.setState({
       isChanged: false,
     })

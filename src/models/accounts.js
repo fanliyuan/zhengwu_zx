@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-03 17:23:44
+ * @Last Modified time: 2018-08-05 11:44:09
  * @Description: 用户管理
  */
 // import { message } from 'antd'
@@ -59,13 +59,13 @@ export default {
       return {
         ...state,
         accountList: payload.datas,
+        pagination: payload.pagination,
       }
     },
     changeRoleNameList(state, { payload }) {
       return {
         ...state,
         roleNameList: payload.datas,
-        pagination: payload.pagination,
       }
     },
   },

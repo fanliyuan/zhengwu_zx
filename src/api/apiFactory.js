@@ -2,8 +2,8 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 11:20:49
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-03 18:03:15
- * @Description: 请求工厂函数
+ * @Last Modified time: 2018-08-05 17:20:19
+ * @Description: 请求工厂函数, 根据传入的接口模块,生成api请求
  */
 import { stringify } from 'qs'
 import request from '../utils/request'
