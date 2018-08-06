@@ -55,16 +55,32 @@ export default class AddUser extends Component {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, value) => {
       if (!err) {
-        this.props.dispatch({
-          type: 'accounts/addAccount',
-          payload: {
-            accountName: value.userName,
-            accountPasswd: value.password,
-            telephone: value.tel,
-            // 下面代码是json的"替换为',并不是json
-            extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
-          },
-        })
+        if (this.props.location.pathname === '/institutionalUserManage/addUser') {
+          this.props.dispatch({
+            type: 'accounts/addAccount',
+            payload: {
+              accountName: value.userName,
+              accountPasswd: value.password,
+              telephone: value.tel,
+              status: value.status ? 0: 1,
+              // 下面代码是json的"替换为',并不是json
+              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
+            },
+          })
+        } else {
+          this.props.dispatch({
+            type: 'accounts/updateAccount',
+            payload: {
+              body: {
+                accountName: value.userName,
+                status: value.status ? 0: 1,
+                telephone: value.tel,
+                extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
+              },
+              path: this.props.location.state.accountId,
+            },
+          })
+        }
       }
     })
   }
@@ -109,22 +125,24 @@ export default class AddUser extends Component {
                 ],
               })(<Input placeholder="请输入用户名" />)}
             </FormItem>
-            <FormItem label="密码" {...formItemLayout}>
-              {getFieldDecorator('password', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入密码',
-                  },
-                ],
-              })(<Input placeholder="请输入密码" />)}
-              <div>
-                <a className="mr8" onClick={this.setPassword}>
-                  随机生成
-                </a>
-                <a onClick={this.handleCopy}>复制</a>
-              </div>
-            </FormItem>
+            { this.props.location.pathname === '/institutionalUserManage/addUser' && (
+              <FormItem label="密码" {...formItemLayout}>
+                {getFieldDecorator('password', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入密码',
+                    },
+                  ],
+                })(<Input placeholder="请输入密码" />)}
+                <div>
+                  <a className="mr8" onClick={this.setPassword}>
+                    随机生成
+                  </a>
+                  <a onClick={this.handleCopy}>复制</a>
+                </div>
+              </FormItem>)
+            }
             <FormItem label="姓名" {...formItemLayout}>
               {getFieldDecorator('name', {
                 initialValue: accountDetail.extendedProperties && JSON.parse(accountDetail.extendedProperties.replace(/'/g, '"')).name,
@@ -142,7 +160,8 @@ export default class AddUser extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '请输入手机号',
+                    pattern: /^1[3-9]\d{9}$/,
+                    message: '请输入正确的手机号',
                   },
                 ],
               })(<Input placeholder="手机号" />)}
@@ -155,7 +174,10 @@ export default class AddUser extends Component {
               )}
             </FormItem>
             <FormItem label="状态" {...formItemLayout}>
-              {getFieldDecorator('status')(<Checkbox>停用</Checkbox>)}
+              {getFieldDecorator('status', {
+                valuePropName: 'checked',
+                initialValue: !accountDetail.status,
+              })(<Checkbox>停用</Checkbox>)}
             </FormItem>
             <div className="btnclsb">
               <Button type="primary" htmlType="submit" className="mr64">

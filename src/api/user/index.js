@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:24
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-06 17:53:10
+ * @Last Modified time: 2018-08-06 20:44:18
  * @Description: 用户模块请求
  */
 const module = {
@@ -31,6 +31,11 @@ const module = {
     {
       name:'deleteAccount',
       method:'delete',
+      url: 'accounts',
+    },
+    {
+      name: 'updateAccount',
+      method: 'put',
       url: 'accounts',
     },
   ],

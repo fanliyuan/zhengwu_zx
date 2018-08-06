@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Message, Popconfirm } from 'antd'
+import { Table, Button, Input, Select, Card, DatePicker, Popconfirm } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
+import { format0, format24 } from '../../utils/utils'
 import styles from './UserManage.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
@@ -26,13 +27,11 @@ export default class UserManage extends Component {
     // owingJg:'0',
     role: '5',
     isEnable: '2',
-    isStart: true,
-    isStart1: false,
     isChanged: false,
+    createTime: [],
     queryData: {
       accountNames: '',
       telephone: '',
-      createTime: [],
     },
   }
 
@@ -75,6 +74,14 @@ export default class UserManage extends Component {
   selectIsEnable = val => {
     this.setState({
       isEnable: val,
+      isChanged: true,
+    })
+  }
+
+  dateChange = val => {
+    this.setState({
+      createTime: [moment(val[0]), moment(val[1])],
+      isChanged: true,
     })
   }
 
@@ -89,41 +96,29 @@ export default class UserManage extends Component {
     )
   }
 
-  handleStart = () => {
-    const { isStart } = this.state
-    if (isStart) {
-      this.setState({
-        isStart: false,
-      })
-      Message.info('停用成功!')
-    } else {
-      this.setState({
-        isStart: true,
-      })
-      Message.info('启用成功!')
-    }
-  }
-
-  handleStart1 = () => {
-    const { isStart1 } = this.state
-    if (isStart1) {
-      this.setState({
-        isStart1: false,
-      })
-      Message.info('停用成功!')
-    } else {
-      this.setState({
-        isStart1: true,
-      })
-      Message.info('启用成功!')
-    }
+  handleStatus = (text, row) => {
+    this.props.dispatch({
+      type: 'accounts/updateAccount',
+      payload: {
+        path: row.accountId,
+        body: {
+          status: row.status ? 0 : 1,
+        },
+        flag: 'status',
+      },
+    })
   }
 
   handleSearch = () => {
     if (!this.state.isChanged) return null
+    const { queryData, isEnable, createTime } = this.state
     this.props.dispatch({
       type: 'accounts/getAccounts',
-      payload: this.state.queryData,
+      payload: {
+        ...queryData,
+        filter: `${isEnable !== '0' && isEnable !== '1' ? '':`status=${isEnable}`}${isEnable === '0' || isEnable === '1' && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        `,
+      },
     })
     // console.log(this.state.queryData,)
     this.setState({
@@ -142,7 +137,7 @@ export default class UserManage extends Component {
 
   render() {
     const that = this
-    const { role, isEnable, isStart, isStart1, queryData: { accountNames, telephone } } = this.state
+    const { role, isEnable, queryData: { accountNames, telephone }, createTime } = this.state
     const { accounts: { accountList, roleNameList, pagination = false }, loading } = this.props
     // const data=[
     //   {value:'0',id:0,label:'所属机构'},
@@ -227,8 +222,8 @@ export default class UserManage extends Component {
           if (row.status === '0') {
             return (
               <div>
-                <span className={styles.editBtn} onClick={that.handleStart}>
-                  {isStart ? '启用' : '停用'}
+                <span className={styles.editBtn} onClick={() => this.handleStatus(text, row)}>
+                  {row.status ? '停用' : '启用'}
                 </span>
                 <span className={styles.editBtn} onClick={() => that.handleEdit(row)}>
                   修改
@@ -244,8 +239,8 @@ export default class UserManage extends Component {
           } else {
             return (
               <div>
-                <span className={styles.editBtn} onClick={that.handleStart1}>
-                  {isStart1 ? '启用' : '停用'}
+                <span className={styles.editBtn} onClick={() => this.handleStatus(text, row)}>
+                  {row.status ? '停用' : '启用'}
                 </span>
                 <span className={styles.editBtn} onClick={() => that.handleEdit(row)}>
                   修改
@@ -290,7 +285,7 @@ export default class UserManage extends Component {
               >
               {selectData2}
             </Select>
-            <RangePicker style={{ marginRight: 20, width: 250 }} />
+            <RangePicker value={createTime} onChange={this.dateChange} style={{ marginRight: 20, width: 250 }} />
             <Button type="primary" onClick={this.handleSearch} icon='search'>搜索</Button>
           </div>
           <div className={styles.createBtn}>

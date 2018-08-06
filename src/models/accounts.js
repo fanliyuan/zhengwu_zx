@@ -2,14 +2,14 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-06 17:07:47
+ * @Last Modified time: 2018-08-06 21:09:02
  * @Description: 用户管理
  */
 import { routerRedux } from 'dva/router'
 import { message } from 'antd'
 import apis from '../api'
 
-const { getAccounts, getRoleName, addAccount, deleteAccount } = apis
+const { getAccounts, getRoleName, addAccount, deleteAccount, updateAccount } = apis
 export default {
   namespace: 'accounts',
 
@@ -108,6 +108,27 @@ export default {
             type: 'changeAccountDetail',
             payload: { accountDetail: response.result.datas },
           })
+        }
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(error)
+      }
+    },
+    *updateAccount({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call(updateAccount, {path: payload.path, body: payload.body})
+        const { code } = response
+        if (code === 0) {
+          if (payload.flag === 'status') {
+            message.success('修改成功')
+            yield put({
+              type: 'getAccounts',
+            })
+          } else {
+            message.success('修改成功')
+            yield put(routerRedux.push('/institutionalUserManage/userManage'))
+          }
         }
       } catch (error) {
         // eslint-disable-next-line
