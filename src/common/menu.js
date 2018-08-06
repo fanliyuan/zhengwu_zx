@@ -137,6 +137,12 @@ const menuData = [
         hideInMenu: true,
         authority: ['admin', 'admin-n'],
       },
+      {
+        name: '修改用户',
+        path: 'editUser',
+        hideInMenu: true,
+        authority: ['admin', 'admin-n'],
+      },
       // {
       //   name: '角色管理',
       //   path: 'roleLimit',

@@ -26,6 +26,20 @@ function getPassword(n = 8) {
 export default class AddUser extends Component {
   state = {}
 
+  componentDidMount() {
+    if (this.props.location.pathname === '/institutionalUserManage/editUser') {
+      this.props.dispatch({
+        type: 'accounts/getAccount',
+        payload: { path: this.props.location.state.accountId },
+      })
+    } else {
+      this.props.dispatch({
+        type: 'accounts/changeAccountDetail',
+        payload: {accountDetail: {}},
+      })
+    }
+  }
+
   setPassword = () => {
     this.props.form.setFieldsValue({
       password: getPassword(),
@@ -47,6 +61,8 @@ export default class AddUser extends Component {
             accountName: value.userName,
             accountPasswd: value.password,
             telephone: value.tel,
+            // 下面代码是json的"替换为',并不是json
+            extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
           },
         })
       }
@@ -54,7 +70,7 @@ export default class AddUser extends Component {
   }
 
   render() {
-    const { loading } = this.props 
+    const { loading, accounts: { accountDetail } } = this.props 
     const { getFieldDecorator } = this.props.form
     const role = [
       { value: '0', label: '管理员', id: '0' },
@@ -84,6 +100,7 @@ export default class AddUser extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="用户名" {...formItemLayout}>
               {getFieldDecorator('userName', {
+                initialValue: accountDetail.accountName,
                 rules: [
                   {
                     required: true,
@@ -110,6 +127,7 @@ export default class AddUser extends Component {
             </FormItem>
             <FormItem label="姓名" {...formItemLayout}>
               {getFieldDecorator('name', {
+                initialValue: accountDetail.extendedProperties && JSON.parse(accountDetail.extendedProperties.replace(/'/g, '"')).name,
                 rules: [
                   {
                     required: true,
@@ -120,6 +138,7 @@ export default class AddUser extends Component {
             </FormItem>
             <FormItem label="手机号" {...formItemLayout}>
               {getFieldDecorator('tel', {
+                initialValue: accountDetail.telephone,
                 rules: [
                   {
                     required: true,

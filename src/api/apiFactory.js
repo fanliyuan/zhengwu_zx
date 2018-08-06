@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 11:20:49
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-06 11:18:49
+ * @Last Modified time: 2018-08-06 18:17:18
  * @Description: 请求工厂函数, 根据传入的接口模块,生成api请求
  */
 import { stringify } from 'qs'
@@ -17,8 +17,9 @@ export default (module) => {
     module.apis = []
   }
   module.apis.forEach(item => {
-    const moduleHost = item.baseHost || ''
-    const modulePort = item.basePort || ''
+    const moduleHost = item.baseHost
+    const modulePort = item.basePort ? `:${item.basePort}/`: ''
+    const commonPort = apiPort ? `:${apiPort}/` : ''
     const moduleUrl = item.baseUrl || ''
     if (!item.name) {
       item.name = item.url
@@ -30,7 +31,7 @@ export default (module) => {
       } else if (params.path) {
         pathParams = `/${params.path}`
       }
-      const apiUrl =` ${apiHost?`${apiHost}`:''}${moduleHost?`${moduleHost}:`:''}${apiPort?`:${apiPort}/`:''}${modulePort?`:${modulePort}/`:''}${moduleUrl?`${moduleUrl}/`:''}${item.url}${pathParams?`${pathParams}`:''}`
+      const apiUrl =`${moduleHost?`${moduleHost}`:`${apiHost}`}${modulePort?`${modulePort}`:''}${commonPort}${!modulePort && !commonPort ? '/':''}${moduleUrl?`${moduleUrl}/`:''}${item.url}${pathParams?`${pathParams}`:''}`
       const headers = params.headers || {
         projectId,
         accessToken: localStorage.getItem('accessToken') || 0,

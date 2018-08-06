@@ -165,6 +165,9 @@ export const getRouterData = app => {
     '/institutionalUserManage/addUser': {
       component: dynamicWrapper(app, ['accounts'], () => import('../routes/InstitutionalUserManage/AddUser')),
     },
+    '/institutionalUserManage/editUser': {
+      component: dynamicWrapper(app, ['accounts'], () => import('../routes/InstitutionalUserManage/AddUser')),
+    },
     // '/institutionalUserManage/roleLimit': {
     //   component: dynamicWrapper(app, ['roleLimit'], () =>
     //     import('../routes/InstitutionalUserManage/RoleLimit')

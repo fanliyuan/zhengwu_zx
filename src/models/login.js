@@ -4,7 +4,7 @@ import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
 
-const { accountLogin, getRoleName } = apis
+const { accountLogin, getRoleName, accountLogout } = apis
 
 export default {
   namespace: 'login',
@@ -40,7 +40,7 @@ export default {
       let currentAuthority = 'guest'
       let response
       try {
-        response = yield call(getRoleName, {params: payload})
+        response = yield call(getRoleName, {params: payload, path: 2})
         currentAuthority = response.result.datas[0].rolename
         if (response.code === 0) {
           localStorage.setItem('antd-pro-authority', response.result.datas.rolename)
@@ -64,7 +64,7 @@ export default {
         }
       }
     },
-    *logout(_, { put, select }) {
+    *logout(_, { put, select, call }) {
       try {
         // get location pathname
         const urlParams = new URL(window.location.href)
@@ -85,6 +85,7 @@ export default {
         localStorage.removeItem('accountName')
         reloadAuthorized()
         yield put(routerRedux.push('/user/login'))
+        yield call(accountLogout)
       }
     },
   },

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-02 17:00:31
+ * @Last Modified time: 2018-08-06 13:51:58
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  */
@@ -63,7 +63,7 @@ const base64UrlToUrl = (value, delta, _this) => {
   try {
     const { ops } = delta
     const uploadURL = 'http://192.168.100.16:8804/uploadImage' // 图片上传文件服务器
-    const downloadURL = 'http://192.168.100.16:8804/uploadImage' // 图片下载文件服务器
+    const downloadURL = 'http://192.168.100.16:8804/dowloadImage' // 图片下载文件服务器
     if (
       ops &&
       ops[ops.length - 1] &&
@@ -81,9 +81,9 @@ const base64UrlToUrl = (value, delta, _this) => {
       ).then(res => {
         return res.json()
       }).then(res => {
-        if (res.code !== 200) {
+        if (res.code !== 0) {
           message.error('图片上传失败,请删除图片重试!')
-          console.log('返回结果非200')// eslint-disable-line
+          console.log('返回结果非0', res.code)// eslint-disable-line
           return null
         }
         // 这里是替换地址操作

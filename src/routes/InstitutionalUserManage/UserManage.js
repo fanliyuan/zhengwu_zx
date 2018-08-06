@@ -24,8 +24,8 @@ const roleObject = {
 export default class UserManage extends Component {
   state = {
     // owingJg:'0',
-    role: '角色',
-    isEnable: '状态',
+    role: '5',
+    isEnable: '2',
     isStart: true,
     isStart1: false,
     isChanged: false,
@@ -83,6 +83,12 @@ export default class UserManage extends Component {
     dispatch(routerRedux.push('/institutionalUserManage/addUser'))
   }
 
+  handleEdit = (row) => {
+    this.props.dispatch(
+      routerRedux.push('/institutionalUserManage/editUser', {accountId: row.accountId})
+    )
+  }
+
   handleStart = () => {
     const { isStart } = this.state
     if (isStart) {
@@ -125,6 +131,15 @@ export default class UserManage extends Component {
     })
   }
 
+  handleDelete = (row) => {
+    this.props.dispatch({
+      type: 'accounts/deleteAccount',
+      payload: {
+        path: row.accountId,
+      },
+    })
+  }
+
   render() {
     const that = this
     const { role, isEnable, isStart, isStart1, queryData: { accountNames, telephone } } = this.state
@@ -142,11 +157,11 @@ export default class UserManage extends Component {
     },{})
     accountList.forEach(item => item.role = roleObject[roleNameObject[item.accountId]]) // eslint-disable-line
     const data1 = [
-      // {value:'0',id:0,label:'角色'},
-      { value: '0', id: 0, label: '平台管理员' },
-      { value: '1', id: 1, label: '平台安全员' },
-      { value: '2', id: 1, label: '平台审计员' },
-      { value: '3', id: 1, label: '平台操作员' },
+      { value:'5', id:0, label:'所有角色' },
+      { value: '0', id: 1, label: '管理员' },
+      { value: '1', id: 2, label: '安全员' },
+      { value: '2', id: 3, label: '审计员' },
+      { value: '3', id: 4, label: '操作员' },
     ]
     const selectData1 = data1.map(item => {
       return (
@@ -155,7 +170,7 @@ export default class UserManage extends Component {
         </Option>
       )
     })
-    const data2 = [{ value: '0', id: 0, label: '启用' }, { value: '1', id: 1, label: '停用' }]
+    const data2 = [{ value: '2', id: 2, label: '全部状态' }, { value: '0', id: 0, label: '停用' }, { value: '1', id: 1, label: '启用' } ]
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -180,10 +195,10 @@ export default class UserManage extends Component {
         title: '电话',
         dataIndex: 'telephone',
       },
-      {
-        title: '所属机构',
-        dataIndex: 'institution',
-      },
+      // {
+      //   title: '所属机构',
+      //   dataIndex: 'institution',
+      // },
       // {
       //   title:'所属节点',
       //   dataIndex:'oweNode',
@@ -208,19 +223,19 @@ export default class UserManage extends Component {
       },
       {
         title: '操作',
-        render(text, row) {
+        render: (text, row) => {
           if (row.status === '0') {
             return (
               <div>
                 <span className={styles.editBtn} onClick={that.handleStart}>
                   {isStart ? '启用' : '停用'}
                 </span>
-                <span className={styles.editBtn} onClick={that.handleAdd}>
+                <span className={styles.editBtn} onClick={() => that.handleEdit(row)}>
                   修改
                 </span>
                 <Popconfirm
                   title={`是否要刪除${row.name}?`}
-                  onConfirm={() => Message.success('刪除成功')}
+                  onConfirm={() => this.handleDelete(row)}
                   >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
@@ -232,12 +247,12 @@ export default class UserManage extends Component {
                 <span className={styles.editBtn} onClick={that.handleStart1}>
                   {isStart1 ? '启用' : '停用'}
                 </span>
-                <span className={styles.editBtn} onClick={that.handleAdd}>
+                <span className={styles.editBtn} onClick={() => that.handleEdit(row)}>
                   修改
                 </span>
                 <Popconfirm
                   title={`是否要刪除${row.name}?`}
-                  onConfirm={() => Message.success('刪除成功')}
+                  onConfirm={() => this.handleDelete(row)}
                   >
                   <a style={{ marginRight: 20 }}>删除</a>
                 </Popconfirm>
