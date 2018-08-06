@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'dva'
 import { Link } from 'dva/router'
 import { Card, Input, Button, Form, Select, Checkbox, message } from 'antd'
 import copy from 'copy-to-clipboard'
@@ -19,6 +20,8 @@ function getPassword(n = 8) {
   return result
 }
 
+
+@connect(({ accounts, loading }) => ({accounts, loading: loading.models.accounts}))
 @Form.create()
 export default class AddUser extends Component {
   state = {}
@@ -36,9 +39,22 @@ export default class AddUser extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
+    this.props.form.validateFieldsAndScroll((err, value) => {
+      if (!err) {
+        this.props.dispatch({
+          type: 'accounts/addAccount',
+          payload: {
+            accountName: value.userName,
+            accountPasswd: value.password,
+            telephone: value.tel,
+          },
+        })
+      }
+    })
   }
 
   render() {
+    const { loading } = this.props 
     const { getFieldDecorator } = this.props.form
     const role = [
       { value: '0', label: '管理员', id: '0' },
@@ -64,7 +80,7 @@ export default class AddUser extends Component {
     }
     return (
       <PageHeaderLayout>
-        <Card>
+        <Card loading={loading}>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="用户名" {...formItemLayout}>
               {getFieldDecorator('userName', {

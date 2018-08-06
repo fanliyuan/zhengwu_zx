@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:00
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-05 17:19:22
+ * @Last Modified time: 2018-08-06 11:11:22
  * @Description: 角色模块请求
  */
 const module = {
@@ -11,7 +11,6 @@ const module = {
     {
       name: 'getRoleName',
       url: 'roles',
-      path: '2',
     },
   ],
 }

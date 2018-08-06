@@ -163,7 +163,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/addUser': {
-      component: dynamicWrapper(app, [], () => import('../routes/InstitutionalUserManage/AddUser')),
+      component: dynamicWrapper(app, ['accounts'], () => import('../routes/InstitutionalUserManage/AddUser')),
     },
     // '/institutionalUserManage/roleLimit': {
     //   component: dynamicWrapper(app, ['roleLimit'], () =>

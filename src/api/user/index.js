@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:24
- * @Last Modified by:   ChouEric
- * @Last Modified time: 2018-08-05 17:19:24
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-08-06 09:25:48
  * @Description: 用户模块请求
  */
 const module = {
@@ -16,6 +16,11 @@ const module = {
     {
       name: 'getAccounts',
       method: 'get',
+      url: 'accounts',
+    },
+    {
+      name: 'addAccount',
+      method: 'post',
       url: 'accounts',
     },
   ],
