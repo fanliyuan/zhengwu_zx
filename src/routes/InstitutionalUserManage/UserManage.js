@@ -79,8 +79,14 @@ export default class UserManage extends Component {
   }
 
   dateChange = val => {
+    let createTime
+    if (val.length > 1) {
+      createTime = [moment(val[0]), moment(val[1])]
+    } else {
+      createTime = val
+    }
     this.setState({
-      createTime: [moment(val[0]), moment(val[1])],
+      createTime,
       isChanged: true,
     })
   }
