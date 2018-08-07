@@ -9,6 +9,7 @@ import apiBase from './apiBase'
 import apiFactory from './apiFactory'
 import userModule from './user/'
 import roleModule from './role'
+import pass  from './infrastructure'
 
 class ApiSub extends apiBase {
   constructor (module) {
@@ -21,4 +22,5 @@ class ApiSub extends apiBase {
 export default {
   ...apiFactory(new ApiSub(userModule)),
   ...apiFactory(new ApiSub(roleModule)),
+  ...apiFactory(new ApiSub(pass)),
 }

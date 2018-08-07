@@ -13,21 +13,33 @@ import styles from './PassManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { Option } = Select
-class PassManagement extends React.PureComponent {
+@connect(({ passOperation }) => ({passOperation}))
+export default class PassManagement extends React.Component {
   state = {
-    startNode: '起始节点',
-    endNode: '目标节点',
+    startNodeId: '起始节点',
+    targetNodeId: '目标节点',
+    isChanged:false,
+  }
+
+  componentDidMount = () => {
+    const { dispatch } = this.props
+    dispatch({
+      type:'passOperation/querys',
+      // payload:{startNodeId:-1,targetNodeId:-1},
+    })
   }
 
   selectStartChange = val => {
     this.setState({
-      startNode: val,
+      startNodeId: val,
+      isChanged:true,
     })
   }
 
   selectEndChange = val => {
     this.setState({
-      endNode: val,
+      targetNodeId: val,
+      isChanged:true,
     })
   }
 
@@ -42,9 +54,21 @@ class PassManagement extends React.PureComponent {
     dispatch(routerRedux.push('/infrastructure/editPass'))
   }
 
+  handleSearch = () =>{
+    const { isChanged, startNodeId, targetNodeId } = this.state
+    if(isChanged){
+      const { dispatch } = this.props
+      dispatch({
+        type:'passOperation/querys',
+        payload:{startNodeId, targetNodeId},
+      })
+    }
+  }
+
   render() {
     const that = this
-    const { startNode, endNode } = this.state
+    const { startNodeId, targetNodeId } = this.state
+    const { passOperation:{list, pagination} } = this.props
     const data1 = [
       { value: '0', label: '石家庄市发展改革委', id: 1 },
       { value: '1', label: '北京发展改革委', id: 2 },
@@ -67,7 +91,6 @@ class PassManagement extends React.PureComponent {
         </Option>
       )
     })
-    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: 'ID',
@@ -83,32 +106,32 @@ class PassManagement extends React.PureComponent {
       },
       {
         title: '是否双向',
-        dataIndex: 'isTwoWay',
-        render(text) {
-          return +text === 0 ? '否' : '是'
-        },
+        dataIndex: 'isDoubleSide',
+        // render(text) {
+        //   return +text === 0 ? '否' : '是'
+        // },
       },
       {
         title: '是否压缩',
         dataIndex: 'isCompress',
-        render(text) {
-          return +text === 0 ? '否' : '是'
-        },
+        // render(text) {
+        //   return +text === 0 ? '否' : '是'
+        // },
       },
       {
         title: '是否加密',
-        dataIndex: 'isEncrypt',
-        render(text) {
-          return +text === 0 ? '否' : '是'
-        },
+        dataIndex: 'isEncryption',
+        // render(text) {
+        //   return +text === 0 ? '否' : '是'
+        // },
       },
       {
         title: '管道状态',
-        dataIndex: 'passStatus',
+        dataIndex: 'channelState',
       },
       {
         title: '任务状态',
-        dataIndex: 'taskStatus',
+        dataIndex: 'taskState',
       },
       {
         title: '操作',
@@ -133,51 +156,51 @@ class PassManagement extends React.PureComponent {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const list = [
-      {
-        id: 0,
-        startCode: '0',
-        startNode: '石家庄市发展改革委',
-        targetCode: '0',
-        targetNode: '石家庄市民政部',
-        isTwoWay: '0',
-        isCompress: '1',
-        isEncrypt: '0',
-        passStatus: '联通',
-        taskStatus: '运行中',
-      },
-      {
-        id: 1,
-        startCode: '1',
-        startNode: '北京发展改革委',
-        targetCode: '1',
-        targetNode: '北京民政部',
-        isTwoWay: '1',
-        isCompress: '1',
-        isEncrypt: '0',
-        passStatus: '联通',
-        taskStatus: '运行中',
-      },
-    ]
+    // const list = [
+    //   {
+    //     id: 0,
+    //     startCode: '0',
+    //     startNode: '石家庄市发展改革委',
+    //     targetCode: '0',
+    //     targetNode: '石家庄市民政部',
+    //     isTwoWay: '0',
+    //     isCompress: '1',
+    //     isEncrypt: '0',
+    //     passStatus: '联通',
+    //     taskStatus: '运行中',
+    //   },
+    //   {
+    //     id: 1,
+    //     startCode: '1',
+    //     startNode: '北京发展改革委',
+    //     targetCode: '1',
+    //     targetNode: '北京民政部',
+    //     isTwoWay: '1',
+    //     isCompress: '1',
+    //     isEncrypt: '0',
+    //     passStatus: '联通',
+    //     taskStatus: '运行中',
+    //   },
+    // ]
     return (
       <PageHeaderLayout>
         <Card>
           <div className={styles.forms}>
             <Select
-              value={startNode}
+              value={startNodeId}
               style={{ marginRight: 20, width: 200 }}
               onChange={this.selectStartChange}
               >
               {selectData1}
             </Select>
             <Select
-              value={endNode}
+              value={targetNodeId}
               style={{ marginRight: 20, width: 200 }}
               onChange={this.selectEndChange}
               >
               {selectData2}
             </Select>
-            <Button type="primary">搜索</Button>
+            <Button type="primary" onClick={this.handleSearch}>搜索</Button>
           </div>
           <div>
             <Table
@@ -195,7 +218,3 @@ class PassManagement extends React.PureComponent {
     )
   }
 }
-
-export default connect(({ passOperation }) => ({
-  data: passOperation.params,
-}))(PassManagement)

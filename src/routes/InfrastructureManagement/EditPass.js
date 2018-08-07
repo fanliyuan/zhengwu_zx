@@ -15,18 +15,18 @@ class EditPass extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    this.props.form.validateFieldsAndScroll(err => {
+    const { dispatch } = this.props
+    this.props.form.validateFieldsAndScroll((err, values) => {
       // values
       if (!err) {
         message.success('提交成功, 即将返回上一页')
         setTimeout(() => {
           this.props.dispatch(routerRedux.push('/infrastructure/pass'))
         }, 1000)
-        // const { dispatch } = this.props;
-        // dispatch({
-        //   type:'',
-        //   payload:values,
-        // })
+        dispatch({
+          type:'passOperation/',
+          payload:values,
+        })
       }
     })
   }

@@ -1,3 +1,7 @@
+import apis from '../api'
+
+const { passInfo } = apis
+
 export default {
   namespace: 'passOperation',
   state: {
@@ -8,6 +12,8 @@ export default {
       isCompress: '0',
       isEncrypt: '0',
     },
+    list: [],
+    pagination:false,
   },
   effects: {
     *transmit({ payload }, { put }) {
@@ -16,6 +22,34 @@ export default {
         payload,
       })
     },
+    *querys({ payload },{ call, put }){
+      const response = yield call(passInfo,{params: payload})
+      try {
+        const pagination = response.result.totalCounts > 9 ? { current: response.result.pageSize } : false
+        if(+response.code === 0){
+          yield put({
+            type:'queryPass',
+            payload:{
+              list: response.result.datas,
+              pagination,
+            },
+          })
+        }
+      } catch(err){
+        const pagination = false
+        yield put({
+          type:'queryPass',
+          payload:{
+            list: [],
+            pagination,
+          },
+        })
+      }
+
+    },
+    // *getStartNode({ payload }, { call, put }){
+    //   const response = yield call(startNode,{ params:payload })
+    // },
   },
   reducers: {
     initial(state, action) {
@@ -24,6 +58,19 @@ export default {
       })
       return {
         ...state,
+      }
+    },
+    // startNode(state, { payload }){
+    //   return {
+    //     ...state,
+    //     startNode:payload,
+    //   }
+    // },
+    queryPass(state, {payload}){
+      return {
+        ...state,
+        list: payload.list,
+        pagination: payload.pagination,
       }
     },
     saveRowInfo(state, { payload }) {
