@@ -9,6 +9,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const FormItem = Form.Item
 const { Option } = Select
+let ids
 @Form.create()
 class EditPass extends Component {
   state = {}
@@ -17,22 +18,28 @@ class EditPass extends Component {
     e.preventDefault()
     const { dispatch } = this.props
     this.props.form.validateFieldsAndScroll((err, values) => {
+      values.id=ids
       // values
       if (!err) {
-        message.success('提交成功, 即将返回上一页')
-        setTimeout(() => {
-          this.props.dispatch(routerRedux.push('/infrastructure/pass'))
-        }, 1000)
+        // message.success('提交成功, 即将返回上一页')
+        // setTimeout(() => {
+        //   this.props.dispatch(routerRedux.push('/infrastructure/pass'))
+        // }, 1000)
         dispatch({
           type:'passOperation/',
           payload:values,
         })
+        message.success('提交成功, 即将返回上一页')
+        this.props.dispatch(routerRedux.push('/infrastructure/pass'))
       }
     })
   }
 
   render() {
     const { data } = this.props
+    ids = data.id
+    const compress = data.isCompress === '是'
+    const encryption = data.isEncryption === '是'
     const { getFieldDecorator } = this.props.form // getFieldValue
     const startData = [
       { value: '0', label: '石家庄市发展改革委', id: 0 },
@@ -74,7 +81,7 @@ class EditPass extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="起始节点" {...formItemLayout}>
               {getFieldDecorator('startNode', {
-                initialValue: data.startCode,
+                initialValue: data.startNode,
                 // rules: [
                 //   {
                 //     required: true,
@@ -89,7 +96,7 @@ class EditPass extends Component {
             </FormItem>
             <FormItem label="目标节点" {...formItemLayout}>
               {getFieldDecorator('endNode', {
-                initialValue: data.targetCode,
+                initialValue: data.targetNode,
                 // rules: [
                 //   {
                 //     required: true,
@@ -111,13 +118,13 @@ class EditPass extends Component {
             <FormItem label="压缩传输" {...formItemLayout}>
               {getFieldDecorator('compressTransfer', {
                 valuePropName: 'checked',
-                initialValue: !!+data.isCompress,
+                initialValue: compress,
               })(<Checkbox>启用</Checkbox>)}
             </FormItem>
             <FormItem label="加密传输" {...formItemLayout}>
               {getFieldDecorator('enCryptTransfer', {
                 valuePropName: 'checked',
-                initialValue: !!+data.isEncrypt,
+                initialValue: encryption,
               })(<Checkbox>启用</Checkbox>)}
             </FormItem>
             <div className="btnclsb">
@@ -136,4 +143,5 @@ class EditPass extends Component {
 }
 export default connect(({ passOperation }) => ({
   data: passOperation.params,
+  passOperation,
 }))(EditPass)

@@ -4,14 +4,22 @@ const module = {
     {
       name: 'passInfo',
       url: 'channels',
+      baseUrl:'channelManager',
     },
     {
       name: 'startNode',
       url: 'startNodes',
+      baseUrl:'channelManager',
     },
     {
       name: 'targetNode',
       url: 'targetNodes',
+      baseUrl:'channelManager',
+    },
+    {
+      name: 'channel',
+      url: 'channel',
+      baseUrl:'channelManager',
     },
     {
       name: 'getRegion',
