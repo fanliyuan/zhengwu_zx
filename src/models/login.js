@@ -19,7 +19,20 @@ export default {
       let response
       try {
         response = yield call(accountLogin, {body: payload})
+        if (response.code >=11030104 && response.code <=11030105) {
+          message.error('用户名或密码错误!')
+          return null
+        }
+        if (response.code === 11030201) {
+          message.error('账号已停用')
+          return null
+        }
         const { accountId, accessToken, accountName } = response.result.datas
+        if (response.code === 0) {
+          localStorage.setItem('accessToken', accessToken)
+          localStorage.setItem('accountId', accountId)
+          localStorage.setItem('accountName', accountName)
+        }
         // Login successfully
         yield put({
           type: 'token',
@@ -27,11 +40,6 @@ export default {
             filter: accountId,
           },
         })
-        if (response.code === 0) {
-          localStorage.setItem('accessToken', accessToken)
-          localStorage.setItem('accountId', accountId)
-          localStorage.setItem('accountName', accountName)
-        }
       } catch (error) {
         message.error('登录失败')
       } // eslint-disable-line
@@ -46,6 +54,7 @@ export default {
           localStorage.setItem('antd-pro-authority', response.result.datas.rolename)
         }
       } catch (error) {
+        message.error('登录失败')
         console.log('验证token出错')// eslint-disable-line
         currentAuthority = 'guest'
       } finally {
@@ -54,7 +63,7 @@ export default {
           payload: { currentAuthority },
         })
         reloadAuthorized()
-        if (response.code === 0) {
+        if (response && response.code === 0) {
           if (sessionStorage.getItem('rootRedirect')) {
             yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
             yield sessionStorage.clear()

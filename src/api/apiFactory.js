@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 11:20:49
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-06 18:17:18
+ * @Last Modified time: 2018-08-08 17:33:08
  * @Description: 请求工厂函数, 根据传入的接口模块,生成api请求
  */
 import { stringify } from 'qs'
@@ -49,7 +49,7 @@ export default (module) => {
       }
       return request(`${apiUrl}`,{
         method: item.method.toUpperCase(),
-        body: {...params.body},
+        body: Array.isArray(params.body)?[...params.body]:{...params.body},
         headers: {...headers},
       })
     }

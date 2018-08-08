@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-06 21:09:02
+ * @Last Modified time: 2018-08-08 11:09:09
  * @Description: 用户管理
  */
 import { routerRedux } from 'dva/router'
@@ -25,8 +25,8 @@ export default {
       let response
       try {
         response = yield call(getAccounts, {params: payload})
-        const { datas = [], total = 0, pageSize = 10, pageNum = 1 } = response.result
-        const pagination = total > 10 ? {total, pageSize, current: pageNum} : false
+        const { datas = [], total = 0, pageSize = 10, pageNumber = 1 } = response.result
+        const pagination = total > 10 ? {total, pageSize, current: pageNumber} : false
         const accountIdList = datas.reduce((pre, cur) => {
           pre.push(cur.accountId)
          return pre 

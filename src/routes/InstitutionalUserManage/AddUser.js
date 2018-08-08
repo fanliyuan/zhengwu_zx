@@ -7,6 +7,8 @@ import copy from 'copy-to-clipboard'
 // import styles from './AddUser.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
+const sha = require('sha.js')
+
 const FormItem = Form.Item
 const { Option } = Select
 
@@ -60,7 +62,7 @@ export default class AddUser extends Component {
             type: 'accounts/addAccount',
             payload: {
               accountName: value.userName,
-              accountPasswd: value.password,
+              accountPasswd: sha('sha1').update(value.password).digest('hex'),
               telephone: value.tel,
               status: value.status ? 0: 1,
               // 下面代码是json的"替换为',并不是json
@@ -73,6 +75,7 @@ export default class AddUser extends Component {
             payload: {
               body: {
                 accountName: value.userName,
+                accountPasswd: sha('sha1').update(value.password).digest('hex'),
                 status: value.status ? 0: 1,
                 telephone: value.tel,
                 extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
@@ -125,24 +128,22 @@ export default class AddUser extends Component {
                 ],
               })(<Input placeholder="请输入用户名" />)}
             </FormItem>
-            { this.props.location.pathname === '/institutionalUserManage/addUser' && (
-              <FormItem label="密码" {...formItemLayout}>
-                {getFieldDecorator('password', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '请输入密码',
-                    },
-                  ],
-                })(<Input placeholder="请输入密码" />)}
-                <div>
-                  <a className="mr8" onClick={this.setPassword}>
-                    随机生成
-                  </a>
-                  <a onClick={this.handleCopy}>复制</a>
-                </div>
-              </FormItem>)
-            }
+            <FormItem label="密码" {...formItemLayout}>
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入密码',
+                  },
+                ],
+              })(<Input placeholder="请输入密码" />)}
+              <div>
+                <a className="mr8" onClick={this.setPassword}>
+                  随机生成
+                </a>
+                <a onClick={this.handleCopy}>复制</a>
+              </div>
+            </FormItem>
             <FormItem label="姓名" {...formItemLayout}>
               {getFieldDecorator('name', {
                 initialValue: accountDetail.extendedProperties && JSON.parse(accountDetail.extendedProperties.replace(/'/g, '"')).name,

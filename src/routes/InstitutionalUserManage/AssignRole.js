@@ -1,46 +1,149 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio } from 'antd'
+import { connect } from 'dva'
+import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio, message } from 'antd'
 import moment from 'moment'
 
-import styles from './AssignRole.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import { format0, format24 } from '../../utils/utils'
+import styles from './AssignRole.less'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
 const RadioGroup = Radio.Group
+const roleObject = {
+  admin: '管理员',
+  security: '安全员',
+  auditor: '审计员',
+  operator: '操作员',
+}
+
+@connect(({ roles, accounts, loading }) => ({
+  roles,
+  accounts,
+  loading: loading.models.roles,
+}))
 export default class AssignRole extends Component {
   state = {
     // owingJg: '角色',
-    role: '角色',
-    status: '状态',
+    role: -1,
+    status: '-1',
     visible: false,
+    isChanged: false,
+    createTime: [],
+    queryData: {
+      accountNames: '',
+      telephone: '',
+    },
+    roleId: null,
+    userId: '',
   }
 
-  // selectOwingJg = val => {
-  //   this.setState({
-  //     owingJg: val,
-  //   })
-  // };
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'accounts/getAccounts',
+      payload: {},
+    })
+    if (this.props.roles.roleList.length < 1) {
+      this.props.dispatch({
+        type: 'roles/getRoleList',
+        payload: {},
+      })
+    }
+  }
+
+  nameChange = (e) => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        accountNames: e.target.value.trim(),
+      },
+      isChanged: true,
+    })
+  }
+
+  telephoneChange = (e) => {
+    const { queryData } = this.state
+    if (e.target.value.trim().length > 11) return false
+    this.setState({
+      queryData: {
+        ...queryData,
+        telephone: e.target.value.trim(),
+      },
+      isChanged: true,
+    })
+  }
 
   selectRoleChange = val => {
     this.setState({
       role: val,
+      isChanged: true,
     })
   }
 
   selectStatusChange = val => {
     this.setState({
       status: val,
+      isChanged: true,
     })
   }
 
-  showModal = () => {
+  dateChange = val => {
+    let createTime
+    if (val.length > 1) {
+      createTime = [moment(val[0]), moment(val[1])]
+    } else {
+      createTime = val
+    }
+    this.setState({
+      createTime,
+      isChanged: true,
+    })
+  }
+
+  handleSearch = () => {
+    if (!this.state.isChanged) {
+      return null
+    }
+    const { queryData, status, createTime } = this.state
+    this.props.dispatch({
+      type: 'accounts/getAccounts',
+      payload: {
+        ...queryData,
+        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${status === '0' || status === '1' && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        `,
+      },
+    })
+  }
+
+  showModal = (row) => {
     this.setState({
       visible: true,
+      userId: row.accountId,
+      roleId: null,
     })
   }
 
-  handleOk = () => {
+  roleChange = (e) => {
+    this.setState({
+      roleId: e.target.value,
+    })
+  }
+
+  handleOk = async () => {
+    if (!this.state.roleId) {
+      message.error('请选择角色!')
+      return null
+    }
+    await this.props.dispatch({
+      type: 'roles/setPermissions',
+      payload: {
+        body: [{
+          roleidList: [this.state.roleId],
+          userid: this.state.userId,
+        }],
+      },
+    })
     this.setState({
       visible: false,
     })
@@ -54,7 +157,8 @@ export default class AssignRole extends Component {
 
   render() {
     const that = this
-    const { role, status, visible } = this.state
+    const { role, status, visible, queryData: { accountNames, telephone } } = this.state
+    const { accounts: { accountList, roleNameList, pagination }, roles: { roleList }, loading } = this.props
     // const data = [
     //   { value: '0', id: 0, label: '所属机构' },
     //   { value: '1', id: 1, label: 'XXX机构' },
@@ -66,20 +170,30 @@ export default class AssignRole extends Component {
     //     </Option>
     //   )
     // })
-    const data1 = [
-      { value: '0', id: 0, label: '平台管理员' },
-      { value: '1', id: 1, label: '平台安全员' },
-      { value: '2', id: 1, label: '平台审计员' },
-      { value: '3', id: 1, label: '平台操作员' },
-    ]
-    const selectData1 = data1.map(item => {
+    const roleNameObject = roleNameList.reduce((pre, cur) => {
+      pre[cur.userid] = cur.rolename
+      return pre
+    },{})
+    accountList.forEach(item => item.role = roleObject[roleNameObject[item.accountId]]) // eslint-disable-line
+    const data1 = roleList.reduce((pre, cur) => {
+      if (Object.keys(roleObject).indexOf(cur.rolename) < 0) {
+        return pre
+      }
+      pre.push({
+        id: cur.id,
+        value: cur.id,
+        label: roleObject[cur.rolename],
+      })
+     return pre 
+    }, [])
+    const selectData1 = [...data1, {id: -1, value: -1, label: '所有角色'}, {id: -2, value: -2, label: '未分配角色'}].map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
         </Option>
       )
     })
-    const data2 = [{ value: '0', id: 0, label: '启用' }, { value: '1', id: 1, label: '停用' }]
+    const data2 = [{ value: '-1', id: 3, label: '全部状态' }, { value: '1', id: 1, label: '启用' }, { value: '0', id: 0, label: '停用' }]
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -87,7 +201,6 @@ export default class AssignRole extends Component {
         </Option>
       )
     })
-    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       // {
       //   title: 'ID',
@@ -95,7 +208,7 @@ export default class AssignRole extends Component {
       // },
       {
         title: '用户名',
-        dataIndex: 'userName',
+        dataIndex: 'accountName',
       },
       {
         title: '姓名',
@@ -103,12 +216,12 @@ export default class AssignRole extends Component {
       },
       {
         title: '电话',
-        dataIndex: 'tel',
+        dataIndex: 'telephone',
       },
-      {
-        title: '所属机构',
-        dataIndex: 'institution',
-      },
+      // {
+      //   title: '所属机构',
+      //   dataIndex: 'institution',
+      // },
       // {
       //   title: '所属节点',
       //   dataIndex: 'oweNode',
@@ -133,10 +246,10 @@ export default class AssignRole extends Component {
       },
       {
         title: '操作',
-        render() {
+        render: (_, row) => {
           return (
             <div>
-              <span className={styles.editBtn} onClick={that.showModal}>
+              <span className={styles.editBtn} onClick={() => that.showModal(row)}>
                 分配角色
               </span>
             </div>
@@ -147,45 +260,12 @@ export default class AssignRole extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const list = [
-      {
-        id: 0,
-        userName: 'zhangsan',
-        name: '张三',
-        tel: '12654887555',
-        institution: '河北省大数据局',
-        oweNode: '',
-        role: '待分配',
-        createTime: 453353535,
-        status: '0',
-      },
-      {
-        id: 1,
-        userName: 'lisi',
-        name: '李四',
-        tel: '16654887555',
-        institution: '河北省大数据局',
-        oweNode: '',
-        role: '平台安全员',
-        createTime: 454453353535,
-        status: '1',
-      },
-    ]
     return (
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
-            <Input placeholder="用户名/姓名" style={{ width: 100, marginRight: 20 }} />
-            <Input placeholder="电话" style={{ width: 100, marginRight: 20 }} />
-            {/* <InputNumber value="0" style={{ marginRight: 20 }} /> */}
-
-            {/* <Select
-              style={{ marginRight: 20, width: 100 }}
-              value={owingJg}
-              onChange={this.selectOwingJg}
-            >
-              {selectData}
-            </Select> */}
+            <Input value={accountNames} placeholder="用户名/姓名" style={{ width: 120, marginRight: 20 }} onChange={this.nameChange} />
+            <Input value={telephone} placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} />
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={role}
@@ -200,7 +280,7 @@ export default class AssignRole extends Component {
               >
               {selectData2}
             </Select>
-            <RangePicker style={{ marginRight: 20, width: 250 }} />
+            <RangePicker style={{ marginRight: 20, width: 250 }} onChange={this.dateChange} />
             <Button type="primary">搜索</Button>
           </div>
           {/* <div className={styles.createBtn}>
@@ -209,9 +289,10 @@ export default class AssignRole extends Component {
           <div>
             <Table
               columns={columns}
-              dataSource={list}
+              dataSource={accountList}
               pagination={pagination}
-              rowKey="id"
+              loading={loading}
+              rowKey="accountId"
               bordered
               />
           </div>
@@ -221,12 +302,17 @@ export default class AssignRole extends Component {
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             >
-            <RadioGroup>
-              <Radio value={1}>安全员</Radio>
-              <Radio value={2}>管理员</Radio>
-              <Radio value={3}>审计员</Radio>
+            <RadioGroup onChange={this.roleChange}>
+              {
+                data1.filter(item => item.label !== '管理员').map(item => (
+                  <Radio value={item.id} key={item.id}>{item.label}</Radio>
+                ))
+              }
+              {/* <Radio value={1}>安全员</Radio> */}
+              {/* <Radio value={2}>管理员</Radio> */}
+              {/* <Radio value={3}>审计员</Radio>
               <Radio value={4}>操作员</Radio>
-              <Radio value={5}>审核员</Radio>
+              <Radio value={5}>审核员</Radio> */}
             </RadioGroup>
           </Modal>
         </Card>

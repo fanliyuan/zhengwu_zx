@@ -138,7 +138,7 @@ export const getRouterData = app => {
       ),
     },
     '/infrastructure/switch': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['regionManagement'], () =>
         import('../routes/InfrastructureManagement/SwitchManagement')
       ),
     },
@@ -182,7 +182,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/assignRole': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['roles', 'accounts'], () =>
         import('../routes/InstitutionalUserManage/AssignRole')
       ),
     },

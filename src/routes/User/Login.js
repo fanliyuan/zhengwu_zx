@@ -12,7 +12,7 @@ const { UserName, Password, Submit } = Login
 
 @connect(({ login, loading }) => ({
   login,
-  submitting: loading.effects['login/login'],
+  submitting: loading.effects['login/login'] || loading.effects['login/token'],
 }))
 export default class LoginPage extends Component {
   state = {

@@ -132,6 +132,20 @@ export default class UserManage extends Component {
     })
   }
 
+  tableChange = (pagination) => {
+    const { queryData, isEnable, createTime } = this.state
+    this.props.dispatch({
+      type: 'accounts/getAccounts',
+      payload: {
+        ...queryData,
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+        filter: `${isEnable !== '0' && isEnable !== '1' ? '':`status=${isEnable}`}${isEnable === '0' || isEnable === '1' && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        `,
+      },
+    })
+  }
+
   handleDelete = (row) => {
     this.props.dispatch({
       type: 'accounts/deleteAccount',
@@ -304,6 +318,7 @@ export default class UserManage extends Component {
               columns={columns}
               dataSource={accountList}
               pagination={pagination}
+              onChange={this.tableChange}
               rowKey="accountId"
               bordered
               loading={loading}

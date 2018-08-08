@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:07:52
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-24 15:37:05
+ * @Last Modified time: 2018-08-08 09:51:55
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
 import React, { Component, Fragment } from 'react'
@@ -138,11 +138,11 @@ export default class NewsLibrary extends Component {
     // });
   }
 
-  handleStandardTableChange = pagination => {
+  handleStandardTableChange = pagination => {// eslint-disable-line
     // console.log(pagination, filtersArg, sorter)
     // const query = this.state
     // const { dispatch } = this.props;
-    console.log(pagination) // eslint-disable-line
+    // console.log(pagination) // eslint-disable-line
     // const dateRange = query.date.map((item) => {
     //   if (moment.isMoment(item)) {
     //     return +(item.format('x'))

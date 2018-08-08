@@ -13,12 +13,13 @@ const module = {
       name: 'targetNode',
       url: 'targetNodes',
     },
+    {
+      name: 'getRegion',
+      url: 'regionManager/regions',
+    },
   ],
 }
 module.apis.forEach(item => {
-  if (!item.baseUrl) {
-    item.baseUrl = 'channelManager'
-  }
   if (!item.baseHost) {
     item.baseHost = 'http://goverinfrast.tpaas.youedata.com'
   }

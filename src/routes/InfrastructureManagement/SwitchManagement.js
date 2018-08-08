@@ -1,21 +1,30 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, Cascader, Message } from 'antd'
+import { Table, Button, Input, Select, Card, Cascader, Message, Tooltip } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
 import styles from './SwitchManagement.less'
+import './SwitchManagement.css'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { Option } = Select
-@connect(({ switchManage }) => ({
-  switchManage,
+@connect(({ regionManagement, loading }) => ({
+  regionManagement,
+  loading: loading.models.regionManagement,
 }))
 export default class SwitchManagement extends Component {
   state = {
     isEnable: '状态',
     isStart: true,
     isStart1: false,
+  }
+
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'regionManagement/getRegion',
+      payload: {},
+    })
   }
 
   isEnableChange = val => {
@@ -62,6 +71,7 @@ export default class SwitchManagement extends Component {
   render() {
     const that = this
     const { isEnable, isStart, isStart1 } = this.state
+    const { regionManagement: { list, pagination } } = this.props
     // const data1 = [
     //   {
     //     value: '1001',
@@ -94,29 +104,45 @@ export default class SwitchManagement extends Component {
         </Option>
       )
     })
-    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: 'ID',
-        dataIndex: 'id',
+        dataIndex: 'regionId',
       },
       {
         title: '域名称',
-        dataIndex: 'areaName',
+        dataIndex: 'regionName',
       },
+      // {
+      //   title: '描述',
+      //   dataIndex: 'description',
+      // },
       {
-        title: '描述',
-        dataIndex: 'description',
-      },
-      {
-        title: '交换范围机构',
-        dataIndex: 'switchRange',
+        title: '交换范围节点',
+        dataIndex: 'nodeInfos',
+        className: 'column',
+        render: (cell) => {
+          if (!Array.isArray(cell)) {
+            cell = []
+          }
+          const divCom = (
+            <div>
+              {cell.map(item => <div key={item.nodeId}>{item.nodeName}</div>)}
+            </div>
+          )
+          const nodeNameList = cell.filter(item => item.nodeName).map(item => item.nodeName)
+          return (
+            <Tooltip title={divCom}>
+              <span>{nodeNameList.join(',')}</span>
+            </Tooltip>
+          )
+        },
       },
       {
         title: '更新时间',
         dataIndex: 'updateTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss')
+          return moment(~~text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
@@ -156,24 +182,24 @@ export default class SwitchManagement extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const list = [
-      {
-        id: 0,
-        areaName: '国土服务',
-        description: '关于此域的一段描述',
-        switchRange: '一级机构',
-        updateTime: 232742424624,
-        status: '0',
-      },
-      {
-        id: 1,
-        areaName: '国土服务11',
-        description: '关于此域的一段描述11',
-        switchRange: '一级节点',
-        updateTime: 232742424624,
-        status: '1',
-      },
-    ]
+    // const list = [
+    //   {
+    //     id: 0,
+    //     areaName: '国土服务',
+    //     description: '关于此域的一段描述',
+    //     switchRange: '一级机构',
+    //     updateTime: 232742424624,
+    //     status: '0',
+    //   },
+    //   {
+    //     id: 1,
+    //     areaName: '国土服务11',
+    //     description: '关于此域的一段描述11',
+    //     switchRange: '一级节点',
+    //     updateTime: 232742424624,
+    //     status: '1',
+    //   },
+    // ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -196,7 +222,7 @@ export default class SwitchManagement extends Component {
               columns={columns}
               dataSource={list}
               pagination={pagination}
-              rowKey="id"
+              rowKey="regionId"
               bordered
               />
           </div>
