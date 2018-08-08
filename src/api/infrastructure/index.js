@@ -4,21 +4,26 @@ const module = {
     {
       name: 'passInfo',
       url: 'channels',
+      baseUrl:'channelManager',
     },
     {
       name: 'startNode',
       url: 'startNodes',
+      baseUrl:'channelManager',
     },
     {
       name: 'targetNode',
       url: 'targetNodes',
+      baseUrl:'channelManager',
+    },
+    {
+      name: 'channel',
+      url: 'channel',
+      baseUrl:'channelManager',
     },
   ],
 }
 module.apis.forEach(item => {
-  if (!item.baseUrl) {
-    item.baseUrl = 'channelManager'
-  }
   if (!item.baseHost) {
     item.baseHost = 'http://goverinfrast.tpaas.youedata.com'
   }

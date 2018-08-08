@@ -13,11 +13,13 @@ import styles from './PassManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { Option } = Select
+let startOptions
+let targetOptions
 @connect(({ passOperation }) => ({passOperation}))
 export default class PassManagement extends React.Component {
   state = {
-    startNodeId: '起始节点',
-    targetNodeId: '目标节点',
+    startNodeId: -1,
+    targetNodeId: -1,
     isChanged:false,
   }
 
@@ -27,28 +29,60 @@ export default class PassManagement extends React.Component {
       type:'passOperation/querys',
       // payload:{startNodeId:-1,targetNodeId:-1},
     })
+    dispatch({
+      type:'passOperation/getStartNode',
+      // payload:{targetNodeId:-1},
+    })
+    dispatch({
+      type:'passOperation/getTargetNode',
+      // payload:{startNodeId:-1},
+    })
+  }
+
+  searchValue = (arr, value) => {
+    let result
+    arr.forEach(item => {
+      if(value === item.value){
+        result = item.key
+      }
+    })
+    return result
   }
 
   selectStartChange = val => {
+    const id = this.searchValue(startOptions,val)
     this.setState({
-      startNodeId: val,
+      startNodeId: id,
       isChanged:true,
+    })
+    const cid = +id === -1 ? '' : id
+    const { dispatch } = this.props
+    dispatch({
+      type:'passOperation/getTargetNode',
+      payload:{startNodeId:cid},
     })
   }
 
   selectEndChange = val => {
+    const id = this.searchValue(targetOptions,val)
     this.setState({
-      targetNodeId: val,
+      targetNodeId: id,
       isChanged:true,
+    })
+    const cid = +id === -1 ? '' : id
+    const { dispatch } = this.props
+    dispatch({
+      type:'passOperation/getStartNode',
+      payload:{targetNodeId:cid},
     })
   }
 
   editHandle = row => {
     const { dispatch } = this.props
-    const { startCode, targetCode, isTwoWay, isCompress, isEncrypt } = row
+    const { startNode, targetNode, isDoubleSide, isCompress, isEncryption, id } = row
     dispatch({
       type: 'passOperation/saveRowInfo',
-      payload: { startCode, targetCode, isTwoWay, isCompress, isEncrypt },
+      payload: { startNode, targetNode, isDoubleSide, isCompress, isEncryption, id },
     })
 
     dispatch(routerRedux.push('/infrastructure/editPass'))
@@ -57,37 +91,45 @@ export default class PassManagement extends React.Component {
   handleSearch = () =>{
     const { isChanged, startNodeId, targetNodeId } = this.state
     if(isChanged){
+      // debugger // eslint-disable-line
+      const start = +startNodeId === -1 ? '' : startNodeId
+      const target = +targetNodeId === -1 ? '' : targetNodeId
       const { dispatch } = this.props
       dispatch({
         type:'passOperation/querys',
-        payload:{startNodeId, targetNodeId},
+        payload:{startNodeId:start, targetNodeId:target},
       })
     }
   }
 
   render() {
-    const that = this
     const { startNodeId, targetNodeId } = this.state
-    const { passOperation:{list, pagination} } = this.props
-    const data1 = [
-      { value: '0', label: '石家庄市发展改革委', id: 1 },
-      { value: '1', label: '北京发展改革委', id: 2 },
-    ]
-    const data2 = [
-      { value: '0', label: '石家庄市民政部', id: 1 },
-      { value: '1', label: '北京民政部', id: 2 },
-    ]
-    const selectData1 = data1.map(item => {
+    const { passOperation:{list, pagination, startNode, targetNode } } = this.props
+    const searchId = (arr, id) => {
+      let result
+      arr.forEach(item => {
+        if(+id === +item.key){
+          result = item.value
+        }
+      })
+      return result
+    }
+    startOptions = startNode
+    targetOptions = targetNode
+    const start =startNode.length ? searchId(startNode,startNodeId) : ''
+    const target = targetNode.length ? searchId(targetNode,targetNodeId):''
+  
+    const selectData1 = startNode.map(item => {
       return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
+        <Option value={item.value} key={item.key} title={item.value}>
+          {item.value}
         </Option>
       )
     })
-    const selectData2 = data2.map(item => {
+    const selectData2 = targetNode.map(item => {
       return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
+        <Option value={item.value} key={item.key} title={item.value}>
+          {item.value}
         </Option>
       )
     })
@@ -136,11 +178,11 @@ export default class PassManagement extends React.Component {
       {
         title: '操作',
         // dataIndex:'operation',
-        render(text, row) {
+        render: (text, row) => {
           return (
             <div>
               <span
-                onClick={that.editHandle.bind(null, row)}
+                onClick={this.editHandle.bind(null, row)}
                 style={{ marginRight: 10, color: '#1991FF', cursor: 'pointer' }}
                 >
                 修改
@@ -156,45 +198,19 @@ export default class PassManagement extends React.Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    // const list = [
-    //   {
-    //     id: 0,
-    //     startCode: '0',
-    //     startNode: '石家庄市发展改革委',
-    //     targetCode: '0',
-    //     targetNode: '石家庄市民政部',
-    //     isTwoWay: '0',
-    //     isCompress: '1',
-    //     isEncrypt: '0',
-    //     passStatus: '联通',
-    //     taskStatus: '运行中',
-    //   },
-    //   {
-    //     id: 1,
-    //     startCode: '1',
-    //     startNode: '北京发展改革委',
-    //     targetCode: '1',
-    //     targetNode: '北京民政部',
-    //     isTwoWay: '1',
-    //     isCompress: '1',
-    //     isEncrypt: '0',
-    //     passStatus: '联通',
-    //     taskStatus: '运行中',
-    //   },
-    // ]
     return (
       <PageHeaderLayout>
         <Card>
           <div className={styles.forms}>
             <Select
-              value={startNodeId}
+              value={start}
               style={{ marginRight: 20, width: 200 }}
               onChange={this.selectStartChange}
               >
               {selectData1}
             </Select>
             <Select
-              value={targetNodeId}
+              value={target}
               style={{ marginRight: 20, width: 200 }}
               onChange={this.selectEndChange}
               >
