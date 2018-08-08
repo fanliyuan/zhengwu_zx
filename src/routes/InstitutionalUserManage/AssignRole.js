@@ -116,6 +116,20 @@ export default class AssignRole extends Component {
     })
   }
 
+  tableChange = (pagination) =>{
+    const { queryData, status, createTime } = this.state
+    this.props.dispatch({
+      type: 'accounts/getAccounts',
+      payload: {
+        ...queryData,
+        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${status === '0' || status === '1' && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        `,
+        pageSize: pagination.pageSize,
+        pageNumber: pagination.current,
+      },
+    })
+  }
+
   showModal = (row) => {
     this.setState({
       visible: true,
@@ -292,6 +306,7 @@ export default class AssignRole extends Component {
               dataSource={accountList}
               pagination={pagination}
               loading={loading}
+              onChange={this.tableChange}
               rowKey="accountId"
               bordered
               />

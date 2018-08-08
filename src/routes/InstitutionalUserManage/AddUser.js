@@ -70,16 +70,17 @@ export default class AddUser extends Component {
             },
           })
         } else {
+          const body = {
+              accountName: value.userName,
+              accountPasswd: value.password ? sha('sha1').update(value.password).digest('hex') : '',
+              status: value.status ? 0: 1,
+              telephone: value.tel,
+              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
+            }
           this.props.dispatch({
             type: 'accounts/updateAccount',
             payload: {
-              body: {
-                accountName: value.userName,
-                accountPasswd: sha('sha1').update(value.password).digest('hex'),
-                status: value.status ? 0: 1,
-                telephone: value.tel,
-                extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
-              },
+              body: {...body},
               path: this.props.location.state.accountId,
             },
           })
@@ -132,7 +133,7 @@ export default class AddUser extends Component {
               {getFieldDecorator('password', {
                 rules: [
                   {
-                    required: true,
+                    required: this.props.location.pathname !== '/institutionalUserManage/editUser',
                     message: '请输入密码',
                   },
                 ],
