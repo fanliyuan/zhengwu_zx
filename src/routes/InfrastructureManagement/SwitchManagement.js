@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, Cascader, Message, Tooltip } from 'antd'
+import { Table, Button, Input, Select, Card, Cascader, Tooltip, Popconfirm } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -15,9 +15,12 @@ const { Option } = Select
 }))
 export default class SwitchManagement extends Component {
   state = {
-    isEnable: '状态',
-    isStart: true,
-    isStart1: false,
+    queryData: {
+      regionName: '',
+      nodeId: '',
+      status: -1,
+    },
+    isChanged: false,
   }
 
   componentDidMount() {
@@ -25,11 +28,53 @@ export default class SwitchManagement extends Component {
       type: 'regionManagement/getRegion',
       payload: {},
     })
+    this.props.dispatch({
+      type: 'regionManagement/getRegionNodes',
+    })
   }
 
-  isEnableChange = val => {
+  regionNameChange = (e) => {
     this.setState({
-      isEnable: val,
+      queryData: {
+        ...this.state.queryData,// eslint-disable-line
+        regionName: e.target.value,
+      },
+      isChanged: true,
+    })
+  }
+
+  statusChange = val => {
+    this.setState({
+      queryData: {
+        ...this.state.queryData,// eslint-disable-line
+        status: val,
+      },
+      isChanged: true,
+    })
+  }
+
+  nodeChange = val => {
+    this.setState({
+      queryData: {
+        ...this.state.queryData,// eslint-disable-line
+        nodeId: val,
+      },
+      isChanged: true,
+    })
+  }
+
+  handleSearch = () => {
+    if (!this.state.isChanged) return null
+    const queryData = {
+      regionName: this.state.queryData.regionName,
+      status: this.state.queryData.status === -1 ? '' : this.state.queryData.status,
+      nodeId: this.state.queryData.nodeId[this.state.queryData.nodeId.length-1],
+    }
+    this.props.dispatch({
+      type: 'regionManagement/getRegion',
+      payload: {
+        params: queryData,
+      },
     })
   }
 
@@ -38,65 +83,55 @@ export default class SwitchManagement extends Component {
     dispatch(routerRedux.push('/infrastructure/addSwitch'))
   }
 
-  handleStart = () => {
-    const { isStart } = this.state
-    if (isStart) {
-      this.setState({
-        isStart: false,
+  tableChange = (pagination) => {
+    const queryData = {
+      regionName: this.state.queryData.regionName,
+      status: this.state.queryData.status === -1 ? '' : this.state.queryData.status,
+      nodeId: this.state.queryData.nodeId[this.state.queryData.nodeId.length-1],
+      pageSize: pagination.pageSize,
+      pageNumber: pagination.current,
+    }
+    this.props.dispatch({
+      type: 'regionManagement/getRegion',
+      payload: {
+        params: queryData,
+      },
+    })
+  }
+
+  handleToggle = (row) => {
+    if (row.status) {
+      this.props.dispatch({
+        type: 'regionManagement/stopRegion',
+        payload: {
+          regionId: row.regionId,
+        },
       })
-      Message.info('停用成功!')
     } else {
-      this.setState({
-        isStart: true,
+      this.props.dispatch({
+        type: 'regionManagement/startRegion',
+        payload: {
+          regionId: row.regionId,
+        },
       })
-      Message.info('启用成功!')
     }
   }
 
-  handleStart1 = () => {
-    const { isStart1 } = this.state
-    if (isStart1) {
-      this.setState({
-        isStart1: false,
-      })
-      Message.info('停用成功!')
-    } else {
-      this.setState({
-        isStart1: true,
-      })
-      Message.info('启用成功!')
-    }
+  handleDelete = row => {
+    this.props.dispatch({
+      type: 'regionManagement/deleteRegion',
+      payload: {
+        regionId: row.regionId,
+      },
+    })
   }
 
   render() {
     const that = this
-    const { isEnable, isStart, isStart1 } = this.state
-    const { regionManagement: { list, pagination } } = this.props
-    // const data1 = [
-    //   {
-    //     value: '1001',
-    //     label: '机构1',
-    //     children: [{ value: '101', label: '机构1.1' }, { value: '102', label: '机构1.2' }],
-    //   },
-    //   {
-    //     value: '2001',
-    //     label: '机构2',
-    //     children: [{ value: '201', label: '机构1.2' }, { value: '202', label: '机构2.2' }],
-    //   },
-    // ]
-    const data2 = [
-      {
-        value: '1001',
-        label: '节点1',
-        children: [{ value: '101', label: '节点1.1' }, { value: '102', label: '节点1.2' }],
-      },
-      {
-        value: '2001',
-        label: '节点2',
-        children: [{ value: '201', label: '节点1.2' }, { value: '202', label: '节点2.2' }],
-      },
-    ]
-    const data3 = [{ value: '0', label: '启用', id: 0 }, { value: '1', label: '停用', id: 1 }]
+    const { queryData: { regionName, nodeId, status } } = this.state
+    const { regionManagement: { list, pagination, nodeList } } = this.props
+    const data2 = JSON.parse(JSON.stringify(nodeList).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children'))
+    const data3 = [{ value: -1, label: '全部状态', id: -1 }, { value: 1, label: '启用', id: 1 }, { value: 0, label: '停用', id: 0 }]
     const selectData3 = data3.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -154,24 +189,26 @@ export default class SwitchManagement extends Component {
       },
       {
         title: '操作',
-        render(text, row) {
-          if (row.status === '0') {
+        render: (text, row) => {
+          if (+row.status === 1) {
             return (
               <div>
-                <span className={styles.editBtn} onClick={that.handleStart}>
-                  {isStart ? '启用' : '停用'}
+                <span className={styles.editBtn} onClick={() =>that.handleToggle(row)}>
+                  {text ? '启用' : '停用'}
                 </span>
                 <span className={styles.editBtn} onClick={that.handleAdd}>
                   修改
                 </span>
-                <a style={{ marginRight: 10 }}>删除</a>
+                <Popconfirm title={`确认是否删除${row.regionName}?`} onConfirm={() => this.handleDelete(row)}>
+                  <a style={{ marginRight: 10 }}>删除</a>
+                </Popconfirm>
               </div>
             )
           } else {
             return (
               <div>
-                <span className={styles.editBtn} onClick={that.handleStart1}>
-                  {isStart1 ? '启用' : '停用'}
+                <span className={styles.editBtn} onClick={() =>that.handleToggle(row)}>
+                  {text ? '启用' : '停用'}
                 </span>
               </div>
             )
@@ -204,13 +241,12 @@ export default class SwitchManagement extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
-            <Input placeholder="域名称" style={{ marginRight: 20, width: 150 }} />
-            {/* <Cascader options={data1} placeholder="交换范围机构" style={{ marginRight: 20 }} />, */}
-            <Cascader options={data2} placeholder="交换范围节点" style={{ marginRight: 20 }} />,
-            <Select value={isEnable} style={{ marginRight: 20 }} onChange={this.isEnableChange}>
+            <Input value={regionName} onChange={this.regionNameChange} placeholder="域名称" style={{ marginRight: 20, width: 150 }} />
+            <Cascader value={nodeId} onChange={this.nodeChange} options={data2} placeholder="交换范围节点" style={{ marginRight: 20 }} changeOnSelect />
+            <Select value={status} style={{ marginRight: 20, width: 120 }} onChange={this.statusChange}>
               {selectData3}
             </Select>
-            <Button type="primary">搜索</Button>
+            <Button type="primary" onClick={this.handleSearch}>搜索</Button>
           </div>
           <div className={styles.createBtn}>
             <Button type="primary" onClick={this.handleAdd}>
@@ -222,6 +258,7 @@ export default class SwitchManagement extends Component {
               columns={columns}
               dataSource={list}
               pagination={pagination}
+              onChange={this.tableChange}
               rowKey="regionId"
               bordered
               />

@@ -25,6 +25,23 @@ const module = {
       name: 'getRegion',
       url: 'regionManager/regions',
     },
+    {
+      name: 'getRegionNodes',
+      url: 'regionManager/regions/nodes',
+    },
+    {
+      name: 'startRegion',
+      url: 'regionManager/start',
+    },
+    {
+      name: 'stopRegion',
+      url: 'regionManager/stop',
+    },
+    {
+      name: 'deleteRegion',
+      url: 'regionManager/region',
+      method: 'delete',
+    },
   ],
 }
 module.apis.forEach(item => {
