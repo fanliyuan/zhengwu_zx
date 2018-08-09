@@ -4,39 +4,15 @@ import apis from '../api'
 
 const { getNodes, getParentNodes, getDepartments, deleteNode, addNode, editNode } = apis
 
-const arr = [
-  {
-    value: 1,
-    chidren: [
-      {
-        value: 2,
-        chidren: [
-          {
-            value: 4,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 3,
-  },
-]
-
 function number2String(params) {
-  params.forEach((item) => {
-    if ((!Array.isArray(item.chidren)) || item.chidren.length === 0) {
-      item.value += ''
-      console.log(item.value)// eslint-disable-line
+  return params.map((item) => {
+    if ((!Array.isArray(item.children)) || item.children.length === 0) {
+      return {...item, value: `${item.value}`}
     } else {
-      number2String(item.chidren)
+      return {...item, value: `${item.value}`, children: number2String(item.children)}
     }
   })
-  return params
 }
-
-
-console.log(number2String(arr))// eslint-disable-line
 
  export default {
   namespace:'nodeManagement',
@@ -86,7 +62,7 @@ console.log(number2String(arr))// eslint-disable-line
             type: 'changeParentNodeList',
             payload: {
               parentNodeList: JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children')),
-              parentNodeListT: JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children')),
+              parentNodeListT: number2String(JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children'))),
             },
           })
         }
@@ -105,7 +81,7 @@ console.log(number2String(arr))// eslint-disable-line
       let response
       try {
         response = yield call(getDepartments, {})
-        response.result.unshift({key: -1, value: '全部机构'})
+        response.result.unshift({key: '全部机构', value: '全部机构'})
         if (+response.code === 0) {
           yield put({
             type: 'changeDepartmentList',
@@ -120,7 +96,7 @@ console.log(number2String(arr))// eslint-disable-line
         yield put({
           type: 'changeDepartmentList',
           payload: {
-            departmentList: [{key: -1, value: '全部机构'}],
+            departmentList: [{key: '全部机构', value: '全部机构'}],
           },
         })
       }

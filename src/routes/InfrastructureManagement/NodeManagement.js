@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-09 16:18:30
+ * @Last Modified time: 2018-08-09 21:58:50
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -35,8 +35,8 @@ export default class NodeManagement extends Component {
       nodeName: '',
       mac: undefined,
       pid: [],
-      depId: -1,
-      nodeState: -1,
+      depId: '全部机构',
+      nodeState: '全部状态',
     },
     isChanged: false,
     // selectKeys: [],
@@ -141,8 +141,8 @@ export default class NodeManagement extends Component {
       nodeName: nodeName || undefined,
       mac: mac || undefined,
       pid: pid[pid.length-1],
-      depId: depId === -1 ? undefined : depId,
-      nodeState: nodeState === -1 ? undefined : nodeState,
+      depId: depId === '全部机构' ? undefined : depId,
+      nodeState: nodeState === '全部状态' ? undefined : nodeState,
     }
     this.props.dispatch({
       type: 'nodeManagement/getNodes',
@@ -279,7 +279,7 @@ export default class NodeManagement extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const stateList = [{value: -1, label: '全部状态'},{value: 1, label: '运行中'}, {value: 0,label: '已停止'}] 
+    const stateList = [{value: '全部状态', label: '全部状态'},{value: 1, label: '运行中'}, {value: 0,label: '已停止'}] 
     const stateComs = stateList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value} title={item.label}>

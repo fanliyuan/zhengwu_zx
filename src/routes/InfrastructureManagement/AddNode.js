@@ -114,7 +114,9 @@ export default class AddNode extends Component {
                     message: '请选择机构',
                   },
                 ],
-              })(<TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />)}
+              })(
+                <TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />
+              )}
             </FormItem>
             <FormItem {...submitLayout}>
               <div className="btnclsb">
