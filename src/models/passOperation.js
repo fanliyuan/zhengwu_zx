@@ -8,7 +8,9 @@ export default {
     params: {
       id:0,
       startNode: '0',
+      startNodeId:1,
       targetNode: '0',
+      targetNodeId:2,
       isDoubleSide: '0',
       isCompress: '0',
       isEncryption: '0',
@@ -29,7 +31,7 @@ export default {
     *querys({ payload },{ call, put }){
       const response = yield call(passInfo,{params: payload})
       try {
-        const pagination = response.result.total > 9 ? { current: response.result.pageSize } : false
+        const pagination = response.result.total > 9 ? { current: response.result.pageNumber, total:response.result.total,pageSize:response.result.pageSize } : false
         if(+response.code === 0){
           yield put({
             type:'queryPass',
@@ -51,11 +53,11 @@ export default {
       }
     },
     *editChannel({ payload }, { call, put }){
-      const response = yield call(channel,{ params:payload })
+      const response = yield call(channel,{ body:payload })
       try{
         yield put({
           type:'responseAction',
-          payload:response,
+          payload:response.msg,
         })
       }catch(err){
         yield put({

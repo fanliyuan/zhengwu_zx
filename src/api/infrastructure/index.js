@@ -19,6 +19,7 @@ const module = {
     {
       name: 'channel',
       url: 'channel',
+      method:'put',
       baseUrl:'channelManager',
     },
     {
