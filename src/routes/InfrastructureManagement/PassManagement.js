@@ -15,7 +15,10 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 const { Option } = Select
 let startOptions
 let targetOptions
-@connect(({ passOperation }) => ({passOperation}))
+@connect(({ passOperation, loading }) => ({
+  passOperation,
+  loading:loading.effects['passOperation/querys'],
+}))
 export default class PassManagement extends React.Component {
   state = {
     startNodeId: -1,
@@ -27,7 +30,7 @@ export default class PassManagement extends React.Component {
     const { dispatch } = this.props
     dispatch({
       type:'passOperation/querys',
-      // payload:{startNodeId:-1,targetNodeId:-1},
+      // payload:{pageNumber:1,pageSize:10},
     })
     dispatch({
       type:'passOperation/getStartNode',
@@ -80,6 +83,8 @@ export default class PassManagement extends React.Component {
   editHandle = row => {
     const { dispatch } = this.props
     const { startNode, targetNode, isDoubleSide, isCompress, isEncryption, id } = row
+    row.startNodeId = this.searchValue(startOptions,startNode)
+    row.targetNodeId = this.searchValue(targetOptions,targetNode)
     dispatch({
       type: 'passOperation/saveRowInfo',
       payload: { startNode, targetNode, isDoubleSide, isCompress, isEncryption, id },
@@ -102,9 +107,18 @@ export default class PassManagement extends React.Component {
     }
   }
 
+  handleTableChange = pagination => {
+    const { pageSize, current } = pagination
+    const { dispatch } = this.props
+    dispatch({
+      type:'passOperation/querys',
+      payload:{ pageSize, pageNumber:current},
+    })
+  }
+
   render() {
     const { startNodeId, targetNodeId } = this.state
-    const { passOperation:{list, pagination, startNode, targetNode } } = this.props
+    const { passOperation:{list, pagination, startNode, targetNode }, loading } = this.props
     const searchId = (arr, id) => {
       let result
       arr.forEach(item => {
@@ -223,8 +237,8 @@ export default class PassManagement extends React.Component {
               columns={columns}
               dataSource={list}
               pagination={pagination}
-              // onChange={}
-              // loading={loading}
+              onChange={this.handleTableChange}
+              loading={loading}
               rowKey="id"
               bordered
               />

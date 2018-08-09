@@ -9,49 +9,59 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const FormItem = Form.Item
 const { Option } = Select
+let editMessages
 let ids
+let startId 
+let targetId 
 @Form.create()
 class EditPass extends Component {
   state = {}
+
+  componentDidMount = () => {
+    // const { dispatch } = this.props
+    // dispatch({
+    //   type:'passOperation/editChannel',
+    // })
+  }
 
   handleSubmit = e => {
     e.preventDefault()
     const { dispatch } = this.props
     this.props.form.validateFieldsAndScroll((err, values) => {
       values.id=ids
-      // values
+      values.isCompress =  values.isCompress ? 1 : 0
+      values.isDoubleSide = values.isDoubleSide ? 1 : 0
+      values.isEncryption = values.isEncryption ? 1 : 0
+      values.startNodeId = startId
+      values.targetNodeId = targetId
       if (!err) {
-        // message.success('提交成功, 即将返回上一页')
-        // setTimeout(() => {
-        //   this.props.dispatch(routerRedux.push('/infrastructure/pass'))
-        // }, 1000)
         dispatch({
-          type:'passOperation/',
+          type:'passOperation/editChannel',
           payload:values,
         })
-        message.success('提交成功, 即将返回上一页')
-        this.props.dispatch(routerRedux.push('/infrastructure/pass'))
+        message.success( `${editMessages }即将返回上一页`)
+        setTimeout(() => {
+          this.props.dispatch(routerRedux.push('/infrastructure/pass'))
+        }, 2000)
       }
     })
   }
 
   render() {
-    const { data } = this.props
+    const { data, editMessage, submiting } = this.props
+    editMessages = editMessage
+    startId = data.startNodeId
+    targetId = data.targetNodeId
     ids = data.id
     const compress = data.isCompress === '是'
     const encryption = data.isEncryption === '是'
     const { getFieldDecorator } = this.props.form // getFieldValue
-    const startData = [
-      { value: '0', label: '石家庄市发展改革委', id: 0 },
-      { value: '1', label: '北京发展改革委', id: 1 },
-    ]
-    const startNode = startData.map(item => {
-      return (
-        <Option value={item.value} title={item.label} key={item.id}>
-          {item.label}
+    const startNode = 
+      (
+        <Option value={data.startNodeId} title={data.startNode} key={data.startNodeId}>
+          {data.startNode}
         </Option>
-      )
-    })
+      )   
     const endData = [
       { value: '0', label: '石家庄市民政部', id: 0 },
       { value: '1', label: '北京民政部', id: 1 },
@@ -80,14 +90,8 @@ class EditPass extends Component {
         <Card>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="起始节点" {...formItemLayout}>
-              {getFieldDecorator('startNode', {
+              {getFieldDecorator('startNodeId', {
                 initialValue: data.startNode,
-                // rules: [
-                //   {
-                //     required: true,
-                //     message: '请选择起始节点',
-                //   },
-                // ],
               })(
                 <Select placeholder="起始节点" disabled>
                   {startNode}
@@ -95,7 +99,7 @@ class EditPass extends Component {
               )}
             </FormItem>
             <FormItem label="目标节点" {...formItemLayout}>
-              {getFieldDecorator('endNode', {
+              {getFieldDecorator('targetNodeId', {
                 initialValue: data.targetNode,
                 // rules: [
                 //   {
@@ -110,25 +114,25 @@ class EditPass extends Component {
               )}
             </FormItem>
             <FormItem label="双向传输" {...formItemLayout}>
-              {getFieldDecorator('twoWayTransfer', {
+              {getFieldDecorator('isDoubleSide', {
                 valuePropName: 'checked',
                 initialValue: true, // !!+data.isTwoWay
               })(<Checkbox disabled>启用</Checkbox>)}
             </FormItem>
             <FormItem label="压缩传输" {...formItemLayout}>
-              {getFieldDecorator('compressTransfer', {
+              {getFieldDecorator('isCompress', {
                 valuePropName: 'checked',
                 initialValue: compress,
               })(<Checkbox>启用</Checkbox>)}
             </FormItem>
             <FormItem label="加密传输" {...formItemLayout}>
-              {getFieldDecorator('enCryptTransfer', {
+              {getFieldDecorator('isEncryption', {
                 valuePropName: 'checked',
                 initialValue: encryption,
               })(<Checkbox>启用</Checkbox>)}
             </FormItem>
             <div className="btnclsb">
-              <Button type="primary" htmlType="submit" className="mr64">
+              <Button type="primary" htmlType="submit" className="mr64" loading={submiting}>
                 提交
               </Button>
               <Link to="/infrastructure/pass">
@@ -141,7 +145,8 @@ class EditPass extends Component {
     )
   }
 }
-export default connect(({ passOperation }) => ({
+export default connect(({ passOperation, loading }) => ({
   data: passOperation.params,
-  passOperation,
+  editMessage:passOperation.editMessage,
+  submiting:loading.effects['passOperation/editChannel'],
 }))(EditPass)
