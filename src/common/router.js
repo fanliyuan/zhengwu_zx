@@ -113,12 +113,12 @@ export const getRouterData = app => {
       ),
     },
     '/infrastructure/node': {
-      component: dynamicWrapper(app, ['infrastructureManagementNode'], () =>
+      component: dynamicWrapper(app, ['nodeManagement'], () =>
         import('../routes/InfrastructureManagement/NodeManagement')
       ),
     },
     '/infrastructure/addNode': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['nodeManagement'], () =>
         import('../routes/InfrastructureManagement/AddNode')
       ),
     },

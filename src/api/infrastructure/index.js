@@ -26,6 +26,50 @@ const module = {
       name: 'getRegion',
       url: 'regionManager/regions',
     },
+    {
+      name: 'getRegionNodes',
+      url: 'regionManager/regions/nodes',
+    },
+    {
+      name: 'startRegion',
+      url: 'regionManager/start',
+    },
+    {
+      name: 'stopRegion',
+      url: 'regionManager/stop',
+    },
+    {
+      name: 'deleteRegion',
+      url: 'regionManager/region',
+      method: 'delete',
+    },
+    {
+      name: 'getNodes',
+      url: 'nodeManager/nodes',
+    },
+    {
+      name: 'getParentNodes',
+      url: 'nodeManager/parentnodestree',
+    },
+    {
+      name: 'getDepartments',
+      url: 'nodeManager/deptlist',
+    },
+    {
+      name: 'deleteNode',
+      url: 'nodeManager/node',
+      method: 'delete',
+    },
+    {
+      name: 'addNode',
+      url: 'nodeManager/node',
+      method: 'post',
+    },
+    {
+      name: 'editNode',
+      url: 'nodeManager/node',
+      method: 'put',
+    },
   ],
 }
 module.apis.forEach(item => {

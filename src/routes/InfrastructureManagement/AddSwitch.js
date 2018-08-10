@@ -227,7 +227,7 @@ export default class AddSwitch extends Component {
               <Button type="primary" htmlType="submit" className="mr64">
                 确定
               </Button>
-              <Button type="primary" onClick={this.handleCancle}>
+              <Button onClick={this.handleCancle}>
                 取消
               </Button>
             </div>

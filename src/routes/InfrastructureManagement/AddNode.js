@@ -1,28 +1,34 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Link, routerRedux } from 'dva/router'
-import { Card, Input, Button, Form, TreeSelect, message } from 'antd'
+import { Link } from 'dva/router'
+import { Card, Input, Button, Form, TreeSelect } from 'antd'
 
 // import styles from './AddNode.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const FormItem = Form.Item
 // const { Option } = Select
-@connect()
+@connect(({nodeManagement, loading}) => ({nodeManagement, loading: loading.models.nodeManagement}))
 @Form.create()
 export default class AddNode extends Component {
   state = {}
 
   handleSubmit = e => {
     e.preventDefault()
-    message.success('新建成功,即将跳转到上级页面')
-    setTimeout(() => {
-      this.props.dispatch(routerRedux.push('/infrastructure/node'))
-    }, 1000)
+    // message.success('新建成功,即将跳转到上级页面')
+    // setTimeout(() => {
+    //   this.props.dispatch(routerRedux.push('/infrastructure/node'))
+    // }, 1000)
+    this.props.form.validateFields((err, value) => {
+      if (!err) {
+        console.log(value)// eslint-disable-line
+      }
+    })
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
+    const { nodeManagement: { parentNodeListT } } = this.props
     // const role = [
     //   { value: '0', label: '某某机构', id: '0' },
     //   { value: '1', label: 'XX机构', id: '1' },
@@ -51,25 +57,7 @@ export default class AddNode extends Component {
         sm: { span: 10, offset: 7 },
       },
     }
-    const treeData = [
-      {
-        title: '第一级节点',
-        value: '0-0',
-        key: '0-0',
-        children: [
-          {
-            title: '第二级节点1',
-            value: '0-0-0',
-            key: '0-0-0',
-          },
-          {
-            title: '第二级节点2',
-            value: '0-0-1',
-            key: '0-0-1',
-          },
-        ],
-      },
-    ]
+
     const treeData1 = [
       {
         title: '北京市国土局',
@@ -94,7 +82,7 @@ export default class AddNode extends Component {
         <Card>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="节点名称" {...formItemLayout}>
-              {getFieldDecorator('nodeNames', {
+              {getFieldDecorator('name', {
                 rules: [
                   {
                     required: true,
@@ -104,7 +92,7 @@ export default class AddNode extends Component {
               })(<Input placeholder="节点名称" />)}
             </FormItem>
             <FormItem label="mac地址" {...formItemLayout}>
-              {getFieldDecorator('ipAddress', {
+              {getFieldDecorator('mac', {
                 rules: [
                   {
                     required: true,
@@ -115,7 +103,7 @@ export default class AddNode extends Component {
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('parentNode')(
-                <TreeSelect treeData={treeData} placeholder="请选择节点" treeDefaultExpandAll />
+                <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" treeDefaultExpandAll allowClear />
               )}
             </FormItem>
             <FormItem label="所属机构" {...formItemLayout}>
@@ -126,7 +114,9 @@ export default class AddNode extends Component {
                     message: '请选择机构',
                   },
                 ],
-              })(<TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll />)}
+              })(
+                <TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />
+              )}
             </FormItem>
             <FormItem {...submitLayout}>
               <div className="btnclsb">
