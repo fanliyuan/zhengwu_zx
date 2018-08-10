@@ -26,18 +26,26 @@ function getPassword(n = 8) {
 @connect(({ accounts, loading }) => ({accounts, loading: loading.models.accounts}))
 @Form.create()
 export default class AddUser extends Component {
-  state = {}
+  state = {
+    userInfo:{},
+  }
 
   componentDidMount() {
     if (this.props.location.pathname === '/institutionalUserManage/editUser') {
-      this.props.dispatch({
-        type: 'accounts/getAccount',
-        payload: { path: this.props.location.state.accountId },
+      // this.props.dispatch({
+      //   type: 'accounts/getAccount',
+      //   payload: { path: this.props.location.state.accountId },
+      // })
+      this.setState({
+        userInfo: this.props.location.state.userInfo || {},
       })
     } else {
-      this.props.dispatch({
-        type: 'accounts/changeAccountDetail',
-        payload: {accountDetail: {}},
+      // this.props.dispatch({
+      //   type: 'accounts/changeAccountDetail',
+      //   payload: {accountDetail: {}},
+      // })
+      this.setState({
+        userInfo: {},
       })
     }
   }
@@ -90,8 +98,9 @@ export default class AddUser extends Component {
   }
 
   render() {
-    const { loading, accounts: { accountDetail } } = this.props 
+    const { loading } = this.props
     const { getFieldDecorator } = this.props.form
+    const accountDetail = this.state.userInfo
     const role = [
       { value: '0', label: '管理员', id: '0' },
       { value: '1', label: '审核员', id: '1' },
@@ -169,7 +178,9 @@ export default class AddUser extends Component {
               })(<Input placeholder="手机号" />)}
             </FormItem>
             <FormItem label="角色" {...formItemLayout}>
-              {getFieldDecorator('role')(
+              {getFieldDecorator('role', {
+                initialValue: accountDetail.role,
+              })(
                 <Select placeholder="请选择" disabled>
                   {roleData}
                 </Select>
