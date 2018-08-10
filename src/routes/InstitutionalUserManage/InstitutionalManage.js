@@ -17,6 +17,14 @@ export default class InstitutionalManage extends Component {
     // province:'0',
   }
 
+  componentDidMount = () => {
+    const { dispatch } = this.props
+    dispatch({
+      type:'Institution/querys',
+      // payload:{},
+    })
+  }
+
   provinceSelectChange = () => {
     // this.setState({
     //   province:val,
@@ -29,15 +37,8 @@ export default class InstitutionalManage extends Component {
   }
 
   render() {
-    const that = this
-    // const { province } = this.state
-    // const data=[
-    //   {value:'0',id:0,label:'山东省'},
-    //   {value:'1',id:1,label:'山西省'},
-    // ]
-    // const selectData = data.map(item => {
-    //   return (<Option value={item.value} key={item.id} title={item.label}>{item.label}</Option>)
-    // })
+    const { Institution } = this.props
+    console.log(Institution)
     const data2 = [
       {
         value: '0',
@@ -93,10 +94,10 @@ export default class InstitutionalManage extends Component {
       },
       {
         title: '操作',
-        render() {
+        render:() => {
           return (
             <div>
-              <span className={styles.editBtn} onClick={that.handleAdd}>
+              <span className={styles.editBtn} onClick={this.handleAdd}>
                 修改
               </span>
               <a style={{ marginRight: 20 }}>删除</a>

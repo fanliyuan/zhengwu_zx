@@ -148,7 +148,7 @@ export const getRouterData = app => {
       ),
     },
     '/institutionalUserManage/institutionalManage': {
-      component: dynamicWrapper(app, ['accounts'], () =>
+      component: dynamicWrapper(app, ['Institution'], () =>
         import('../routes/InstitutionalUserManage/InstitutionalManage')
       ),
     },
@@ -451,7 +451,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/NewsLibrary')),
     },
     '/portalManagement/menuManagement': {
-      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/MenuManagement')),
+      component: dynamicWrapper(app, ['portalManagement'], () => import('../routes/PortalManagement/MenuManagement')),
     },
     '/portalManagement/carouselManagement': {
       component: dynamicWrapper(app, [], () =>

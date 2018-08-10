@@ -39,7 +39,7 @@ class EditPass extends Component {
           type:'passOperation/editChannel',
           payload:values,
         })
-        message.success( `${editMessages }即将返回上一页`)
+        message.success( `${editMessages },即将返回上一页`)
         setTimeout(() => {
           this.props.dispatch(routerRedux.push('/infrastructure/pass'))
         }, 2000)

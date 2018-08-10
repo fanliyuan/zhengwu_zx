@@ -7,7 +7,7 @@
  *  
 */
 import React, { Component, Fragment } from 'react'
-// import { connect } from 'dva';
+import { connect } from 'dva'
 import { Modal, DatePicker, Input, Select, Button, Table, Radio } from 'antd'
 import moment from 'moment'
 
@@ -31,10 +31,9 @@ for (let i = 0; i < 120; i++) {
   })
 }
 
-// @connect(({ overviewLogging, loading }) => ({
-//   overviewLogging,
-//   loading: loading.models.overviewLogging,
-// }))
+@connect(({ portalManagement }) => ({
+  portalManagement,
+}))
 export default class MenuManagement extends Component {
   state = {
     name: '',
@@ -45,24 +44,15 @@ export default class MenuManagement extends Component {
     isChanged: false,
     showModal: false,
     modalTitle: '',
-    // selectedRowKeys: [],
     defaultValue: '否',
   }
 
   componentDidMount() {
-    // const { dispatch } = this.props
-    // const { date } = this.state
-    // const dateRange = date.map((item) => {
-    //   if (moment.isMoment(item)) {
-    //     return +(item.format('x'))
-    //   } else {
-    //     return 0
-    //   }
-    // })
-    // dispatch({
-    //   type: 'overviewLogging/log',
-    //   payload: {query: {...this.state, date: dateRange}, pagination: {pageSize: 10, current: 1}},
-    // })
+    const { dispatch } = this.props
+    dispatch({
+      type:'portalManagement/querys',
+      payload:{pageNum:0,pageSize:10},
+    })
   }
 
   handleNameChange = e => {
@@ -174,6 +164,8 @@ export default class MenuManagement extends Component {
       modalTitle,
       defaultValue,
     } = this.state
+    // const { lists } = this.props
+    // console.log(lists)
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const stateList = [
