@@ -3,6 +3,7 @@ import { notification } from 'antd'
 import { routerRedux } from 'dva/router'
 import store from '../index'
 
+const key = 'fetchError'
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -27,6 +28,7 @@ function checkStatus(response) {
   }
   const errortext = codeMessage[response.status] || response.statusText
   notification.error({
+    key,
     message: `请求错误 ${response.status}: ${response.url}`,
     description: errortext,
   })
@@ -44,6 +46,7 @@ async function checkToken(response) {
     .then(data => {
       if (tokenErrorList.indexOf(data.code) > -1) {
         notification.error({
+          key,
           message: '登录已失效,请重新登录',
         })
         store.dispatch(
