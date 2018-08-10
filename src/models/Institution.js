@@ -1,6 +1,6 @@
 import apis from '../api'
 
-const { queryGoveDeptInfoList } = apis
+const { queryGoveDeptInfoList } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
 
 export default {
   namespace: 'Institution',
