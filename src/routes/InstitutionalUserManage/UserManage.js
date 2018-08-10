@@ -98,7 +98,7 @@ export default class UserManage extends Component {
 
   handleEdit = (row) => {
     this.props.dispatch(
-      routerRedux.push('/institutionalUserManage/editUser', {accountId: row.accountId})
+      routerRedux.push('/institutionalUserManage/editUser', {userInfo: row})
     )
   }
 

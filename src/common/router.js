@@ -122,7 +122,7 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/AddNode')
       ),
     },
-    '/infrastructure/editNode/:id': {
+    '/infrastructure/editNode': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/InfrastructureManagement/AddNode')
       ),

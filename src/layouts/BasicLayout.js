@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-09 13:49:26
+ * @Last Modified time: 2018-08-10 11:57:19
  * @Description: 删除底部蚂蚁金服相关信息
  */
 import React, { Fragment } from 'react'
@@ -126,10 +126,10 @@ class BasicLayout extends React.PureComponent {
         isMobile: mobile,
       })
     })
-    const { dispatch } = this.props
-    dispatch({
-      type: 'user/fetchCurrent',
-    })
+    // const { dispatch } = this.props
+    // dispatch({
+    //   type: 'user/fetchCurrent',
+    // })
   }
 
   componentWillUnmount() {

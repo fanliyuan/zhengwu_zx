@@ -11,12 +11,27 @@ const FormItem = Form.Item
 @connect(({nodeManagement, loading}) => ({nodeManagement, loading: loading.models.nodeManagement}))
 @Form.create()
 export default class AddNode extends Component {
-  state = {}
+  state = {
+    nodeInfo: {},
+  }
 
   componentDidMount() {
     this.props.dispatch({
       type: 'nodeManagement/getParentNodes',
     })
+    this.props.dispatch({
+      type: 'nodeManagement/getDepartments',
+    })
+    if (this.props.location.pathname === '/infrastructure/editNode') {
+      this.setState({
+        nodeInfo: this.props.location.state.nodeInfo || {},
+      })
+      // console.log(this.props.location.state.nodeInfo)
+    } else {
+      this.setState({
+        nodeInfo: {},
+      })
+    }
   }
 
   handleSubmit = e => {
@@ -32,13 +47,25 @@ export default class AddNode extends Component {
           mac: value.mac.trim(),
           deptId: +value.deptId,
           pid: +value.pid,
+          id: this.state.nodeInfo.nodeId,
         }
-        this.props.dispatch({
-          type: 'nodeManagement/addNode',
-          payload: {
-            body,
-          },
-        })
+        // console.log(this.props.nodeManagement.parentNodeListT)
+        // console.log(value.pid)
+        if (this.props.location.pathname === 'infrastructure/addNode') {
+          this.props.dispatch({
+            type: 'nodeManagement/addNode',
+            payload: {
+              body,
+            },
+          })
+        } else {
+          this.props.dispatch({
+            type: 'nodeManagement/editNode',
+            payload: {
+              body,
+            },
+          })
+        }
       }
     })
   }
@@ -46,6 +73,7 @@ export default class AddNode extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { nodeManagement: { parentNodeListT, departmentList } } = this.props
+    const { nodeInfo: {nodeName, mac, deptId, parentNodeId} } = this.state
     // const role = [
     //   { value: '0', label: '某某机构', id: '0' },
     //   { value: '1', label: 'XX机构', id: '1' },
@@ -82,6 +110,7 @@ export default class AddNode extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="节点名称" {...formItemLayout}>
               {getFieldDecorator('name', {
+                initialValue: nodeName,
                 rules: [
                   {
                     required: true,
@@ -92,6 +121,7 @@ export default class AddNode extends Component {
             </FormItem>
             <FormItem label="mac地址" {...formItemLayout}>
               {getFieldDecorator('mac', {
+                initialValue: mac,
                 rules: [
                   {
                     required: true,
@@ -101,12 +131,15 @@ export default class AddNode extends Component {
               })(<Input placeholder="mac地址" />)}
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
-              {getFieldDecorator('pid')(
+              {getFieldDecorator('pid',{
+                initialValue: [`${parentNodeId}`],
+              })(
                 <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" treeDefaultExpandAll allowClear />
               )}
             </FormItem>
             <FormItem label="所属机构" {...formItemLayout}>
               {getFieldDecorator('deptId', {
+                initialValue: deptId,
                 rules: [
                   {
                     required: true,

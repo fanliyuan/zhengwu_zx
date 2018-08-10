@@ -5,8 +5,14 @@ export default {
 
   state: {
     list: [],
-    currentUser: {},
+    currentUser: {
+      avatar: "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png",
+      name: "Serati Ma",
+      notifyCount: 12,
+      userid: "00000001",
+    },
   },
+
 
   effects: {
     *fetch(_, { call, put }) {

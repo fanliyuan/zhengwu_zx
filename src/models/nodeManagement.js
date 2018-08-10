@@ -136,7 +136,8 @@ function number2String(params) {
     *editNode({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(editNode, {boyd: payload.body})
+        // console.log(payload)
+        response = yield call(editNode, {body: payload.body})
         if (+response.code === 0) {
           message.success('修改成功')
           yield put(routerRedux.push('/infrastructure/node'))
