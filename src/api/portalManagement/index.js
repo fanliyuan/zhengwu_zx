@@ -3,7 +3,7 @@ const module = {
   apis: [
    {
      name:'directoryList',
-     url:'/directoryList',
+     url:'directoryList',
      method:'post',
    }, 
   ],

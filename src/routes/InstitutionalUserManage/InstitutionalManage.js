@@ -14,7 +14,7 @@ const { RangePicker } = DatePicker
 }))
 export default class InstitutionalManage extends Component {
   state = {
-    // province:'0',
+
   }
 
   componentDidMount = () => {

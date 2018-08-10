@@ -1,16 +1,40 @@
 const module = {
   moduleName:'InstitutionalUserManage',
   apis: [
-   {
-     name:'queryGoveDeptInfoList',
-     url:'/queryGoveDeptInfoList',
-     method:'post',
-   }, 
+    {
+      name:'queryGoveDeptInfoList',
+      url:'queryGoveDeptInfoList',
+      method:'post',
+    }, 
+    {
+      name:'deleteGoveDept',
+      url:'deleteGoveDept',
+      method:'delete',
+    },
+    {
+      name:'getGoveDeptInfo',
+      url:'getGoveDeptInfo',
+    },
+    {
+      name:'getGoveDeptInfoByIds',
+      url:'getGoveDeptInfoByIds',
+      method:'post',
+    },
+    {
+      name:'insertGoveDept',
+      url:'insertGoveDept',
+      method:'post',
+    },
+    {
+      name:'updateGoveDept',
+      url:'updateGoveDept',
+      method:'put',
+    },
   ],
 }
 module.apis.forEach(item => {
   if(!item.baseHost){
-    item.baseHost = 'http://govecommons.tpaas.youedata.com'
+    item.baseHost = 'http://192.168.100.11:8801'
   }
 })
 
