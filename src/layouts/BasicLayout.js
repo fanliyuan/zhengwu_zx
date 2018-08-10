@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-01 15:13:13
+ * @Last Modified time: 2018-08-09 13:49:26
  * @Description: 删除底部蚂蚁金服相关信息
  */
 import React, { Fragment } from 'react'
@@ -34,9 +34,15 @@ const redirectData = []
 const getRedirect = item => {
   if (item && item.children) {
     if (item.children[0] && item.children[0].path) {
+      let overview
+      if (['admin', 'operator', 'security', 'auditor'].includes(localStorage.getItem('antd-pro-authority'))) {
+        overview = '/overview/platformOverview'
+      } else {
+        overview = '/overview/nodeOverview'
+      }
       redirectData.push({
         from: `${item.path}`,
-        to: `${item.children[0].path}`,
+        to: item.path === '/overview' ? overview : `${item.children[0].path}`,
       })
       item.children.forEach(children => {
         getRedirect(children)

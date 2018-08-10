@@ -77,7 +77,7 @@ const proxy = {
   'GET /api/profile/advanced': getProfileAdvancedData,
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
-    if (password === '123youe' && userName === 'admin') {
+    if (password === 'youedata' && userName === 'admin') {
       res.send({
         status: 'ok',
         type,
@@ -85,7 +85,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'security') {
+    if (password === 'youedata' && userName === 'security') {
       res.send({
         status: 'ok',
         type,
@@ -93,7 +93,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'auditor') {
+    if (password === 'youedata' && userName === 'auditor') {
       res.send({
         status: 'ok',
         type,
@@ -101,7 +101,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'operator') {
+    if (password === 'youedata' && userName === 'operator') {
       res.send({
         status: 'ok',
         type,
@@ -109,7 +109,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'admin-n') {
+    if (password === 'youedata' && userName === 'admin-n') {
       res.send({
         status: 'ok',
         type,
@@ -117,7 +117,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'security-n') {
+    if (password === 'youedata' && userName === 'security-n') {
       res.send({
         status: 'ok',
         type,
@@ -125,7 +125,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'auditor-n') {
+    if (password === 'youedata' && userName === 'auditor-n') {
       res.send({
         status: 'ok',
         type,
@@ -133,7 +133,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'assessor-n') {
+    if (password === 'youedata' && userName === 'assessor-n') {
       res.send({
         status: 'ok',
         type,
@@ -141,7 +141,7 @@ const proxy = {
       });
       return;
     }
-    if (password === '123youe' && userName === 'operator-n') {
+    if (password === 'youedata' && userName === 'user') {
       res.send({
         status: 'ok',
         type,
