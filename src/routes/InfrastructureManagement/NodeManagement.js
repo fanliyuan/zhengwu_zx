@@ -2,11 +2,11 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-09 21:58:50
+ * @Last Modified time: 2018-08-10 10:08:04
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Link, routerRedux } from 'dva/router'
+import { routerRedux } from 'dva/router'
 import {
   Form,
   Input,
@@ -162,6 +162,12 @@ export default class NodeManagement extends Component {
     })
   }
 
+  handleEdit = row => {
+    this.props.dispatch(
+      routerRedux.push('/infrastructure/editNode',{nodeInfo: row})
+    )
+  }
+
   handleCancel = () => {
     message.info('删除取消')
   }
@@ -248,9 +254,7 @@ export default class NodeManagement extends Component {
         render: (text, row) => {
           return (
             <div>
-              <Link to={`/infrastructure/editNode/${row.id}`} style={{ marginRight: 10 }}>
-                修改
-              </Link>
+              <a className='mr16' onClick={() => this.handleEdit(row)}>修改</a>
               <Popconfirm
                 title="确认删除?"
                 onConfirm={() => this.handleDelete(row)}

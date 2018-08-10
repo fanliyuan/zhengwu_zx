@@ -47,7 +47,8 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion } = api
         yield put({
           type: 'changeNodeList',
           payload: {
-            nodeList,
+            nodeList: JSON.parse(JSON.stringify(nodeList).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children'))
+            ,
           },
         })
       } catch (error) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Link } from 'dva/router'
-import { Card, Input, Button, Form, TreeSelect } from 'antd'
+import { Card, Input, Button, Form, TreeSelect, Select } from 'antd'
 
 // import styles from './AddNode.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -13,6 +13,12 @@ const FormItem = Form.Item
 export default class AddNode extends Component {
   state = {}
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'nodeManagement/getParentNodes',
+    })
+  }
+
   handleSubmit = e => {
     e.preventDefault()
     // message.success('新建成功,即将跳转到上级页面')
@@ -21,14 +27,25 @@ export default class AddNode extends Component {
     // }, 1000)
     this.props.form.validateFields((err, value) => {
       if (!err) {
-        console.log(value)// eslint-disable-line
+        const body = {
+          nodeName: value.name.trim(),
+          mac: value.mac.trim(),
+          deptId: +value.deptId,
+          pid: +value.pid,
+        }
+        this.props.dispatch({
+          type: 'nodeManagement/addNode',
+          payload: {
+            body,
+          },
+        })
       }
     })
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const { nodeManagement: { parentNodeListT } } = this.props
+    const { nodeManagement: { parentNodeListT, departmentList } } = this.props
     // const role = [
     //   { value: '0', label: '某某机构', id: '0' },
     //   { value: '1', label: 'XX机构', id: '1' },
@@ -57,26 +74,8 @@ export default class AddNode extends Component {
         sm: { span: 10, offset: 7 },
       },
     }
+    const departmentComs = departmentList.map(item => <Select.Option value={item.key} key={item.key}>{item.value}</Select.Option>)
 
-    const treeData1 = [
-      {
-        title: '北京市国土局',
-        value: '0-0',
-        key: '0-0',
-        children: [
-          {
-            title: '海淀国土局',
-            value: '0-0-0',
-            key: '0-0-0',
-          },
-          {
-            title: '丰台国土局',
-            value: '0-0-1',
-            key: '0-0-1',
-          },
-        ],
-      },
-    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -102,12 +101,12 @@ export default class AddNode extends Component {
               })(<Input placeholder="mac地址" />)}
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
-              {getFieldDecorator('parentNode')(
+              {getFieldDecorator('pid')(
                 <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" treeDefaultExpandAll allowClear />
               )}
             </FormItem>
             <FormItem label="所属机构" {...formItemLayout}>
-              {getFieldDecorator('owingJg', {
+              {getFieldDecorator('deptId', {
                 rules: [
                   {
                     required: true,
@@ -115,7 +114,10 @@ export default class AddNode extends Component {
                   },
                 ],
               })(
-                <TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />
+                // <TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />
+                <Select placeholder='请选择机构'>
+                  { departmentComs }
+                </Select>
               )}
             </FormItem>
             <FormItem {...submitLayout}>

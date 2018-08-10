@@ -130,7 +130,6 @@ export default class SwitchManagement extends Component {
     const that = this
     const { queryData: { regionName, nodeId, status } } = this.state
     const { regionManagement: { list, pagination, nodeList } } = this.props
-    const data2 = JSON.parse(JSON.stringify(nodeList).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children'))
     const data3 = [{ value: -1, label: '全部状态', id: -1 }, { value: 1, label: '启用', id: 1 }, { value: 0, label: '停用', id: 0 }]
     const selectData3 = data3.map(item => {
       return (
@@ -242,7 +241,7 @@ export default class SwitchManagement extends Component {
         <Card>
           <div className={styles.form}>
             <Input value={regionName} onChange={this.regionNameChange} placeholder="域名称" style={{ marginRight: 20, width: 150 }} />
-            <Cascader value={nodeId} onChange={this.nodeChange} options={data2} placeholder="交换范围节点" style={{ marginRight: 20 }} changeOnSelect />
+            <Cascader value={nodeId} onChange={this.nodeChange} options={nodeList} placeholder="交换范围节点" style={{ marginRight: 20 }} changeOnSelect />
             <Select value={status} style={{ marginRight: 20, width: 120 }} onChange={this.statusChange}>
               {selectData3}
             </Select>
