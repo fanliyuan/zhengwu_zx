@@ -132,7 +132,7 @@ export default class AddNode extends Component {
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('pid',{
-                initialValue: [`${parentNodeId}`],
+                initialValue: [`${parentNodeId?'':parentNodeId}`],
               })(
                 <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" treeDefaultExpandAll allowClear />
               )}
