@@ -161,7 +161,6 @@ export default class AddSwitch extends Component {
       treeData,
       // value:this.state.value,
       onChange: this.onChange,
-      treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
       searchPlaceholder: 'Please select',
       style: {
@@ -172,7 +171,6 @@ export default class AddSwitch extends Component {
       treeData: treeData1,
       // value:this.state.value,
       onChange: this.onChange1,
-      treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
       searchPlaceholder: 'Please select',
       style: {

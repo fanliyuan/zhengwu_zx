@@ -51,7 +51,7 @@ export default class AddNode extends Component {
         }
         // console.log(this.props.nodeManagement.parentNodeListT)
         // console.log(value.pid)
-        if (this.props.location.pathname === 'infrastructure/addNode') {
+        if (this.props.location.pathname === '/infrastructure/addNode') {
           this.props.dispatch({
             type: 'nodeManagement/addNode',
             payload: {
