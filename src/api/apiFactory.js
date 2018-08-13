@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 11:20:49
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-08 17:33:08
+ * @Last Modified time: 2018-08-13 15:57:54
  * @Description: 请求工厂函数, 根据传入的接口模块,生成api请求
  */
 import { stringify } from 'qs'
@@ -47,7 +47,7 @@ export default (module) => {
           })
         }
       }
-      return request(`${apiUrl}`,{
+      return request(`${apiUrl}${stringify(params.params)?`?${stringify(params.params)}`:''}`,{
         method: item.method.toUpperCase(),
         body: Array.isArray(params.body)?[...params.body]:{...params.body},
         headers: {...headers},

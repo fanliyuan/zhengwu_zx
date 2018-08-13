@@ -37,8 +37,6 @@ export default class InstitutionalManage extends Component {
   }
 
   render() {
-    const { Institution } = this.props
-    console.log(Institution)
     const data2 = [
       {
         value: '0',

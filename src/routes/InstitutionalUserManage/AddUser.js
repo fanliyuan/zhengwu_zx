@@ -22,6 +22,17 @@ function getPassword(n = 8) {
   return result
 }
 
+// eslint-disable-next-line
+function checkedPassword(str) {
+  return (`${str}`).split('').every((item, index, arr) => {
+    if (index < arr.length - 1) {
+      return (Math.abs(arr[index] - arr[index+1]) === 1)
+    } else {
+      return true
+    }
+  })
+}
+
 
 @connect(({ accounts, loading }) => ({accounts, loading: loading.models.accounts}))
 @Form.create()
@@ -45,7 +56,9 @@ export default class AddUser extends Component {
       //   payload: {accountDetail: {}},
       // })
       this.setState({
-        userInfo: {},
+        userInfo: {
+          status: true,
+        },
       })
     }
   }
@@ -133,7 +146,9 @@ export default class AddUser extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '请输入用户名',
+                    message: '请输入合法用户名',
+                    max: 20,
+                    whitespace: true,
                   },
                 ],
               })(<Input placeholder="请输入用户名" />)}
@@ -143,10 +158,13 @@ export default class AddUser extends Component {
                 rules: [
                   {
                     required: this.props.location.pathname !== '/institutionalUserManage/editUser',
-                    message: '请输入密码',
+                    message: '请输入合法密码',
+                    min: 6,
+                    max: 24,
+                    whitespace: true,
                   },
                 ],
-              })(<Input placeholder="请输入密码" />)}
+              })(<Input type='password' placeholder="请输入密码" />)}
               <div>
                 <a className="mr8" onClick={this.setPassword}>
                   随机生成
@@ -161,6 +179,8 @@ export default class AddUser extends Component {
                   {
                     required: true,
                     message: '请输入姓名',
+                    whitespace: true,
+                    max: 20,
                   },
                 ],
               })(<Input placeholder="姓名" />)}

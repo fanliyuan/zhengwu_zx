@@ -1,4 +1,6 @@
-import { query as queryUsers, queryCurrent } from '../api/user'
+import apis from '../api'
+
+const { getAccountInfo } = apis 
 
 export default {
   namespace: 'user',
@@ -15,29 +17,32 @@ export default {
 
 
   effects: {
-    *fetch(_, { call, put }) {
-      const response = yield call(queryUsers)
-      yield put({
-        type: 'save',
-        payload: response,
-      })
-    },
     *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent)
-      yield put({
-        type: 'saveCurrentUser',
-        payload: response,
-      })
+      let response
+      try {
+        response = yield call(getAccountInfo, {path: localStorage.getItem('accountId')})
+        if (+response.code === 0) {
+          yield put({
+            type: 'saveCurrentUser',
+            payload: {
+              name: JSON.parse(response.result.datas.extendedProperties).name || response.result.datas.accountName,
+            },
+          })
+        }
+      } catch (error) {
+        yield put({
+          type: 'saveCurrentUser',
+          payload: {
+            name: '获取姓名错误',
+          },
+        })
+       // eslint-disable-next-line 
+       console.log(error)
+      }
     },
   },
 
   reducers: {
-    save(state, action) {
-      return {
-        ...state,
-        list: action.payload,
-      }
-    },
     saveCurrentUser(state, action) {
       return {
         ...state,
