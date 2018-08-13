@@ -126,6 +126,30 @@ export default class SwitchManagement extends Component {
     })
   }
 
+  handleEdit = row => {
+    let nodeIds = []
+    let deptIds = []
+    if (Array.isArray(row.nodeInfos)) {
+      row.nodeInfos.forEach(item => {
+        item.nodeId && nodeIds.push(`${item.nodeId}`) // eslint-disable-line
+        item.deptId && deptIds.push(`${item.deptId}`) // eslint-disable-line
+      })
+    }
+    // 数组去重
+    nodeIds = [...new Set(nodeIds)]
+    deptIds = [...new Set(deptIds)]
+    const regoinInfo = {
+      regionId: row.regionId,
+      regionName: row.regionName,
+      status: !!row.status,
+      nodeIds,
+      deptIds,
+    }
+    this.props.dispatch(
+      routerRedux.push('/infrastructure/editSwitch', {regoinInfo})
+    )
+  }
+
   render() {
     const that = this
     const { queryData: { regionName, nodeId, status } } = this.state
@@ -189,13 +213,13 @@ export default class SwitchManagement extends Component {
       {
         title: '操作',
         render: (text, row) => {
-          if (+row.status === 1) {
+          if (+row.status === 0) {
             return (
               <div>
                 <span className={styles.editBtn} onClick={() =>that.handleToggle(row)}>
                   {text ? '启用' : '停用'}
                 </span>
-                <span className={styles.editBtn} onClick={that.handleAdd}>
+                <span className={styles.editBtn} onClick={() => this.handleEdit(row)}>
                   修改
                 </span>
                 <Popconfirm title={`确认是否删除${row.regionName}?`} onConfirm={() => this.handleDelete(row)}>
@@ -207,7 +231,7 @@ export default class SwitchManagement extends Component {
             return (
               <div>
                 <span className={styles.editBtn} onClick={() =>that.handleToggle(row)}>
-                  {text ? '启用' : '停用'}
+                  {text ? '停用' : '启用'}
                 </span>
               </div>
             )

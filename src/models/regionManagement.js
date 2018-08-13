@@ -1,7 +1,8 @@
 import { message } from 'antd'
+import { routerRedux } from 'dva/router'
 import apis from '../api'
 
-const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion } = apis
+const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addRegion, editRegion } = apis
  export default {
   namespace:'regionManagement',
 
@@ -96,6 +97,32 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion } = api
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
+      }
+    },
+    *addRegion({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call (addRegion, { body: payload.body })
+        if (+response.code === 0) {
+          message.success('新建成功')
+          yield put(routerRedux.push('/infrastructure/switch'))
+        }
+      } catch (error) {
+       // eslint-disable-next-line 
+       console.log(error)
+      }
+    },
+    *editRegion({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call (editRegion, { body: payload.body })
+        if (+response.code === 0) {
+          message.success('修改成功')
+          yield put(routerRedux.push('/infrastructure/switch'))
+        }
+      } catch (error) {
+       // eslint-disable-next-line 
+       console.log(error)
       }
     },
   },

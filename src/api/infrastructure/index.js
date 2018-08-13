@@ -70,6 +70,16 @@ const module = {
       url: 'nodeManager/node',
       method: 'put',
     },
+    {
+      name: 'addRegion',
+      url: '/regionManager/region',
+      method: 'post',
+    },
+    {
+      name: 'editRegion',
+      url: '/regionManager/region',
+      method: 'put',
+    },
   ],
 }
 module.apis.forEach(item => {

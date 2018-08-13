@@ -107,6 +107,11 @@ const menuData = [
         path: 'addSwitch',
         hideInMenu: true,
       },
+      {
+        name: '修改交换域',
+        path: 'editSwitch',
+        hideInMenu: true,
+      },
     ],
     authority: ['operator'],
   },

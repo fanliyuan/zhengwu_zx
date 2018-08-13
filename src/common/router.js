@@ -147,6 +147,11 @@ export const getRouterData = app => {
         import('../routes/InfrastructureManagement/AddSwitch')
       ),
     },
+    '/infrastructure/editSwitch': {
+      component: dynamicWrapper(app, [], () =>
+        import('../routes/InfrastructureManagement/AddSwitch')
+      ),
+    },
     '/institutionalUserManage/institutionalManage': {
       component: dynamicWrapper(app, ['Institution'], () =>
         import('../routes/InstitutionalUserManage/InstitutionalManage')

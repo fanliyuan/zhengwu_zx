@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
-import { Form, Card, Input, TreeSelect, Checkbox, Button, message } from 'antd'
+import { Form, Card, Input, TreeSelect, Checkbox, Button } from 'antd'
 
 // import styles from './AddSwitch.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -10,10 +10,24 @@ const { SHOW_PARENT } = TreeSelect
 const FormItem = Form.Item
 const { TextArea } = Input
 
-@connect()
+@connect(({ regionManagement, loading }) => ({regionManagement, loading: loading.models.regionManagement}))
 @Form.create()
 export default class AddSwitch extends Component {
-  state = {}
+  state = {
+    regoinInfo: {},
+  }
+
+  componentDidMount() {
+    if (this.props.location.pathname === '/infrastructure/editSwitch') {
+      this.setState({
+        regoinInfo: this.props.location.state && this.props.location.state.regoinInfo,
+      })
+    } else {
+      this.setState({
+        regoinInfo: {},
+      })
+    }
+  }
 
   onChange = () => {}
 
@@ -21,10 +35,37 @@ export default class AddSwitch extends Component {
 
   handleSubmit = e => {
     e.preventDefault()
-    message.success('提交成功, 即将返回上一页')
-    setTimeout(() => {
-      this.props.dispatch(routerRedux.push('/infrastructure/switch'))
-    }, 1000)
+    // message.success('提交成功, 即将返回上一页')
+    // setTimeout(() => {
+    //   this.props.dispatch(routerRedux.push('/infrastructure/switch'))
+    // }, 1000)
+    this.props.form.validateFieldsAndScroll((err, value) => {
+      if (err) return null
+      // console.log(value)
+      const body = {
+        regionName: value.regionName,
+        regionId: value.regionId ? +value.regionId : undefined,
+        nodeIds: value.nodeIds.map(item => ~~item),
+        deptIds: value.deptIds.map(item => ~~item),
+        status: value.status ? 1 : 0,
+        desc: value.desc,
+      }
+      if (this.props.location.pathname === '/infrastructure/addSwitch') {
+        this.props.dispatch({
+          type: 'regionManagement/addRegion',
+          payload: {
+            body,
+          },
+        })
+      } else {
+        this.props.dispatch({
+          type: 'regionManagement/editRegion',
+          payload: {
+            body,
+          },
+        })
+      }
+    } )
   }
 
   handleCancle = () => {
@@ -32,6 +73,7 @@ export default class AddSwitch extends Component {
   }
 
   render() {
+    const { regoinInfo: { regionName, nodeIds, deptIds, status } } = this.state
     const FormItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -159,20 +201,18 @@ export default class AddSwitch extends Component {
     ]
     const tProps = {
       treeData,
-      // value:this.state.value,
-      onChange: this.onChange,
+      treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
-      searchPlaceholder: 'Please select',
+      searchPlaceholder: '请选择业务范围机构',
       style: {
         width: 300,
       },
     }
     const tProps1 = {
       treeData: treeData1,
-      // value:this.state.value,
-      onChange: this.onChange1,
+      treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
-      searchPlaceholder: 'Please select',
+      searchPlaceholder: '请选择业务范围节点',
       style: {
         width: 300,
       },
@@ -182,44 +222,54 @@ export default class AddSwitch extends Component {
         <Card>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="交换域名称" {...FormItemLayout}>
-              {getFieldDecorator('switchName', {
+              {getFieldDecorator('regionName', {
                 rules: [
                   {
                     required: true,
                     message: '填写交换域名称',
                   },
                 ],
+                initialValue: regionName,
               })(<Input />)}
             </FormItem>
             <FormItem label="业务范围机构" {...FormItemLayout}>
-              {getFieldDecorator('fieldJg', {
+              {getFieldDecorator('deptIds', {
                 rules: [
                   {
                     required: true,
                     message: '业务范围机构必选',
                   },
                 ],
+                initialValue: deptIds,
               })(<TreeSelect {...tProps} />)}
             </FormItem>
-            <FormItem
-              label="业务范围节点"
-              style={{ display: getFieldValue('fieldJg') === undefined ? 'none' : 'block' }}
-              {...FormItemLayout}
-              >
-              {getFieldDecorator('fieldNode', {
-                rules: [
-                  {
-                    required: true,
-                    message: '业务范围节点必选',
-                  },
-                ],
-              })(<TreeSelect {...tProps1} />)}
-            </FormItem>
+            {
+              getFieldValue('deptIds') && getFieldValue('deptIds').length > 0 && (
+              <FormItem
+                label="业务范围节点"
+                {...FormItemLayout}
+                >
+                {getFieldDecorator('nodeIds', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '业务范围节点必选',
+                    },
+                  ],
+                  initialValue: nodeIds,
+                })(<TreeSelect {...tProps1} />)}
+              </FormItem>)
+            }
             <FormItem label="交换域描述" {...FormItemLayout}>
-              {getFieldDecorator('switchDescription')(<TextArea rows={4} />)}
+              {getFieldDecorator('desc', {
+                initialValue: '',
+              })(<TextArea rows={4} />)}
             </FormItem>
             <FormItem label="状态" {...FormItemLayout}>
-              {getFieldDecorator('status')(<Checkbox>停用</Checkbox>)}
+              {getFieldDecorator('status', {
+                valuePropName: 'checked',
+                initialValue: status,
+              })(<Checkbox>停用</Checkbox>)}
             </FormItem>
             <div className="btnclsb">
               <Button type="primary" htmlType="submit" className="mr64">
