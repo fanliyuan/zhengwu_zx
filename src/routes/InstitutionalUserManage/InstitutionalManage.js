@@ -21,7 +21,7 @@ export default class InstitutionalManage extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'Institution/querys',
-      // payload:{},
+      payload:{pageNum:0,pageSize:10},
     })
   }
 
@@ -33,12 +33,32 @@ export default class InstitutionalManage extends Component {
 
   handleAdd = () => {
     const { dispatch } = this.props
+    dispatch({
+      type:'Institution/editId',
+      payload:{deptId:-1},
+    })
+    dispatch(routerRedux.push('/institutionalUserManage/addInstitution'))
+  }
+
+  handleDelete =  async (id) => {
+    const { dispatch } = this.props
+    await dispatch({
+      type:'Institution/deleteItem',
+      payload:{pkId:+id},
+    })
+  }
+
+  handleEdit = (deptId) => {
+    const { dispatch } = this.props
+    dispatch({
+      type:'Institution/editId',
+      payload:{deptId:+deptId},
+    })
     dispatch(routerRedux.push('/institutionalUserManage/addInstitution'))
   }
 
   render() {
-    const { Institution } = this.props
-    console.log(Institution)
+    const { Institution:{list} } = this.props
     const data2 = [
       {
         value: '0',
@@ -66,41 +86,44 @@ export default class InstitutionalManage extends Component {
     const columns = [
       {
         title: '机构名称',
-        dataIndex: 'institutionName',
+        dataIndex: 'deptName',
         align: 'left',
       },
       {
         title: '负责人',
-        dataIndex: 'manager',
+        dataIndex: 'chargeUser',
       },
       {
         title: '负责人手机号',
-        dataIndex: 'managerNumber',
+        dataIndex: 'chargePhone',
       },
       {
         title: '排序',
-        dataIndex: 'listSort',
+        dataIndex: 'orderFlag',
       },
       {
         title: '所属省市区',
-        dataIndex: 'province',
+        dataIndex: 'proCityAreaInfo',
+        render:(text) => {
+          return(`${ text.pro } ${ text.city } ${ text.area }`)
+        },
       },
       {
         title: '更新时间',
         dataIndex: 'updateTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss')
+          return text ? moment(+text).format('lll') : ''
         },
       },
       {
         title: '操作',
-        render:() => {
+        render:(text,row) => {
           return (
             <div>
-              <span className={styles.editBtn} onClick={this.handleAdd}>
+              <span className={styles.editBtn} onClick={this.handleEdit.bind(null,row.deptId)}>
                 修改
               </span>
-              <a style={{ marginRight: 20 }}>删除</a>
+              <span className={styles.editBtn} style={{ marginRight: 16 }} onClick={this.handleDelete.bind(null,row.deptId)}>删除</span>
             </div>
           )
         },
@@ -111,55 +134,6 @@ export default class InstitutionalManage extends Component {
         item.align = 'center'
       }
     })
-    const list = [
-      {
-        id: 0,
-        institutionName: '国土局',
-        manager: '张三1',
-        managerNumber: '13809090909',
-        listSort: 1,
-        province: '菏泽市',
-        updateTime: 3423423424,
-        children: [
-          {
-            id: 1,
-            institutionName: '国土局办公室1',
-            manager: '张三1',
-            managerNumber: '13809090909',
-            listSort: 1,
-            province: '菏泽市 单县',
-            updateTime: 3423423424,
-          },
-          {
-            id: 2,
-            institutionName: '国土局办公室2',
-            manager: '张三1',
-            managerNumber: '13809090909',
-            listSort: 1,
-            province: '菏泽市 曹县',
-            updateTime: 3423423424,
-          },
-        ],
-      },
-      {
-        id: 3,
-        institutionName: '水利局',
-        manager: '张三4',
-        managerNumber: '135609090909',
-        listSort: 2,
-        province: '菏泽市',
-        updateTime: 38877423424,
-      },
-      {
-        id: 4,
-        institutionName: '电力局',
-        manager: '张三5',
-        managerNumber: '135609090909',
-        listSort: 3,
-        province: '菏泽市',
-        updateTime: 345423423424,
-      },
-    ]
     return (
       <PageHeaderLayout>
         <Card>
@@ -175,7 +149,7 @@ export default class InstitutionalManage extends Component {
             </Button>
           </div>
           <div>
-            <Table columns={columns} dataSource={list} pagination={false} rowKey="id" bordered />
+            <Table columns={columns} dataSource={list} pagination={false} rowKey="deptId" bordered />
           </div>
         </Card>
       </PageHeaderLayout>

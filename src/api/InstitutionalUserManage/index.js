@@ -4,12 +4,12 @@ const module = {
     {
       name:'queryGoveDeptInfoList',
       url:'queryGoveDeptInfoList',
-      method:'post',
+      method:'get',
     }, 
     {
       name:'deleteGoveDept',
       url:'deleteGoveDept',
-      method:'delete',
+      method:'get',
     },
     {
       name:'getGoveDeptInfo',

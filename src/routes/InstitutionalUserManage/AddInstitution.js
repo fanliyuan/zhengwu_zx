@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Input, Card, Form, TreeSelect, InputNumber, Cascader, Button } from 'antd'
+import { connect } from 'dva'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 // import styles from './AddInstitution.less';
@@ -7,8 +8,17 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 const FormItem = Form.Item
 const { TextArea } = Input
 @Form.create()
-export default class AddInstitution extends Component {
-  state = {}
+class AddInstitution extends Component {
+  state = {
+    // editId:-1,
+  }
+
+  componentDidMount = () => {
+    // const { editId } = this.props
+    // this.setState({
+    //   editId,
+    // })
+  }
 
   handleSubmit = () => {}
 
@@ -138,3 +148,7 @@ export default class AddInstitution extends Component {
     )
   }
 }
+export default connect(({Institution}) => ({
+  editId:Institution.editId,
+}))(AddInstitution)
+ 

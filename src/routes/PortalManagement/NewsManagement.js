@@ -7,7 +7,7 @@
 */
 import React, { Component, Fragment } from 'react'
 // import { Link } from 'dva/router';
-// import { connect } from 'dva';
+import { connect } from 'dva'
 import { DatePicker, Input, Button, Table, Modal, Form, message, Popconfirm } from 'antd'
 import moment from 'moment'
 
@@ -22,6 +22,9 @@ const { RangePicker } = DatePicker
 //   loading: loading.models.overviewLogging,
 // }))
 @Form.create()
+@connect(({newsManagement}) => ({
+  newsManagement,
+}))
 export default class NewsManagement extends Component {
   state = {
     name: '',
