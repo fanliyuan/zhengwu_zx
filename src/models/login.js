@@ -29,7 +29,8 @@ export default {
         }
         const { accountId, accessToken, accountName } = response.result.datas
         if (response.code === 0) {
-          localStorage.setItem('accessToken', accessToken)
+          // localStorage.setItem('accessToken', accessToken)
+          document.cookie = `accessToken=${accessToken};path=/`
           localStorage.setItem('accountId', accountId)
           localStorage.setItem('accountName', accountName)
         }
@@ -90,6 +91,7 @@ export default {
           },
         })
         localStorage.removeItem('accessToken')
+        document.cookie = `accessToken=;path=/;expires=-1`
         localStorage.removeItem('accountId')
         localStorage.removeItem('accountName')
         reloadAuthorized()

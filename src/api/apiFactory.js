@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 11:20:49
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-13 15:57:54
+ * @Last Modified time: 2018-08-13 21:08:58
  * @Description: 请求工厂函数, 根据传入的接口模块,生成api请求
  */
 import { stringify } from 'qs'
@@ -10,6 +10,18 @@ import request from '../utils/request'
 import config from './config'
 
 const { apiHost, apiPort, projectId } = config
+
+function getCookie(params) {
+  const temp = document.cookie.match(new RegExp(`${params}=.*;`))
+  const other = document.cookie.match(new RegExp(`${params}=.*`))
+  if (temp) {
+    return temp[0].replace(`${params}=`,'')
+  } else if (other) {
+    return other[0].replace(`${params}=`,'')
+  } else {
+    return ''
+  }
+}
 
 export default (module) => {
   const apiObject = {}
@@ -34,7 +46,8 @@ export default (module) => {
       const apiUrl =`${moduleHost?`${moduleHost}`:`${apiHost}`}${modulePort?`${modulePort}`:''}${commonPort}${!modulePort && !commonPort ? '/':''}${moduleUrl?`${moduleUrl}/`:''}${item.url}${pathParams?`${pathParams}`:''}`
       const headers = params.headers || {
         projectId,
-        accessToken: localStorage.getItem('accessToken') || 0,
+        // accessToken: localStorage.getItem('accessToken') || 0,
+        accessToken: getCookie('accessToken'),
       }
       if (!item.method || item.method.toUpperCase() === 'GET') {
         if (!params.params) {
