@@ -102,7 +102,7 @@ export default class AddUser extends Component {
             type: 'accounts/updateAccount',
             payload: {
               body: {...body},
-              path: this.props.location.state.accountId,
+              path: this.props.location.state.userInfo && this.props.location.state.userInfo.accountId,
             },
           })
         }

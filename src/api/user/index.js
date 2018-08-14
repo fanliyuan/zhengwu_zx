@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:24
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-13 16:28:36
+ * @Last Modified time: 2018-08-14 09:58:24
  * @Description: 用户模块请求
  */
 const module = {
@@ -49,9 +49,6 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseUrl) {
     item.baseUrl = 'yyzhzx/api/v1'
-  }
-  if (!item.basePort) {
-    item.basePort = '32404'
   }
 })
 
