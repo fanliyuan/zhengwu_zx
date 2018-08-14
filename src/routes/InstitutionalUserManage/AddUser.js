@@ -162,6 +162,14 @@ export default class AddUser extends Component {
                     min: 6,
                     max: 24,
                     whitespace: true,
+                    validator: (rule, value, cb) => {
+                      const state = checkedPassword(value)
+                      if (state) {
+                        cb('error')
+                      } else {
+                        cb()
+                      }
+                    },
                   },
                 ],
               })(<Input type='password' placeholder="请输入密码" />)}

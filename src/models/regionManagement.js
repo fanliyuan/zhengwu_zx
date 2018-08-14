@@ -10,11 +10,20 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
     list: [],
     pagination: false,
     nodeList: [],
+    queryData: {},
   },
 
   effects:{
-    *getRegion({ payload }, { call, put }) {
+    *getRegion({ payload }, { call, put, select }) {
       let response
+      if (payload) {
+        yield put({
+          type: 'changeQueryData',
+          payload,
+        })
+      } else {
+        payload = yield select(state => state.regionManagement.queryData)
+      }
       try {
         response = yield call(getRegion, { params: payload.params })
         const { datas, total = 0, pageSize = 10, pageNumber = 1 } = response.result
@@ -63,25 +72,31 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
         })
       }
     },
-    *startRegion({ payload }, { call }) {
+    *startRegion({ payload }, { call, put }) {
       let response
       try {
         response = yield call(startRegion, {path: payload.regionId})
-        if (response.code === 0) {
+        if (+response.code === 0) {
           message.success('交换域启用成功!')
+          yield put({
+            type: 'getRegion',
+          })
         }
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
       }
     },
-    *stopRegion({ payload }, { call }) {
+    *stopRegion({ payload }, { call, put }) {
       let response
       try {
         response = yield call(stopRegion, {path: payload.regionId})
-        if (response.code === 0) {
+        if (+response.code === 0) {
           message.success('交换域停用成功!')
         }
+        yield put({
+          type: 'getRegion',
+        })
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
@@ -139,6 +154,12 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
       return {
         ...state,
         nodeList,
+      }
+    },
+    changeQueryData(state, { payload }) {
+      return {
+        ...state,
+        queryData: payload,
       }
     },
   },
