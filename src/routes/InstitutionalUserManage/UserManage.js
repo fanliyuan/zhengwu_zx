@@ -18,14 +18,15 @@ const roleObject = {
   operator: '操作员',
 }
 
-@connect(({ accounts, loading }) => ({
+@connect(({ accounts, roles, loading }) => ({
   accounts,
+  roles,
   loading: loading.models.accounts,
 }))
 export default class UserManage extends Component {
   state = {
     // owingJg:'0',
-    role: '5',
+    role: '-1',
     isEnable: '2',
     isChanged: false,
     createTime: [],
@@ -40,6 +41,12 @@ export default class UserManage extends Component {
       type: 'accounts/getAccounts',
       payload: {},
     })
+    if (this.props.roles.roleList.length < 1) {
+      this.props.dispatch({
+        type: 'roles/getRoleList',
+        payload: {},
+      })
+    }
   }
 
   nameChange = (e) => {
@@ -65,9 +72,15 @@ export default class UserManage extends Component {
     })
   }
 
-  selectrole = val => {
+  roleChange = val => {
+    const { queryData } = this.state
     this.setState({
       role: val,
+      queryData: {
+        ...queryData,
+        accurate: val !== '-1' ? JSON.stringify({roleId: val}) : '',
+      },
+      isChanged: true,
     })
   }
 
@@ -122,7 +135,7 @@ export default class UserManage extends Component {
       type: 'accounts/getAccounts',
       payload: {
         ...queryData,
-        filter: `${isEnable !== '0' && isEnable !== '1' ? '':`status=${isEnable}`}${isEnable === '0' || isEnable === '1' && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        filter: `${isEnable !== '0' && isEnable !== '1' ? '':`status=${isEnable}`}${(isEnable === '0' || isEnable === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
         `,
       },
     })
@@ -158,7 +171,7 @@ export default class UserManage extends Component {
   render() {
     const that = this
     const { role, isEnable, queryData: { accountNames, telephone }, createTime } = this.state
-    const { accounts: { accountList, roleNameList, pagination = false }, loading } = this.props
+    const { accounts: { accountList, roleNameList, pagination = false }, roles: { roleList }, loading } = this.props
     // const data=[
     //   {value:'0',id:0,label:'所属机构'},
     //   {value:'1',id:1,label:'XXX机构'},
@@ -171,16 +184,28 @@ export default class UserManage extends Component {
       return pre
     },{})
     accountList.forEach(item => item.role = roleObject[roleNameObject[item.accountId]]) // eslint-disable-line
-    const data1 = [
-      { value:'5', id:0, label:'所有角色' },
-      { value: '0', id: 1, label: '管理员' },
-      { value: '1', id: 2, label: '安全员' },
-      { value: '2', id: 3, label: '审计员' },
-      { value: '3', id: 4, label: '操作员' },
-    ]
+    // const data1 = [
+    //   { value:'5', id:0, label:'所有角色' },
+    //   { value: '0', id: 1, label: '管理员' },
+    //   { value: '1', id: 2, label: '安全员' },
+    //   { value: '2', id: 3, label: '审计员' },
+    //   { value: '3', id: 4, label: '操作员' },
+    // ]
+    const data1 = roleList.filter(item => roleObject[item.rolename]).map(item => {
+      return {
+        value: `${item.id}`,
+        key: item.rolename,
+        label: roleObject[item.rolename],
+      }
+    })
+    data1.unshift({
+      value: '-1',
+      key: 'all',
+      label: '所有角色',
+    })
     const selectData1 = data1.map(item => {
       return (
-        <Option value={item.value} key={item.id} title={item.label}>
+        <Option value={item.value} key={item.key} title={item.label}>
           {item.label}
         </Option>
       )
@@ -293,7 +318,7 @@ export default class UserManage extends Component {
             <Select
               style={{ marginRight: 20, width: 120 }}
               value={role}
-              onChange={this.selectrole}
+              onChange={this.roleChange}
               placeholder="角色"
               >
               {selectData1}

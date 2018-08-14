@@ -166,6 +166,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () =>
         import('../routes/InstitutionalUserManage/UserManage')
       ),
+      permission: true,
     },
     '/institutionalUserManage/addUser': {
       component: dynamicWrapper(app, ['accounts'], () => import('../routes/InstitutionalUserManage/AddUser')),
@@ -583,6 +584,8 @@ export const getRouterData = app => {
       authority: router.authority || menuItem.authority,
       hideInBreadcrumb: router.hideInBreadcrumb || menuItem.hideInBreadcrumb,
     }
+    // 以下代码,可以用来做路由的权限控制
+    // if (!routerConfig[path].permission && !(['/', '/user', '/user/login'].includes(path))) return null
     routerData[path] = router
   })
   return routerData

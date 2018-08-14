@@ -33,12 +33,15 @@ const { setPermissions, getRoleList } = apis
         })
       }
     },
-    *setPermissions({ payload }, { call }) {
+    *setPermissions({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(setPermissions, {body: payload.body})
+        response = yield call(setPermissions, {body: payload.body, path: payload.path})
         if (+response.code === 0) {
           message.success('修改成功!')
+          yield put({
+            type: 'accounts/getAccounts',
+          })
         }
       } catch (error) {
         // eslint-disable-next-line

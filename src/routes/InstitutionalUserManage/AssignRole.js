@@ -35,6 +35,7 @@ export default class AssignRole extends Component {
       telephone: '',
     },
     roleId: null,
+    roleName: '',
     userId: '',
   }
 
@@ -138,9 +139,10 @@ export default class AssignRole extends Component {
     })
   }
 
-  roleChange = (e) => {
+  roleChange = (e, roleListObject) => {
     this.setState({
       roleId: e.target.value,
+      roleName: roleListObject[e.target.value],
     })
   }
 
@@ -151,15 +153,28 @@ export default class AssignRole extends Component {
     }
     await this.props.dispatch({
       type: 'roles/setPermissions',
+      // payload: {
+      //   body: [{
+      //     roleidList: [this.state.roleId],
+      //     userid: this.state.userId,
+      //   }],
+      // },
       payload: {
-        body: [{
-          roleidList: [this.state.roleId],
-          userid: this.state.userId,
-        }],
+        path: this.state.userId,
+        body: {
+          extendedProperties: JSON.stringify({
+            projectId: '8aced467f44a4a458e763814912c3d47',
+            scope: '8aced467f44a4a458e763814912c3d47',
+            systemRole: this.state.roleName,
+            roleId: this.state.roleId,
+          }),
+        },
       },
     })
     this.setState({
       visible: false,
+      roleId: null,
+      roleName: '',
     })
   }
 
@@ -200,6 +215,10 @@ export default class AssignRole extends Component {
       })
      return pre 
     }, [])
+    const roleListObject = roleList.reduce((pre, cur) => {
+      pre[cur.id] = cur.rolename
+      return pre
+    },{})
     const selectData1 = [...data1, {id: -1, value: -1, label: '所有角色'}, {id: -2, value: -2, label: '未分配角色'}].map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -317,7 +336,7 @@ export default class AssignRole extends Component {
             onOk={this.handleOk}
             onCancel={this.handleCancel}
             >
-            <RadioGroup onChange={this.roleChange}>
+            <RadioGroup value={this.state.roleId} onChange={(e) => this.roleChange(e, roleListObject)}>
               {
                 data1.filter(item => item.label !== '管理员').map(item => (
                   <Radio value={item.id} key={item.id}>{item.label}</Radio>

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:00
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-08 16:02:52
+ * @Last Modified time: 2018-08-14 16:29:26
  * @Description: 角色模块请求
  */
 const module = {
@@ -15,11 +15,6 @@ const module = {
     {
       name: 'getRoleList',
       url: 'roles',
-    },
-    {
-      name: 'setPermissions',
-      url: 'permissions',
-      method: 'post',
     },
   ],
 }
