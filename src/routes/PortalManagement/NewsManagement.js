@@ -8,19 +8,14 @@
 import React, { Component, Fragment } from 'react'
 // import { Link } from 'dva/router';
 import { connect } from 'dva'
-import { DatePicker, Input, Button, Table, Modal, Form, message, Popconfirm } from 'antd'
+import { DatePicker, Input, Button, Table, Modal, Form, Popconfirm } from 'antd'
 import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './NewsManagement.less'
 
 const { RangePicker } = DatePicker
-// const { Option } = Select;
 
-// @connect(({ overviewLogging, loading }) => ({
-//   overviewLogging,
-//   loading: loading.models.overviewLogging,
-// }))
 @Form.create()
 @connect(({newsManagement}) => ({
   newsManagement,
@@ -33,6 +28,7 @@ export default class NewsManagement extends Component {
     isChanged: false,
     modalShow: false,
     classifyName: '',
+    submitId:-1,
   }
 
   componentDidMount() {
@@ -49,6 +45,12 @@ export default class NewsManagement extends Component {
     //   type: 'overviewLogging/log',
     //   payload: {query: {...this.state, date: dateRange}, pagination: {pageSize: 10, current: 1}},
     // })
+    const pagination ={ pageSize:10,pageNum:1}
+    const { dispatch } = this.props
+    dispatch({
+      type:'newsManagement/querysCatagory',
+      payload:{...pagination},
+    })
   }
 
   handleNameChange = e => {
@@ -80,21 +82,22 @@ export default class NewsManagement extends Component {
 
   handleSearch = () => {
     if (!this.state.isChanged) return // eslint-disable-line
-    // const { dispatch } = this.props;
-    // const query = this.state
-    // const pagination = {
-    //   current: 1,
-    //   pageSize: 10,
-    // }
-    // const dateRange = query.date.map((item) => {
-    //   if (moment.isMoment(item)) {
-    //     return +(item.format('x'))
-    //   } else {
-    //     return 0
-    //   }
-    // })
+    const { date, name, operator } = this.state
+    const { dispatch } = this.props
+    const pagination ={ pageSize:10,pageNum:1}
+    const dateRange = date.map((item) => {
+      if (moment.isMoment(item)) {
+        return item.format('x')
+      } else {
+        return 0
+      }
+    })
     this.setState({
       isChanged: false,
+    })
+    dispatch({
+      type:'newsManagement/searchCatagory',
+      payload:{...pagination,createTime:dateRange, categoryName:name, categoryPname:operator},
     })
     // dispatch({
     //   type: 'overviewLogging/log',
@@ -103,32 +106,30 @@ export default class NewsManagement extends Component {
   }
 
   handleStandardTableChange = pagination => {
-    // console.log(pagination, filtersArg, sorter)
-    // const query = this.state
-    // const { dispatch } = this.props;
-    console.log(pagination) // eslint-disable-line
-    // const dateRange = query.date.map((item) => {
-    //   if (moment.isMoment(item)) {
-    //     return +(item.format('x'))
-    //   } else {
-    //     return 0
-    //   }
-    // })
-
-    // dispatch({
-    //   type: 'overviewLogging/log',
-    //   payload: { query: {...query, date: dateRange}, pagination },
-    // });
+    console.log(pagination)
   }
 
   handleSubmit = () => {
-    this.props.form.validateFields((errors, value) => {
+    this.props.form.validateFields((errors,value) => {
       if (!errors) {
-        message.success(`操作成功${value.name}`)
+        // message.success(`操作成功 ${value.name}`)
         this.setState({
           modalShow: false,
         })
         this.props.form.setFieldsValue({ name: '' })
+        const { dispatch } = this.props
+        const { submitId } = this.state
+        if(submitId === -1){
+          dispatch({
+            type:'newsManagement/updateCatagory',
+            payload:{categoryName:value.name},
+          })
+        }else {
+          dispatch({
+            type:'newsManagement/insertCatagory',
+            payload:{categoryId:submitId,categoryName:value.name},
+          })
+        }
       }
     })
   }
@@ -138,6 +139,7 @@ export default class NewsManagement extends Component {
     this.setState({
       modalShow: true,
       classifyName: '',
+      submitId:-1,
     })
     this.props.form.setFieldsValue({ name: '' })
   }
@@ -146,62 +148,44 @@ export default class NewsManagement extends Component {
     // eslint-disable-line
     this.setState({
       modalShow: true,
-      classifyName: row.name,
+      classifyName: row.categoryName,
+      submitId:row.categoryId,
     })
-    this.props.form.setFieldsValue({ name: row.name })
+    this.props.form.setFieldsValue({ name: row.categoryName })
   }
 
   handleDelete = row => {
-    message.success(`成功删除${row.id}`)
+    const { dispatch } = this.props
+    dispatch({
+      type:'newsManagement/deleteCatagory',
+      payload:{categoryId:+row.categoryId},
+    })
   }
 
   render() {
     const { name, date, operator, modalShow, classifyName } = this.state
     const { getFieldDecorator } = this.props.form
-    // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
-
-    const data = []
-
-    for (let i = 0; i < 120; i++) {
-      data.push({
-        id: i,
-        name: '数据名' + i, // eslint-disable-line
-        operator: '操作人' + i, // eslint-disable-line
-        time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-      })
-    }
-
-    // const stateList = [
-    //   {
-    //     value: -1,
-    //     label: '全部状态',
-    //   },
-    //   {
-    //     value: 0,
-    //     label: '运行中',
-    //   },
-    //   {
-    //     value: 1,
-    //     label: '已停止',
-    //   },
-    // ];
+    const { newsManagement:{list} } = this.props
 
     const columns = [
       {
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: 'categoryId',
       },
       {
         title: '名称',
-        dataIndex: 'name',
+        dataIndex: 'categoryName',
       },
       {
         title: '操作人',
-        dataIndex: 'operator',
+        dataIndex: 'categoryPname',
       },
       {
         title: '操作时间',
-        dataIndex: 'time',
+        dataIndex: 'updateTime',
+        render(text){
+          return(moment(+text).format('lll'))
+        },
       },
       {
         title: '操作',
@@ -266,10 +250,10 @@ export default class NewsManagement extends Component {
             <Table
               bordered
               columns={columns}
-              dataSource={data}
+              dataSource={list}
               // pagination={pagination}
               // loading={loading}
-              rowKey="id"
+              rowKey="categoryId"
               onChange={this.handleStandardTableChange}
               />
           </div>
