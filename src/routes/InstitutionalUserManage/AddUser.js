@@ -86,8 +86,12 @@ export default class AddUser extends Component {
               accountPasswd: sha('sha1').update(value.password).digest('hex'),
               telephone: value.tel,
               status: value.status ? 0: 1,
-              // 下面代码是json的"替换为',并不是json
-              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
+              // JSON转换
+              extendedProperties: JSON.stringify({ 
+                projectId: '8aced467f44a4a458e763814912c3d47',
+                scope: '8aced467f44a4a458e763814912c3d47',
+                name: value.name,
+               }),
             },
           })
         } else {
@@ -96,7 +100,11 @@ export default class AddUser extends Component {
               accountPasswd: value.password ? sha('sha1').update(value.password).digest('hex') : '',
               status: value.status ? 0: 1,
               telephone: value.tel,
-              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
+              extendedProperties: JSON.stringify({ 
+                projectId: '8aced467f44a4a458e763814912c3d47',
+                scope: '8aced467f44a4a458e763814912c3d47',
+                name: value.name, 
+              }),
             }
           this.props.dispatch({
             type: 'accounts/updateAccount',
@@ -162,6 +170,14 @@ export default class AddUser extends Component {
                     min: 6,
                     max: 24,
                     whitespace: true,
+                    validator: (rule, value, cb) => {
+                      const state = checkedPassword(value)
+                      if (state) {
+                        cb('error')
+                      } else {
+                        cb()
+                      }
+                    },
                   },
                 ],
               })(<Input type='password' placeholder="请输入密码" />)}
