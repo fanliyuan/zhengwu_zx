@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-08 21:13:46
+ * @Last Modified time: 2018-08-14 11:27:02
  * @Description: 用户管理
  */
 import { routerRedux } from 'dva/router'
@@ -18,11 +18,20 @@ export default {
     roleNameList: [],
     pagination: false,
     accountDetail: {},
+    queryData: {},
   },
 
   effects: {
-    *getAccounts({ payload }, { call, put }) {
+    *getAccounts({ payload }, { call, put, select }) {
       let response
+      if (payload) {
+        yield put({
+          type: 'changeQueryData',
+          payload,
+        })
+      } else {
+        payload = yield select(state => state.accounts.queryData)
+      }
       try {
         response = yield call(getAccounts, {params: payload})
         const { datas = [], total = 0, pageSize = 10, pageNumber = 1 } = response.result
@@ -35,7 +44,7 @@ export default {
           if (!item.extendedProperties) {
             return false
           }
-          const object = JSON.parse(item.extendedProperties.replace(/'/g, '"'))
+          const object = JSON.parse(item.extendedProperties)
           for (const key in object) {
             // eslint-disable-next-line
             if (object.hasOwnProperty(key)) {
@@ -155,6 +164,12 @@ export default {
       return {
         ...state,
         accountDetail: payload.accountDetail,
+      }
+    },
+    changeQueryData(state, { payload }) {
+      return {
+        ...state,
+        queryData: payload,
       }
     },
   },

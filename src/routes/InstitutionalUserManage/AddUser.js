@@ -87,7 +87,7 @@ export default class AddUser extends Component {
               telephone: value.tel,
               status: value.status ? 0: 1,
               // 下面代码是json的"替换为',并不是json
-              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
+              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,'\\"'),
             },
           })
         } else {
@@ -96,7 +96,7 @@ export default class AddUser extends Component {
               accountPasswd: value.password ? sha('sha1').update(value.password).digest('hex') : '',
               status: value.status ? 0: 1,
               telephone: value.tel,
-              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,"'"),
+              extendedProperties: JSON.stringify({ name: value.name }).replace(/"/g,'\\"'),
             }
           this.props.dispatch({
             type: 'accounts/updateAccount',
