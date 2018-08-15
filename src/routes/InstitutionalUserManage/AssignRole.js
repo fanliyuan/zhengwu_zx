@@ -166,7 +166,7 @@ export default class AssignRole extends Component {
             projectId: '8aced467f44a4a458e763814912c3d47',
             scope: '8aced467f44a4a458e763814912c3d47',
             systemRole: this.state.roleName,
-            roleId: this.state.roleId,
+            roleId: `${this.state.roleId}`,
           }),
         },
       },
