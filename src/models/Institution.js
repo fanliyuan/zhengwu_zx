@@ -9,16 +9,18 @@ export default {
     lists:[],
     pagination:{},
     editId:0,
+    paginations:{},
   },
   effects: {
     *querys({ payload }, { call, put }){
       const response = yield call(queryGoveDeptInfoList,{params:payload})
+      let pagination
       try {
         if(response.code === '200'){
-          // response.data.list.length >=
+          pagination = response.data.total > 9 ? { current:response.data.pageNum,pageSize:response.data.pageSize,total:response.data.total } : false
           yield put({
             type:'queryInstitution',
-            payload:response.data.list,
+            payload:{list:response.data.list,pagination},
           })
         }
       }catch(err){
@@ -47,7 +49,8 @@ export default {
     queryInstitution(state, {payload}){
       return {
         ...state,
-        list:payload,
+        list:payload.list,
+        paginations:payload.pagination,
       }
     },
     editId(state, {payload}){

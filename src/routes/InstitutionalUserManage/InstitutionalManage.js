@@ -21,7 +21,7 @@ export default class InstitutionalManage extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'Institution/querys',
-      payload:{pageNum:0,pageSize:10},
+      payload:{pageNum:1,pageSize:10},
     })
   }
 
@@ -57,8 +57,16 @@ export default class InstitutionalManage extends Component {
     dispatch(routerRedux.push('/institutionalUserManage/addInstitution'))
   }
 
+  handleTableChange = pagination => {
+    const { dispatch } = this.props
+    dispatch({
+      type:'Institution/querys',
+      payload:{pageNum:pagination.current,pageSize:pagination.pageSize},
+    })
+  }
+
   render() {
-    const { Institution:{list} } = this.props
+    const { Institution:{list, paginations} } = this.props
     const data2 = [
       {
         value: '0',
@@ -149,7 +157,7 @@ export default class InstitutionalManage extends Component {
             </Button>
           </div>
           <div>
-            <Table columns={columns} dataSource={list} pagination={false} rowKey="deptId" bordered />
+            <Table columns={columns} dataSource={list} pagination={paginations} rowKey="deptId" onChange={this.handleTableChange} bordered />
           </div>
         </Card>
       </PageHeaderLayout>
