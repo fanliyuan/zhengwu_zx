@@ -12,6 +12,21 @@ const module = {
       method:'get',
     },
     {
+      name:'getProOneLevels',
+      url:'getProOneLevels',
+      method:'get',
+    },
+    {
+      name:'getProThreeLevels',
+      url:'getProThreeLevels',
+      method:'get',
+    },
+    {
+      name:'getProTwoLevels',
+      url:'getProTwoLevels',
+      method:'get',
+    },
+    {
       name:'getGoveDeptInfo',
       url:'getGoveDeptInfo',
     },

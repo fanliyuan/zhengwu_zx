@@ -8,6 +8,7 @@
 import React, { Component } from 'react'
 import { Form, Input, Select, DatePicker, Button, Table, message, Modal } from 'antd'
 import moment from 'moment'
+import { connect } from 'dva'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './ColumnPosition.less'
@@ -46,6 +47,9 @@ for (let i = 1; i < 132; i++) {
 }
 
 @Form.create()
+@connect(({columnPosition}) => ({
+  columnPosition,
+}))
 export default class ColumnPosition extends Component {
   state = {
     query: {
@@ -58,6 +62,15 @@ export default class ColumnPosition extends Component {
     edit: '',
     editShow: false,
     loading: false,
+  }
+
+  componentDidMount = () => {
+    const pagination = {pageSize:0,pageNum:0}
+    const { dispatch } = this.props
+    dispatch({
+      type:'columnPosition/queryList',
+      payload:{...pagination},
+    })
   }
 
   nameChange = e => {
@@ -109,10 +122,10 @@ export default class ColumnPosition extends Component {
   editName = row => {
     this.setState({
       editShow: true,
-      edit: row.name,
+      edit: row.columnName,
     })
     this.props.form.setFieldsValue({
-      edit: row.name,
+      edit: row.columnName,
     })
   }
 
@@ -122,7 +135,7 @@ export default class ColumnPosition extends Component {
   //   })
   // }
   editSubmit = () => {
-    this.props.form.validateFields((errors, value) => {
+    this.props.form.validateFields((errors) => {
       if (!errors) {
         this.setState({
           loading: true,
@@ -132,7 +145,6 @@ export default class ColumnPosition extends Component {
           this.setState({
             loading: false,
           })
-          message.success(`栏目名修改为${value.edit}`)
         }, 1000)
       }
     })
@@ -146,35 +158,40 @@ export default class ColumnPosition extends Component {
       loading,
     } = this.state
     const { getFieldDecorator } = this.props.form
+    const { columnPosition:{list} } = this.props
     const pageList = pageData
     const colums = [
       {
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: 'columnId',
+        align:'left',
       },
       {
         title: '栏目名称',
-        dataIndex: 'name',
+        dataIndex: 'columnName',
       },
       {
         title: '所属功能页面',
-        dataIndex: 'page',
+        dataIndex: 'columnPage',
       },
       {
         title: '位置',
-        dataIndex: 'position',
+        dataIndex: 'columnAddress',
       },
       {
         title: '操作人',
-        dataIndex: 'operator',
+        dataIndex: 'columnPname',
       },
       {
         title: '操作时间',
-        dataIndex: 'time',
+        dataIndex: 'updateTime',
+        reunder(text){
+          return (moment(text).format("lll"))
+        },
       },
       {
         title: '操作',
-        dataIndex: 'operation',
+        // dataIndex: 'operation',
         render: (text, row) => {
           return <a onClick={() => this.editName(row)}>修改</a>
         },
@@ -183,6 +200,7 @@ export default class ColumnPosition extends Component {
     colums.forEach(item => {
       item.align = 'center'
     })
+    colums[0].align="left"
 
     const pageComs = pageList.map(item => (
       <Select.Option value={item.value} key={item.value}>
@@ -219,10 +237,10 @@ export default class ColumnPosition extends Component {
             </Button>
           </Form>
           <Table
-            dataSource={data}
+            dataSource={list}
             columns={colums}
-            pagination
-            rowKey="id"
+            pagination={false}
+            rowKey="columnId"
             bordered
             loading={loading}
             />

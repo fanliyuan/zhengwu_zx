@@ -29,11 +29,21 @@ const module = {
    {
     name:'updateCategory',
     url:'updateCategory',
-    method:'put',
+    method:'post',
    },
    {
     name:'insertCategory',
     url:'insertCategory',
+    method:'post',
+   },
+   {
+    name:'columnList',
+    url:'columnList',
+    method:'post',
+   },
+   {
+    name:'updateColumnInfo',
+    url:'updateColumnInfo',
     method:'post',
    },
   ],

@@ -17,8 +17,9 @@ import styles from './NewsManagement.less'
 const { RangePicker } = DatePicker
 
 @Form.create()
-@connect(({newsManagement}) => ({
+@connect(({newsManagement,loading}) => ({
   newsManagement,
+  loading:loading.effects['newsManagement/querysCatagory'],
 }))
 export default class NewsManagement extends Component {
   state = {
@@ -89,15 +90,15 @@ export default class NewsManagement extends Component {
       if (moment.isMoment(item)) {
         return item.format('x')
       } else {
-        return 0
+        return ''
       }
     })
     this.setState({
       isChanged: false,
     })
     dispatch({
-      type:'newsManagement/searchCatagory',
-      payload:{...pagination,createTime:dateRange, categoryName:name, categoryPname:operator},
+      type:'newsManagement/querysCatagory',
+      payload:{...pagination,categoryName:name, categoryPname:operator,createTime:dateRange[0],updateTime:dateRange[1]},
     })
     // dispatch({
     //   type: 'overviewLogging/log',
@@ -106,7 +107,12 @@ export default class NewsManagement extends Component {
   }
 
   handleStandardTableChange = pagination => {
-    console.log(pagination)
+    const paginations ={ pageSize:pagination.pageSize,pageNum:pagination.current}
+    const { dispatch } = this.props
+    dispatch({
+      type:'newsManagement/querysCatagory',
+      payload:{...paginations},
+    })
   }
 
   handleSubmit = () => {
@@ -116,18 +122,19 @@ export default class NewsManagement extends Component {
         this.setState({
           modalShow: false,
         })
+        const operator = localStorage.getItem("accountName")
         this.props.form.setFieldsValue({ name: '' })
         const { dispatch } = this.props
         const { submitId } = this.state
         if(submitId === -1){
           dispatch({
-            type:'newsManagement/updateCatagory',
-            payload:{categoryName:value.name},
+            type:'newsManagement/insertCatagory',
+            payload:{categoryName:value.name,categoryPname:operator},
           })
         }else {
           dispatch({
-            type:'newsManagement/insertCatagory',
-            payload:{categoryId:submitId,categoryName:value.name},
+            type:'newsManagement/updateCatagory',
+            payload:{categoryId:submitId,categoryName:value.name,categoryPname:operator},
           })
         }
       }
@@ -165,8 +172,7 @@ export default class NewsManagement extends Component {
   render() {
     const { name, date, operator, modalShow, classifyName } = this.state
     const { getFieldDecorator } = this.props.form
-    const { newsManagement:{list} } = this.props
-
+    const { newsManagement:{list,pagination},loading } = this.props
     const columns = [
       {
         title: '序号',
@@ -251,8 +257,8 @@ export default class NewsManagement extends Component {
               bordered
               columns={columns}
               dataSource={list}
-              // pagination={pagination}
-              // loading={loading}
+              pagination={pagination}
+              loading={loading}
               rowKey="categoryId"
               onChange={this.handleStandardTableChange}
               />

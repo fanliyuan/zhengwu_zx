@@ -23,6 +23,9 @@ export default class InstitutionalManage extends Component {
       type:'Institution/querys',
       payload:{pageNum:1,pageSize:10},
     })
+    dispatch({
+      type:'Institution/getOneLevel',
+    })
   }
 
   provinceSelectChange = () => {
@@ -66,7 +69,8 @@ export default class InstitutionalManage extends Component {
   }
 
   render() {
-    const { Institution:{list, paginations} } = this.props
+    const { Institution:{list, paginations, provices} } = this.props
+    console.log(provices)
     const data2 = [
       {
         value: '0',

@@ -474,7 +474,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddCarousel')),
     },
     '/portalManagement/columnPosition': {
-      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/ColumnPosition')),
+      component: dynamicWrapper(app, ['columnPosition'], () => import('../routes/PortalManagement/ColumnPosition')),
     },
     '/monitor/nodeMonitor': {
       component: dynamicWrapper(app, [], () => import('../routes/Monitor/NodeMonitor')),
