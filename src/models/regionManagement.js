@@ -2,7 +2,7 @@ import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 import apis from '../api'
 
-const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addRegion, editRegion } = apis
+const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addRegion, editRegion, getDepartments, getNodesByDepartment } = apis
  export default {
   namespace:'regionManagement',
 
@@ -11,6 +11,8 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
     pagination: false,
     nodeList: [],
     queryData: {},
+    detpList: [],
+    nodeListT: [],
   },
 
   effects:{
@@ -140,6 +142,52 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
        console.log(error)
       }
     },
+    *getDepartments(_, { call, put }) {
+      let response
+      try {
+        response = yield call(getDepartments, {})
+        if (+response.code === 0) {
+          yield put({
+            type: 'changeDeptList',
+            payload: {
+              detpList: response.result.datas,
+            },
+          })
+        }
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(error)
+        yield put({
+          type: 'changeDeptList',
+          payload: {
+            detpList: [],
+          },
+        })
+      }
+    },
+    *getNodes({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call(getNodesByDepartment, {params: {deptIds: payload.deptIds}})
+        if (+response.code === 0) {
+          yield put({
+            type: 'changeNodeListT',
+            payload: {
+              nodeListT: response.result.datas,
+            },
+          })
+        }
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(error)
+        yield put({
+          type: 'changeNodeListT',
+          payload: {
+            nodeListT: [],
+          },
+        })
+      }
+    },
   },
 
   reducers:{
@@ -160,6 +208,18 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
       return {
         ...state,
         queryData: payload,
+      }
+    },
+    changeDeptList(state, { payload: detpList }) {
+      return {
+        ...state,
+        detpList,
+      }
+    },
+    changeNodeListT(state, { payload: nodeListT }) {
+      return {
+        ...state,
+        nodeListT,
       }
     },
   },

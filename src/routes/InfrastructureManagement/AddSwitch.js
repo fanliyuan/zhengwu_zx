@@ -10,7 +10,10 @@ const { SHOW_PARENT } = TreeSelect
 const FormItem = Form.Item
 const { TextArea } = Input
 
-@connect(({ regionManagement, loading }) => ({regionManagement, loading: loading.models.regionManagement}))
+@connect(({ regionManagement, loading }) => ({
+  regionManagement,
+  loading: loading.models.regionManagement,
+}))
 @Form.create()
 export default class AddSwitch extends Component {
   state = {
@@ -18,6 +21,10 @@ export default class AddSwitch extends Component {
   }
 
   componentDidMount() {
+    this.props.dispatch({
+      type: 'regionManagement/getDepartments',
+      payload:{},
+    })
     if (this.props.location.pathname === '/infrastructure/editSwitch') {
       this.setState({
         regoinInfo: this.props.location.state && this.props.location.state.regoinInfo,
@@ -29,9 +36,14 @@ export default class AddSwitch extends Component {
     }
   }
 
-  onChange = () => {}
-
-  onChange1 = () => {}
+  onChange = value => {
+    this.props.dispatch({
+      type: 'regionManagement/getNodes',
+      payload: {
+        deptIds: value.join(','),
+      },
+    })
+  }
 
   handleSubmit = e => {
     e.preventDefault()
@@ -74,6 +86,7 @@ export default class AddSwitch extends Component {
 
   render() {
     const { regoinInfo: { regionName, nodeIds, deptIds, status } } = this.state
+    const { regionManagement: { detpList } } = this.props // eslint-disable-line
     const FormItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -90,55 +103,45 @@ export default class AddSwitch extends Component {
     const treeData = [
       {
         title: '一级机构1',
-        value: '0-0',
-        key: '0-0',
+        value: '1',
         children: [
           {
             title: '二级机构1',
-            value: '0-0-0',
-            key: '0-0-0',
+            value: '2',
           },
           {
             title: '二级机构2',
-            value: '0-0-1',
-            key: '0-0-1',
+            value: '3',
           },
           {
             title: '二级机构3',
-            value: '0-0-2',
-            key: '0-0-2',
+            value: '4',
           },
           {
             title: '二级机构4',
-            value: '0-0-3',
-            key: '0-0-3',
+            value: '5',
           },
         ],
       },
       {
         title: '一级机构2',
-        value: '0-1',
-        key: '0-1',
+        value: '6',
         children: [
           {
             title: '二级机构1',
-            value: '0-1-0',
-            key: '0-1-0',
+            value: '7',
           },
           {
             title: '二级机构2',
-            value: '0-1-1',
-            key: '0-1-1',
+            value: '8',
           },
           {
             title: '二级机构3',
-            value: '0-1-2',
-            key: '0-1-2',
+            value: '9',
           },
           {
             title: '二级机构4',
-            value: '0-1-3',
-            key: '0-1-3',
+            value: '10',
           },
         ],
       },
@@ -147,59 +150,50 @@ export default class AddSwitch extends Component {
       {
         title: '一级节点1',
         value: '0-2',
-        key: '0-2',
         children: [
           {
             title: '二级节点1',
             value: '0-2-0',
-            key: '0-2-0',
           },
           {
             title: '二级节点2',
             value: '0-2-1',
-            key: '0-2-1',
           },
           {
             title: '二级节点3',
             value: '0-2-2',
-            key: '0-2-2',
           },
           {
             title: '二级节点4',
             value: '0-2-3',
-            key: '0-2-3',
           },
         ],
       },
       {
         title: '一级节点2',
         value: '0-3',
-        key: '0-3',
         children: [
           {
             title: '二级节点1',
             value: '0-3-0',
-            key: '0-3-0',
           },
           {
             title: '二级节点2',
             value: '0-3-1',
-            key: '0-3-1',
           },
           {
             title: '二级节点3',
             value: '0-3-2',
-            key: '0-3-2',
           },
           {
             title: '二级节点4',
             value: '0-3-3',
-            key: '0-3-3',
           },
         ],
       },
     ]
     const tProps = {
+      onChange: this.onChange,
       treeData,
       treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,

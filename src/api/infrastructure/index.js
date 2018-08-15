@@ -80,6 +80,15 @@ const module = {
       url: '/regionManager/region',
       method: 'put',
     },
+    {
+      name: 'getDepartments',
+      url: 'getGoveDeptInfos',
+      baseHost: 'http://govecommons.tpaas.youedata.com',
+    },
+    {
+      name: 'getNodesByDepartment',
+      url: '/nodeManager/deptnodes',
+    },
   ],
 }
 module.apis.forEach(item => {

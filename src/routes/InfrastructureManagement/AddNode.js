@@ -45,7 +45,7 @@ export default class AddNode extends Component {
         const body = {
           nodeName: value.name.trim(),
           mac: value.mac.trim(),
-          deptId: +value.deptId,
+          deptId: isNaN(+value.deptId)?undefined:+value.deptId,
           pid: isNaN(+value.pid)?undefined:+value.pid,
           id: this.state.nodeInfo.nodeId,
         }
@@ -102,7 +102,46 @@ export default class AddNode extends Component {
         sm: { span: 10, offset: 7 },
       },
     }
+    // eslint-disable-next-line
     const departmentComs = departmentList.map(item => <Select.Option value={item.key} key={item.key}>{item.value}</Select.Option>)
+    const treeData1 = [
+      {
+        title: '石家庄市',
+        value: '010',
+        children: [
+          {
+            title: '石家庄公安局',
+            value: '0101',
+          },
+          {
+            title: '石家庄检察院',
+            value: '0102',
+          },
+        ],
+      },
+      {
+        title: '衡水市',
+        value: '011',
+        children: [
+          {
+            title: '衡水公安局',
+            value: '0111',
+          },
+          {
+            title: '衡水检察院',
+            value: '0112',
+          },
+          {
+            title: '衡水财政局',
+            value: '0113',
+          },
+        ],
+      },
+      {
+        title: '邯郸市',
+        value: '013',
+      },
+    ]
 
     return (
       <PageHeaderLayout>
@@ -139,7 +178,7 @@ export default class AddNode extends Component {
             </FormItem>
             <FormItem label="所属机构" {...formItemLayout}>
               {getFieldDecorator('deptId', {
-                initialValue: deptId,
+                initialValue: [`${deptId || ''}`],
                 rules: [
                   {
                     required: true,
@@ -147,10 +186,10 @@ export default class AddNode extends Component {
                   },
                 ],
               })(
-                // <TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />
-                <Select placeholder='请选择机构'>
-                  { departmentComs }
-                </Select>
+                <TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />
+                // <Select placeholder='请选择机构'>
+                //   { departmentComs }
+                // </Select>
               )}
             </FormItem>
             <FormItem {...submitLayout}>

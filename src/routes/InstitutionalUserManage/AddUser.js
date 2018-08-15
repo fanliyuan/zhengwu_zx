@@ -39,6 +39,7 @@ function checkedPassword(str) {
 export default class AddUser extends Component {
   state = {
     userInfo:{},
+    // password: '',
   }
 
   componentDidMount() {
@@ -65,25 +66,37 @@ export default class AddUser extends Component {
 
   setPassword = () => {
     this.props.form.setFieldsValue({
-      password: getPassword(),
+      psw: getPassword(),
     })
+    // this.setState({
+    //   password: getPassword(),
+    // })
   }
+
+  // passwrodChange = e => {
+  //   console.log(e.target.value)
+  //   this.props.form.setFieldsValue({
+  //     psw: e.target.value.replace(/./g, '*'),
+  //   })
+  // }
 
   handleCopy = () => {
     copy(this.props.form.getFieldValue('password'))
+    // copy(this.state.password)
     message.success('成功复制')
   }
 
   handleSubmit = e => {
     e.preventDefault()
+    // const { password } = this.state 
     this.props.form.validateFieldsAndScroll((err, value) => {
       if (!err) {
         if (this.props.location.pathname === '/institutionalUserManage/addUser') {
           this.props.dispatch({
             type: 'accounts/addAccount',
             payload: {
-              accountName: value.userName,
-              accountPasswd: sha('sha1').update(value.password).digest('hex'),
+              accountName: value.accountName,
+              accountPasswd: sha('sha1').update(value.psw).digest('hex'),
               telephone: value.tel,
               status: value.status ? 0: 1,
               // JSON转换
@@ -96,8 +109,8 @@ export default class AddUser extends Component {
           })
         } else {
           const body = {
-              accountName: value.userName,
-              accountPasswd: value.password ? sha('sha1').update(value.password).digest('hex') : '',
+              accountName: value.accountName,
+              accountPasswd: value.psw ? sha('sha1').update(value.psw).digest('hex') : '',
               status: value.status ? 0: 1,
               telephone: value.tel,
               extendedProperties: JSON.stringify({ 
@@ -148,8 +161,9 @@ export default class AddUser extends Component {
       <PageHeaderLayout>
         <Card loading={loading}>
           <Form onSubmit={this.handleSubmit}>
+            <input type='password' style={{visibility: 'hidden'}} />
             <FormItem label="用户名" {...formItemLayout}>
-              {getFieldDecorator('userName', {
+              {getFieldDecorator('accountName', {
                 initialValue: accountDetail.accountName,
                 rules: [
                   {
@@ -159,10 +173,10 @@ export default class AddUser extends Component {
                     whitespace: true,
                   },
                 ],
-              })(<Input placeholder="请输入用户名" />)}
+              })(<Input placeholder="请输入用户名" autoComplete='fasle' />)}
             </FormItem>
             <FormItem label="密码" {...formItemLayout}>
-              {getFieldDecorator('password', {
+              {getFieldDecorator('psw', {
                 rules: [
                   {
                     required: this.props.location.pathname !== '/institutionalUserManage/editUser',
@@ -172,7 +186,7 @@ export default class AddUser extends Component {
                     whitespace: true,
                     validator: (rule, value, cb) => {
                       const state = checkedPassword(value)
-                      if (state) {
+                      if (state || value.length < 6 || value.length > 24) {
                         cb('error')
                       } else {
                         cb()
@@ -180,7 +194,7 @@ export default class AddUser extends Component {
                     },
                   },
                 ],
-              })(<Input type='password' placeholder="请输入密码" />)}
+              })(<Input type='password' placeholder="请输入密码" autoComplete='fasle' />)}
               <div>
                 <a className="mr8" onClick={this.setPassword}>
                   随机生成

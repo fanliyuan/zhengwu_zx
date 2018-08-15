@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-13 15:29:55
+ * @Last Modified time: 2018-08-15 15:32:14
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -35,7 +35,7 @@ export default class NodeManagement extends Component {
       nodeName: '',
       mac: undefined,
       pid: [],
-      depId: '全部机构',
+      depId: [],
       nodeState: '全部状态',
     },
     isChanged: false,
@@ -119,8 +119,8 @@ export default class NodeManagement extends Component {
     const queryData = {
       nodeName: nodeName || undefined,
       mac: mac || undefined,
-      pid: pid[pid.length-1],
-      depId: depId === '全部机构' ? undefined : depId,
+      pid: pid.pop(),
+      depId: depId.pop(),
       nodeState: nodeState === '全部状态' ? undefined : nodeState,
     }
     const { dispatch } = this.props
@@ -140,8 +140,8 @@ export default class NodeManagement extends Component {
     const queryData = {
       nodeName: nodeName || undefined,
       mac: mac || undefined,
-      pid: pid[pid.length-1],
-      depId: depId === '全部机构' ? undefined : depId,
+      pid: pid.pop(),
+      depId: depId.pop(),
       nodeState: nodeState === '全部状态' ? undefined : nodeState,
     }
     this.props.dispatch({
@@ -291,9 +291,48 @@ export default class NodeManagement extends Component {
         </Select.Option>
       )
     })
+    // eslint-disable-next-line
     const departmentComs = departmentList.map(item => (
       <Select.Option value={item.key} key={item.key}>{item.value}</Select.Option>
     ))
+    const organizationList = [
+      {
+        label: '石家庄市',
+        value: '010',
+        children: [
+          {
+            label: '石家庄公安局',
+            value: '0101',
+          },
+          {
+            label: '石家庄检察院',
+            value: '0102',
+          },
+        ],
+      },
+      {
+        label: '衡水市',
+        value: '011',
+        children: [
+          {
+            label: '衡水公安局',
+            value: '0111',
+          },
+          {
+            label: '衡水检察院',
+            value: '0112',
+          },
+          {
+            label: '衡水财政局',
+            value: '0113',
+          },
+        ],
+      },
+      {
+        label: '邯郸市',
+        value: '013',
+      },
+    ]
     // const MenuComs = (
     //   <Menu onClick={e => this.handleMenuClick(e, selectKeys)}>
     //     <Menu.Item key="1">启动</Menu.Item>
@@ -324,19 +363,21 @@ export default class NodeManagement extends Component {
               onChange={this.handleNodeSelectChange}
               className={styles.parentNode}
               changeOnSelect
+              displayRender={label => label.pop()}
               placeholder="上级节点"
               />
-            {/* <Cascader
+            <Cascader
               options={organizationList}
               value={this.state.queryData.depId}
               onChange={this.handleOrganizationChange}
               className={styles.organization}
               changeOnSelect
+              displayRender={label => label.pop()}
               placeholder="所属机构"
-              /> */}
-            <Select value={this.state.queryData.depId} className={styles.organization} onChange={this.handleOrganizationChange}>
+              />
+            {/* <Select value={this.state.queryData.depId} className={styles.organization} onChange={this.handleOrganizationChange}>
               {departmentComs}
-            </Select>
+            </Select> */}
             <Select
               value={this.state.queryData.nodeState}
               onChange={this.handleStateChange}
