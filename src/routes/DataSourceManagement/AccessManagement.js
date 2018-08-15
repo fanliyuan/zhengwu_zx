@@ -357,7 +357,7 @@ export default class AccessManagement extends Component {
             <Table
               columns={columns}
               dataSource={list}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               rowKey="id"
               bordered
               />

@@ -25,7 +25,6 @@ const roleObject = {
 export default class AssignRole extends Component {
   state = {
     // owingJg: '角色',
-    role: -1,
     status: '-1',
     visible: false,
     isChanged: false,
@@ -76,8 +75,12 @@ export default class AssignRole extends Component {
   }
 
   selectRoleChange = val => {
+    const { queryData } = this.state
     this.setState({
-      role: val,
+      queryData: {
+        ...queryData,
+        accurate: val !== '-2' ? JSON.stringify({roleId: val}) : '',
+      },
       isChanged: true,
     })
   }
@@ -111,9 +114,12 @@ export default class AssignRole extends Component {
       type: 'accounts/getAccounts',
       payload: {
         ...queryData,
-        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${status === '0' || status === '1' && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${(status === '0' || status === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
         `,
       },
+    })
+    this.setState({
+      isChanged: false,
     })
   }
 
@@ -123,7 +129,7 @@ export default class AssignRole extends Component {
       type: 'accounts/getAccounts',
       payload: {
         ...queryData,
-        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${status === '0' || status === '1' && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${(status === '0' || status === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
         `,
         pageSize: pagination.pageSize,
         pageNumber: pagination.current,
@@ -186,7 +192,7 @@ export default class AssignRole extends Component {
 
   render() {
     const that = this
-    const { role, status, visible, queryData: { accountNames, telephone } } = this.state
+    const { status, visible, queryData: { accountNames, telephone } } = this.state
     const { accounts: { accountList, roleNameList, pagination }, roles: { roleList }, loading } = this.props
     // const data = [
     //   { value: '0', id: 0, label: '所属机构' },
@@ -219,7 +225,7 @@ export default class AssignRole extends Component {
       pre[cur.id] = cur.rolename
       return pre
     },{})
-    const selectData1 = [...data1, {id: -1, value: -1, label: '所有角色'}, {id: -2, value: -2, label: '未分配角色'}].map(item => {
+    const selectData1 = [...data1, {id: -2, value: '-2', label: '所有角色'}, {id: -1, value: '0', label: '未分配角色'}].map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
           {item.label}
@@ -301,7 +307,7 @@ export default class AssignRole extends Component {
             <Input value={telephone} placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} />
             <Select
               style={{ marginRight: 20, width: 120 }}
-              value={role}
+              defaultValue='-2'
               onChange={this.selectRoleChange}
               >
               {selectData1}
@@ -314,7 +320,7 @@ export default class AssignRole extends Component {
               {selectData2}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 250 }} onChange={this.dateChange} />
-            <Button type="primary">搜索</Button>
+            <Button type="primary" onClick={this.handleSearch}>搜索</Button>
           </div>
           {/* <div className={styles.createBtn}>
             <Button icon="plus" type="primary">新建</Button>
@@ -323,7 +329,7 @@ export default class AssignRole extends Component {
             <Table
               columns={columns}
               dataSource={accountList}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               loading={loading}
               onChange={this.tableChange}
               rowKey="accountId"

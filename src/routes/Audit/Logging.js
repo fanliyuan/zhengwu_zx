@@ -195,7 +195,7 @@ export default class Logging extends Component {
           <div>
             <Table
               dataSource={list}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               columns={columns}
               onChange={this.handleTableChange}
               loading={loading}

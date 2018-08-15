@@ -297,7 +297,7 @@ export default class MenuManagement extends Component {
               columns={columns}
               dataSource={data}
               // rowSelection={rowSelection}
-              // pagination={pagination}
+              // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               // loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}

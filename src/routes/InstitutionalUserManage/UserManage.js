@@ -342,7 +342,7 @@ export default class UserManage extends Component {
             <Table
               columns={columns}
               dataSource={accountList}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               onChange={this.tableChange}
               rowKey="accountId"
               bordered

@@ -230,7 +230,7 @@ export default class InputDataInfo extends Component {
                 <Table
                   columns={columns}
                   dataSource={list}
-                  pagination={pagination}
+                  pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                   // rowSelection={rowSelection}
                   rowKey="id"
                   bordered
@@ -243,7 +243,7 @@ export default class InputDataInfo extends Component {
                 <Table
                   columns={columns1}
                   dataSource={list1}
-                  pagination={pagination}
+                  pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                   // rowSelection={rowSelection}
                   rowKey="id"
                   bordered

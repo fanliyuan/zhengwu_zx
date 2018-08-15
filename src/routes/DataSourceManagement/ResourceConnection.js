@@ -361,7 +361,7 @@ export default class ResourceConnection extends Component {
             <Table
               columns={columns}
               dataSource={list}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               rowKey="id"
               bordered
               />
@@ -390,7 +390,7 @@ export default class ResourceConnection extends Component {
             <Table
               columns={columnsModal1}
               dataSource={listModal1}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               rowKey="id"
               bordered
               />
@@ -405,7 +405,7 @@ export default class ResourceConnection extends Component {
             <Table
               columns={columnsModal2}
               dataSource={listModal2}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               rowKey="id"
               bordered
               />

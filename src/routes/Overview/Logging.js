@@ -185,7 +185,7 @@ export default class Log extends Component {
               bordered
               columns={columns}
               dataSource={data}
-              pagination={pagination}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               loading={loading}
               rowKey="id"
               onChange={this.handleStandardTableChange}
