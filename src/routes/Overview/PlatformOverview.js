@@ -5,6 +5,7 @@ import numeral from 'numeral'
 
 import styles from './PlatformOverview.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import img from '../../assets/platOvewview.png'
 
 export default class PlatformOverview extends Component {
   state = {}
@@ -132,7 +133,7 @@ export default class PlatformOverview extends Component {
                 />
               <div style={{ height: '300px', textAlign: 'center' }}>
                 <h3 style={{ textAlign: 'left' }}>交换任务</h3>
-                <img src="/src/assets/platOvewview.png" alt="交换任务" />
+                <img src={img} alt="交换任务" />
               </div>
               <div style={{ padding: '0 24px' }}>
                 <h3>实施传输</h3>

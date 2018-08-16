@@ -1,4 +1,5 @@
 import apis from '../api'
+import logo from '../assets/logo.svg'
 
 const { getAccountInfo } = apis 
 
@@ -26,7 +27,7 @@ export default {
             type: 'saveCurrentUser',
             payload: {
               name: JSON.parse(response.result.datas.extendedProperties).name || response.result.datas.accountName,
-              avatar: JSON.parse(response.result.datas.extendedProperties).avatar || '/src/assets/logo.svg',
+              avatar: JSON.parse(response.result.datas.extendedProperties).avatar || logo,
             },
           })
         }
@@ -35,7 +36,7 @@ export default {
           type: 'saveCurrentUser',
           payload: {
             name: '获取姓名错误',
-            avatar: '/src/assets/logo.svg',
+            avatar: logo,
           },
         })
        // eslint-disable-next-line 
