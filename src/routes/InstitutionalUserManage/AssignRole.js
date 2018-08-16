@@ -141,7 +141,7 @@ export default class AssignRole extends Component {
     this.setState({
       visible: true,
       userId: row.accountId,
-      roleId: null,
+      roleId: JSON.parse(row.extendedProperties).roleId,
     })
   }
 
@@ -215,8 +215,8 @@ export default class AssignRole extends Component {
         return pre
       }
       pre.push({
-        id: cur.id,
-        value: cur.id,
+        id: `${cur.id}`,
+        value: `${cur.id}`,
         label: roleObject[cur.rolename],
       })
      return pre 
@@ -288,9 +288,11 @@ export default class AssignRole extends Component {
         render: (_, row) => {
           return (
             <div>
-              <span className={styles.editBtn} onClick={() => that.showModal(row)}>
+              {row.role === '管理员' ? (<span style={{color: 'silver', cursor: 'no-drop'}}>不可修改</span>) : (
+                <span className={styles.editBtn} onClick={() => that.showModal(row)}>
                 分配角色
-              </span>
+                </span>
+              )}
             </div>
           )
         },
