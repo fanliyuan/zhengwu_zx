@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-15 21:48:41
+ * @Last Modified time: 2018-08-16 14:31:54
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -24,19 +24,6 @@ import {
 
 import styles from './NodeManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-
-// eslint-disable-next-line
-function template() {
-  const arr = [[{"pid_7":7,"pname_7":"测试7","cdata":[{"cname_0":"测试12","cid_0":12},{"cid_1":14,"cname_1":"测试14"}]}],[{"pid_30":30,"pname_30":"测试30","cdata":[{"cname_0":"测试25","cid_0":25},{"cid_1":26,"cname_1":"测试26"},{"cid_2":27,"cname_2":"测试27"},{"cname_3":"测试28","cid_3":28},{"cname_4":"测试29","cid_4":29},{"cid_5":31,"cname_5":"测试31"},{"cid_6":32,"cname_6":"测试32"},{"cname_7":"测试33","cid_7":33}]}],[{"pid_40":40,"pname_40":"测试40","cdata":[{"cname_0":"测试34","cid_0":34},{"cid_1":35,"cname_1":"测试35"},{"cid_2":36,"cname_2":"测试36"},{"cname_3":"测试37","cid_3":37},{"cname_4":"测试38","cid_4":38}]}],[{"pname_32":"测试32","pid_32":32,"cdata":[{"cname_0":"测试41","cid_0":41},{"cid_1":42,"cname_1":"测试42"}]}],[{"pname_35":"测试35","pid_35":35,"cdata":[{"cname_0":"测试43","cid_0":43},{"cid_1":44,"cname_1":"测试44"},{"cid_2":46,"cname_2":"测试46"}]}],[{"pname_0":"测试47","pid_0":47},{"pname_1":"测试48","pid_1":48},{"pid_2":51,"pname_2":"stone_dept"}]]
-  const data = arr.reduce((pre, cur) => {
-    cur.forEach(item => {
-      pre.push(item)
-    })
-  return pre 
-  }, [])
-  // eslint-disable-next-line
-  console.log(JSON.parse(JSON.stringify(data).replace(/_\d+":/g, '":').replace(/[p||c]/g, '').replace(/id/g, 'value').replace(/name/g, 'title').replace(/data/g, 'children')))
-}
 
 @connect(({ nodeManagement, loading }) => ({
   nodeManagement,
@@ -132,8 +119,8 @@ export default class NodeManagement extends Component {
     const queryData = {
       nodeName: nodeName || undefined,
       mac: mac || undefined,
-      pid: pid.pop(),
-      depId: depId.pop(),
+      pid: [...pid].pop(),
+      depId: [...depId].pop(),
       nodeState: nodeState === '全部状态' ? undefined : nodeState,
     }
     const { dispatch } = this.props
@@ -305,47 +292,47 @@ export default class NodeManagement extends Component {
       )
     })
     // eslint-disable-next-line
-    const departmentComs = departmentList.map(item => (
-      <Select.Option value={item.key} key={item.key}>{item.value}</Select.Option>
-    ))
-    const organizationList = [
-      {
-        label: '石家庄市',
-        value: '010',
-        children: [
-          {
-            label: '石家庄公安局',
-            value: '0101',
-          },
-          {
-            label: '石家庄检察院',
-            value: '0102',
-          },
-        ],
-      },
-      {
-        label: '衡水市',
-        value: '011',
-        children: [
-          {
-            label: '衡水公安局',
-            value: '0111',
-          },
-          {
-            label: '衡水检察院',
-            value: '0112',
-          },
-          {
-            label: '衡水财政局',
-            value: '0113',
-          },
-        ],
-      },
-      {
-        label: '邯郸市',
-        value: '013',
-      },
-    ]
+    // const departmentComs = departmentList.map(item => (
+    //   <Select.Option value={item.key} key={item.key}>{item.value}</Select.Option>
+    // ))
+    // const organizationList = [
+    //   {
+    //     label: '石家庄市',
+    //     value: '010',
+    //     children: [
+    //       {
+    //         label: '石家庄公安局',
+    //         value: '0101',
+    //       },
+    //       {
+    //         label: '石家庄检察院',
+    //         value: '0102',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     label: '衡水市',
+    //     value: '011',
+    //     children: [
+    //       {
+    //         label: '衡水公安局',
+    //         value: '0111',
+    //       },
+    //       {
+    //         label: '衡水检察院',
+    //         value: '0112',
+    //       },
+    //       {
+    //         label: '衡水财政局',
+    //         value: '0113',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     label: '邯郸市',
+    //     value: '013',
+    //   },
+    // ]
     // const MenuComs = (
     //   <Menu onClick={e => this.handleMenuClick(e, selectKeys)}>
     //     <Menu.Item key="1">启动</Menu.Item>
@@ -376,16 +363,16 @@ export default class NodeManagement extends Component {
               onChange={this.handleNodeSelectChange}
               className={styles.parentNode}
               changeOnSelect
-              displayRender={label => label.pop()}
+              displayRender={label => [...label].pop()}
               placeholder="上级节点"
               />
             <Cascader
-              options={organizationList}
+              options={departmentList}
               value={this.state.queryData.depId}
               onChange={this.handleOrganizationChange}
               className={styles.organization}
               changeOnSelect
-              displayRender={label => label.pop()}
+              displayRender={label => [...label].pop()}
               placeholder="所属机构"
               />
             {/* <Select value={this.state.queryData.depId} className={styles.organization} onChange={this.handleOrganizationChange}>

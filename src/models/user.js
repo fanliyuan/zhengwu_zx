@@ -10,7 +10,7 @@ export default {
     currentUser: {
       avatar: "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png",
       name: "Serati Ma",
-      notifyCount: 12,
+      notifyCount: 0,
       userid: "00000001",
     },
   },
@@ -26,6 +26,7 @@ export default {
             type: 'saveCurrentUser',
             payload: {
               name: JSON.parse(response.result.datas.extendedProperties).name || response.result.datas.accountName,
+              avatar: JSON.parse(response.result.datas.extendedProperties).avatar || '/src/assets/logo.svg',
             },
           })
         }
@@ -34,6 +35,7 @@ export default {
           type: 'saveCurrentUser',
           payload: {
             name: '获取姓名错误',
+            avatar: '/src/assets/logo.svg',
           },
         })
        // eslint-disable-next-line 

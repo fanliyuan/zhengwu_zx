@@ -22,6 +22,7 @@ function number2String(params) {
     pagination: false,
     parentNodeList: [],
     parentNodeListT: [],
+    departmentListT: [],
     departmentList: [],
   },
 
@@ -81,14 +82,17 @@ function number2String(params) {
       let response
       try {
         response = yield call(getDepartments, {})
-        response.result.unshift({key: '全部机构', value: '全部机构'})
-        if (+response.code === 0) {
+        // response.data.list.unshift({key: '全部机构', value: '全部机构'})
+        if (+response.code === 200) {
           yield put({
             type: 'changeDepartmentList',
             payload: {
-              departmentList: response.result,
+              departmentList: number2String(JSON.parse(JSON.stringify(response.data.list).replace(/title/g, 'label'))),
+              departmentListT: number2String(response.data.list),
             },
-          })
+          }) 
+        } else {
+          throw new Error('非200')
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -96,7 +100,7 @@ function number2String(params) {
         yield put({
           type: 'changeDepartmentList',
           payload: {
-            departmentList: [{key: '全部机构', value: '全部机构'}],
+            departmentListT: [],
           },
         })
       }
@@ -166,9 +170,10 @@ function number2String(params) {
         parentNodeListT,
       }
     },
-    changeDepartmentList(state, { payload: { departmentList } }) {
+    changeDepartmentList(state, { payload: { departmentListT, departmentList } }) {
       return {
         ...state,
+        departmentListT,
         departmentList,
       }
     },

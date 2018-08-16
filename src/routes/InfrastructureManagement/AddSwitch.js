@@ -56,9 +56,9 @@ export default class AddSwitch extends Component {
       // console.log(value)
       const body = {
         regionName: value.regionName,
-        regionId: value.regionId ? +value.regionId : undefined,
-        nodeIds: value.nodeIds.map(item => ~~item),
-        deptIds: value.deptIds.map(item => ~~item),
+        regionId: this.state.regoinInfo.regionId ? +this.state.regoinInfo.regionId : undefined,
+        nodeIds: value.nodeIds.map(item => +item),
+        deptIds: value.deptIds.map(item => +item),
         status: value.status ? 1 : 0,
         desc: value.desc,
       }
@@ -86,7 +86,7 @@ export default class AddSwitch extends Component {
 
   render() {
     const { regoinInfo: { regionName, nodeIds, deptIds, status } } = this.state
-    const { regionManagement: { detpList } } = this.props // eslint-disable-line
+    const { regionManagement: { deptList, nodeListT } } = this.props // eslint-disable-line
     const FormItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -100,101 +100,9 @@ export default class AddSwitch extends Component {
       },
     }
     const { getFieldDecorator, getFieldValue } = this.props.form
-    const treeData = [
-      {
-        title: '一级机构1',
-        value: '1',
-        children: [
-          {
-            title: '二级机构1',
-            value: '2',
-          },
-          {
-            title: '二级机构2',
-            value: '3',
-          },
-          {
-            title: '二级机构3',
-            value: '4',
-          },
-          {
-            title: '二级机构4',
-            value: '5',
-          },
-        ],
-      },
-      {
-        title: '一级机构2',
-        value: '6',
-        children: [
-          {
-            title: '二级机构1',
-            value: '7',
-          },
-          {
-            title: '二级机构2',
-            value: '8',
-          },
-          {
-            title: '二级机构3',
-            value: '9',
-          },
-          {
-            title: '二级机构4',
-            value: '10',
-          },
-        ],
-      },
-    ]
-    const treeData1 = [
-      {
-        title: '一级节点1',
-        value: '0-2',
-        children: [
-          {
-            title: '二级节点1',
-            value: '0-2-0',
-          },
-          {
-            title: '二级节点2',
-            value: '0-2-1',
-          },
-          {
-            title: '二级节点3',
-            value: '0-2-2',
-          },
-          {
-            title: '二级节点4',
-            value: '0-2-3',
-          },
-        ],
-      },
-      {
-        title: '一级节点2',
-        value: '0-3',
-        children: [
-          {
-            title: '二级节点1',
-            value: '0-3-0',
-          },
-          {
-            title: '二级节点2',
-            value: '0-3-1',
-          },
-          {
-            title: '二级节点3',
-            value: '0-3-2',
-          },
-          {
-            title: '二级节点4',
-            value: '0-3-3',
-          },
-        ],
-      },
-    ]
     const tProps = {
       onChange: this.onChange,
-      treeData,
+      treeData: deptList,
       treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
       searchPlaceholder: '请选择业务范围机构',
@@ -203,7 +111,7 @@ export default class AddSwitch extends Component {
       },
     }
     const tProps1 = {
-      treeData: treeData1,
+      treeData: nodeListT,
       treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
       searchPlaceholder: '请选择业务范围节点',

@@ -199,3 +199,18 @@ export function format24(time) {
     return +date
   }
 }
+
+/**
+ * 将对象的value转换为字符串格式[{value: 1}] => [{value: '1'}]
+ * @param {Array} params 数组
+ * @returns {Array}
+ */
+export function number2String(params) {
+  return params.map((item) => {
+    if ((!Array.isArray(item.children)) || item.children.length === 0) {
+      return {...item, value: `${item.value}`}
+    } else {
+      return {...item, value: `${item.value}`, children: number2String(item.children)}
+    }
+  })
+}
