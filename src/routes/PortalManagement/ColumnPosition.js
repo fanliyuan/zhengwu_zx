@@ -62,6 +62,7 @@ export default class ColumnPosition extends Component {
     edit: '',
     editShow: false,
     loading: false,
+    editId:-1,
   }
 
   componentDidMount = () => {
@@ -123,23 +124,26 @@ export default class ColumnPosition extends Component {
     this.setState({
       editShow: true,
       edit: row.columnName,
+      editId:row.columnId,
     })
     this.props.form.setFieldsValue({
       edit: row.columnName,
     })
   }
 
-  // editChange = (e) => {
-  //   this.setState({
-  //     edit: e.target.value,
-  //   })
-  // }
   editSubmit = () => {
-    this.props.form.validateFields((errors) => {
+    this.props.form.validateFields((errors,value) => {
       if (!errors) {
         this.setState({
           loading: true,
           editShow: false,
+        })
+        const operator = localStorage.getItem("accountName")
+        const { dispatch } = this.props
+        const { editId } = this.state
+        dispatch({
+          type:'columnPosition/updateItem',
+          payload:{columnName:value.edit,columnId:editId,columnPname:operator},
         })
         setTimeout(() => {
           this.setState({

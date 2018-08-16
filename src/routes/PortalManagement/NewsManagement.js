@@ -10,6 +10,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
 import { DatePicker, Input, Button, Table, Modal, Form, Popconfirm } from 'antd'
 import moment from 'moment'
+import { format0, format24 } from '../../utils/utils'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './NewsManagement.less'
@@ -98,12 +99,8 @@ export default class NewsManagement extends Component {
     })
     dispatch({
       type:'newsManagement/querysCatagory',
-      payload:{...pagination,categoryName:name, categoryPname:operator,createTime:dateRange[0],updateTime:dateRange[1]},
+      payload:{...pagination,categoryName:name, categoryPname:operator,createTime:format0(+dateRange[0]),updateTime:format24(+dateRange[1])},
     })
-    // dispatch({
-    //   type: 'overviewLogging/log',
-    //   payload: { query: { ...query, date: dateRange }, pagination },
-    // });
   }
 
   handleStandardTableChange = pagination => {
