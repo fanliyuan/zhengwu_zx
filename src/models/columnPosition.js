@@ -1,11 +1,12 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { columnList, updateColumnInfo} = apis
+const { columnList, updateColumnInfo, selectColumnPage} = apis
 export default {
   namespace:'columnPosition',
   state:{
     list:[],
+    pageList:[],
   },
   effects:{
     *queryList({ payload },{ call, put }){
@@ -36,7 +37,20 @@ export default {
           })
         }
       }catch(error){
-        message.error(error)
+        console.log(error) // eslint-disable-line
+      }
+    },
+    *selectColumnPage({ payload }, { call, put }){
+      const response = yield call(selectColumnPage,{ params:payload })
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'columnPage',
+            payload:response.result.datas,
+          })
+        }
+      }catch(err){
+        console.log(err) // eslint-disable-line
       }
     },
   },
@@ -45,6 +59,12 @@ export default {
       return {
         ...state,
         list:payload,
+      }
+    },
+    columnPage(state, { payload }){
+      return {
+        ...state,
+        pageList:payload,
       }
     },
   },

@@ -46,11 +46,16 @@ const module = {
     url:'updateColumnInfo',
     method:'post',
    },
+   {
+    name:'selectColumnPage',
+    url:'selectColumnPage',
+    method:'get',
+   },
   ],
 }
 module.apis.forEach(item => {
   if(!item.baseHost){
-    item.baseHost = 'http://192.168.100.16:8804' // http://testgoveportalback.tpaas.youedata.com
+    item.baseHost = 'http://testgoveportalback.tpaas.youedata.com' // http://testgoveportalback.tpaas.youedata.com
   }
 })
 

@@ -12,17 +12,18 @@ export default {
   },
   effects:{
     *querysCatagory({ payload }, { call, put }){
-      const response = yield call(categoryList, { body:payload })
-      const pagination = response.result.total > 9 ? {current:response.result.pageNum,pageSize:response.result.pageSize,total:response.result.total} : false
+      const response = yield call(categoryList, { body:payload })  
       try{
+        const pagination = response.result.total > 9 ? {current:response.result.pageNum,pageSize:response.result.pageSize,total:response.result.total} : false
         yield put({
           type:'querys',
           payload:{list:response.result.datas,pagination},
         })
       }catch(err){
+        console.log(err) // eslint-disable-line
         yield put({
           type:'querys',
-          payload:[],
+          payload:{list:[],pagination:false},
         })
       }
     },
