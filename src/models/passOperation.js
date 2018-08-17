@@ -83,8 +83,8 @@ export default {
     },
     *getTargetNode ({ payload }, { call, put }){
       const response = yield call(targetNode,{ params:payload })
-      response.result.unshift({key:-1,value:'目标节点'})
       try{
+        response.result.unshift({key:-1,value:'目标节点'})
         yield put({
           type:'targetNode',
           payload:response.result,
