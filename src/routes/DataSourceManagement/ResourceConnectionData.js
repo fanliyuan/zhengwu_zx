@@ -704,7 +704,7 @@ export default class ResourceConnectionData extends Component {
             </div>
             <div>
               <h3>
-                数据 共<span className={styles.spe}>32</span>行
+                数据项 共<span className={styles.spe}>32</span>行
               </h3>
               <Table
                 columns={columns3}

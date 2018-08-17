@@ -17,7 +17,7 @@ import styles from './ColumnPosition.less'
 @Form.create()
 @connect(({columnPosition,loading}) => ({
   columnPosition,
-  loading:loading.effects['columnPosition/queryList'],
+  loadingTable:loading.effects['columnPosition/queryList'],
 }))
 export default class ColumnPosition extends Component {
   state = {
@@ -30,7 +30,6 @@ export default class ColumnPosition extends Component {
     isChange: false,
     edit: '',
     editShow: false,
-    loading: false,
     editId:-1,
   }
 
@@ -123,7 +122,6 @@ export default class ColumnPosition extends Component {
     this.props.form.validateFields((errors,value) => {
       if (!errors) {
         this.setState({
-          loading: true,
           editShow: false,
         })
         const operator = localStorage.getItem("accountName")
@@ -133,11 +131,6 @@ export default class ColumnPosition extends Component {
           type:'columnPosition/updateItem',
           payload:{columnPage:value.edit,columnId:editId,columnPname:operator},
         })
-        setTimeout(() => {
-          this.setState({
-            loading: false,
-          })
-        }, 1000)
       }
     })
   }
@@ -147,10 +140,9 @@ export default class ColumnPosition extends Component {
       query: { page, operator, time },
       edit,
       editShow,
-      loading,
     } = this.state
     const { getFieldDecorator } = this.props.form
-    const { columnPosition:{list,pageList} } = this.props
+    const { columnPosition:{list,pageList}, loadingTable } = this.props
     // const pageList = pageData
     const colums = [
       {
@@ -239,7 +231,7 @@ export default class ColumnPosition extends Component {
             pagination={false}
             rowKey="columnId"
             bordered
-            loading={loading}
+            loading={loadingTable}
             />
           <Modal
             visible={editShow}
