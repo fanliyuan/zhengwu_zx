@@ -36,28 +36,57 @@ export default {
         console.log(error) // eslint-disable-line
       }
     },
-    *searchList({ payload },{ call, put }){
+    *searchList({ payload },{ call, put, select }){
       const response = yield call(searchColumn,{body:payload})
+      const pageList = yield select(state => state.columnPosition.pageList)
+      const selectPageName = (arr,ids) => {
+        const name = arr.filter(item => {
+          return +item.columnId === +ids
+        })
+        return name[0].columnPage
+      }
       try{
         if(+response.code === 0){
+          let list
           message.success(`搜索${response.msg}`)
-          const list = response.result.datas.map(item => {
-            return {
-              ...item,
-              name:item.columnPage,
-              children:item.children.map(items => {
+          if(payload.columnPage === ""){
+            list = response.result.datas.map(item => {
+              if(+item.columnPid === 0){
                 return {
-                  ...items,
-                  name:items.columnPage,
-                  columnPage:item.columnPage,
-                  children:null,
+                  ...item,
+                  name:item.columnPage,
                 }
-              }),
-            }
-          })
+              }
+              else {
+                return {
+                  ...item,
+                  name:item.columnPage,
+                  columnPage:selectPageName(pageList,item.columnPid),
+                }
+              }
+            })
+          }
+          else {
+            const colPageName = pageList.filter(item => {
+              return +item.columnId === +payload.columnPage
+            })
+            list = response.result.datas.map(item => {
+              return {
+                ...item,
+                name:item.columnPage,
+                columnPage:colPageName[0].columnPage,
+              }
+            })
+          }
           yield put({
             type:'columnPositions',
             payload:list,
+          })
+        }
+        else {
+          yield put({
+            type:'columnPositions',
+            payload:[],
           })
         }
       }catch(error){
@@ -83,6 +112,7 @@ export default {
       const response = yield call(selectColumnPage)
       try{
         if(+response.code === 0){
+          response.result.datas.unshift({columnId:-1,columnPage:'功能页面'})
           yield put({
             type:'columnPage',
             payload:response.result.datas,

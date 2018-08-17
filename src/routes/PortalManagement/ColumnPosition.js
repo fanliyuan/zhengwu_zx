@@ -23,7 +23,7 @@ export default class ColumnPosition extends Component {
   state = {
     query: {
       name: '',
-      page: '功能页面',
+      page: -1,
       operator: '',
       time: [],
     },
@@ -91,7 +91,7 @@ export default class ColumnPosition extends Component {
     if (!this.state.isChange) {
       return false
     }
-    const { query:{ name,page,operator,time } } = this.state
+    const { query:{ page,operator,time } } = this.state
     const times = time.map(item => {
       if(moment.isMoment(item)){
         return item.format('x')
@@ -100,10 +100,11 @@ export default class ColumnPosition extends Component {
         return ''
       }
     })
+    const pages = page === -1 ? '' : page
     const { dispatch } = this.props
     dispatch({
       type:'columnPosition/searchList',
-      payload:{columnName:name,columnPage:page, columnPname:operator, pageNum:0,pageSize:0,createTime:format0(+times[0]),updateTime:format24(+times[1])},
+      payload:{columnPage:pages, columnPname:operator, pageNum:0,pageSize:0,createTime:format0(+times[0]),updateTime:format24(+times[1])},
     })
   }
 
@@ -143,7 +144,7 @@ export default class ColumnPosition extends Component {
 
   render() {
     const {
-      query: { name, page, operator, time },
+      query: { page, operator, time },
       edit,
       editShow,
       loading,
@@ -176,8 +177,8 @@ export default class ColumnPosition extends Component {
       {
         title: '操作时间',
         dataIndex: 'updateTime',
-        reunder(text){
-          return (moment(text).format("lll"))
+        render(text){
+          return (moment(+text).format("lll"))
         },
       },
       {
@@ -208,13 +209,13 @@ export default class ColumnPosition extends Component {
       <PageHeaderLayout>
         <div className="common-layout">
           <Form className="mb16">
-            <Input
+            {/* <Input
               value={name}
               onChange={this.nameChange}
               className={styles.input}
               placeholder="栏目名称"
-              />
-            <Select value={page} onChange={this.pageChange} className={styles.input}>
+              /> */}
+            <Select value={page} onChange={this.pageChange} className={styles.input} placeholder="功能页面">
               {pageComs}
             </Select>
             <Input
