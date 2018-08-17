@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-16 14:31:54
+ * @Last Modified time: 2018-08-17 13:43:14
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -147,7 +147,7 @@ export default class NodeManagement extends Component {
     this.props.dispatch({
       type: 'nodeManagement/getNodes',
       payload: {
-        queryData,
+        ...queryData,
         ...{pageSize: pagination.pageSize, pageNumber: pagination.current},
       },
     })

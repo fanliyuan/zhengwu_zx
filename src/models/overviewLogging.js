@@ -1,19 +1,32 @@
 import moment from 'moment'
+import apis from '../api'
 
-import { getLog, getLogState } from '../api/test'
+const { getLoginLogging } = apis
 
 export default {
   namespace: 'overviewLogging',
+
   state: {
-    data: [],
-    pagination: {},
+    loggingList: [],
+    pagination: false,
     stateList: [],
+    queryData: {},
   },
+
   effects: {
-    *state(_, obj) {
-      const { call, put } = obj
-      const response = yield call(getLogState)
-      response.unshift({ value: -1, label: '全部结果' })
+    *state(_, { put }) {
+      // const response = yield call(getLogState)
+      const response = [
+        {
+          value: '1',
+          label: '登陆成功',
+        },
+        {
+          value: '0',
+          label: '登陆失败',
+        },
+      ]
+      response.unshift({ value: '-1', label: '全部结果' })
       yield put({
         type: 'savestate',
         payload: response,
@@ -21,29 +34,56 @@ export default {
     },
     *log({ payload }, { call, put, select, take }) {
       let stateList = yield select(state => state.overviewLogging.stateList)
-      const response = yield call(getLog, payload)
+      // 保存和获取查询参数
+      if (payload) {
+        yield put({
+          type: 'saveQueryData',
+          payload,
+        })
+      } else {
+        payload = yield select(state => state.overviewLogging.queryData)
+      }
+      const response = yield call(getLoginLogging, { params: payload.params })
+      // 获取状态表
       if (!stateList.length) {
         yield put({ type: 'state' })
         yield take('state/@@end')
         stateList = yield select(state => state.overviewLogging.stateList)
       }
-      const stateObject = stateList.reduce((pre, cur) => {
-        pre[cur.value] = cur.label // eslint-disable-line
-        return pre
-      }, {})
-      response.data = response.data.map(item => {
-        return {
-          ...item,
-          result: stateObject[item.result],
-          time: moment(item.time, 'x').format('LLL'),
+      // 将状态数组转换为状态对象,方便后面取值
+      // const stateObject = stateList.reduce((pre, cur) => {
+      //   pre[cur.value] = cur.label // eslint-disable-line
+      //   return pre
+      // }, {})
+      // 遍历返回结果加工数据
+      // response.data = response.data.map(item => {
+      //   return {
+      //     ...item,
+      //     result: stateObject[item.result],
+      //     time: moment(item.time, 'x').format('LLL'),
+      //   }
+      // })
+      try {
+        const pagination = response.data.total > (payload && payload.params && payload.params.pageSize || 10) ? { total: response.data.total, pageSize: response.data.pageSize, current: response.data.pageNumber } : false
+        response.data.list.forEach(item => {
+          item.createTime = moment(item.creatTime).format('lll')
+        })
+        if (+response.code === 200) {
+          yield put({
+            type: 'save',
+            payload: {
+              pagination,
+              loggingList: response.data.list,
+            },
+          })
         }
-      })
-      yield put({
-        type: 'save',
-        payload: response,
-      })
+      } catch (error) {
+       // eslint-disable-next-line 
+       console.log(error)
+      }
     },
   },
+
   reducers: {
     savestate(state, action) {
       return {
@@ -51,10 +91,16 @@ export default {
         stateList: action.payload,
       }
     },
-    save(state, action) {
+    save(state, {payload}) {
       return {
         ...state,
-        ...action.payload,
+        ...payload,
+      }
+    },
+    saveQueryData(state, { payload }) {
+      return {
+        ...state,
+        queryData: payload,
       }
     },
   },
