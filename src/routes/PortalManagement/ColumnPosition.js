@@ -6,49 +6,18 @@
  * @描述: 开放门户管理 -- 栏目管理 -- 栏目位置
 */
 import React, { Component } from 'react'
-import { Form, Input, Select, DatePicker, Button, Table, message, Modal } from 'antd'
+import { Form, Input, Select, DatePicker, Button, Table, Modal } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
+import { format0, format24 } from '../../utils/utils'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './ColumnPosition.less'
 
-const pageData = [
-  // {
-  //   value: 0,
-  //   label: '功能页面',
-  // },
-  {
-    value: 1,
-    label: '首页',
-  },
-  {
-    value: 2,
-    label: '开放动态',
-  },
-  {
-    value: 3,
-    label: '目录资源',
-  },
-]
-
-const pageTemp = pageData.map(item => item.label)
-
-const data = []
-for (let i = 1; i < 132; i++) {
-  data.push({
-    id: i,
-    name: `重要新闻${i}`,
-    page: pageTemp[Math.floor(Math.random() * 4)],
-    position: i,
-    operator: `操作人${i}`,
-    time: moment(+Date.now() - 3600000 * i).format('lll'),
-  })
-}
-
 @Form.create()
-@connect(({columnPosition}) => ({
+@connect(({columnPosition,loading}) => ({
   columnPosition,
+  loading:loading.effects['columnPosition/queryList'],
 }))
 export default class ColumnPosition extends Component {
   state = {
@@ -71,6 +40,10 @@ export default class ColumnPosition extends Component {
     dispatch({
       type:'columnPosition/queryList',
       payload:{...pagination},
+    })
+    dispatch({
+      type:'columnPosition/selectColumnPage',
+      // payload:{},
     })
   }
 
@@ -110,6 +83,7 @@ export default class ColumnPosition extends Component {
         ...this.state.query, // eslint-disable-line
         time: value,
       },
+      isChange: true,
     })
   }
 
@@ -117,17 +91,30 @@ export default class ColumnPosition extends Component {
     if (!this.state.isChange) {
       return false
     }
-    message.success('搜索')
+    const { query:{ name,page,operator,time } } = this.state
+    const times = time.map(item => {
+      if(moment.isMoment(item)){
+        return item.format('x')
+      }
+      else {
+        return ''
+      }
+    })
+    const { dispatch } = this.props
+    dispatch({
+      type:'columnPosition/searchList',
+      payload:{columnName:name,columnPage:page, columnPname:operator, pageNum:0,pageSize:0,createTime:format0(+times[0]),updateTime:format24(+times[1])},
+    })
   }
 
   editName = row => {
     this.setState({
       editShow: true,
-      edit: row.columnName,
+      edit: row.name,
       editId:row.columnId,
     })
     this.props.form.setFieldsValue({
-      edit: row.columnName,
+      edit: row.name,
     })
   }
 
@@ -143,7 +130,7 @@ export default class ColumnPosition extends Component {
         const { editId } = this.state
         dispatch({
           type:'columnPosition/updateItem',
-          payload:{columnName:value.edit,columnId:editId,columnPname:operator},
+          payload:{columnPage:value.edit,columnId:editId,columnPname:operator},
         })
         setTimeout(() => {
           this.setState({
@@ -162,8 +149,8 @@ export default class ColumnPosition extends Component {
       loading,
     } = this.state
     const { getFieldDecorator } = this.props.form
-    const { columnPosition:{list} } = this.props
-    const pageList = pageData
+    const { columnPosition:{list,pageList} } = this.props
+    // const pageList = pageData
     const colums = [
       {
         title: '序号',
@@ -172,7 +159,7 @@ export default class ColumnPosition extends Component {
       },
       {
         title: '栏目名称',
-        dataIndex: 'columnName',
+        dataIndex: 'name',
       },
       {
         title: '所属功能页面',
@@ -197,7 +184,12 @@ export default class ColumnPosition extends Component {
         title: '操作',
         // dataIndex: 'operation',
         render: (text, row) => {
-          return <a onClick={() => this.editName(row)}>修改</a>
+         if(row.children){
+          return <span className={styles.disableEdit}>修改</span>
+         }
+         else {
+          return <span onClick={() => this.editName(row)} className={styles.noramlEdit}>修改</span>
+         }
         },
       },
     ]
@@ -207,8 +199,8 @@ export default class ColumnPosition extends Component {
     colums[0].align="left"
 
     const pageComs = pageList.map(item => (
-      <Select.Option value={item.value} key={item.value}>
-        {item.label}
+      <Select.Option value={item.columnId} key={item.columnId}>
+        {item.columnPage}
       </Select.Option>
     ))
 

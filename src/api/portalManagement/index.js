@@ -51,6 +51,11 @@ const module = {
     url:'selectColumnPage',
     method:'get',
    },
+   {
+    name:'searchColumn',
+    url:'searchColumn',
+    method:'post',
+   },
   ],
 }
 module.apis.forEach(item => {
