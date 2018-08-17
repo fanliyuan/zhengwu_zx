@@ -284,14 +284,16 @@ export default class UserManage extends Component {
           } else {
             return (
               <div>
-                <span className={styles.editBtn} onClick={() => this.handleStatus(text, row)}>
-                  {row.status ? '停用' : '启用'}
-                </span>
+                <Popconfirm onConfirm={() => this.handleStatus(text, row)} title={`${!row.status?'启用后当前用户可登陆系统,您是否确认启用当前用户?':'停用后当前用户不可登陆,您是否确认停用当前用户'}`}>
+                  <span className={styles.editBtn}>
+                    {row.status ? '停用' : '启用'}
+                  </span>
+                </Popconfirm>
                 <span className={styles.editBtn} onClick={() => that.handleEdit(row)}>
                   修改
                 </span>
                 <Popconfirm
-                  title={`是否要刪除${row.name}?`}
+                  title={`您是否确认删除${row.name}?`}
                   onConfirm={() => this.handleDelete(row)}
                   >
                   <a style={{ marginRight: 20 }}>删除</a>

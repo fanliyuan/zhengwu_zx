@@ -83,6 +83,9 @@ export default class AccessManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/ftp'))
   }
 
+  handleSearch = () => {
+  }
+
   render() {
     const that = this
     const { dataType, creater, isNodeOperator } = this.state
@@ -339,12 +342,12 @@ export default class AccessManagement extends Component {
             <Select value={dataType} onChange={this.selectDataTypeChange} className={styles.select}>
               {selectData}
             </Select>
-            {!isNodeOperator && <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />}
+            {!isNodeOperator && <Cascader options={options} placeholder="所属节点" displayRender={label => label.pop()} style={{ marginRight: 16 }} />}
             <Select value={creater} onChange={this.selectCreaterChange} className={styles.select}>
               {selectData3}
             </Select>
             <RangePicker className={styles.picker} />
-            <Button type="primary">搜索</Button>
+            <Button type="primary" onClick={this.handleSearch}>搜索</Button>
           </div>
           {isNodeOperator && (
             <div className={styles.createBtn}>

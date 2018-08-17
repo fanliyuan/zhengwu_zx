@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Link } from 'dva/router'
-import { Card, Input, Button, Form, TreeSelect, Select } from 'antd'
+import { Card, Input, Button, Form, TreeSelect } from 'antd'
 
 // import styles from './AddNode.less';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -72,7 +72,7 @@ export default class AddNode extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const { nodeManagement: { parentNodeListT, departmentList } } = this.props
+    const { nodeManagement: { parentNodeListT, departmentListT } } = this.props
     const { nodeInfo: {nodeName, mac, deptId, parentNodeName} } = this.state
     // const role = [
     //   { value: '0', label: '某某机构', id: '0' },
@@ -103,45 +103,7 @@ export default class AddNode extends Component {
       },
     }
     // eslint-disable-next-line
-    const departmentComs = departmentList.map(item => <Select.Option value={item.key} key={item.key}>{item.value}</Select.Option>)
-    const treeData1 = [
-      {
-        title: '石家庄市',
-        value: '010',
-        children: [
-          {
-            title: '石家庄公安局',
-            value: '0101',
-          },
-          {
-            title: '石家庄检察院',
-            value: '0102',
-          },
-        ],
-      },
-      {
-        title: '衡水市',
-        value: '011',
-        children: [
-          {
-            title: '衡水公安局',
-            value: '0111',
-          },
-          {
-            title: '衡水检察院',
-            value: '0112',
-          },
-          {
-            title: '衡水财政局',
-            value: '0113',
-          },
-        ],
-      },
-      {
-        title: '邯郸市',
-        value: '013',
-      },
-    ]
+    // const departmentComs = departmentList.map(item => <Select.Option value={item.key} key={item.key}>{item.value}</Select.Option>)
 
     return (
       <PageHeaderLayout>
@@ -186,7 +148,7 @@ export default class AddNode extends Component {
                   },
                 ],
               })(
-                <TreeSelect treeData={treeData1} placeholder="请选择节点" treeDefaultExpandAll allowClear />
+                <TreeSelect treeData={departmentListT} placeholder="请选择机构" treeDefaultExpandAll allowClear />
                 // <Select placeholder='请选择机构'>
                 //   { departmentComs }
                 // </Select>

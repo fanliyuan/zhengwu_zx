@@ -2,6 +2,8 @@ import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 import apis from '../api'
 
+import { number2String } from '../utils/utils'
+
 const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addRegion, editRegion, getDepartments, getNodesByDepartment } = apis
  export default {
   namespace:'regionManagement',
@@ -11,7 +13,7 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
     pagination: false,
     nodeList: [],
     queryData: {},
-    detpList: [],
+    deptList: [],
     nodeListT: [],
   },
 
@@ -146,11 +148,11 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
       let response
       try {
         response = yield call(getDepartments, {})
-        if (+response.code === 0) {
+        if (+response.code === 200) {
           yield put({
             type: 'changeDeptList',
             payload: {
-              detpList: response.result.datas,
+              deptList: number2String(response.data.list),
             },
           })
         }
@@ -160,7 +162,7 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
         yield put({
           type: 'changeDeptList',
           payload: {
-            detpList: [],
+            deptList: [],
           },
         })
       }
@@ -173,7 +175,7 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
           yield put({
             type: 'changeNodeListT',
             payload: {
-              nodeListT: response.result.datas,
+              nodeListT: number2String(JSON.parse(JSON.stringify(Object.values(response.result).reduce((pre, cur) => [...pre, ...cur],[])).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children'))),
             },
           })
         }
@@ -210,13 +212,13 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
         queryData: payload,
       }
     },
-    changeDeptList(state, { payload: detpList }) {
+    changeDeptList(state, { payload: {deptList} }) {
       return {
         ...state,
-        detpList,
+        deptList,
       }
     },
-    changeNodeListT(state, { payload: nodeListT }) {
+    changeNodeListT(state, { payload: {nodeListT} }) {
       return {
         ...state,
         nodeListT,
