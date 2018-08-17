@@ -17,69 +17,77 @@ const { Option } = Select
 }))
 export default class Log extends Component {
   state = {
-    IPValue: '',
-    state: -1,
-    date: [],
+    queryData: {
+      time: [],
+    },
     isChanged: false,
   }
 
   componentDidMount() {
     const { dispatch } = this.props
-    const { date } = this.state
+    // const { date } = this.state
 
-    const dateRange = date.map(item => {
-      if (moment.isMoment(item)) {
-        return +item.format('x')
-      } else {
-        return 0
-      }
-    })
+    // const dateRange = date.map(item => {
+    //   if (moment.isMoment(item)) {
+    //     return +item.format('x')
+    //   } else {
+    //     return 0
+    //   }
+    // })
 
     dispatch({
       type: 'overviewLogging/log',
       payload: {
-        query: { ...this.state, date: dateRange },
-        pagination: { pageSize: 10, current: 1 },
+        params: {
+          pageNum: 1,
+          pageSize: 10,
+        },
       },
     })
   }
 
   handleIPChange = e => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        ipAddress: e.target.value.trim(),
+      },
       isChanged: true,
-    })
-    this.setState({
-      IPValue: e.target.value.trim(),
     })
   }
 
   handSelectChange = val => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        logStatus: val === '全部状态' ? '-1' : val,
+      },
       isChanged: true,
-    })
-    this.setState({
-      state: val,
     })
   }
 
   handlePick = val => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        time: val,
+      },
       isChanged: true,
-    })
-    this.setState({
-      date: val,
     })
   }
 
   handleSearch = () => {
-    if (!this.state.isChanged) return // eslint-disable-line
+    if (!this.state.isChanged) return null
     const { dispatch } = this.props
-    const query = this.state
+    const { queryData } = this.state
     const pagination = {
-      current: 1,
+      pageNum: 1,
       pageSize: 10,
     }
-    const dateRange = query.date.map(item => {
+    const dateRange = queryData.time.map(item => {
       if (moment.isMoment(item)) {
         return +item.format('x')
       } else {
@@ -91,16 +99,24 @@ export default class Log extends Component {
     })
     dispatch({
       type: 'overviewLogging/log',
-      payload: { query: { ...query, date: dateRange }, pagination },
+      payload: {
+        params: {
+          ipAddress: queryData.ipAddress,
+          logStatus: queryData.logStatus,
+          startTime: dateRange.shift(),
+          endTime: dateRange.pop(),
+          ...pagination,
+        },
+      },
     })
   }
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
-    const query = this.state
+    const { queryData } = this.state
     const { dispatch } = this.props
 
-    const dateRange = query.date.map(item => {
+    const dateRange = queryData.time.map(item => {
       if (moment.isMoment(item)) {
         return +item.format('x')
       } else {
@@ -110,30 +126,38 @@ export default class Log extends Component {
 
     dispatch({
       type: 'overviewLogging/log',
-      payload: { query: { ...query, date: dateRange }, pagination },
+      payload: {
+        params: {
+          ipAddress: queryData.ipAddress,
+          logStatus: queryData.logStatus,
+          startTime: dateRange.shift(),
+          endTime: dateRange.pop(),
+          pageNum: pagination.current,
+          pageSize: pagination.pageSize,
+        },
+      },
     })
   }
 
   render() {
-    const { IPValue, date, state } = this.state
     const {
-      overviewLogging: { data, pagination, stateList },
+      overviewLogging: { loggingList, pagination, stateList },
       loading,
     } = this.props
     const columns = [
       {
         title: 'ID',
-        dataIndex: 'id',
+        dataIndex: 'logId',
         align: 'center',
       },
       {
         title: '登录时间',
-        dataIndex: 'time',
+        dataIndex: 'createTime',
         align: 'center',
       },
       {
         title: '登录IP',
-        dataIndex: 'ip',
+        dataIndex: 'logIpAddress',
         align: 'center',
       },
       {
@@ -156,7 +180,6 @@ export default class Log extends Component {
         <div className={styles.layout}>
           <div className={styles.search}>
             <RangePicker
-              value={date}
               className={styles.picker}
               onChange={this.handlePick}
               style={{ widht: 200, marginRight: 20 }}
@@ -164,13 +187,12 @@ export default class Log extends Component {
             <Input
               className={styles.IPInput}
               placeholder="IP地址"
-              value={IPValue}
               onPressEnter={this.handleSearch}
               onChange={this.handleIPChange}
               style={{ marginRight: 20 }}
               />
             <Select
-              value={state}
+              defaultValue='全部状态'
               onChange={this.handSelectChange}
               style={{ width: 112, marginRight: 20 }}
               >
@@ -184,10 +206,10 @@ export default class Log extends Component {
             <Table
               bordered
               columns={columns}
-              dataSource={data}
+              dataSource={loggingList}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               loading={loading}
-              rowKey="id"
+              rowKey="logId"
               onChange={this.handleStandardTableChange}
               />
           </div>

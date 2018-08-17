@@ -12,6 +12,7 @@ import roleModule from './role'
 import InstitutionalUserManage  from './InstitutionalUserManage'
 import pass  from './infrastructure'
 import portalManagement  from './portalManagement'
+import overview from './overview'
 
 class ApiSub extends apiBase {
   constructor (module) {
@@ -27,4 +28,5 @@ export default {
   ...apiFactory(new ApiSub(pass)),
   ...apiFactory(new ApiSub(InstitutionalUserManage)),
   ...apiFactory(new ApiSub(portalManagement)),
+  ...apiFactory(new ApiSub(overview)),
 }
