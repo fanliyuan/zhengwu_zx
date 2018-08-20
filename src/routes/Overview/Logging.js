@@ -41,6 +41,7 @@ export default class Log extends Component {
         params: {
           pageNum: 1,
           pageSize: 10,
+          createUser: localStorage.getItem('accountRealName'),
         },
       },
     })
@@ -62,7 +63,7 @@ export default class Log extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        logStatus: val === '全部状态' ? '-1' : val,
+        logStatus: val === '全部状态' ? undefined : val,
       },
       isChanged: true,
     })
@@ -105,6 +106,7 @@ export default class Log extends Component {
           logStatus: queryData.logStatus,
           startTime: dateRange.shift(),
           endTime: dateRange.pop(),
+          createUser: localStorage.getItem('accountRealName'),
           ...pagination,
         },
       },
@@ -134,6 +136,7 @@ export default class Log extends Component {
           endTime: dateRange.pop(),
           pageNum: pagination.current,
           pageSize: pagination.pageSize,
+          createUser: localStorage.getItem('accountRealName'),
         },
       },
     })

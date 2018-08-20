@@ -2,12 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-06 13:51:58
+ * @Last Modified time: 2018-08-20 17:46:40
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  */
 import React, { Component, Fragment } from 'react'
-import { Link, routerRedux } from 'dva/router'
+import { Link } from 'dva/router'
 import { Form, Input, Select, Upload, Modal, Button, Icon, Radio, message } from 'antd'
 import ReactQuill from 'react-quill'
 import { connect } from 'dva'
@@ -106,8 +106,9 @@ const base64UrlToUrl = (value, delta, _this) => {
 }
 
 @Form.create()
-@connect(({ addArtice }) => ({
-  addArtice,
+@connect(({ articleLibrary, loading }) => ({
+  articleLibrary,
+  loading: loading.models.articleLibrary,
 }))
 export default class AddArticle extends Component {
   state = {
@@ -122,6 +123,21 @@ export default class AddArticle extends Component {
   }
 
   componentDidMount() {
+    if (this.props.location.pathname === '/portalManagement/AddArticle') {
+     this.props.dispatch({
+       type: 'articleLibrary/saveArticleInfo',
+       payload: {},
+     })
+    } else {
+      this.props.dispatch({
+        type: 'articleLibrary/getArticleInfo',
+        payload: {
+          params: {
+            articleId: this.props.location.state.articleId,
+          },
+        },
+      })
+    }
   }
 
   // eslint-disable-next-line
@@ -152,10 +168,23 @@ export default class AddArticle extends Component {
     //   saveVisible: true,
     // })
     const { dispatch } = this.props
+    const { quillText, articleData } = this.state
     // 这里是base64的正则,提交前需要保证所有地址被替换,也就是需要个标识符,代表是否已经提交
     const base64Reg = /src="data:image\/[a-z]{3,4};base64,.*"/
     console.log(base64Reg.test('<p>111<img src="data:image/jpeg;base64,/1231231231321">'))// eslint-disable-line
-    dispatch(routerRedux.push('/portalManagement/newsLibrary'))
+    if (this.props.location.pathname === '/portalManagement/AddArticle') {
+      console.log('新增')// eslint-disable-line
+    } else {
+      dispatch({
+        type: 'articleLibrary/updateArticle',
+        payload: {
+          body: {
+            articleContent: quillText,
+            ...articleData,
+          },
+        },
+      })
+    }
   }
 
   saveCancel = () => {
@@ -167,6 +196,7 @@ export default class AddArticle extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { fileList, previewImage, previewVisible, saveVisible } = this.state
+    const { articleLibrary: { articleInfo } } = this.props
     const quillModules = {
       toolbar: [
         [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -251,7 +281,7 @@ export default class AddArticle extends Component {
           <Form>
             <Item label="标题" {...formItemLayout}>
               {getFieldDecorator('title', {
-                initialValue: this.state.articleData.title,
+                initialValue: articleInfo.articleTitle,
                 rules: [
                   {
                     required: true,
@@ -262,7 +292,7 @@ export default class AddArticle extends Component {
             </Item>
             <Item label="关键字" {...formItemLayout}>
               {getFieldDecorator('keyWord', {
-                initialValue: this.state.articleData.keyWords,
+                initialValue: articleInfo.keyWords,
                 rules: [
                   {
                     required: true,
@@ -273,7 +303,7 @@ export default class AddArticle extends Component {
             </Item>
             <Item label="分类" {...formItemLayout}>
               {getFieldDecorator('classify', {
-                initialValue: this.state.articleData.classify,
+                initialValue: articleInfo.classify,
                 rules: [
                   {
                     required: true,
@@ -289,7 +319,7 @@ export default class AddArticle extends Component {
             </Item>
             <Item label="来源" {...formItemLayout}>
               {getFieldDecorator('origin', {
-                initialValue: this.state.articleData.origin,
+                initialValue: articleInfo.origin,
                 rules: [
                   {
                     required: true,
@@ -321,7 +351,8 @@ export default class AddArticle extends Component {
             </Item>
             <Item label="内容" {...formItemLayout}>
               {<ReactQuill
-                value={this.state.quillText}
+                // value={this.state.quillText}
+                defaultValue={articleInfo.articleTitle}
                 modules={quillModules}
                 onChange={this.handleQuillChange}
                 className={styles.quill}

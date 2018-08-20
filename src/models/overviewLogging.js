@@ -64,7 +64,7 @@ export default {
       //   }
       // })
       try {
-        const pagination = response.data.total > (payload && payload.params && payload.params.pageSize || 10) ? { total: response.data.total, pageSize: response.data.pageSize, current: response.data.pageNumber } : false
+        const pagination = response.data.total > (payload && payload.params && payload.params.pageSize || 10) ? { total: response.data.total, pageSize: response.data.pageSize, current: response.data.pageNum } : false
         response.data.list.forEach(item => {
           item.createTime = moment(item.creatTime).format('lll')
         })

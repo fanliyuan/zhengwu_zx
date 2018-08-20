@@ -56,6 +56,29 @@ const module = {
     url:'searchColumn',
     method:'post',
    },
+   {
+     name:'getArticles',
+     url: 'articleList',
+     method: 'post',
+   },
+   {
+     name: 'deleteArticle',
+     url: 'deleteArticle',
+   },
+   {
+     name: 'insertArticle',
+     url: 'insertArticle',
+     method: 'post',
+   },
+   {
+     name: 'getArticleInfo',
+     url: 'getArticleInfo',
+   },
+   {
+     name: 'updateArticle',
+     url:  'updateArticle',
+     method: 'post',
+   },
   ],
 }
 module.apis.forEach(item => {

@@ -23,6 +23,7 @@ export default {
       try {
         response = yield call(getAccountInfo, {path: localStorage.getItem('accountId')})
         if (+response.code === 0) {
+          localStorage.setItem('accountRealName', JSON.parse(response.result.datas.extendedProperties).name || response.result.datas.accountName)
           yield put({
             type: 'saveCurrentUser',
             payload: {
