@@ -41,7 +41,9 @@ export default class AssignRole extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: 'accounts/getAccounts',
-      payload: {},
+      payload: {
+        filter: 'status =0 OR status = 1',
+      },
     })
     if (this.props.roles.roleList.length < 1) {
       this.props.dispatch({
@@ -114,8 +116,9 @@ export default class AssignRole extends Component {
       type: 'accounts/getAccounts',
       payload: {
         ...queryData,
-        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${(status === '0' || status === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        filter: `${status !== '0' && status !== '1' ? 'status =0 OR status = 1':`status=${status}`}${(status === '0' || status === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
         `,
+        // filter: [`${status !== '0' || '1' || '2'}`, `${!createTime[0] ? '' : `create_time=${format0((+createTime[0]).format('x'))}`}`, `${!createTime[1] ? '' : `create_time<${format24(+createTime[1].format('x'))}`}`].filter(item => item).join(' and '),
       },
     })
     this.setState({
@@ -129,7 +132,7 @@ export default class AssignRole extends Component {
       type: 'accounts/getAccounts',
       payload: {
         ...queryData,
-        filter: `${status !== '0' && status !== '1' ? '':`status=${status}`}${(status === '0' || status === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        filter: `${status !== '0' && status !== '1' ? 'status =0 OR status = 1':`status=${status}`}${(status === '0' || status === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
         `,
         pageSize: pagination.pageSize,
         pageNumber: pagination.current,

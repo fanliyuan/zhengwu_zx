@@ -454,7 +454,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/Publication')),
     },
     '/portalManagement/newsLibrary': {
-      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/NewsLibrary')),
+      component: dynamicWrapper(app, ['articleLibrary'], () => import('../routes/PortalManagement/NewsLibrary')),
     },
     '/portalManagement/menuManagement': {
       component: dynamicWrapper(app, ['portalManagement'], () => import('../routes/PortalManagement/MenuManagement')),
@@ -467,8 +467,8 @@ export const getRouterData = app => {
     '/portalManagement/addArticle': {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddArticle')),
     },
-    '/portalManagement/editArticle/:id': {
-      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddArticle')),
+    '/portalManagement/editArticle': {
+      component: dynamicWrapper(app, ['articleLibrary'], () => import('../routes/PortalManagement/AddArticle')),
     },
     '/portalManagement/addCarousel': {
       component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddCarousel')),

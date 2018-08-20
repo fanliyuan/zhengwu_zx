@@ -2,13 +2,13 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:07:52
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-08 09:51:55
+ * @Last Modified time: 2018-08-20 17:10:27
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
 import React, { Component, Fragment } from 'react'
-// import { connect } from 'dva';
-import { Link } from 'dva/router'
-import { DatePicker, Input, Select, Button, Table, Popconfirm, message } from 'antd'
+import { connect } from 'dva'
+import { Link, routerRedux } from 'dva/router'
+import { DatePicker, Input, Select, Button, Table, Popconfirm } from 'antd'
 import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -17,84 +17,74 @@ import styles from './NewsLibrary.less'
 const { RangePicker } = DatePicker
 const { Option } = Select
 
-const data = []
-
-for (let i = 0; i < 120; i++) {
-  data.push({
-    id: i,
-    title: '标题' + i, // eslint-disable-line
-    operator: '操作人' + i, // eslint-disable-line
-    type: Math.round(Math.random()) === 0 ? '新闻' : '政策', // eslint-disable-line
-    time: moment(new Date() - 1000 * 60 * 60 * 5 * i, 'x').format('lll'),
-  })
-}
-
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
 //   loading: loading.models.overviewLogging,
 // }))
+@connect(({ articleLibrary, loading }) => ({articleLibrary, loading: loading.models.articleLibrary}))
 export default class NewsLibrary extends Component {
   state = {
-    name: '',
-    operator: '',
-    type: '分类',
-    // subscribe: -1,
-    // audit: -1,
-    date: [],
+    queryData: {},
+    paginationData: false,
     isChanged: false,
   }
 
   componentDidMount() {
-    // const { dispatch } = this.props
-    // const { date } = this.state
-    // const dateRange = date.map((item) => {
-    //   if (moment.isMoment(item)) {
-    //     return +(item.format('x'))
-    //   } else {
-    //     return 0
-    //   }
-    // })
-    // dispatch({
-    //   type: 'overviewLogging/log',
-    //   payload: {query: {...this.state, date: dateRange}, pagination: {pageSize: 10, current: 1}},
-    // })
+    this.props.dispatch({
+      type: 'articleLibrary/getArticles',
+      payload: {
+        body: {
+          pageSize: 10,
+          pageNum: 1,
+        },
+      },
+    })
+    this.props.dispatch({
+      type: 'articleLibrary/getCategories',
+    })
   }
 
   handleNameChange = e => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        articleTitle : e.target.value.trim(),
+      },
       isChanged: true,
-    })
-    this.setState({
-      name: e.target.value.trim(),
     })
   }
 
   handleOperatorChange = e => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        articlePname: e.target.value.trim(),
+      },
       isChanged: true,
-    })
-    this.setState({
-      operator: e.target.value.trim(),
     })
   }
 
-  handleTypeChange = e => {
+  handleTypeChange = value => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        articleFId : value === '全部分类' ? undefined : value,
+      },
       isChanged: true,
-    })
-    this.setState({
-      type: e,
     })
   }
 
-  handleSubscribeChange = () => {
-    this.setState({
-      isChanged: true,
-    })
-    // this.setState({
-    //   subscribe: e,
-    // })
-  }
+  // handleSubscribeChange = () => {
+  //   this.setState({
+  //     isChanged: true,
+  //   })
+  //   // this.setState({
+  //   //   subscribe: e,
+  //   // })
+  // }
 
   handleAuditChange = () => {
     this.setState({
@@ -105,72 +95,88 @@ export default class NewsLibrary extends Component {
     // })
   }
 
-  handlePickChange = val => {
+  handlePickChange = value => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        createTime: value[0] ? value[0].format('x') : 0,
+        updateTime: value[1] ? value[1].format('x') : 0,
+      },
       isChanged: true,
-    })
-    this.setState({
-      date: val,
     })
   }
 
   handleSearch = () => {
     if (!this.state.isChanged) return // eslint-disable-line
-    // const { dispatch } = this.props;
-    // const query = this.state
-    // const pagination = {
-    //   current: 1,
-    //   pageSize: 10,
-    // }
-    // const dateRange = query.date.map((item) => {
-    //   if (moment.isMoment(item)) {
-    //     return +(item.format('x'))
-    //   } else {
-    //     return 0
-    //   }
-    // })
+    const { paginationData, queryData } = this.state
+    const pagination = {
+      pageNum: paginationData.current || 1,
+      pageSize: paginationData.pageSize || 10,
+    }
+    this.props.dispatch({
+      type: 'articleLibrary/getArticles',
+      payload: {
+        body: {
+          ...queryData,
+          ...pagination,
+        },
+      },
+    })
     this.setState({
       isChanged: false,
     })
-    // dispatch({
-    //   type: 'overviewLogging/log',
-    //   payload: { query: { ...query, date: dateRange }, pagination },
-    // });
   }
 
-  handleStandardTableChange = pagination => {// eslint-disable-line
-    // console.log(pagination, filtersArg, sorter)
-    // const query = this.state
-    // const { dispatch } = this.props;
-    // console.log(pagination) // eslint-disable-line
-    // const dateRange = query.date.map((item) => {
-    //   if (moment.isMoment(item)) {
-    //     return +(item.format('x'))
-    //   } else {
-    //     return 0
-    //   }
-    // })
+  handleStandardTableChange = pagination => {
+    const { queryData } = this.state
+    this.setState({
+      paginationData: pagination,
+    })
+    this.props.dispatch({
+      type: 'articleLibrary/getArticles',
+      payload: {
+        body: {
+          ...queryData,
+          ...{
+            pageNum: pagination.current,
+            pageSize: pagination.pageSize,
+          },
+        },
+      },
+    })
+  }
 
-    // dispatch({
-    //   type: 'overviewLogging/log',
-    //   payload: { query: {...query, date: dateRange}, pagination },
-    // });
+  handleEdit = row => {
+    this.props.dispatch(
+      routerRedux.push('/portalManagement/editArticle', {articleId: row.articleId})
+    )
+  }
+
+  handleDelete = row => {
+    this.props.dispatch({
+      type: 'articleLibrary/deleteArticle',
+      payload: {
+        params: {
+          articleId: row.articleId,
+        },
+      },
+    })
   }
 
   render() {
-    const { name, date, type, operator } = this.state
-    // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
+    const { articleLibrary: { articleList, pagination, categoryList }, loading } = this.props
 
-    const typeList = [
-      {
-        value: 0,
-        label: '新闻',
-      },
-      {
-        value: 1,
-        label: '政策',
-      },
-    ]
+    // const typeList = [
+    //   {
+    //     value: 0,
+    //     label: '新闻',
+    //   },
+    //   {
+    //     value: 1,
+    //     label: '政策',
+    //   },
+    // ]
     // const subscribeList = [
     //   {
     //     value: -1,
@@ -207,36 +213,38 @@ export default class NewsLibrary extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: 'articleId',
       },
       {
         title: '标题',
-        dataIndex: 'title',
+        dataIndex: 'articleTitle',
       },
       {
         title: '分类',
-        dataIndex: 'type',
+        dataIndex: 'articleFId',
       },
       {
         title: '操作人',
-        dataIndex: 'operator',
+        dataIndex: 'articlePname',
       },
       {
         title: '操作时间',
-        dataIndex: 'time',
+        dataIndex: 'updateTime',
+        render: (text) => {
+          return <span>{moment(+text).format('lll')}</span>
+        },
       },
       {
         title: '操作',
-        dataIndex: 'operation',
         render: (text, row) => {
           return (
             <Fragment>
-              <Link to={`/portalManagement/editArticle/${row.id}`} className="mr16">
+              <a onClick={() => this.handleEdit(row)} className="mr16">
                 修改
-              </Link>
+              </a>
               <Popconfirm
-                title={`是否要删除${row.title}?`}
-                onConfirm={() => message.success(`${row.title}删除成功`)}
+                title={`是否要删除${row.articleTitle}?`}
+                onConfirm={() => this.handleDelete(row)}
                 >
                 <a>删除</a>
               </Popconfirm>
@@ -250,11 +258,11 @@ export default class NewsLibrary extends Component {
       item.align = 'center'
     })
 
-    const typeComs = typeList.map(item => {
+    const typeComs = categoryList.map(item => {
       // eslint-disable-line
       return (
-        <Option value={item.value} key={item.value}>
-          {item.label}
+        <Option value={item.categoryId} key={item.categoryId}>
+          {item.categoryName}
         </Option>
       )
     })
@@ -281,17 +289,15 @@ export default class NewsLibrary extends Component {
           <div className={styles.search}>
             <Input
               placeholder="名称"
-              value={name}
               onPressEnter={this.handleSearch}
               onChange={this.handleNameChange}
               className={styles.name}
               />
-            <Select value={type} onChange={this.handleTypeChange} className={styles.select}>
+            <Select defaultValue='全部分类' onChange={this.handleTypeChange} className={styles.select}>
               {typeComs}
             </Select>
             <Input
               placeholder="操作人"
-              value={operator}
               onPressEnter={this.handleSearch}
               onChange={this.handleOperatorChange}
               className={styles.name}
@@ -306,7 +312,7 @@ export default class NewsLibrary extends Component {
             <Select value={audit} onChange={this.handleAuditChange} className={styles.select}>
               {auditComs}
             </Select> */}
-            <RangePicker value={date} onChange={this.handlePickChange} className={styles.date} />
+            <RangePicker onChange={this.handlePickChange} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索
             </Button>
@@ -322,10 +328,10 @@ export default class NewsLibrary extends Component {
             <Table
               bordered
               columns={columns}
-              dataSource={data}
-              // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-              // loading={loading}
-              rowKey="id"
+              dataSource={articleList}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+              loading={loading}
+              rowKey="articleId"
               onChange={this.handleStandardTableChange}
               />
           </div>
