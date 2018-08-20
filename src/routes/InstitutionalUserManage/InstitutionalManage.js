@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Card, DatePicker, Cascader } from 'antd'
+import { Table, Button, Input, Card, DatePicker, Cascader, Popconfirm } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -116,9 +116,6 @@ export default class InstitutionalManage extends Component {
       {
         title: '所属省市区',
         dataIndex: 'proCityAreaInfo',
-        render:(text) => {
-          return(`${ text.pro } ${ text.city } ${ text.area }`)
-        },
       },
       {
         title: '更新时间',
@@ -135,7 +132,9 @@ export default class InstitutionalManage extends Component {
               <span className={styles.editBtn} onClick={this.handleEdit.bind(null,row.deptId)}>
                 修改
               </span>
-              <span className={styles.editBtn} style={{ marginRight: 16 }} onClick={this.handleDelete.bind(null,row.deptId)}>删除</span>
+              <Popconfirm title="是否删除当前行" onConfirm={() => this.handleDelete(row.deptId)}>
+                <span className={styles.editBtn} style={{ marginRight: 16 }}>删除</span>
+              </Popconfirm>
             </div>
           )
         },

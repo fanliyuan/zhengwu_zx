@@ -27,10 +27,7 @@ export default {
           })
         }
       }catch(err){
-        yield put({
-          type:'queryInstitution',
-          payload:{list:response.code},
-        })
+        console.log(err) // eslint-disable-line
       }
     },
     *deleteItem ({ payload }, { call, put }){
@@ -39,7 +36,7 @@ export default {
         if(response.code === '200'){
           message.success(response.code)
           yield put({
-            type:'Institution/querys',
+            type:'querys',
             payload:{pageNum:0,pageSize:10},
           })
         }
@@ -56,11 +53,14 @@ export default {
             payload:response,
           })
         }
+        else {
+          yield put({
+            type:'getProvices',
+            payload:[],
+          })  
+        }
       }catch(err){
-        yield put({
-          type:'getProvices',
-          payload:response,
-        })
+        console.log(err) // eslint-disable-line
       }
     },
     *getTwoLevel (_, { call, put }){
