@@ -1,20 +1,25 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Card, DatePicker, Cascader, Popconfirm } from 'antd'
+import { Table, Button, Input, Card, DatePicker, Popconfirm, Select } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
+import { format0, format24 } from '../../utils/utils'
 
 import styles from './InstitutionalManage.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-// const { Option } = Select
+const { Option } = Select
 const { RangePicker } = DatePicker
 @connect(({ Institution }) => ({
   Institution,
 }))
 export default class InstitutionalManage extends Component {
   state = {
-
+    provice:"所属省",
+    city:"所属市",
+    area:"所属区域",
+    institutionName:"",
+    times:[],
   }
 
   componentDidMount = () => {
@@ -68,32 +73,69 @@ export default class InstitutionalManage extends Component {
     })
   }
 
+  handleProChange = (val) => {
+    this.setState({
+      provice:val,
+      city:"所属市",
+      area:"所属区域",
+    })
+    const params = +val === "所属省" ? '' : +val.slice(0,val.indexOf('|'))
+    const { dispatch } = this.props
+    dispatch({
+      type:'Institution/getTwoLevel',
+      payload:{provinceId:params},
+    })
+  }
+
+  handleCityChange = (val) => {
+    this.setState({
+      city:val,
+      area:"所属区域",
+    })
+    const params = +val === "所属市" ? '' : +val.slice(0,val.indexOf('|'))
+    const { dispatch } = this.props
+    dispatch({
+      type:'Institution/getThreeLevel',
+      payload:{cityId:params},
+    })
+  }
+
+  handleAreaChange = (val) => {
+    this.setState({
+      area:val,
+    })
+  }
+
+  handleSearchBtn = () => {
+    const { institutionName, times } = this.state // provice, city, area,
+    // const proCityAreaInfo = provice
+    const timeValue = times.map(item => {
+      if(moment.isMoment(item)){
+        return +(item.format('x'))
+      }
+      else {
+        return ""
+      }
+    })
+    const { dispatch } = this.props
+    dispatch({
+      type:'Institution/querys',
+      payload:{pageNum:1,pageSize:10,deptName:institutionName,startTime:format0(+timeValue[0]),endTime:format24(+timeValue[1])},
+    })
+  }
+
   render() {
-    const { Institution:{list, paginations, provices} } = this.props
-    console.log(provices)
-    const data2 = [
-      {
-        value: '0',
-        label: '河北省',
-        children: [
-          {
-            value: '0-0',
-            label: '保定市',
-            children: [{ value: '0-0-0', label: '涞源县' }, { value: '0-0-1', label: '涞水县' }],
-          },
-          {
-            value: '0-1',
-            label: '唐山市',
-            children: [{ value: '0-1-0', label: '滦县' }, { value: '0-1-1', label: '乐亭县' }],
-          },
-        ],
-      },
-      {
-        value: '1',
-        label: '北京市',
-        children: [{ value: '1-0', label: '丰台区' }, { value: '1-1', label: '海淀区' }],
-      },
-    ]
+    const { city, provice, area, institutionName, times } = this.state
+    const { Institution:{list, paginations, provices, cities, areas} } = this.props
+    const ProData = provices.map(item => {
+      return (<Option value={`${item.provinceId }|${ item.name}`} key={item.id}>{item.name}</Option>)
+    })
+    const cityData = cities.map(item => {
+      return (<Option value={`${ item.cityId}|${item.name }`} key={item.id}>{item.name}</Option>)
+    })
+    const areaData = areas.map(item => {
+      return (<Option value={`${ item.areaId}|${item.name }`} key={item.id}>{item.name}</Option>)
+    })
     // const pagination = { pageSize:10,current:1 }
     const columns = [
       {
@@ -149,10 +191,19 @@ export default class InstitutionalManage extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
-            <Input placeholder="机构名称" style={{ width: 150, marginRight: 20 }} />
-            <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />,
-            <RangePicker style={{ marginRight: 20 }} />
-            <Button type="primary">搜索</Button>
+            <Input placeholder="机构名称" style={{ width: 150, marginRight: 20 }} value={institutionName} />
+            {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
+            <Select value={provice} onChange={this.handleProChange} style={{width:120,marginRight:20}} placeholder="所属省">
+              {ProData}
+            </Select>
+            <Select value={city} onChange={this.handleCityChange} style={{width:120,marginRight:20,display:provice !== "所属省"? 'inline-block' : 'none'}} placeholder="所属市">
+              {cityData}
+            </Select>
+            <Select value={area} onChange={this.handleAreaChange} style={{width:120,marginRight:20,display:city !== "所属市" ? 'inline-block' : 'none'}} placeholder="所属区域">
+              {areaData}
+            </Select>
+            <RangePicker style={{ marginRight: 20, width:200 }} value={times} />
+            <Button type="primary" onClick={this.handleSearchBtn}>搜索</Button>
           </div>
           <div className={styles.createBtn}>
             <Button icon="plus" type="primary" onClick={this.handleAdd}>

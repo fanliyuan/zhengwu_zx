@@ -34,7 +34,7 @@ export default {
       const response = yield call(deleteGoveDept,{params:payload})
       try{
         if(response.code === '200'){
-          message.success(response.code)
+          message.success(response.msg)
           yield put({
             type:'querys',
             payload:{pageNum:0,pageSize:10},
@@ -47,10 +47,11 @@ export default {
     *getOneLevel (_, { call, put }){
       const response = yield call(getProOneLevels)
       try{
+        // response.data.list.unshift({provinceId:-1,id:-1,name:'所属省'})
         if(response.code === '200'){
           yield put({
             type:'getProvices',
-            payload:response,
+            payload:response.data.list,
           })
         }
         else {
@@ -63,35 +64,40 @@ export default {
         console.log(err) // eslint-disable-line
       }
     },
-    *getTwoLevel (_, { call, put }){
-      const response = yield call(getProThreeLevels)
+    *getTwoLevel ({ payload }, { call, put }){
+      const response = yield call(getProTwoLevels,{params:payload})
       try{
+        // response.data.list.unshift({cityId:-1,id:-1,name:'所属市'})
         if(response.code === '200'){
           yield put({
-            type:'getProvices',
-            payload:response,
+            type:'getCities',
+            payload:response.data.list,
+          })
+        }
+        else {
+          yield put({
+            type:'getCities',
+            payload:[],
           })
         }
       }catch(err){
-        yield put({
-          type:'getProvices',
-          payload:response,
-        })
+        console.log(err) //eslint-disable-line
       }
     },
-    *getThreeLevel (_, { call, put }){
-      const response = yield call(getProTwoLevels)
+    *getThreeLevel ({ payload }, { call, put }){
+      const response = yield call(getProThreeLevels,{ params:payload })
       try{
+        // response.data.list.unshift({areaId:-1,id:-1,name:'所属区域'})
         if(response.code === '200'){
           yield put({
-            type:'getcitys',
-            payload:response,
+            type:'getAreas',
+            payload:response.data.list,
           })
         }
       }catch(err){
         yield put({
           type:'getAreas',
-          payload:response,
+          payload:response.data.list,
         })
       }
     },
@@ -116,7 +122,7 @@ export default {
         provices:payload,
       }
     },
-    getcitys(state, {payload}){
+    getCities(state, {payload}){
       return {
         ...state,
         cities:payload,
