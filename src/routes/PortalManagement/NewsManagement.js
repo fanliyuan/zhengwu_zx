@@ -199,7 +199,7 @@ export default class NewsManagement extends Component {
               <a onClick={() => this.handleEdit(row)} className="mr16">
                 修改
               </a>
-              <Popconfirm title="是否删除当前行" onConfirm={() => this.handleDelete(row)}>
+              <Popconfirm title="您是否确认删除此分类" onConfirm={() => this.handleDelete(row)}>
                 <a>删除</a>
               </Popconfirm>
             </Fragment>
