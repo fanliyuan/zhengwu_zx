@@ -4,7 +4,7 @@ import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
 
-const { accountLogin, getRoleName, accountLogout } = apis
+const { accountLogin, getRoleName, accountLogout, insertLogging } = apis
 
 export default {
   namespace: 'login',
@@ -21,10 +21,20 @@ export default {
         response = yield call(accountLogin, {body: payload})
         if (response.code >=11030104 && response.code <=11030105) {
           message.error('用户名或密码错误!')
+          yield call(insertLogging, {body: {
+            createUser: payload.accountName,
+            createTime: Date.now(),
+            logState: 0,
+          }})
           return null
         }
         if (response.code === 11030201) {
           message.error('账号已停用')
+          yield call(insertLogging, {body: {
+            createUser: payload.accountName,
+            createTime: Date.now(),
+            logState: 0,
+          }})
           return null
         }
         const { accountId, accessToken, accountName } = response.result.datas
@@ -41,8 +51,18 @@ export default {
             filter: accountId,
           },
         })
+        yield call(insertLogging, {body: {
+          createUser: payload.accountName,
+          createTime: Date.now(),
+          logState: 1,
+        }})
       } catch (error) {
         message.error('登录失败')
+        yield call(insertLogging, {body: {
+          createUser: payload.accountName,
+          createTime: Date.now(),
+          logState: 0,
+        }})
       } // eslint-disable-line
     },
     *token({ payload }, { call, put }) {

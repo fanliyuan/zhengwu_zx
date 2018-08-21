@@ -26,7 +26,7 @@ export default {
           label: '登陆失败',
         },
       ]
-      response.unshift({ value: '-1', label: '全部结果' })
+      response.unshift({ value: '全部结果', label: '全部结果' })
       yield put({
         type: 'savestate',
         payload: response,
@@ -66,7 +66,7 @@ export default {
       try {
         const pagination = response.data.total > (payload && payload.params && payload.params.pageSize || 10) ? { total: response.data.total, pageSize: response.data.pageSize, current: response.data.pageNum } : false
         response.data.list.forEach(item => {
-          item.createTime = moment(item.creatTime).format('lll')
+          item.createTime = moment(item.createTime).format('lll')
         })
         if (+response.code === 200) {
           yield put({

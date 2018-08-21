@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:07:52
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-20 17:10:27
+ * @Last Modified time: 2018-08-21 16:27:00
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
 import React, { Component, Fragment } from 'react'
@@ -11,6 +11,7 @@ import { Link, routerRedux } from 'dva/router'
 import { DatePicker, Input, Select, Button, Table, Popconfirm } from 'antd'
 import moment from 'moment'
 
+import { format0, format24 } from '../../utils/utils'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './NewsLibrary.less'
 
@@ -71,7 +72,7 @@ export default class NewsLibrary extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        articleFId : value === '全部分类' ? undefined : value,
+        articleFid : value === '全部分类' ? undefined : value,
       },
       isChanged: true,
     })
@@ -100,8 +101,8 @@ export default class NewsLibrary extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        createTime: value[0] ? value[0].format('x') : 0,
-        updateTime: value[1] ? value[1].format('x') : 0,
+        createTime: value[0] ? format0(+value[0].format('x')) : undefined,
+        updateTime: value[1] ? format24(+value[1].format('x')) : undefined,
       },
       isChanged: true,
     })
@@ -167,49 +168,6 @@ export default class NewsLibrary extends Component {
   render() {
     const { articleLibrary: { articleList, pagination, categoryList }, loading } = this.props
 
-    // const typeList = [
-    //   {
-    //     value: 0,
-    //     label: '新闻',
-    //   },
-    //   {
-    //     value: 1,
-    //     label: '政策',
-    //   },
-    // ]
-    // const subscribeList = [
-    //   {
-    //     value: -1,
-    //     label: '全部状态',
-    //   },
-    //   {
-    //     value: 0,
-    //     label: '已授权',
-    //   },
-    //   {
-    //     value: 1,
-    //     label: '未授权',
-    //   },
-    // ]
-    // const auditList = [
-    //   {
-    //     value: -1,
-    //     label: '全部状态',
-    //   },
-    //   {
-    //     value: 0,
-    //     label: '已审核',
-    //   },
-    //   {
-    //     value: 1,
-    //     label: '已拒绝',
-    //   },
-    //   {
-    //     value: 2,
-    //     label: '待审核',
-    //   },
-    // ]
-
     const columns = [
       {
         title: '序号',
@@ -221,7 +179,7 @@ export default class NewsLibrary extends Component {
       },
       {
         title: '分类',
-        dataIndex: 'articleFId',
+        dataIndex: 'articleFname',
       },
       {
         title: '操作人',

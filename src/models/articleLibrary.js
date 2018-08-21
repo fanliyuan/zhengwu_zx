@@ -15,7 +15,7 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
   },
 
   effects:{
-    *getArticles({ payload }, { call, put, selecet }) {
+    *getArticles({ payload }, { call, put, select }) {
       let response
       if (payload) {
         yield put({
@@ -23,7 +23,7 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
           payload,
         })
       } else {
-        payload = yield selecet(state => state.articleLibrary.queryData)
+        payload = yield select(state => state.articleLibrary.queryData)
       }
       try {
         response = yield call(getArticles, {body: payload.body})

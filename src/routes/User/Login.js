@@ -1,3 +1,10 @@
+/*
+ * @Author: ChouEric
+ * @Date: 2018-08-21 16:55:35
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-08-21 16:56:16
+ * @Description: 这里需要个优化,就是密码错误等登录错误需要清除错误密码,后期可能还有验证码的功能
+ */
 import React, { Component } from 'react'
 import { connect } from 'dva'
 // import { Link } from 'dva/router';

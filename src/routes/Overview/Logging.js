@@ -3,10 +3,9 @@ import { connect } from 'dva'
 import { DatePicker, Input, Select, Button, Table } from 'antd'
 import moment from 'moment'
 
-// import { getTimeDistance } from '../../utils/utils'
+import { format0, format24 } from '../../utils/utils'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Logging.less'
-// import { getLogState } from '../../api/test';
 
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -41,7 +40,7 @@ export default class Log extends Component {
         params: {
           pageNum: 1,
           pageSize: 10,
-          createUser: localStorage.getItem('accountRealName'),
+          createUser: localStorage.getItem('accountName'),
         },
       },
     })
@@ -52,7 +51,7 @@ export default class Log extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        ipAddress: e.target.value.trim(),
+        logIpAddress: e.target.value.trim() || undefined,
       },
       isChanged: true,
     })
@@ -63,7 +62,7 @@ export default class Log extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        logStatus: val === '全部状态' ? undefined : val,
+        logState: val === '全部结果' ? undefined : val,
       },
       isChanged: true,
     })
@@ -102,11 +101,11 @@ export default class Log extends Component {
       type: 'overviewLogging/log',
       payload: {
         params: {
-          ipAddress: queryData.ipAddress,
-          logStatus: queryData.logStatus,
-          startTime: dateRange.shift(),
-          endTime: dateRange.pop(),
-          createUser: localStorage.getItem('accountRealName'),
+          logIpAddress: queryData.logIpAddress,
+          logState: queryData.logState,
+          startTime: format0(dateRange.shift()),
+          endTime: format24(dateRange.pop()),
+          createUser: localStorage.getItem('accountName'),
           ...pagination,
         },
       },
@@ -130,13 +129,13 @@ export default class Log extends Component {
       type: 'overviewLogging/log',
       payload: {
         params: {
-          ipAddress: queryData.ipAddress,
-          logStatus: queryData.logStatus,
+          logIpAddress: queryData.logIpAddress,
+          logState: queryData.logState,
           startTime: dateRange.shift(),
           endTime: dateRange.pop(),
           pageNum: pagination.current,
           pageSize: pagination.pageSize,
-          createUser: localStorage.getItem('accountRealName'),
+          createUser: localStorage.getItem('accountName'),
         },
       },
     })
@@ -165,8 +164,11 @@ export default class Log extends Component {
       },
       {
         title: '登录结果',
-        dataIndex: 'result',
+        dataIndex: 'logState',
         align: 'center',
+        render: (text) => {
+          return <span>{text ? '登录成功' : '登录失败'}</span>
+        },
       },
     ]
 
@@ -195,7 +197,7 @@ export default class Log extends Component {
               style={{ marginRight: 20 }}
               />
             <Select
-              defaultValue='全部状态'
+              defaultValue='全部结果'
               onChange={this.handSelectChange}
               style={{ width: 112, marginRight: 20 }}
               >

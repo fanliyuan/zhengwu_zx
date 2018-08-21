@@ -2,12 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:18:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-06 17:49:02
+ * @Last Modified time: 2018-08-21 12:00:18
  * @Description: 全局接口配置
  */
 const baseConfig = {
-  uploadServer: 'http://www.baidu.com',
-  downloadServer: 'http://www.baidu.com',
+  uploadServer: 'http://192.168.100.16:8804',
+  downloadServer: 'http://192.168.100.16:8804',
   apiHost: 'http://api.tpaas.youedata.com',
   projectId: '8aced467f44a4a458e763814912c3d47',
 }
