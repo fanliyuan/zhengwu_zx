@@ -106,12 +106,15 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
         console.log(error)
       }
     },
-    *deleteRegion({ payload }, { call }) {
+    *deleteRegion({ payload }, { call, put }) {
       let response
       try {
         response = yield call(deleteRegion, {path: payload.regionId})
-        if (response.code === 0) {
+        if (+response.code === 0) {
           message.success('交换域删除成功!')
+          yield put({
+            type: 'getRegion',
+          })
         }
       } catch (error) {
         // eslint-disable-next-line

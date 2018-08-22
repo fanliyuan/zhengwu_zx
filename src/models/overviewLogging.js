@@ -19,11 +19,11 @@ export default {
       const response = [
         {
           value: '1',
-          label: '登陆成功',
+          label: '登录成功',
         },
         {
           value: '0',
-          label: '登陆失败',
+          label: '登录失败',
         },
       ]
       response.unshift({ value: '全部结果', label: '全部结果' })

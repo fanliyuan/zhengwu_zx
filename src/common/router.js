@@ -95,7 +95,7 @@ export const getRouterData = app => {
     //   // authority: 'admin',
     // },
     '/audit/logging': {
-      component: dynamicWrapper(app, ['auditLogging'], () => import('../routes/Audit/Logging')),
+      component: dynamicWrapper(app, ['loginAudit'], () => import('../routes/Audit/Logging')),
     },
     '/overview/SystemNotification': {
       component: dynamicWrapper(app, ['SystemNotification'], () =>

@@ -1,123 +1,123 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Form, Input, DatePicker, Select, Button, Table } from 'antd'
+import moment from 'moment'
 
+import { format0, format24 } from '../../utils/utils'
 import styles from './Logging.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const { RangePicker } = DatePicker
 
-@connect(({ auditLogging, loading }) => ({ auditLogging, loading: loading.models.auditLogging }))
+@connect(({ loginAudit, loading }) => ({ loginAudit, loading: loading.models.loginAudit }))
 export default class Logging extends Component {
   state = {
-    query: {
-      account: '',
-      organization: '',
-      ip: '',
-      date: [],
-      state: -1,
-    },
-    pagination: {
-      current: 1,
-      pageSize: 10,
-    },
+    queryData: {},
     isChanged: false,
   }
 
-  async componentDidMount() {
-    const { pagination, query } = this.state
+  componentDidMount() {
     const { dispatch } = this.props
     dispatch({
-      type: 'auditLogging/state',
-    })
-    await dispatch({
-      type: 'auditLogging/organization',
-    })
-    dispatch({
-      type: 'auditLogging/log',
-      payload: { pagination, query },
-    })
+      type: 'loginAudit/getLoginAudit',
+      payload: {
+        params: {
+          pageSize: 10,
+          pageNum: 1,
+        },
+      },
+    },)
   }
 
   handleUserNameChange = e => {
-    const { query } = this.state
+    const { queryData } = this.state
     this.setState({
+      queryData: { ...queryData, createUser: e.target.value.trim() },
       isChanged: true,
-    })
-    this.setState({
-      query: { ...query, account: e.target.value.trim() },
-    })
-  }
-
-  handleOrganizationChange = value => {
-    const { query } = this.state
-    this.setState({
-      isChanged: true,
-    })
-    this.setState({
-      query: { ...query, organization: value },
     })
   }
 
   handleIPChange = e => {
-    const { query } = this.state
+    const { queryData } = this.state
     this.setState({
+      queryData: {...queryData, logIpAddress: e.target.value.trim()},
       isChanged: true,
-    })
-    this.setState({
-      query: { ...query, ip: e.target.value.trim() },
     })
   }
 
   handleDatePickerChange = value => {
-    // const query = { ...this.state.query, date: value.map(item => +item.format('x')) }
-    const { query } = this.state
+    const { queryData } = this.state
     this.setState({
+      queryData: { 
+        ...queryData,
+        time: value,
+      },
       isChanged: true,
-    })
-    this.setState({
-      query: { ...query, date: value.map(item => +item.format('x')) },
     })
   }
 
   handleResultChange = value => {
-    // let query = { ...this.state.query, state: value }
-    const { query } = this.state
+    const { queryData } = this.state
     this.setState({
+      queryData: { ...queryData, logState: value === '全部结果' ? undefined : value },
       isChanged: true,
-    })
-    this.setState({
-      query: { ...query, state: value },
     })
   }
 
   handleSearch = () => {
-    const { pagination, isChanged } = this.state
+    const { isChanged, queryData } = this.state
     if (!isChanged) return
     this.setState({
       isChanged: false,
     })
+    const dateRange = queryData.time.map(item => {
+      if (moment.isMoment(item)) {
+        return +item.format('x')
+      } else {
+        return 0
+      }
+    })
     const { dispatch } = this.props
+    const pagination = {
+      pageSize: 10,
+      pageNum: 1,
+    }
     dispatch({
-      type: 'auditLogging/log',
-      payload: { ...this.state, pagination },
+      type: 'loginAudit/getLoginAudit',
+      payload: {
+        params: {
+          createUser: queryData.createUser || undefined,
+          logIpAddress: queryData.logIpAddress || undefined,
+          logState: queryData.logState || undefined,
+          startTime: format0(dateRange.shift()),
+          endTime: format24(dateRange.pop()),
+          ...pagination,
+        },
+      },
     })
   }
 
   handleTableChange = pagination => {
-    const { query } = this.state
+    const { queryData } = this.state
     const { dispatch } = this.props
     dispatch({
-      type: 'auditLogging/log',
-      payload: { query, pagination },
+      type: 'loginAudit/getLoginAudit',
+      payload: {
+        params: {
+          pageNum: pagination.current,
+          pageSize: pagination.pageSize,
+          ...queryData,
+        },
+      },
     })
   }
 
   render() {
     const {
-      auditLogging: {
+      loginAudit: {
+        loginList,
+        pagination,
         stateList,
-        data: { list, pagination },
       },
       loading,
     } = this.props
@@ -133,7 +133,7 @@ export default class Logging extends Component {
     const columns = [
       {
         title: '用户名',
-        dataIndex: 'account',
+        dataIndex: 'createUser',
         align: 'center',
       },
       {
@@ -141,25 +141,23 @@ export default class Logging extends Component {
         dataIndex: 'name',
         align: 'center',
       },
-      // {
-      //   title: '所属机构',
-      //   dataIndex: 'organization',
-      //   align: 'center',
-      // },
       {
         title: '登录时间',
-        dataIndex: 'time',
+        dataIndex: 'createTime',
         align: 'center',
       },
       {
         title: '登录IP',
-        dataIndex: 'ip',
+        dataIndex: 'logIpAddress',
         align: 'center',
       },
       {
         title: '登录结果',
         dataIndex: 'result',
         align: 'center',
+        render: (text) => {
+          return <span>{text ? '登录成功' : '登录失败'}</span>
+        },
       },
     ]
 
@@ -182,7 +180,7 @@ export default class Logging extends Component {
               />
             <RangePicker onChange={this.handleDatePickerChange} className={styles.date} />
             <Select
-              defaultValue={-1}
+              defaultValue='全部结果'
               onChange={this.handleResultChange}
               style={{ width: 112, marginRight: 10 }}
               >
@@ -194,12 +192,12 @@ export default class Logging extends Component {
           </Form>
           <div>
             <Table
-              dataSource={list}
+              dataSource={loginList}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               columns={columns}
               onChange={this.handleTableChange}
               loading={loading}
-              rowKey="id"
+              rowKey="logId"
               />
           </div>
         </div>

@@ -115,7 +115,8 @@ export default class AddNode extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '请输入节点名称',
+                    message: '请输入正确的节点名称',
+                    max: 20,
                   },
                 ],
               })(<Input placeholder="节点名称" />)}
@@ -126,7 +127,8 @@ export default class AddNode extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '请输入mac地址',
+                    message: '请输入正确的mac地址',
+                    pattern: /^[A-F0-9]{2}(-[A-F0-9]{2}){5}$/,
                   },
                 ],
               })(<Input placeholder="mac地址" />)}
