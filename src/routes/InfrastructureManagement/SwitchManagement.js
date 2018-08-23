@@ -222,7 +222,7 @@ export default class SwitchManagement extends Component {
                 <span className={styles.editBtn} onClick={() => this.handleEdit(row)}>
                   修改
                 </span>
-                <Popconfirm title={`确认是否删除${row.regionName}?`} onConfirm={() => this.handleDelete(row)}>
+                <Popconfirm title="删除后,该域内用户无法实现数据共享,您确认是否删除?" onConfirm={() => this.handleDelete(row)}>
                   <a style={{ marginRight: 10 }}>删除</a>
                 </Popconfirm>
               </div>

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-21 17:54:10
+ * @Last Modified time: 2018-08-22 14:10:07
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -14,6 +14,7 @@ import { Form, Input, Select, Upload, Modal, Button, Icon, message, Tooltip } fr
 import ReactQuill from 'react-quill'
 import { connect } from 'dva'
 import fetch from 'dva/fetch'
+import moment from 'moment'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import config from '../../api/config'
@@ -126,8 +127,11 @@ export default class AddArticle extends Component {
     fileList: [],
     previewVisible: false,
     previewImage: '',
+    previewArticle: false,
     hasSubmit: false,// eslint-disable-line
     coverUrl: '',
+    uploadFileList: [],
+    previewHTML: '',
   }
 
   componentDidMount() {
@@ -209,6 +213,39 @@ export default class AddArticle extends Component {
     })
   }
 
+  handlePreviewArticle = () => {
+    const { quillText } = this.state
+    this.setState({
+      previewArticle: true,
+      previewHTML: quillText.replace(/<p/, `<p class="ql-align-center" style="color:silver;font-size:14px;margin:16px 0;" ><span style="margin-right: 120px" >来源 : ${this.props.form.getFieldValue('articleSource')}</span><span>日期 : ${moment(Date.now()).format('ll')}</span></p><p`),
+    })
+  }
+
+  handlePreviewArticleCancle = () => {
+    this.setState({
+      previewArticle: false,
+    })
+  }
+
+  handleUploadFile = ({ fileList }) => {
+    if (fileList.length !== 0) {
+      this.setState({
+        uploadFileList: fileList.filter(item => item.status === 'done').map(item => {
+          return {
+            name: item.name,
+            lastModifined: item.lastModifined,
+            url: item.response.result.data,
+            lastModifinedPerson: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+          }
+        }),
+      })
+    } else {
+      this.setState({
+        uploadFileList: [],
+      })
+    }
+  }
+
   // saveChange = () => {
   //   this.setState({
   //     saveVisible: true,
@@ -224,45 +261,48 @@ export default class AddArticle extends Component {
   handleSave = () => {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-    const { dispatch } = this.props
-    const { quillText, coverUrl } = this.state
-    // 这里是base64的正则,提交前需要保证所有地址被替换,也就是需要个标识符,代表是否已经提交
-    const base64Reg = /src="data:image\/[a-z]{3,4};base64,.*"/
-    console.log(base64Reg.test('<p>111<img src="data:image/jpeg;base64,/1231231231321">'))// eslint-disable-line
-    if (this.props.location.pathname === '/portalManagement/AddArticle') {
-          // console.log('新增')// eslint-disable-line
+        const { dispatch } = this.props
+        const { quillText, coverUrl, uploadFileList } = this.state
+      values.articleWord = values.articleWord.replace(/；/g, ';').replace(/^;*/, '').replace(/;*$/, '')
+        // 这里是base64的正则,提交前需要保证所有地址被替换,也就是需要个标识符,代表是否已经提交
+        const base64Reg = /src="data:image\/[a-z]{3,4};base64,.*"/
+        console.log(base64Reg.test('<p>111<img src="data:image/jpeg;base64,/1231231231321">'))// eslint-disable-line
+        if (this.props.location.pathname === '/portalManagement/AddArticle') {
+              // console.log('新增')// eslint-disable-line
+              dispatch({
+                type: 'articleLibrary/insertArticle',
+                payload: {
+                  body: {
+                    articleContent: quillText,
+                    ...values,
+                    articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+                    imgPath: coverUrl,
+                    filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
+                  },
+                },
+              })
+        } else {
           dispatch({
-            type: 'articleLibrary/insertArticle',
+            type: 'articleLibrary/updateArticle',
             payload: {
               body: {
                 articleContent: quillText,
                 ...values,
-                articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
-                imgPath: coverUrl,
-              },
-            },
-          })
-    } else {
-      dispatch({
-        type: 'articleLibrary/updateArticle',
-        payload: {
-          body: {
-            articleContent: quillText,
-                ...values,
                 articleId: this.props.location.state.articleId,
                 articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
                 imgPath: coverUrl,
-          },
-        },
-      })
-    }
-  }
+                filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
+              },
+            },
+          })
+        }
+      }
     })
   }
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const { fileList, previewImage, previewVisible } = this.state
+    const { fileList, previewImage, previewVisible, previewArticle, previewHTML } = this.state
     const { articleLibrary: { articleInfo, categoryList } } = this.props
     const quillModules = {
       toolbar: [
@@ -283,7 +323,7 @@ export default class AddArticle extends Component {
         <Link to="/portalManagement/newsLibrary" className={styles.fr}>
           <Button>返回</Button>
         </Link>
-        <Button className={styles.fr}>预览</Button>
+        <Button className={styles.fr} onClick={this.handlePreviewArticle}>预览</Button>
         <Button type="primary" className={styles.fr} onClick={this.handleSave}>
           保存
         </Button>
@@ -308,6 +348,7 @@ export default class AddArticle extends Component {
           <div className="btncls clearfix">{btnComs}</div>
           <Form>
             <Item label="标题" {...formItemLayout}>
+            
               {getFieldDecorator('articleTitle', {
                 initialValue: articleInfo.articleTitle,
                 rules: [
@@ -390,9 +431,9 @@ export default class AddArticle extends Component {
                 <div style={{ color: '#e4393c' }}>说明：单个文件最大不超过100M,最多上传5个文件</div>
               }
               >
-              <Upload action="//jsonplaceholder.typicode.com/posts/">
+              <Upload action={`${uploadServer}/uploadOssFile`} multiple onChange={this.handleUploadFile}>
                 <Button>
-                  <Icon type="upload" /> Upload
+                  <Icon type="upload" /> 上传
                 </Button>
               </Upload>
             </Item>
@@ -422,6 +463,11 @@ export default class AddArticle extends Component {
               </Item>
             </Form>
           </Modal> */}
+          <Modal visible={previewArticle} onCancel={this.handlePreviewArticleCancle} className={styles.preview} footer={null}>
+            <div className='ql-editor'>
+              <div dangerouslySetInnerHTML={{__html: previewHTML}} />
+            </div>
+          </Modal>
         </div>
       </PageHeaderLayout>
     )

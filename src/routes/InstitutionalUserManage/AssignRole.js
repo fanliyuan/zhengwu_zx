@@ -144,7 +144,7 @@ export default class AssignRole extends Component {
     this.setState({
       visible: true,
       userId: row.accountId,
-      roleId: JSON.parse(row.extendedProperties).roleId,
+      roleId: JSON.parse(row.extendedProperties) ? JSON.parse(row.extendedProperties).roleId : undefined,
     })
   }
 
@@ -349,7 +349,7 @@ export default class AssignRole extends Component {
             >
             <RadioGroup value={this.state.roleId} onChange={(e) => this.roleChange(e, roleListObject)}>
               {
-                data1.filter(item => item.label !== '管理员').map(item => (
+                data1.map(item => (
                   <Radio value={item.id} key={item.id}>{item.label}</Radio>
                 ))
               }

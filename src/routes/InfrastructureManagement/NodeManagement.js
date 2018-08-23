@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-17 13:43:14
+ * @Last Modified time: 2018-08-22 17:20:41
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -228,7 +228,7 @@ export default class NodeManagement extends Component {
         dataIndex: 'parentNodeName',
       },
       {
-        title: 'IP地址',
+        title: 'mac地址',
         dataIndex: 'mac',
       },
       {
