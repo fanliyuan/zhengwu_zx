@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-23 15:35:24
+ * @Last Modified time: 2018-08-23 22:00:51
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -79,7 +79,12 @@ const base64UrlToUrl = (value, delta, _this) => {
       ops[ops.length - 1].insert.image
     ) {
       const imgURL = ops[ops.length - 1].insert.image
+  
+      if (!imgURL || imgURL === 'null') {
+        return null
+      }
       const image = convertBase64UrlToBlob(imgURL)
+  
       const formData = new FormData()
       formData.append('file', image, 'image.jpg')
       fetch(uploadURL,{
@@ -133,6 +138,7 @@ export default class AddArticle extends Component {
     // uploadFileList: [],
     previewHTML: '',
     fileResponse: '',
+    timeFlag: undefined,
   }
 
   componentDidMount() {
@@ -275,10 +281,24 @@ export default class AddArticle extends Component {
       if (!err) {
         const { dispatch } = this.props
         const { quillText, coverUrl, fileResponse } = this.state
-      values.articleWord = values.articleWord.replace(/；/g, ';').replace(/^;*/, '').replace(/;*$/, '')
+        values.articleWord = values.articleWord.replace(/；/g, ';').replace(/^;*/, '').replace(/;*$/, '')
         // 这里是base64的正则,提交前需要保证所有地址被替换,也就是需要个标识符,代表是否已经提交
         const base64Reg = /src="data:image\/[a-z]{3,4};base64,.*"/
-        console.log(base64Reg.test('<p>111<img src="data:image/jpeg;base64,/1231231231321">'))// eslint-disable-line
+        // console.log(base64Reg.test('<p>111<img src="data:image/jpeg;base64,/1231231231321">'))// eslint-disable-line
+        if (base64Reg.test(quillText)) {
+          message.error('图片上传中,请勿操作操作页面.')
+          clearInterval(this.state.timeFlag)
+          this.setState({
+            timeFlag: setInterval(() => {
+              if (base64Reg.test(quillText)) {
+                clearInterval(this.state.timeFlag)// eslint-disable-line
+                message.success('图片上传完成')
+                // this.handleSave()
+              }
+            },1000),
+          })
+          return null
+        }
         if (this.props.location.pathname === '/portalManagement/AddArticle') {
               // console.log('新增')// eslint-disable-line
               dispatch({

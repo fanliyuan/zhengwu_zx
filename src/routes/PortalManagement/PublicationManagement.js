@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-23 18:04:30
+ * @Last Modified time: 2018-08-23 20:39:33
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -30,6 +30,17 @@ function getSecondColumn(pid = -1, firstColumn = []) {
   return result
 }
 
+function getParentValue(value, list = []) {
+  let result
+  list.some(item => { // eslint-disable-line
+    if (+item.value === +value) {
+      result = `${item.columnPid}`
+      return true
+    }
+  })
+  return result
+}
+
 @connect(({ articlePublication, loading }) => ({articlePublication, loading: loading.models.articlePublication}))
 @Form.create()
 export default class PublicationManagement extends Component {
@@ -40,6 +51,8 @@ export default class PublicationManagement extends Component {
     secondColumn: [],
     firstColumnValue: undefined,
     secondColumnValue: undefined,
+    articleTopState: undefined,
+    articleHotState: undefined,
   }
 
   componentDidMount() {
@@ -177,6 +190,10 @@ export default class PublicationManagement extends Component {
   firstColumnChange = (value,firstColumn) => {
     this.setState({
       secondColumn: getSecondColumn(value,firstColumn),
+    }, () => {
+      this.setState({
+        secondColumnValue: [...this.state.secondColumn].pop().value,// eslint-disable-line
+      })
     })
   }
 
@@ -185,20 +202,32 @@ export default class PublicationManagement extends Component {
     message.success('复制成功')
   }
 
-  handleSet = row => {
+  handleSet = (row, list, firstColumn) => {
     this.setState({
       showModal: true,
       secondColumnValue: `${row.articleCid}`,
+      firstColumnValue: getParentValue(row.articleCid, list),
+      articleTopState: row.articleTopState,
+      articleHotState: row.articleHotState,
+    }, () => {
+      this.setState({
+        secondColumn: getSecondColumn(this.state.firstColumnValue, firstColumn),// eslint-disable-line
+      })
     })
     // message.success(row.top)
     this.props.form.setFieldsValue({ top: row.top, recommend: row.recommend })
   }
 
   render() {
-    const { showModal, secondColumn, firstColumnValue, secondColumnValue } = this.state
-    const { getFieldDecorator } = this.props.form
+    const { showModal, secondColumn, firstColumnValue, secondColumnValue, articleTopState, articleHotState } = this.state
     const { articlePublication: { releasedList, pagination, column }, loading } = this.props
     const firstColumn = column.map(item => ({value: item.value, label: item.label, children: item.children}))
+    const list = column.reduce((pre, cur) => {
+      if (cur.children.length > 0) {
+        pre = [...pre, ...cur.children]
+      }
+      return pre
+    },[])
 
     const columns = [
       {
@@ -235,7 +264,7 @@ export default class PublicationManagement extends Component {
         title: '发布时间',
         dataIndex: 'updateTime',
         render: text => {
-          return <span>{moment(text).format('lll')}</span>
+          return <span>{moment(+text).format('lll')}</span>
         },
       },
       {
@@ -250,7 +279,7 @@ export default class PublicationManagement extends Component {
                 >
                 <a className="mr16">取消发布</a>
               </Popconfirm>
-              <a onClick={() => this.handleSet(row)} className="mr16">
+              <a onClick={() => this.handleSet(row, list, firstColumn)} className="mr16">
                 设置
               </a>
               <a onClick={() => this.copyUrl(row)}>复制地址</a>
@@ -343,24 +372,20 @@ export default class PublicationManagement extends Component {
             >
             <Form>
               <Form.Item label="栏目" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
-                <Select onChange={(value) => this.firstColumnChange(value, firstColumn)} defaultValue={firstColumnValue} className={styles.selectInner1}>{firstColumnComs}</Select>
-                <Select onCancel={this.secondColumnChange} defaultValue={secondColumnValue} className={styles.selectInner2}>{secondColumnComs}</Select>
+                <Select onChange={(value) => this.firstColumnChange(value, firstColumn)} value={firstColumnValue} className={styles.selectInner1}>{firstColumnComs}</Select>
+                <Select onCancel={this.secondColumnChange} value={secondColumnValue} className={styles.selectInner2}>{secondColumnComs}</Select>
               </Form.Item>
               <Form.Item label="是否置顶" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-                {getFieldDecorator('top')(
-                  <Radio.Group>
-                    <Radio value="是">是</Radio>
-                    <Radio value="否">否</Radio>
-                  </Radio.Group>
-                )}
+                <Radio.Group value={articleTopState}>
+                  <Radio value={1}>是</Radio>
+                  <Radio value={0}>否</Radio>
+                </Radio.Group>
               </Form.Item>
               <Form.Item label="是否为推荐" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-                {getFieldDecorator('recommend')(
-                  <Radio.Group>
-                    <Radio value="是">是</Radio>
-                    <Radio value="否">否</Radio>
-                  </Radio.Group>
-                )}
+                <Radio.Group value={articleHotState}>
+                  <Radio value={1}>是</Radio>
+                  <Radio value={0}>否</Radio>
+                </Radio.Group>
               </Form.Item>
             </Form>
           </Modal>
