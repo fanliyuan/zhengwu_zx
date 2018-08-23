@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:18:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-22 17:58:57
+ * @Last Modified time: 2018-08-23 15:17:51
  * @Description: 全局接口配置
  */
 const baseConfig = {

@@ -424,7 +424,7 @@ const menuData = [
         path: 'publicationManagement',
       },
       {
-        name: '发布',
+        name: '未发布文章',
         path: 'publication',
         hideInMenu: true,
       },

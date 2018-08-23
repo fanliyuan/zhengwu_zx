@@ -25,6 +25,7 @@ export default {
             createUser: payload.accountName,
             createTime: Date.now(),
             logState: 0,
+            logType: 3,
           }})
           return null
         }
@@ -34,6 +35,7 @@ export default {
             createUser: payload.accountName,
             createTime: Date.now(),
             logState: 0,
+            logType: 3,
           }})
           return null
         }
@@ -55,6 +57,7 @@ export default {
           createUser: payload.accountName,
           createTime: Date.now(),
           logState: 1,
+          logType: 3,
         }})
       } catch (error) {
         message.error('登录失败')
@@ -62,6 +65,7 @@ export default {
           createUser: payload.accountName,
           createTime: Date.now(),
           logState: 0,
+          logType: 3,
         }})
       } // eslint-disable-line
     },

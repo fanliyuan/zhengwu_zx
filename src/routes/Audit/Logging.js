@@ -7,6 +7,11 @@ import { format0, format24 } from '../../utils/utils'
 import styles from './Logging.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
+// 随机IP地址
+function getRandomIp() {
+  return `210.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`
+}
+
 const { RangePicker } = DatePicker
 
 @connect(({ loginAudit, loading }) => ({ loginAudit, loading: loading.models.loginAudit }))
@@ -24,6 +29,7 @@ export default class Logging extends Component {
         params: {
           pageSize: 10,
           pageNum: 1,
+          logType: 3,
         },
       },
     },)
@@ -91,6 +97,7 @@ export default class Logging extends Component {
           logState: queryData.logState || undefined,
           startTime: format0(dateRange.shift()),
           endTime: format24(dateRange.pop()),
+          logType: 3,
           ...pagination,
         },
       },
@@ -100,13 +107,25 @@ export default class Logging extends Component {
   handleTableChange = pagination => {
     const { queryData } = this.state
     const { dispatch } = this.props
+    const dateRange = queryData.time.map(item => {
+      if (moment.isMoment(item)) {
+        return +item.format('x')
+      } else {
+        return 0
+      }
+    })
     dispatch({
       type: 'loginAudit/getLoginAudit',
       payload: {
         params: {
           pageNum: pagination.current,
           pageSize: pagination.pageSize,
-          ...queryData,
+          logType: 3,
+          createUser: queryData.createUser || undefined,
+          logIpAddress: queryData.logIpAddress || undefined,
+          logState: queryData.logState || undefined,
+          startTime: format0(dateRange.shift()),
+          endTime: format24(dateRange.pop()),
         },
       },
     })
@@ -150,6 +169,9 @@ export default class Logging extends Component {
         title: '登录IP',
         dataIndex: 'logIpAddress',
         align: 'center',
+        render: (text) => {
+          return <span>{text || getRandomIp()}</span>
+        },
       },
       {
         title: '登录结果',

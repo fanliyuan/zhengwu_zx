@@ -84,6 +84,20 @@ const module = {
      url: 'uploadOssImage',
      method: 'post',
    },
+   {
+     name: 'getArticleReleased',
+     url: 'searchReleaList',
+     method: 'post',
+   },
+   {
+     name: 'getArticleNoRelease',
+     url: 'searchNotReleaList',
+     method: 'post',
+   },
+   {
+     name: 'cancleArticleReleased',
+     url: 'cancleArticle',
+   },
   ],
 }
 module.apis.forEach(item => {

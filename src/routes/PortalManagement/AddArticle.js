@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-22 14:10:07
+ * @Last Modified time: 2018-08-23 15:35:24
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -130,8 +130,9 @@ export default class AddArticle extends Component {
     previewArticle: false,
     hasSubmit: false,// eslint-disable-line
     coverUrl: '',
-    uploadFileList: [],
+    // uploadFileList: [],
     previewHTML: '',
+    fileResponse: '',
   }
 
   componentDidMount() {
@@ -227,21 +228,32 @@ export default class AddArticle extends Component {
     })
   }
 
-  handleUploadFile = ({ fileList }) => {
-    if (fileList.length !== 0) {
+  handleUploadFile = ({ file }) => {
+    // if (fileList.length !== 0) {
+    //   this.setState({
+    //     uploadFileList: fileList.filter(item => item.status === 'done').map(item => {
+    //       return {
+    //         name: item.name,
+    //         lastModifined: item.lastModifined,
+    //         url: item.response.result.data,
+    //         lastModifinedPerson: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+    //       }
+    //     }),
+    //     fileResponse: fileList[0] && fileList[0].response.result.data,
+    //   })
+    // } else {
+    //   this.setState({
+    //     uploadFileList: [],
+    //     fileResponse: '',
+    //   })
+    // }
+    if (file && file.status === 'done') {
       this.setState({
-        uploadFileList: fileList.filter(item => item.status === 'done').map(item => {
-          return {
-            name: item.name,
-            lastModifined: item.lastModifined,
-            url: item.response.result.data,
-            lastModifinedPerson: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
-          }
-        }),
+        fileResponse: file.response.result.data,
       })
     } else {
       this.setState({
-        uploadFileList: [],
+        fileResponse: '',
       })
     }
   }
@@ -262,7 +274,7 @@ export default class AddArticle extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         const { dispatch } = this.props
-        const { quillText, coverUrl, uploadFileList } = this.state
+        const { quillText, coverUrl, fileResponse } = this.state
       values.articleWord = values.articleWord.replace(/；/g, ';').replace(/^;*/, '').replace(/;*$/, '')
         // 这里是base64的正则,提交前需要保证所有地址被替换,也就是需要个标识符,代表是否已经提交
         const base64Reg = /src="data:image\/[a-z]{3,4};base64,.*"/
@@ -277,7 +289,8 @@ export default class AddArticle extends Component {
                     ...values,
                     articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
                     imgPath: coverUrl,
-                    filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
+                    // filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
+                    filePath: fileResponse,
                   },
                 },
               })
@@ -291,7 +304,8 @@ export default class AddArticle extends Component {
                 articleId: this.props.location.state.articleId,
                 articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
                 imgPath: coverUrl,
-                filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
+                // filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
+                filePath: fileResponse,
               },
             },
           })
@@ -431,7 +445,7 @@ export default class AddArticle extends Component {
                 <div style={{ color: '#e4393c' }}>说明：单个文件最大不超过100M,最多上传5个文件</div>
               }
               >
-              <Upload action={`${uploadServer}/uploadOssFile`} multiple onChange={this.handleUploadFile}>
+              <Upload action={`${uploadServer}/uploadOssFile`} onChange={this.handleUploadFile}>
                 <Button>
                   <Icon type="upload" /> 上传
                 </Button>

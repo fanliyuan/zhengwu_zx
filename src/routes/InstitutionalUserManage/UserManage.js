@@ -30,16 +30,17 @@ export default class UserManage extends Component {
     isEnable: '2',
     isChanged: false,
     createTime: [],
-    queryData: {
-      accountNames: '',
-      telephone: '',
-    },
+    queryData: {},
   }
 
   componentDidMount() {
     this.props.dispatch({
       type: 'accounts/getAccounts',
-      payload: {},
+      payload: {
+        payload: {
+          filter: '(status = 0 OR status = 1)',
+        },
+      },
     })
     if (this.props.roles.roleList.length < 1) {
       this.props.dispatch({
@@ -135,7 +136,7 @@ export default class UserManage extends Component {
       type: 'accounts/getAccounts',
       payload: {
         ...queryData,
-        filter: `${isEnable !== '0' && isEnable !== '1' ? 'status =0 OR status = 1':`status=${isEnable}`}${(isEnable === '0' || isEnable === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        filter: `${isEnable !== '0' && isEnable !== '1' ? '(status = 0 OR status = 1)':`status=${isEnable}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
         `,
       },
     })
@@ -153,7 +154,7 @@ export default class UserManage extends Component {
         ...queryData,
         pageSize: pagination.pageSize,
         pageNumber: pagination.current,
-        filter: `${isEnable !== '0' && isEnable !== '1' ? 'status =0 OR status = 1':`status=${isEnable}`}${(isEnable === '0' || isEnable === '1') && createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+        filter: `${isEnable !== '0' && isEnable !== '1' ? '(status = 0 OR status = 1)':`status=${isEnable}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
         `,
       },
     })

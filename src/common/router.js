@@ -446,12 +446,12 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['newsManagement'], () => import('../routes/PortalManagement/NewsManagement')),
     },
     '/portalManagement/publicationManagement': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['articlePublication'], () =>
         import('../routes/PortalManagement/PublicationManagement')
       ),
     },
     '/portalManagement/publication': {
-      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/Publication')),
+      component: dynamicWrapper(app, ['articlePublication'], () => import('../routes/PortalManagement/Publication')),
     },
     '/portalManagement/newsLibrary': {
       component: dynamicWrapper(app, ['articleLibrary'], () => import('../routes/PortalManagement/NewsLibrary')),

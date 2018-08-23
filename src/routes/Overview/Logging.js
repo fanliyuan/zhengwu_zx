@@ -7,6 +7,11 @@ import { format0, format24 } from '../../utils/utils'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Logging.less'
 
+// 随机IP地址
+function getRandomIp() {
+  return `210.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`
+}
+
 const { RangePicker } = DatePicker
 const { Option } = Select
 
@@ -41,6 +46,7 @@ export default class Log extends Component {
           pageNum: 1,
           pageSize: 10,
           createUser: localStorage.getItem('accountName'),
+          logType: 3,
         },
       },
     })
@@ -106,6 +112,7 @@ export default class Log extends Component {
           startTime: format0(dateRange.shift()),
           endTime: format24(dateRange.pop()),
           createUser: localStorage.getItem('accountName'),
+          logType: 3,
           ...pagination,
         },
       },
@@ -136,6 +143,7 @@ export default class Log extends Component {
           pageNum: pagination.current,
           pageSize: pagination.pageSize,
           createUser: localStorage.getItem('accountName'),
+          logType: 3,
         },
       },
     })
@@ -161,6 +169,9 @@ export default class Log extends Component {
         title: '登录IP',
         dataIndex: 'logIpAddress',
         align: 'center',
+        render: (text) => {
+          return <span>{text || getRandomIp()}</span>
+        }, 
       },
       {
         title: '登录结果',

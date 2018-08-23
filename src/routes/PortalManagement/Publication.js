@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-27 18:02:42
+ * @Last Modified time: 2018-08-23 14:34:16
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -129,7 +129,6 @@ export default class Publication extends Component {
         render(text) {
           return (
             <div>
-              <input type="radio" name="r1" />
               <span style={{ marginLeft: 8 }}>{text}</span>
             </div>
           )
@@ -150,6 +149,12 @@ export default class Publication extends Component {
       {
         title: '操作时间',
         dataIndex: 'time',
+      },
+      {
+        title: '操作',
+        render: (text, row) => {
+          return <a onClick={() => this.handlePublic(row)}>发布</a>
+        },
       },
     ]
     columns.forEach(item => {
@@ -201,9 +206,9 @@ export default class Publication extends Component {
           <Link to="/portalManagement/publicationManagement" className="fr mr40">
             <Button>返回</Button>
           </Link>
-          <Button type="primary" onClick={this.handlePublic} className="fr mr40">
+          {/* <Button type="primary" onClick={this.handlePublic} className="fr mr40">
             开始发布
-          </Button>
+          </Button> */}
         </div>
         <div className="common-layout">
           <Form className={styles.search}>
