@@ -124,6 +124,12 @@ export default class InstitutionalManage extends Component {
     })
   }
 
+  handleTimeChange = (val) => {
+    this.setState({
+      times:val,
+    })
+  }
+
   render() {
     const { city, provice, area, institutionName, times } = this.state
     const { Institution:{list, paginations, provices, cities, areas} } = this.props
@@ -202,7 +208,7 @@ export default class InstitutionalManage extends Component {
             <Select value={area} onChange={this.handleAreaChange} style={{width:120,marginRight:20,display:city !== "所属市" ? 'inline-block' : 'none'}} placeholder="所属区域">
               {areaData}
             </Select>
-            <RangePicker style={{ marginRight: 20, width:200 }} value={times} />
+            <RangePicker style={{ marginRight: 20, width:200 }} value={times} onChange={this.handleTimeChange} />
             <Button type="primary" onClick={this.handleSearchBtn}>搜索</Button>
           </div>
           <div className={styles.createBtn}>
