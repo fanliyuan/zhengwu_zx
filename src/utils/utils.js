@@ -174,7 +174,10 @@ export function isUrl(path) {
  * @return {number} 返回时间戳
  */
 export function format0(time) {
-  if (typeof time === 'number') {
+  if (isNaN(+time)) {
+    return undefined
+  }
+  if (typeof +time === 'number') {
     const date = new Date(time)
     date.setHours(0)
     date.setMinutes(0)
@@ -190,7 +193,10 @@ export function format0(time) {
  * @return {number} 返回时间戳
  */
 export function format24(time) {
-  if (typeof time === 'number') {
+  if (isNaN(+time)) {
+    return undefined
+  }
+  if (typeof +time === 'number') {
     const date = new Date(time)
     date.setHours(23)
     date.setMinutes(59)

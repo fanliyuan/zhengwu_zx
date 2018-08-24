@@ -4,7 +4,7 @@ import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
 
-const { accountLogin, getRoleName, accountLogout, insertLogging } = apis
+const { accountLogin, getRoleName, accountLogout, insertLogging, getAccountDetailByAccountName } = apis
 
 export default {
   namespace: 'login',
@@ -24,6 +24,7 @@ export default {
           yield call(insertLogging, {body: {
             createUser: payload.accountName,
             createTime: Date.now(),
+            realUser: '外星人',
             logState: 0,
             logType: 3,
           }})
@@ -34,6 +35,7 @@ export default {
           yield call(insertLogging, {body: {
             createUser: payload.accountName,
             createTime: Date.now(),
+            realUser: '外星人',
             logState: 0,
             logType: 3,
           }})
@@ -53,9 +55,19 @@ export default {
             filter: accountId,
           },
         })
+        let realUser
+        try {
+          const res = yield call(getAccountDetailByAccountName, {params: { accountName: payload.accountName }})
+          realUser = JSON.parse(res.result.datas[0].extendedProperties).name
+        } catch (error) {
+         // eslint-disable-next-line 
+         console.log(error)
+         realUser = '外星人'
+        }
         yield call(insertLogging, {body: {
           createUser: payload.accountName,
           createTime: Date.now(),
+          realUser,
           logState: 1,
           logType: 3,
         }})
@@ -64,6 +76,7 @@ export default {
         yield call(insertLogging, {body: {
           createUser: payload.accountName,
           createTime: Date.now(),
+          realUser: '外星人',
           logState: 0,
           logType: 3,
         }})

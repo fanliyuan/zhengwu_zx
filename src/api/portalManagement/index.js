@@ -98,6 +98,11 @@ const module = {
      name: 'cancleArticleReleased',
      url: 'cancleArticle',
    },
+   {
+     name: 'changeAricleState',
+     url: 'setArticle',
+     method: 'post',
+   },
   ],
 }
 module.apis.forEach(item => {

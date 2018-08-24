@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-23 14:34:16
+ * @Last Modified time: 2018-08-24 15:52:12
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -11,6 +11,7 @@ import moment from 'moment'
 import { Link } from 'dva/router'
 import { connect } from 'dva'
 
+import { format0, format24 } from '../../utils/utils'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Publication.less'
 
@@ -44,62 +45,87 @@ for (let i = 0; i < 255; i++) {
     time: moment(new Date() - 1000 * 60 * 60 * 13 * i).format('lll'),
   })
 }
-@connect(({ publication }) => ({
-  publication,
+@connect(({ articlePublication, loading }) => ({
+  articlePublication,
+  loading: loading.models.articlePublication,
 }))
-@Form.create()
 export default class Publication extends Component {
   state = {
-    query: {
-      title: '',
-      operator: '',
-      classify: -1,
+    queryData: {
       time: [],
     },
+    publishData: {},
+    secondColumnList: [],
     isChange: false,
     // selectRowKeys: [],
     showModal: false,
+    articleId: undefined,
   }
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'articlePublication/getArticleNoRelease',
+      payload: {
+        body: {
+          pageSize: 10,
+          pageNum: 1,
+        },
+      },
+    })
+    this.props.dispatch({
+      type: 'articlePublication/getCategoryList',
+      payload: {
+        body: {
+          pageNum: 0,
+          pageSize: 0,
+        },
+      },
+    })
+    this.props.dispatch({
+      type: 'articlePublication/getColumnList',
+    })
+  }
+
+  // eslint-disable-next-line
   titleChange = e => {
-    const { query } = this.state
+    const { queryData } = this.state
     this.setState({
-      query: {
-        ...query,
-        title: e.targetl.value,
+      queryData: {
+        ...queryData,
+        articleTitle: e.target.value,
       },
       isChange: true,
     })
   }
 
   operatorChange = e => {
-    const { query } = this.state
+    const { queryData } = this.state
     this.setState({
-      query: {
-        ...query,
-        operator: e.targetl.value,
+      queryData: {
+        ...queryData,
+        articlePname: e.target.value,
       },
       isChange: true,
     })
   }
 
   classifyChange = value => {
-    const { query } = this.state
+    const { queryData } = this.state
     this.setState({
-      query: {
-        ...query,
-        classify: value,
+      queryData: {
+        ...queryData,
+        articleFid: value === '全部分类' ? undefined : value,
       },
       isChange: true,
     })
   }
 
-  timefyChange = value => {
-    const { query } = this.state
+  timeChange = value => {
+    const { queryData } = this.state
     this.setState({
-      query: {
-        ...query,
-        timefy: value,
+      queryData: {
+        ...queryData,
+        time: value,
       },
       isChange: true,
     })
@@ -107,25 +133,121 @@ export default class Publication extends Component {
 
   search = () => {
     if (!this.state.isChange) return false
+    const { queryData } = this.state
+    const pagination = {
+      pageNum:1,
+      pageSize: 10,
+    }
+    const body = {
+      ...queryData,
+      createTime: queryData.time[0] ? format0(+queryData.time[0].format('x')) : undefined,
+      updateTime: queryData.time[1] ? format24(+queryData.time[1].format('x')) : undefined,
+    }
+    delete body.time
+    this.props.dispatch({
+      type: 'articlePublication/getArticleNoRelease',
+      payload: {
+        body: {
+          ...body,
+          ...pagination,
+        },
+      },
+    })
   }
 
-  handlePublic = () => {
-    // message.success(`成功发布${this.state.selectRowKeys.join('和')}`)
+  tableChange = pagination => {
+    const { queryData } = this.state
+    const body = {
+      ...queryData,
+      createTime: queryData.time[0] ? format0(+queryData.time[0].format('x')) : undefined,
+      updateTime: queryData.time[1] ? format24(+queryData.time[1].format('x')) : undefined,
+    }
+    delete body.time
+    this.props.dispatch({
+      type: 'articlePublication/getArticleNoRelease',
+      payload: {
+        body: {
+          ...body,
+          pageNum: pagination.current,
+          pageSize: pagination.pageSize,
+        },
+      },
+    })
+  }
+
+  firstColumnChange = (value, columnObejct) => {
+    this.setState({
+      secondColumnList: columnObejct[value],
+    })
+  }
+
+  secondColumnChange = value => {
+    const { publishData, secondColumnList } = this.state
+    this.setState({
+      publishData: {
+        ...publishData,
+        articleCid: +value,
+        articleCname: secondColumnList.filter(item => item.value === value)[0] && secondColumnList.filter(item => item.value === value)[0].label,
+      },
+    })
+  }
+
+  recommendChange = e => {
+    const { publishData } = this.state
+    this.setState({
+      publishData: {
+        ...publishData,
+        articleHotState: e.target.value ==='是' ? 1 : 0,
+      },
+    })
+  }
+
+  ontopstateChange = e => {
+    const { publishData } = this.state
+    this.setState({
+      publishData: {
+        ...publishData,
+        articleTopState: e.target.value ==='是' ? 1 : 0,
+      },
+    })
+  }
+
+  handlePublic = row => {
     this.setState({
       showModal: true,
+      articleId: row.articleId,
+    })
+  }
+
+  handlePublish = () => {
+    const { articleId, publishData: { articleCid, articleCname, articleTopState, articleHotState } } = this.state
+    const body = {
+      articleId,
+      articleCid,
+      articleCname,
+      articleTopState,
+      articleHotState,
+      articleOpenState: 1,
+      articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+    }
+    this.props.dispatch({
+      type: 'articlePublication/changeAricleState',
+      payload: {
+        body,
+      },
+    })
+    this.setState({
+      showModal: false,
     })
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form
-    const {
-      query: { title, operator, classify, time },
-      showModal,
-    } = this.state
+    const { showModal, secondColumnList } = this.state
+    const { articlePublication: { noReleaseList, pagination, category, column, columnObejct }, loading } = this.props
     const columns = [
       {
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: 'articleId',
         render(text) {
           return (
             <div>
@@ -136,19 +258,22 @@ export default class Publication extends Component {
       },
       {
         title: '标题',
-        dataIndex: 'title',
+        dataIndex: 'articleTitle',
       },
       {
         title: '分类',
-        dataIndex: 'classify',
+        dataIndex: 'articleFname',
       },
       {
         title: '操作人',
-        dataIndex: 'operator',
+        dataIndex: 'articlePname',
       },
       {
         title: '操作时间',
-        dataIndex: 'time',
+        dataIndex: 'updateTime',
+        render: text => {
+          return <span>{moment(+text).format('lll')}</span>
+        },
       },
       {
         title: '操作',
@@ -160,37 +285,15 @@ export default class Publication extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    // const rowSelection = {
-    //   selectRowKeys,
-    //   onChange: rowKeys => {
-    //     this.setState({
-    //       selectRowKeys: rowKeys,
-    //     })
-    //   },
-    // }
 
-    const classifyComs = classifyList.map(item => {
+    const classifyComs = category.map(item => {
       return (
-        <Select.Option value={item.value} key={item.value}>
-          {item.label}
+        <Select.Option value={item.categoryId} key={item.categoryId}>
+          {item.categoryName}
         </Select.Option>
       )
     })
-    const typeList = [
-      {
-        value: 0,
-        label: '首页',
-      },
-      {
-        value: 1,
-        label: '开放动态',
-      },
-      {
-        value: 2,
-        label: '目录',
-      },
-    ]
-    const typeComs = typeList.map(item => {
+    const firstComs = column.map(item => {
       // eslint-disable-line
       return (
         <Option value={item.value} key={item.value}>
@@ -198,8 +301,13 @@ export default class Publication extends Component {
         </Option>
       )
     })
-    const firstComs = typeComs
-    const secondeComs = null
+    const secondeComs = secondColumnList.map(item => {
+      return (
+        <Option value={item.value} key={item.value}>
+          {item.label}
+        </Option>
+      )
+    })
     return (
       <PageHeaderLayout>
         <div className="clearfix btncls">
@@ -213,22 +321,19 @@ export default class Publication extends Component {
         <div className="common-layout">
           <Form className={styles.search}>
             <Input
-              value={title}
               onChange={this.titleChange}
               className={styles.input}
               placeholder="标题"
               />
-            <Select value={classify} onChange={this.classifyChange} className={styles.select}>
+            <Select defaultValue='全部分类' onChange={this.classifyChange} className={styles.select}>
               {classifyComs}
             </Select>
             <Input
-              value={operator}
               onChange={this.operatorChange}
               className={styles.input}
               placeholder="操作人"
               />
             <DatePicker.RangePicker
-              value={time}
               onChange={this.timeChange}
               className={styles.picker}
               />
@@ -237,38 +342,38 @@ export default class Publication extends Component {
             </Button>
           </Form>
           <Table
+            loading={loading}
             columns={columns}
-            dataSource={data}
+            dataSource={noReleaseList}
             // rowSelection={rowSelection}
-            rowKey="id"
+            pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+            rowKey="articleId"
             bordered
+            onChange={this.tableChange}
             />
         </div>
         <Modal
           visible={showModal}
+          onOk={this.handlePublish}
           onCancel={() => this.setState({ showModal: false })}
           title="设置"
           >
           <Form>
             <Form.Item label="栏目" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
-              <Select className={styles.selectInner1}>{firstComs}</Select>
-              <Select className={styles.selectInner2}>{secondeComs}</Select>
+              <Select className={styles.selectInner1} onChange={(value) => this.firstColumnChange(value, columnObejct)}>{firstComs}</Select>
+              <Select className={styles.selectInner2} onChange={this.secondColumnChange}>{secondeComs}</Select>
             </Form.Item>
             <Form.Item label="是否置顶" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-              {getFieldDecorator('top')(
-                <Radio.Group>
-                  <Radio value="是">是</Radio>
-                  <Radio value="否">否</Radio>
-                </Radio.Group>
-              )}
+              <Radio.Group onChange={this.ontopstateChange}>
+                <Radio value="是">是</Radio>
+                <Radio value="否">否</Radio>
+              </Radio.Group>
             </Form.Item>
             <Form.Item label="是否为推荐" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-              {getFieldDecorator('recommend')(
-                <Radio.Group>
-                  <Radio value="是">是</Radio>
-                  <Radio value="否">否</Radio>
-                </Radio.Group>
-              )}
+              <Radio.Group onChange={this.recommendChange}>
+                <Radio value="是">是</Radio>
+                <Radio value="否">否</Radio>
+              </Radio.Group>
             </Form.Item>
           </Form>
         </Modal>

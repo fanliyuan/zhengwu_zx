@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Form, Input, DatePicker, Select, Button, Table } from 'antd'
+import { Form, Input, DatePicker, Select, Button, Table, Tooltip } from 'antd'
 import moment from 'moment'
 
 import { format0, format24 } from '../../utils/utils'
@@ -17,7 +17,9 @@ const { RangePicker } = DatePicker
 @connect(({ loginAudit, loading }) => ({ loginAudit, loading: loading.models.loginAudit }))
 export default class Logging extends Component {
   state = {
-    queryData: {},
+    queryData: {
+      time: [],
+    },
     isChanged: false,
   }
 
@@ -157,8 +159,11 @@ export default class Logging extends Component {
       },
       {
         title: '姓名',
-        dataIndex: 'name',
+        dataIndex: 'realUser',
         align: 'center',
+        render: text => {
+          return <span>{text || <Tooltip title='无法获取真实姓名'><span>神秘人</span></Tooltip>}</span>
+        },
       },
       {
         title: '登录时间',
@@ -175,7 +180,7 @@ export default class Logging extends Component {
       },
       {
         title: '登录结果',
-        dataIndex: 'result',
+        dataIndex: 'logState',
         align: 'center',
         render: (text) => {
           return <span>{text ? '登录成功' : '登录失败'}</span>

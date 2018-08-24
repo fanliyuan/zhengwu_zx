@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:24
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-17 11:04:23
+ * @Last Modified time: 2018-08-24 17:22:35
  * @Description: 用户模块请求
  */
 const module = {
@@ -47,6 +47,10 @@ const module = {
       name: 'setPermissions',
       url: 'accounts',
       method: 'put',
+    },
+    {
+      name: 'getAccountDetailByAccountName',
+      url: 'accounts/exact',
     },
   ],
 }
