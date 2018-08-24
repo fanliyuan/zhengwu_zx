@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
+const { queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels, getGoveDeptInfoByIds } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
 
 export default {
   namespace: 'Institution',
@@ -13,6 +13,7 @@ export default {
     cities:[],
     provices:[],
     areas:[],
+    getItemByIdInfo:{},
   },
   effects: {
     *querys({ payload }, { call, put }){
@@ -25,6 +26,13 @@ export default {
             type:'queryInstitution',
             payload:{list:response.data.list,pagination},
           })
+        }
+        else {
+          yield put({
+            type:'queryInstitution',
+            payload:{list:[]},
+          })
+          message.error(response.msg)
         }
       }catch(err){
         console.log(err) // eslint-disable-line
@@ -41,7 +49,20 @@ export default {
           })
         }
       }catch(err){
-        message.error("网络连接失败")
+        console.log(err) // eslint-disable-line
+      }
+    },
+    *getItmByIds ({ payload }, { call, put }){
+      const response = yield call(getGoveDeptInfoByIds,{params:payload})
+      try {
+        if(response.code === '200'){
+          yield put({
+            type:'queryItemInfo',
+            payload:response.data.list[0],
+          })
+        }
+      }catch(err){
+        console.log(err) // eslint-disable-line
       }
     },
     *getOneLevel (_, { call, put }){
@@ -94,11 +115,14 @@ export default {
             payload:response.data.list,
           })
         }
+        else {
+          yield put({
+            type:'getAreas',
+            payload:[],
+          })
+        }
       }catch(err){
-        yield put({
-          type:'getAreas',
-          payload:response.data.list,
-        })
+        console.log(err) //eslint-disable-line
       }
     },
   },
@@ -108,6 +132,12 @@ export default {
         ...state,
         list:payload.list,
         paginations:payload.pagination,
+      }
+    },
+    queryItemInfo(state, {payload}){
+      return {
+        ...state,
+        getItemByIdInfo:payload,
       }
     },
     editId(state, {payload}){

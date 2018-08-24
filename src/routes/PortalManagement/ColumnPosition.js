@@ -99,11 +99,12 @@ export default class ColumnPosition extends Component {
         return ''
       }
     })
+    console.log(format0(+times[0]),times[0])
     const pages = page === -1 ? '' : page
     const { dispatch } = this.props
     dispatch({
       type:'columnPosition/searchList',
-      payload:{columnPage:pages, columnPname:operator, pageNum:0,pageSize:0,createTime:format0(+times[0]),updateTime:format24(+times[1])},
+      payload:{columnPage:pages, columnPname:operator, pageNum:0,pageSize:0,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
     })
   }
 

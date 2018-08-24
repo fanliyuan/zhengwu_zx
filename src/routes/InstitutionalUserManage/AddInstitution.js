@@ -8,22 +8,32 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 const FormItem = Form.Item
 const { TextArea } = Input
 @Form.create()
-class AddInstitution extends Component {
+@connect(({Institution}) => ({
+  Institution,
+  editId:Institution.editId,
+}))
+export default class AddInstitution extends Component {
   state = {
     // editId:-1,
   }
 
-  componentDidMount = () => {
-    // const { editId } = this.props
-    // this.setState({
-    //   editId,
-    // })
+  componentDidMount = async() => {
+    const { editId } = await this.props
+    if(editId !== -1){
+      const { dispatch } = this.props
+      dispatch({
+        type:'Institution/getItmByIds',
+        payload:{deptIds:editId},
+    })
+    }
   }
 
   handleSubmit = () => {}
 
   render() {
     const { getFieldDecorator } = this.props.form
+    // const { Institution:{ getItemByIdInfo } } = this.props
+    // console.log(getItemByIdInfo)
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -148,7 +158,4 @@ class AddInstitution extends Component {
     )
   }
 }
-export default connect(({Institution}) => ({
-  editId:Institution.editId,
-}))(AddInstitution)
  

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Card, DatePicker, Popconfirm, Select } from 'antd'
+import { Table, Button, Input, Card, DatePicker, Popconfirm, Select, message } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -66,10 +66,38 @@ export default class InstitutionalManage extends Component {
   }
 
   handleTableChange = pagination => {
+    const { institutionName, times, provice, city, area } = this.state // provice, city, area,
+    // const proCityAreaInfo = provice
+    const timeValue = times.map(item => {
+      if(moment.isMoment(item)){
+        return item.format('x')
+      }
+      else {
+        return ''
+      }
+    })
+    let citys = 0
+    let areas = 0
+    const provices  = (provice === '所属省' ? undefined : provice)
+    if(city === '所属市' && provices){
+      message.info('市必选')
+      return 
+    }
+    else if (city !== '所属市') {
+      citys = city 
+    }
+    if(area === '所属区域' && provices){
+      message.info('区域必选')
+      return 
+    }
+    else if(area !== '所属区域'){
+      areas = area 
+    }
+    const info = provices ? (`${provices}|${  citys}|${  areas}`) : undefined 
     const { dispatch } = this.props
     dispatch({
       type:'Institution/querys',
-      payload:{pageNum:pagination.current,pageSize:pagination.pageSize},
+      payload:{pageNum:pagination.current,pageSize:pagination.pageSize, proCityAreaInfo: info, deptName:institutionName || undefined,startTime:timeValue[0] ? format0(+timeValue[0]) : undefined,endTime:+timeValue[1] ? format24(+timeValue[1]) : undefined},
     })
   }
 
@@ -107,26 +135,50 @@ export default class InstitutionalManage extends Component {
   }
 
   handleSearchBtn = () => {
-    const { institutionName, times } = this.state // provice, city, area,
+    const { institutionName, times, provice, city, area } = this.state // provice, city, area,
     // const proCityAreaInfo = provice
     const timeValue = times.map(item => {
       if(moment.isMoment(item)){
-        return +(item.format('x'))
+        return item.format('x')
       }
       else {
-        return ""
+        return ''
       }
     })
+    let citys = 0
+    let areas = 0
+    const provices  = (provice === '所属省' ? undefined : provice)
+    if(city === '所属市' && provices){
+      message.info('市必选')
+      return 
+    }
+    else if (city !== '所属市') {
+      citys = city 
+    }
+    if(area === '所属区域' && provices){
+      message.info('区域必选')
+      return 
+    }
+    else if(area !== '所属区域'){
+      areas = area 
+    }
+    const info = provices ? (`${provices}|${  citys}|${  areas}`) : undefined 
     const { dispatch } = this.props
     dispatch({
       type:'Institution/querys',
-      payload:{pageNum:1,pageSize:10,deptName:institutionName,startTime:format0(+timeValue[0]),endTime:format24(+timeValue[1])},
+      payload:{pageNum:1,pageSize:10, proCityAreaInfo: info, deptName:institutionName || undefined,startTime:timeValue[0] ? format0(+timeValue[0]) : undefined,endTime:+timeValue[1] ? format24(+timeValue[1]) : undefined},
     })
   }
 
-  handleTimeChange = (val) => {
+  handleTimeChange = val => {
     this.setState({
       times:val,
+    })
+  }
+
+  handleInstitutionChange = e => {
+    this.setState({
+      institutionName:e.target.value,
     })
   }
 
@@ -197,7 +249,7 @@ export default class InstitutionalManage extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
-            <Input placeholder="机构名称" style={{ width: 150, marginRight: 20 }} value={institutionName} />
+            <Input placeholder="机构名称" style={{ width: 150, marginRight: 20 }} value={institutionName} onChange={this.handleInstitutionChange} />
             {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
             <Select value={provice} onChange={this.handleProChange} style={{width:120,marginRight:20}} placeholder="所属省">
               {ProData}

@@ -33,7 +33,7 @@ const module = {
     {
       name:'getGoveDeptInfoByIds',
       url:'getGoveDeptInfoByIds',
-      method:'post',
+      method:'get',
     },
     {
       name:'insertGoveDept',
@@ -49,7 +49,7 @@ const module = {
 }
 module.apis.forEach(item => {
   if(!item.baseHost){
-    item.baseHost = 'http://192.168.100.11:8801'
+    item.baseHost = 'http://192.168.100.11:8801' //   http://govecommons.tpaas.youedata.com
   }
 })
 
