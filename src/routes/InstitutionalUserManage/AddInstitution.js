@@ -11,6 +11,7 @@ const { TextArea } = Input
 @connect(({Institution}) => ({
   Institution,
   editId:Institution.editId,
+  addAction:true,
 }))
 export default class AddInstitution extends Component {
   state = {
@@ -20,11 +21,19 @@ export default class AddInstitution extends Component {
   componentDidMount = async() => {
     const { editId } = await this.props
     if(editId !== -1){
+      this.setState({
+        addAction:false,
+      })
       const { dispatch } = this.props
       dispatch({
         type:'Institution/getItmByIds',
         payload:{deptIds:editId},
-    })
+      })
+    }
+    else{
+      this.setState({
+        addAction:true,
+      })
     }
   }
 
@@ -33,7 +42,7 @@ export default class AddInstitution extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { Institution:{ getItemByIdInfo } } = this.props
-    console.log(getItemByIdInfo)
+    const { addAction } = this.state
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -111,7 +120,7 @@ export default class AddInstitution extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="机构名称" {...formItemLayout}>
               {getFieldDecorator('name', {
-                initialValue:getItemByIdInfo.deptName ? getItemByIdInfo.deptName :'',
+                initialValue:getItemByIdInfo.deptName && !addAction ? getItemByIdInfo.deptName :'',
                 rules: [
                   {
                     required: true,
@@ -127,7 +136,7 @@ export default class AddInstitution extends Component {
             </FormItem>
             <FormItem label="排序" {...formItemLayout}>
               {getFieldDecorator('sort', {
-                initialValue:getItemByIdInfo.orderFlag,
+                initialValue:getItemByIdInfo.orderFlag && !addAction ? getItemByIdInfo.orderFlag :'',
                 rules: [
                   {
                     required: true,
@@ -138,12 +147,12 @@ export default class AddInstitution extends Component {
             </FormItem>
             <FormItem label="负责人" {...formItemLayout}>
               {getFieldDecorator('manager',{
-                initialValue:getItemByIdInfo.chargeUser ? getItemByIdInfo.chargeUser : '',
+                initialValue:getItemByIdInfo.chargeUser && !addAction ? getItemByIdInfo.chargeUser : '',
               })(<Input placeholder="姓名" />)}
             </FormItem>
             <FormItem label="负责人手机" {...formItemLayout}>
               {getFieldDecorator('managerNum',{
-                initialValue:getItemByIdInfo.chargePhone,
+                initialValue:getItemByIdInfo.chargePhone && !addAction ? getItemByIdInfo.chargePhone :'',
               })(<Input placeholder="11位数字" />)}
             </FormItem>
             <FormItem label="所属省市区" {...formItemLayout}>
@@ -151,7 +160,7 @@ export default class AddInstitution extends Component {
             </FormItem>
             <FormItem label="详细地址" {...formItemLayout}>
               {getFieldDecorator('addressDetail',{
-                initialValue:getItemByIdInfo.detailAddress,
+                initialValue:getItemByIdInfo.detailAddress && !addAction ? getItemByIdInfo.detailAddress : '',
               })(<TextArea row={4} />)}
             </FormItem>
             <FormItem {...submitLayout}>
