@@ -32,8 +32,8 @@ export default class AddInstitution extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    // const { Institution:{ getItemByIdInfo } } = this.props
-    // console.log(getItemByIdInfo)
+    const { Institution:{ getItemByIdInfo } } = this.props
+    console.log(getItemByIdInfo)
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -111,6 +111,7 @@ export default class AddInstitution extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormItem label="机构名称" {...formItemLayout}>
               {getFieldDecorator('name', {
+                initialValue:getItemByIdInfo.deptName ? getItemByIdInfo.deptName :'',
                 rules: [
                   {
                     required: true,
@@ -126,6 +127,7 @@ export default class AddInstitution extends Component {
             </FormItem>
             <FormItem label="排序" {...formItemLayout}>
               {getFieldDecorator('sort', {
+                initialValue:getItemByIdInfo.orderFlag,
                 rules: [
                   {
                     required: true,
@@ -135,16 +137,22 @@ export default class AddInstitution extends Component {
               })(<InputNumber />)}
             </FormItem>
             <FormItem label="负责人" {...formItemLayout}>
-              {getFieldDecorator('manager')(<Input placeholder="姓名" />)}
+              {getFieldDecorator('manager',{
+                initialValue:getItemByIdInfo.chargeUser ? getItemByIdInfo.chargeUser : '',
+              })(<Input placeholder="姓名" />)}
             </FormItem>
             <FormItem label="负责人手机" {...formItemLayout}>
-              {getFieldDecorator('managerNum')(<Input placeholder="11位数字" />)}
+              {getFieldDecorator('managerNum',{
+                initialValue:getItemByIdInfo.chargePhone,
+              })(<Input placeholder="11位数字" />)}
             </FormItem>
             <FormItem label="所属省市区" {...formItemLayout}>
               {getFieldDecorator('province')(<Cascader options={provinceData} />)}
             </FormItem>
             <FormItem label="详细地址" {...formItemLayout}>
-              {getFieldDecorator('addressDetail')(<TextArea row={4} />)}
+              {getFieldDecorator('addressDetail',{
+                initialValue:getItemByIdInfo.detailAddress,
+              })(<TextArea row={4} />)}
             </FormItem>
             <FormItem {...submitLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: 20 }}>
