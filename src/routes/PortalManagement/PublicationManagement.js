@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-23 20:39:33
+ * @Last Modified time: 2018-08-24 15:53:58
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -15,20 +15,21 @@ import copy from 'copy-to-clipboard'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './PublicationManagement.less'
+import { format24, format0 } from '../../utils/utils'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
 
 // 这里可以优化,不必太多次的循环
-function getSecondColumn(pid = -1, firstColumn = []) {
-  let result = []
-  firstColumn.forEach(item => {
-    if (+item.value === +pid) {
-      result = item.children
-    }
-  })
-  return result
-}
+// function getSecondColumn(pid = -1, firstColumn = []) {
+//   let result = []
+//   firstColumn.forEach(item => {
+//     if (+item.value === +pid) {
+//       result = item.children
+//     }
+//   })
+//   return result
+// }
 
 function getParentValue(value, list = []) {
   let result
@@ -45,12 +46,15 @@ function getParentValue(value, list = []) {
 @Form.create()
 export default class PublicationManagement extends Component {
   state = {
-    queryData: {},
+    queryData: {
+      time: [],
+    },
     isChanged: false,
     showModal: false,
     secondColumn: [],
     firstColumnValue: undefined,
     secondColumnValue: undefined,
+    secondColumnLabel: undefined,
     articleTopState: undefined,
     articleHotState: undefined,
   }
@@ -144,12 +148,18 @@ export default class PublicationManagement extends Component {
       pageSize: 10,
       pageNum: 1,
     }
+    const body = {
+      ...queryData,
+      createTime: queryData.time[0] && format0(+queryData.time[0].format('x')),
+      updateTime: queryData.time[1] && format24(+queryData.time[1].format('x')),
+    }
+    delete body.time
     this.props.dispatch({
       type: 'articlePublication/getArticleReleased',
       payload: {
         body: {
+          ...body,
           ...pagination,
-          ...queryData,
         },
       },
     })
@@ -158,22 +168,24 @@ export default class PublicationManagement extends Component {
     })
   }
 
-  handleStandardTableChange = () => {
-    // console.log(pagination, filtersArg, sorter)
-    // const query = this.state
-    // const { dispatch } = this.props;
-    // const dateRange = query.date.map((item) => {
-    //   if (moment.isMoment(item)) {
-    //     return +(item.format('x'))
-    //   } else {
-    //     return 0
-    //   }
-    // })
-
-    // dispatch({
-    //   type: 'overviewLogging/log',
-    //   payload: { query: {...query, date: dateRange}, pagination },
-    // });
+  handleStandardTableChange = pagination => {
+    const { queryData } = this.state
+    const body = {
+      ...queryData,
+      createTime: queryData.time[0] && format0(+queryData.time[0].format('x')),
+      updateTime: queryData.time[1] && format24(+queryData.time[1].format('x')),
+    }
+    delete body.time
+    this.props.dispatch({
+      type: 'articlePublication/getArticleReleased',
+      payload: {
+        body: {
+          ...body,
+          pageNum: pagination.current,
+          pageSize: pagination.pageSize,
+        },
+      },
+    })
   }
 
   publishCancel = row => {
@@ -187,13 +199,22 @@ export default class PublicationManagement extends Component {
     })
   }
 
-  firstColumnChange = (value,firstColumn) => {
+  firstColumnChange = (value,columnObejct) => {
     this.setState({
-      secondColumn: getSecondColumn(value,firstColumn),
+      secondColumn: columnObejct[value],
+      firstColumnValue: value,
     }, () => {
       this.setState({
-        secondColumnValue: [...this.state.secondColumn].pop().value,// eslint-disable-line
+        secondColumnValue: [...this.state.secondColumn].unshift().value,// eslint-disable-line
+        secondColumnLabel: [...this.state.secondColumn].unshift().label,// eslint-disable-line
       })
+    })
+  }
+
+  secondColumnChange = (value, secondColumn) => {
+    this.setState({
+      secondColumnValue: value,
+      secondColumnLabel: secondColumn.filter(item => value === item.value)[0] && secondColumn.filter(item => value === item.value)[0].label,
     })
   }
 
@@ -202,32 +223,47 @@ export default class PublicationManagement extends Component {
     message.success('复制成功')
   }
 
-  handleSet = (row, list, firstColumn) => {
+  handleSet = (row, list, columnObejct) => {
     this.setState({
       showModal: true,
+      articleId: row.articleId,
       secondColumnValue: `${row.articleCid}`,
+      secondColumnLabel: `${row.articleCname}`,
       firstColumnValue: getParentValue(row.articleCid, list),
       articleTopState: row.articleTopState,
       articleHotState: row.articleHotState,
     }, () => {
       this.setState({
-        secondColumn: getSecondColumn(this.state.firstColumnValue, firstColumn),// eslint-disable-line
+        // secondColumn: getSecondColumn(this.state.firstColumnValue, firstColumn),// eslint-disable-line
+        secondColumn: columnObejct[this.state.firstColumnValue],// eslint-disable-line
       })
     })
     // message.success(row.top)
     this.props.form.setFieldsValue({ top: row.top, recommend: row.recommend })
   }
 
+  handleSaveState = () => {
+    const { articleId, articleHotState, articleTopState, secondColumnValue, secondColumnLabel } = this.state
+    this.props.dispatch({
+      type: 'articlePublication/changeAricleState',
+      payload: {
+        body: {
+          articleId,
+          articleCid: +secondColumnValue,
+          articleCname: secondColumnLabel,
+          articleHotState,
+          articleTopState,
+          articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+        },
+      },
+    })
+    this.setState({ showModal: false })
+  }
+
   render() {
     const { showModal, secondColumn, firstColumnValue, secondColumnValue, articleTopState, articleHotState } = this.state
-    const { articlePublication: { releasedList, pagination, column }, loading } = this.props
+    const { articlePublication: { releasedList, pagination, column, secondCategoryList, columnObejct }, loading } = this.props
     const firstColumn = column.map(item => ({value: item.value, label: item.label, children: item.children}))
-    const list = column.reduce((pre, cur) => {
-      if (cur.children.length > 0) {
-        pre = [...pre, ...cur.children]
-      }
-      return pre
-    },[])
 
     const columns = [
       {
@@ -262,7 +298,7 @@ export default class PublicationManagement extends Component {
       },
       {
         title: '发布时间',
-        dataIndex: 'updateTime',
+        dataIndex: 'createOpenTime',
         render: text => {
           return <span>{moment(+text).format('lll')}</span>
         },
@@ -279,7 +315,7 @@ export default class PublicationManagement extends Component {
                 >
                 <a className="mr16">取消发布</a>
               </Popconfirm>
-              <a onClick={() => this.handleSet(row, list, firstColumn)} className="mr16">
+              <a onClick={() => this.handleSet(row, secondCategoryList, columnObejct)} className="mr16">
                 设置
               </a>
               <a onClick={() => this.copyUrl(row)}>复制地址</a>
@@ -368,21 +404,22 @@ export default class PublicationManagement extends Component {
           <Modal
             visible={showModal}
             onCancel={() => this.setState({ showModal: false })}
+            onOk={this.handleSaveState}
             title="设置"
             >
             <Form>
               <Form.Item label="栏目" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
-                <Select onChange={(value) => this.firstColumnChange(value, firstColumn)} value={firstColumnValue} className={styles.selectInner1}>{firstColumnComs}</Select>
-                <Select onCancel={this.secondColumnChange} value={secondColumnValue} className={styles.selectInner2}>{secondColumnComs}</Select>
+                <Select onChange={(value) => this.firstColumnChange(value, columnObejct)} value={firstColumnValue} className={styles.selectInner1}>{firstColumnComs}</Select>
+                <Select onChange={(value) => this.secondColumnChange(value, secondColumn)} value={secondColumnValue} className={styles.selectInner2}>{secondColumnComs}</Select>
               </Form.Item>
               <Form.Item label="是否置顶" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-                <Radio.Group value={articleTopState}>
+                <Radio.Group value={articleTopState} onChange={(e) =>{this.setState({articleTopState: e.target.value})}}>
                   <Radio value={1}>是</Radio>
                   <Radio value={0}>否</Radio>
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="是否为推荐" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-                <Radio.Group value={articleHotState}>
+                <Radio.Group value={articleHotState} onChange={(e) => this.setState({articleHotState: e.target.value})}>
                   <Radio value={1}>是</Radio>
                   <Radio value={0}>否</Radio>
                 </Radio.Group>
