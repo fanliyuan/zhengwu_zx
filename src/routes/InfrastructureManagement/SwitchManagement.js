@@ -21,6 +21,7 @@ export default class SwitchManagement extends Component {
       status: -1,
     },
     isChanged: false,
+    queryParams: {},
   }
 
   componentDidMount() {
@@ -65,16 +66,25 @@ export default class SwitchManagement extends Component {
 
   handleSearch = () => {
     if (!this.state.isChanged) return null
-    const queryData = {
-      regionName: this.state.queryData.regionName,
-      status: this.state.queryData.status === -1 ? '' : this.state.queryData.status,
-      nodeId: this.state.queryData.nodeId[this.state.queryData.nodeId.length-1],
+    const { queryData } = this.state
+    const queryParams = {
+      regionName: queryData.regionName,
+      status: queryData.status === -1 ? '' : queryData.status,
+      nodeId: queryData.nodeId[queryData.nodeId.length-1],
     }
     this.props.dispatch({
       type: 'regionManagement/getRegion',
       payload: {
-        params: queryData,
+        params: {
+          ...queryParams,
+          pageSize: 10,
+          pageNumber: 1,
+        },
       },
+    })
+    this.setState({
+      isChanged: false,
+      queryParams,
     })
   }
 
@@ -84,17 +94,15 @@ export default class SwitchManagement extends Component {
   }
 
   tableChange = (pagination) => {
-    const queryData = {
-      regionName: this.state.queryData.regionName,
-      status: this.state.queryData.status === -1 ? '' : this.state.queryData.status,
-      nodeId: this.state.queryData.nodeId[this.state.queryData.nodeId.length-1],
-      pageSize: pagination.pageSize,
-      pageNumber: pagination.current,
-    }
+    const { queryParams } = this.state
     this.props.dispatch({
       type: 'regionManagement/getRegion',
       payload: {
-        params: queryData,
+        params: {
+          ...queryParams,
+          pageSize: pagination.pageSize,
+          pageNumber: pagination.current,
+        },
       },
     })
   }
@@ -153,7 +161,7 @@ export default class SwitchManagement extends Component {
   render() {
     const that = this
     const { queryData: { regionName, nodeId, status } } = this.state
-    const { regionManagement: { list, pagination, nodeList } } = this.props
+    const { regionManagement: { list, pagination, nodeList }, loading } = this.props
     const data3 = [{ value: -1, label: '全部状态', id: -1 }, { value: 1, label: '启用', id: 1 }, { value: 0, label: '停用', id: 0 }]
     const selectData3 = data3.map(item => {
       return (
@@ -278,6 +286,7 @@ export default class SwitchManagement extends Component {
           </div>
           <div>
             <Table
+              loading={loading}
               columns={columns}
               dataSource={list}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}

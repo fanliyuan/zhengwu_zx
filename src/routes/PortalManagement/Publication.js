@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-24 15:52:12
+ * @Last Modified time: 2018-08-26 18:21:39
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -54,6 +54,7 @@ export default class Publication extends Component {
     queryData: {
       time: [],
     },
+    queryParams: {},
     publishData: {},
     secondColumnList: [],
     isChange: false,
@@ -138,36 +139,34 @@ export default class Publication extends Component {
       pageNum:1,
       pageSize: 10,
     }
-    const body = {
+    const queryParams = {
       ...queryData,
       createTime: queryData.time[0] ? format0(+queryData.time[0].format('x')) : undefined,
       updateTime: queryData.time[1] ? format24(+queryData.time[1].format('x')) : undefined,
     }
-    delete body.time
+    delete queryParams.time
     this.props.dispatch({
       type: 'articlePublication/getArticleNoRelease',
       payload: {
         body: {
-          ...body,
+          ...queryParams,
           ...pagination,
         },
       },
     })
+    this.setState({
+      isChange: false,
+      queryParams,
+    })
   }
 
   tableChange = pagination => {
-    const { queryData } = this.state
-    const body = {
-      ...queryData,
-      createTime: queryData.time[0] ? format0(+queryData.time[0].format('x')) : undefined,
-      updateTime: queryData.time[1] ? format24(+queryData.time[1].format('x')) : undefined,
-    }
-    delete body.time
+    const { queryParams } = this.state
     this.props.dispatch({
       type: 'articlePublication/getArticleNoRelease',
       payload: {
         body: {
-          ...body,
+          ...queryParams,
           pageNum: pagination.current,
           pageSize: pagination.pageSize,
         },

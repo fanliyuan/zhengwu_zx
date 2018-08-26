@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:07:52
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-21 16:27:00
+ * @Last Modified time: 2018-08-26 18:22:28
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
 import React, { Component, Fragment } from 'react'
@@ -26,7 +26,7 @@ const { Option } = Select
 export default class NewsLibrary extends Component {
   state = {
     queryData: {},
-    paginationData: false,
+    queryParams: {},
     isChanged: false,
   }
 
@@ -110,35 +110,36 @@ export default class NewsLibrary extends Component {
 
   handleSearch = () => {
     if (!this.state.isChanged) return // eslint-disable-line
-    const { paginationData, queryData } = this.state
+    const {queryData } = this.state
     const pagination = {
-      pageNum: paginationData.current || 1,
-      pageSize: paginationData.pageSize || 10,
+      pageNum: 1,
+      pageSize: 10,
+    }
+    const queryParams = {
+      ...queryData,
     }
     this.props.dispatch({
       type: 'articleLibrary/getArticles',
       payload: {
         body: {
-          ...queryData,
+          ...queryParams,
           ...pagination,
         },
       },
     })
     this.setState({
       isChanged: false,
+      queryParams,
     })
   }
 
   handleStandardTableChange = pagination => {
-    const { queryData } = this.state
-    this.setState({
-      paginationData: pagination,
-    })
+    const { queryParams } = this.state
     this.props.dispatch({
       type: 'articleLibrary/getArticles',
       payload: {
         body: {
-          ...queryData,
+          ...queryParams,
           ...{
             pageNum: pagination.current,
             pageSize: pagination.pageSize,

@@ -27,12 +27,10 @@ export default class AssignRole extends Component {
     // owingJg: '角色',
     status: '-1',
     visible: false,
-    isChanged: false,
     createTime: [],
-    queryData: {
-      accountNames: '',
-      telephone: '',
-    },
+    isChanged: false,
+    queryData: {},
+    queryParams: {},
     roleId: null,
     roleName: '',
     userId: '',
@@ -112,28 +110,30 @@ export default class AssignRole extends Component {
       return null
     }
     const { queryData, status, createTime } = this.state
+    const queryParams = {
+      ...queryData,
+      filter: `${status !== '0' && status !== '1' ? '(status = 0 OR status = 1)':`status=${status}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+      `,
+    }
     this.props.dispatch({
       type: 'accounts/getAccounts',
       payload: {
-        ...queryData,
-        filter: `${status !== '0' && status !== '1' ? '(status = 0 OR status = 1)':`status=${status}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
-        `,
+        ...queryParams,
         // filter: [`${status !== '0' || '1' || '2'}`, `${!createTime[0] ? '' : `create_time=${format0((+createTime[0]).format('x'))}`}`, `${!createTime[1] ? '' : `create_time<${format24(+createTime[1].format('x'))}`}`].filter(item => item).join(' and '),
       },
     })
     this.setState({
       isChanged: false,
+      queryParams,
     })
   }
 
   tableChange = (pagination) =>{
-    const { queryData, status, createTime } = this.state
+    const { queryParams } = this.state
     this.props.dispatch({
       type: 'accounts/getAccounts',
       payload: {
-        ...queryData,
-        filter: `${status !== '0' && status !== '1' ? '(status = 0 OR status = 1)':`status=${status}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
-        `,
+        ...queryParams,
         pageSize: pagination.pageSize,
         pageNumber: pagination.current,
       },
@@ -195,7 +195,7 @@ export default class AssignRole extends Component {
 
   render() {
     const that = this
-    const { status, visible, queryData: { accountNames, telephone } } = this.state
+    const { status, visible } = this.state
     const { accounts: { accountList, roleNameList, pagination }, roles: { roleList }, loading } = this.props
     // const data = [
     //   { value: '0', id: 0, label: '所属机构' },
@@ -308,8 +308,8 @@ export default class AssignRole extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
-            <Input value={accountNames} placeholder="用户名/姓名" style={{ width: 120, marginRight: 20 }} onChange={this.nameChange} />
-            <Input value={telephone} placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} />
+            <Input placeholder="用户名/姓名" style={{ width: 120, marginRight: 20 }} onChange={this.nameChange} />
+            <Input placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} />
             <Select
               style={{ marginRight: 20, width: 120 }}
               defaultValue='-2'

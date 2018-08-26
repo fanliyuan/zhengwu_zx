@@ -178,7 +178,7 @@ export function format0(time) {
     return undefined
   }
   if (typeof +time === 'number') {
-    const date = new Date(time)
+    const date = new Date(+time)
     date.setHours(0)
     date.setMinutes(0)
     date.setSeconds(0)
@@ -197,7 +197,7 @@ export function format24(time) {
     return undefined
   }
   if (typeof +time === 'number') {
-    const date = new Date(time)
+    const date = new Date(+time)
     date.setHours(23)
     date.setMinutes(59)
     date.setSeconds(59)

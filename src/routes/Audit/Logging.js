@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Form, Input, DatePicker, Select, Button, Table, Tooltip } from 'antd'
-import moment from 'moment'
 
 import { format0, format24 } from '../../utils/utils'
 import styles from './Logging.less'
@@ -19,6 +18,9 @@ export default class Logging extends Component {
   state = {
     queryData: {
       time: [],
+    },
+    queryParams: {
+      logType: 3,
     },
     isChanged: false,
   }
@@ -73,33 +75,29 @@ export default class Logging extends Component {
   }
 
   handleSearch = () => {
+    if (!isChanged) return null
     const { isChanged, queryData } = this.state
-    if (!isChanged) return
-    this.setState({
-      isChanged: false,
-    })
-    const dateRange = queryData.time.map(item => {
-      if (moment.isMoment(item)) {
-        return +item.format('x')
-      } else {
-        return 0
-      }
-    })
     const { dispatch } = this.props
     const pagination = {
       pageSize: 10,
       pageNum: 1,
     }
+    const queryParams = {
+      createUser: queryData.createUser || undefined,
+      logIpAddress: queryData.logIpAddress || undefined,
+      logState: queryData.logState || undefined,
+      logType: 3,
+      startTime: queryData.time[0] && format0(queryData.time[0].format('x')),
+      endTime: queryData.time[1] && format24(queryData.time[1].format('x')),
+    }
+    this.setState({
+      isChanged: false,
+    })
     dispatch({
       type: 'loginAudit/getLoginAudit',
       payload: {
         params: {
-          createUser: queryData.createUser || undefined,
-          logIpAddress: queryData.logIpAddress || undefined,
-          logState: queryData.logState || undefined,
-          startTime: format0(dateRange.shift()),
-          endTime: format24(dateRange.pop()),
-          logType: 3,
+          ...queryParams,
           ...pagination,
         },
       },
@@ -107,27 +105,15 @@ export default class Logging extends Component {
   }
 
   handleTableChange = pagination => {
-    const { queryData } = this.state
+    const { queryParams } = this.state
     const { dispatch } = this.props
-    const dateRange = queryData.time.map(item => {
-      if (moment.isMoment(item)) {
-        return +item.format('x')
-      } else {
-        return 0
-      }
-    })
     dispatch({
       type: 'loginAudit/getLoginAudit',
       payload: {
         params: {
+          ...queryParams,
           pageNum: pagination.current,
           pageSize: pagination.pageSize,
-          logType: 3,
-          createUser: queryData.createUser || undefined,
-          logIpAddress: queryData.logIpAddress || undefined,
-          logState: queryData.logState || undefined,
-          startTime: format0(dateRange.shift()),
-          endTime: format24(dateRange.pop()),
         },
       },
     })
