@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels, getGoveDeptInfoByIds, getGoveDeptInfos } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
+const { queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels, getGoveDeptInfo, getGoveDeptInfos, insertGoveDept, updateGoveDept } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
 
 export default {
   namespace: 'Institution',
@@ -39,6 +39,40 @@ export default {
         console.log(err) // eslint-disable-line
       }
     },
+    *editItem ({ payload }, { call, put}){
+      const response = yield call(updateGoveDept,{body:payload})
+      try{
+        if(response.code === '200'){
+          message.success(response.msg)
+          yield put({
+            type:'querys',
+            payload:{pageNum:0,pageSize:10},
+          })
+        }
+        else {
+          message.err(response.msg)
+        }
+      }catch(err){
+        console.log(err) // eslint-disable-line
+      }
+    },
+    *addItem ({ payload }, { call, put}){
+      const response = yield call(insertGoveDept,{body:payload})
+      try{
+        if(response.code === '200'){
+          message.success(response.msg)
+          yield put({
+            type:'querys',
+            payload:{pageNum:0,pageSize:10},
+          })
+        }
+        else {
+          message.err(response.msg)
+        }
+      }catch(err){
+        console.log(err) // eslint-disable-line
+      }
+    },
     *deleteItem ({ payload }, { call, put }){
       const response = yield call(deleteGoveDept,{params:payload})
       try{
@@ -67,12 +101,22 @@ export default {
       }
     },
     *getItmByIds ({ payload }, { call, put }){
-      const response = yield call(getGoveDeptInfoByIds,{params:payload})
+      const response = yield call(getGoveDeptInfo,{params:payload})
       try {
         if(response.code === '200'){
           yield put({
             type:'queryItemInfo',
-            payload:response.data.list[0],
+            payload:response.data,
+          })
+          const pro = response.data.proCityAreaInfo.split('|')[0]
+          const cit = response.data.proCityAreaInfo.split('|')[2]
+          yield put({
+            type:'getTwoLevel',
+            payload:{provinceId:pro},
+          })
+          yield put({
+            type:'getThreeLevel',
+            payload:{cityId:cit},
           })
         }
       }catch(err){
