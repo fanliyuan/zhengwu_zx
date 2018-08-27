@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-22 17:20:41
+ * @Last Modified time: 2018-08-26 18:02:35
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -38,6 +38,7 @@ export default class NodeManagement extends Component {
       depId: [],
       nodeState: '全部状态',
     },
+    queryParams: {},
     isChanged: false,
     // selectKeys: [],
   }
@@ -116,7 +117,7 @@ export default class NodeManagement extends Component {
     if (!isChanged) {
       return false
     }
-    const queryData = {
+    const queryParams = {
       nodeName: nodeName || undefined,
       mac: mac || undefined,
       pid: [...pid].pop(),
@@ -127,27 +128,21 @@ export default class NodeManagement extends Component {
     dispatch({
       type: 'nodeManagement/getNodes',
       payload: {
-        ...queryData,
+        ...queryParams,
       },
     })
     this.setState({
       isChanged: false,
+      queryParams,
     })
   }
 
   handleTableChange = pagination => {
-    const { queryData: { nodeName, mac, pid, depId, nodeState } } = this.state
-    const queryData = {
-      nodeName: nodeName || undefined,
-      mac: mac || undefined,
-      pid: pid.pop(),
-      depId: depId.pop(),
-      nodeState: nodeState === '全部状态' ? undefined : nodeState,
-    }
+    const { queryParams } = this.state
     this.props.dispatch({
       type: 'nodeManagement/getNodes',
       payload: {
-        ...queryData,
+        ...queryParams,
         ...{pageSize: pagination.pageSize, pageNumber: pagination.current},
       },
     })

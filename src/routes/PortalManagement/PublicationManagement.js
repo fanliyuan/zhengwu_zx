@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-24 15:53:58
+ * @Last Modified time: 2018-08-26 10:53:38
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -49,6 +49,7 @@ export default class PublicationManagement extends Component {
     queryData: {
       time: [],
     },
+    body: {},
     isChanged: false,
     showModal: false,
     secondColumn: [],
@@ -165,17 +166,12 @@ export default class PublicationManagement extends Component {
     })
     this.setState({
       isChanged: false,
+      body,
     })
   }
 
   handleStandardTableChange = pagination => {
-    const { queryData } = this.state
-    const body = {
-      ...queryData,
-      createTime: queryData.time[0] && format0(+queryData.time[0].format('x')),
-      updateTime: queryData.time[1] && format24(+queryData.time[1].format('x')),
-    }
-    delete body.time
+    const { body } = this.state
     this.props.dispatch({
       type: 'articlePublication/getArticleReleased',
       payload: {

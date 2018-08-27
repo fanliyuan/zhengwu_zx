@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { DatePicker, Input, Select, Button, Table } from 'antd'
-import moment from 'moment'
 
 import { format0, format24 } from '../../utils/utils'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -24,21 +23,15 @@ export default class Log extends Component {
     queryData: {
       time: [],
     },
+    queryParams:{
+      createUser: localStorage.getItem('accountName'),
+      logType: 3,
+    },
     isChanged: false,
   }
 
   componentDidMount() {
     const { dispatch } = this.props
-    // const { date } = this.state
-
-    // const dateRange = date.map(item => {
-    //   if (moment.isMoment(item)) {
-    //     return +item.format('x')
-    //   } else {
-    //     return 0
-    //   }
-    // })
-
     dispatch({
       type: 'overviewLogging/log',
       payload: {
@@ -93,26 +86,23 @@ export default class Log extends Component {
       pageNum: 1,
       pageSize: 10,
     }
-    const dateRange = queryData.time.map(item => {
-      if (moment.isMoment(item)) {
-        return +item.format('x')
-      } else {
-        return 0
-      }
-    })
+    const queryParams = {
+      logIpAddress: queryData.logIpAddress,
+      logState: queryData.logState,
+      createUser: localStorage.getItem('accountName'),
+      logType: 3,
+      startTime: queryData.time[0] && format0(queryData.time[0].format('x')),
+      endTime: queryData.time[1] && format24(queryData.time[1].format('x')),
+    }
     this.setState({
       isChanged: false,
+      queryParams,
     })
     dispatch({
       type: 'overviewLogging/log',
       payload: {
         params: {
-          logIpAddress: queryData.logIpAddress,
-          logState: queryData.logState,
-          startTime: format0(dateRange.shift()),
-          endTime: format24(dateRange.pop()),
-          createUser: localStorage.getItem('accountName'),
-          logType: 3,
+          ...queryParams,
           ...pagination,
         },
       },
@@ -121,29 +111,16 @@ export default class Log extends Component {
 
   handleStandardTableChange = pagination => {
     // console.log(pagination, filtersArg, sorter)
-    const { queryData } = this.state
+    const { queryParams } = this.state
     const { dispatch } = this.props
-
-    const dateRange = queryData.time.map(item => {
-      if (moment.isMoment(item)) {
-        return +item.format('x')
-      } else {
-        return 0
-      }
-    })
 
     dispatch({
       type: 'overviewLogging/log',
       payload: {
         params: {
-          logIpAddress: queryData.logIpAddress,
-          logState: queryData.logState,
-          startTime: dateRange.shift(),
-          endTime: dateRange.pop(),
+          ...queryParams,
           pageNum: pagination.current,
           pageSize: pagination.pageSize,
-          createUser: localStorage.getItem('accountName'),
-          logType: 3,
         },
       },
     })

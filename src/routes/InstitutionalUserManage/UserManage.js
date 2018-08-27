@@ -28,9 +28,10 @@ export default class UserManage extends Component {
     // owingJg:'0',
     role: '-1',
     isEnable: '2',
-    isChanged: false,
     createTime: [],
+    isChanged: false,
     queryData: {},
+    queryParams: {},
   }
 
   componentDidMount() {
@@ -132,30 +133,32 @@ export default class UserManage extends Component {
   handleSearch = () => {
     if (!this.state.isChanged) return null
     const { queryData, isEnable, createTime } = this.state
+    const queryParams = {
+      ...queryData,
+      filter: `${isEnable !== '0' && isEnable !== '1' ? '(status = 0 OR status = 1)':`status=${isEnable}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
+      `,
+    }
     this.props.dispatch({
       type: 'accounts/getAccounts',
       payload: {
-        ...queryData,
-        filter: `${isEnable !== '0' && isEnable !== '1' ? '(status = 0 OR status = 1)':`status=${isEnable}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
-        `,
+        ...queryParams,
       },
     })
     // console.log(this.state.queryData,)
     this.setState({
       isChanged: false,
+      queryParams,
     })
   }
 
   tableChange = (pagination) => {
-    const { queryData, isEnable, createTime } = this.state
+    const { queryParams } = this.state
     this.props.dispatch({
       type: 'accounts/getAccounts',
       payload: {
-        ...queryData,
+        ...queryParams,
         pageSize: pagination.pageSize,
         pageNumber: pagination.current,
-        filter: `${isEnable !== '0' && isEnable !== '1' ? '(status = 0 OR status = 1)':`status=${isEnable}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
-        `,
       },
     })
   }
