@@ -17,10 +17,14 @@ const { Option } = Select
 export default class AddInstitution extends Component {
   state = {
     addAction:true,
+    deptId:0,
   }
 
   componentDidMount = async() => {
     const { editId } = await this.props
+    this.setState({
+      deptId:editId,
+    })
     if(editId !== -1){
       this.setState({
         addAction:false,
@@ -38,6 +42,13 @@ export default class AddInstitution extends Component {
       })
     }
     else{
+      const { dispatch } = this.props
+      dispatch({
+        type:'Institution/getGoveDeptInfos',
+      })
+      dispatch({
+        type:'Institution/getOneLevel',
+      })
       this.setState({
         addAction:true,
       })
@@ -47,13 +58,13 @@ export default class AddInstitution extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const { dispatch } = this.props
-    const { addAction } = this.state
+    const { addAction, deptId } = this.state
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         if(!addAction){
           dispatch({
             type:'Institution/editItem',
-            payload:{...values,province:undefined,city:undefined,area:undefined,proCityAreaInfo:`${values.city}|${values.city}|${values.area}`},
+            payload:{...values,province:undefined,city:undefined,area:undefined,proCityAreaInfo:`${values.province}|${values.city}|${values.area}`,deptId},
           })
           setTimeout(() => {dispatch(routerRedux.push('/institutionalUserManage/institutionalManage'))},2000)
         }
@@ -93,9 +104,9 @@ export default class AddInstitution extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas } } = this.props
-    const pro = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[1]
-    const cit = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[3]
-    const are = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[5]
+    const pro = getItemByIdInfo.proCityAreaInfo && `${getItemByIdInfo.proCityAreaInfo.split('|')[0]}|${getItemByIdInfo.proCityAreaInfo.split('|')[1]}`
+    const cit = getItemByIdInfo.proCityAreaInfo && `${getItemByIdInfo.proCityAreaInfo.split('|')[2]}|${getItemByIdInfo.proCityAreaInfo.split('|')[3]}`
+    const are = getItemByIdInfo.proCityAreaInfo && `${getItemByIdInfo.proCityAreaInfo.split('|')[4]}|${getItemByIdInfo.proCityAreaInfo.split('|')[5]}`
     const { addAction } = this.state
     const ProData = provices.map(item => {
       return (<Option value={`${item.provinceId }|${ item.name}`} key={item.id}>{item.name}</Option>)
@@ -155,8 +166,8 @@ export default class AddInstitution extends Component {
               )}
             </FormItem>
             <FormItem label="排序" {...formItemLayout}>
-              {getFieldDecorator('oserFlag', {
-                initialValue:getItemByIdInfo.orderFlag && !addAction ? getItemByIdInfo.orderFlag :'',
+              {getFieldDecorator('orderFlag', {
+                initialValue:getItemByIdInfo.orderFlag !== undefined && !addAction ? +getItemByIdInfo.orderFlag :null,
                 rules: [
                   {
                     required: true,
