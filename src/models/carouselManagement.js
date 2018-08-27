@@ -1,9 +1,9 @@
 import { message } from 'antd'
-// import { routerRedux } from 'dva/router'
+import { routerRedux } from 'dva/router'
 
 import apis from '../api'
 
-const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarousel, getCarousel } = apis // eslint-disable-line
+const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarousel, getCarousel } = apis
  export default {
   namespace:'carouselManagement',
 
@@ -104,10 +104,9 @@ const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarou
         response = yield call(insertCarousel, {body: payload.body})
         if (+response.code === 0) {
           message.success('新增成功!')
-          yield put({
-            type: 'getCarousels',
-            payload: {},
-          })
+          yield put(
+            routerRedux.push('/portalManagement/carouselManagement')
+          )
         } else {
           throw new Error('返回非0')
         }
@@ -115,6 +114,43 @@ const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarou
         // eslint-disable-next-line
         console.log(error)
         message.error('新增失败!')
+      }
+    },
+    *deleteCarousel({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call(deleteCarousel, {params: payload.params})
+        if (+response.code === 0) {
+          message.success('删除成功!')
+          yield put({
+            type: 'getCarousels',
+            payload:{},
+          })
+        } else {
+          throw new Error('返回非0')
+        }
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(error)
+        message.error('删除失败!')
+      }
+    },
+    *updateCarouse({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call(updateCarouse, {body: payload.body})
+        if (+response.code === 0) {
+          message.success('删除成功!')
+          yield put(
+            routerRedux.push('/portalManagement/carouselManagement')
+          )
+        } else {
+          throw new Error('返回非0')
+        }
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(error)
+        message.error('删除失败!')
       }
     },
   },

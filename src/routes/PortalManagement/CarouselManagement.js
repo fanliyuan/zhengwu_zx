@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:42:31
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-27 16:18:51
+ * @Last Modified time: 2018-08-27 20:54:30
  * @描述: 开放门户管理--资讯管理--轮播图管理
 */
 import React, { Component, Fragment } from 'react'
@@ -141,8 +141,16 @@ export default class CarouselManagement extends Component {
     )
   }
 
-  deleteCaroulse = () => {
-    message.success('删除成功')
+  deleteCaroulse = row => {
+    // message.success('删除成功')
+    this.props.dispatch({
+      type: 'carouselManagement/deleteCarousel',
+      payload: {
+        params: {
+          imgId: row.imgId,
+        },
+      },
+    })
   }
 
   render() {

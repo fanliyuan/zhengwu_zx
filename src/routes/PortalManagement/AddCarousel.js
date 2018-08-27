@@ -195,19 +195,32 @@ export default class AddCarousel extends Component {
   handleSave = () => {
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (!errors) {
-        // message.success('通过表单验证,可以提交,控制台将打印表单值')
-        // console.log(values) // eslint-disable-line
-        this.props.dispatch({
-          type: 'carouselManagement/insertCarousel',
-          payload: {
-            body: {
-              imagePath: values.imagePath,
-              imgAddress: values.imgAddress,
-              imgName: values.imgName,
-              imgPid: +values.imgPid,
+        if (this.props.location.pathname === '/portalManagement/addCarousel') {
+          this.props.dispatch({
+            type: 'carouselManagement/insertCarousel',
+            payload: {
+              body: {
+                imagePath: values.imagePath,
+                imgAddress: values.imgAddress,
+                imgName: values.imgName,
+                imgPid: +values.imgPid,
+              },
             },
-          },
-        })
+          })
+        } else {
+          this.props.dispatch({
+            type: 'carouselManagement/updateCarousel',
+            payload: {
+              body: {
+                imgId: this.state.carouselData.imgId,
+                imagePath: values.imagePath,
+                imgAddress: values.imgAddress,
+                imgName: values.imgName,
+                imgPid: +values.imgPid,
+              },
+            },
+          })
+        }
       } else {
         console.log('表单未通过验证', values) // eslint-disable-line
       }
@@ -228,7 +241,7 @@ export default class AddCarousel extends Component {
     const btnComs = (
       <Fragment>
         <Link to="/portalManagement/carouselManagement" className={styles.fr}>
-          <Button type="primary">返回</Button>
+          <Button>返回</Button>
         </Link>
         <Button
           type="primary"
