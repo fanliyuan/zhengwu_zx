@@ -121,23 +121,23 @@ export default class AddNode extends Component {
                 ],
               })(<Input placeholder="节点名称" />)}
             </FormItem>
-            <FormItem label="mac地址" {...formItemLayout}>
+            <FormItem label="MAC地址" {...formItemLayout}>
               {getFieldDecorator('mac', {
                 initialValue: mac,
                 rules: [
                   {
                     required: true,
-                    message: '请输入正确的mac地址',
+                    message: '请输入正确的MAC地址',
                     pattern: /^[A-F0-9]{2}(-[A-F0-9]{2}){5}$/,
                   },
                 ],
-              })(<Input placeholder="mac地址" />)}
+              })(<Input placeholder="MAC地址" />)}
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('pid',{
                 initialValue: [`${parentNodeName || ''}`],
               })(
-                <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" treeDefaultExpandAll allowClear />
+                <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" allowClear />
               )}
             </FormItem>
             <FormItem label="所属机构" {...formItemLayout}>
@@ -150,7 +150,7 @@ export default class AddNode extends Component {
                   },
                 ],
               })(
-                <TreeSelect treeData={departmentListT} placeholder="请选择机构" treeDefaultExpandAll allowClear />
+                <TreeSelect treeData={departmentListT} dropdownStyle={{maxHeight: 200}} placeholder="请选择机构" allowClear />
                 // <Select placeholder='请选择机构'>
                 //   { departmentComs }
                 // </Select>

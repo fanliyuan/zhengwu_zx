@@ -460,7 +460,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['portalManagement'], () => import('../routes/PortalManagement/MenuManagement')),
     },
     '/portalManagement/carouselManagement': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['carouselManagement'], () =>
         import('../routes/PortalManagement/CarouselManagement')
       ),
     },
@@ -471,7 +471,10 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['articleLibrary'], () => import('../routes/PortalManagement/AddArticle')),
     },
     '/portalManagement/addCarousel': {
-      component: dynamicWrapper(app, [], () => import('../routes/PortalManagement/AddCarousel')),
+      component: dynamicWrapper(app, ['carouselManagement'], () => import('../routes/PortalManagement/AddCarousel')),
+    },
+    '/portalManagement/editCarousel': {
+      component: dynamicWrapper(app, ['carouselManagement'], () => import('../routes/PortalManagement/AddCarousel')),
     },
     '/portalManagement/columnPosition': {
       component: dynamicWrapper(app, ['columnPosition'], () => import('../routes/PortalManagement/ColumnPosition')),

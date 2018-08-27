@@ -103,12 +103,41 @@ const module = {
      url: 'setArticle',
      method: 'post',
    },
+   {
+     name: 'getCarousels',
+     url: 'imgList',
+     method: 'post',
+   },
+   {
+     name: 'insertCarousel',
+     url: 'insertImg',
+     method: 'post',
+   },
+   {
+     name: 'updateCarousel',
+     url: 'updateImg',
+     method: 'post',
+   },
+   {
+     name: 'deleteCarousel',
+     url: 'deleteImg',
+     method: 'delete',
+   },
+   {
+     name: 'toggleCarousel',
+     url: 'stopImg',
+     method: 'delete',
+   },
+   {
+     name: 'getCarousel',
+     url: 'getImgInfo',
+   },
   ],
 }
 module.apis.forEach(item => {
   if(!item.baseHost){
-    // item.baseHost = 'http://192.168.100.16:8804'
-    item.baseHost = 'http://testgoveportalback.tpaas.youedata.com'
+    item.baseHost = 'http://192.168.100.16:8804'
+    // item.baseHost = 'http://testgoveportalback.tpaas.youedata.com'
   }
 })
 

@@ -76,10 +76,19 @@ export default {
               loggingList: response.data.list,
             },
           })
+        } else {
+          throw new Error('返回非0')
         }
       } catch (error) {
        // eslint-disable-next-line 
        console.log(error)
+       yield put({
+         type: 'save',
+         payload: {
+           pagination: false,
+           loggingList: [],
+         },
+       })
       }
     },
   },

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-23 22:00:51
+ * @Last Modified time: 2018-08-27 16:18:39
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -499,7 +499,9 @@ export default class AddArticle extends Component {
           </Modal> */}
           <Modal visible={previewArticle} onCancel={this.handlePreviewArticleCancle} className={styles.preview} footer={null}>
             <div className='ql-editor'>
-              <div dangerouslySetInnerHTML={{__html: previewHTML}} />
+              <div 
+                dangerouslySetInnerHTML={{__html: previewHTML}} // eslint-disable-line
+                />
             </div>
           </Modal>
         </div>

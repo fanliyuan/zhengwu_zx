@@ -186,7 +186,7 @@ export default class AddUser extends Component {
                     whitespace: true,
                     validator: (rule, value, cb) => {
                       const state = checkedPassword(value)
-                      if (state || value.length < 6 || value.length > 24) {
+                      if (state || value && value.length < 6 || value && value.length > 24) {
                         cb('error')
                       } else {
                         cb()

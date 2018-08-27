@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-26 18:02:35
+ * @Last Modified time: 2018-08-27 17:28:48
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -223,7 +223,7 @@ export default class NodeManagement extends Component {
         dataIndex: 'parentNodeName',
       },
       {
-        title: 'mac地址',
+        title: 'MAC地址',
         dataIndex: 'mac',
       },
       {
@@ -350,7 +350,7 @@ export default class NodeManagement extends Component {
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
-              placeholder="IP地址"
+              placeholder="MAC地址"
               />
             <Cascader
               options={parentNodeList}

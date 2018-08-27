@@ -74,6 +74,7 @@ function number2String(params) {
           type: 'changeParentNodeList',
           payload: {
             parentNodeList: [],
+            parentNodeListT: [],
           },
         })
       }

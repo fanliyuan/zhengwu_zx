@@ -461,6 +461,11 @@ const menuData = [
         hideInMenu: true,
       },
       {
+        name: '修改轮播图',
+        path: 'editCarousel',
+        hideInMenu: true,
+      },
+      {
         name: '栏目管理',
         path: 'columnPosition',
       },

@@ -1,23 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'dva/router'
-import {
-  Form,
-  Input,
-  Select,
-  Radio,
-  Upload,
-  Button,
-  InputNumber,
-  Icon,
-  Modal,
-  message,
-  Tooltip,
-} from 'antd'
+import { connect } from 'dva'
+import { Form, Input, Select, Upload, Button, Icon, Modal, Tooltip, Card } from 'antd'
+
 // import copy from 'copy-to-clipboard' //复制到剪切板
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import config from '../../api/config'
 import styles from './AddCarousel.less'
 
+const { uploadServer } = config
 const { Item } = Form
 const itemLayout = {
   labelCol: {
@@ -34,22 +26,35 @@ function hasErrors(fieldErrors) {
 
 class Column extends Component {
   state = {
-    first: 1,
-    second: 11,
+    first: undefined,
+    second: undefined,
+    secondList: [],
   }
 
-  componentWillReceiveProps(nextProps) {
-    if ('value' in nextProps) {
-      this.setState(nextProps.value)
+  componentDidMount() {
+    if (this.props.value && this.props.dataList) {
+       const secondObject = this.props.dataList.filter(item => this.props.value === item.value)[0] || {}
+       const secondList = this.props.dataList.filter(item => item.columnPid === secondObject.columnPid)
+       this.setState({
+        secondList,
+        first: secondObject.columnPid && `${secondObject.columnPid}`,
+        second: this.props.value,
+       })
     }
   }
 
-  firstChange = val => {
+  firstChange = (val, column) => {
     this.setState(
       {
         first: val,
+        secondList: column.filter(item => item.value === val).length ? column.filter(item => item.value === val)[0].children : [],
       },
-      () => this.props.onChange({ ...this.state })
+      () => {
+        this.setState({
+          second: this.state.secondList[0] && this.state.secondList[0].value,// eslint-disable-line
+        })
+        this.props.onChange(this.state.secondList[0] && this.state.secondList[0].value)
+      }
     )
   }
 
@@ -58,14 +63,14 @@ class Column extends Component {
       {
         second: val,
       },
-      () => this.props.onChange({ ...this.state })
+      () => this.props.onChange(this.state.second)
     )
   }
 
   render() {
-    const { first, second } = this.state
-    const { firstList = [], secondList = [] } = this.props
-    const firstComs = firstList.map(item => (
+    const { first, second, secondList } = this.state
+    const { data = [] } = this.props
+    const firstComs = data.map(item => (
       <Select.Option value={item.value} key={item.value}>
         {item.label}
       </Select.Option>
@@ -77,7 +82,7 @@ class Column extends Component {
     ))
     return (
       <Fragment>
-        <Select value={first} onChange={this.firstChange} className={styles.select1}>
+        <Select value={first} onChange={value => this.firstChange(value, data)} className={styles.select1}>
           {firstComs}
         </Select>
         <Select value={second} onChange={this.secondChange} className={styles.select2}>
@@ -88,94 +93,67 @@ class Column extends Component {
   }
 }
 
+@connect(({carouselManagement, loading, articlePublication}) => ({carouselManagement, loading: loading.models.carouselManagement, articlePublication}))
 @Form.create() // eslint-disable-line
 export default class AddCarousel extends Component {
   state = {
-    name: '',
-    column: { first: 1, second: 11 },
-    sort: 1,
-    urlType: 1,
-    url: '',
-    image: false,
+    carouselData: {},
+    fileList: [],
     previewVisible: false,
     previewUrl: '',
-    fileList: [],
-    columnList: [
-      {
-        value: 1,
-        label: '首页',
-        children: [
-          {
-            value: 11,
-            label: '最新动态',
-          },
-          {
-            value: 12,
-            label: '重要新闻',
-          },
-          {
-            value: 13,
-            label: '通知公告',
-          },
-          {
-            value: 14,
-            label: '最新政策',
-          },
-          {
-            value: 15,
-            label: '政策解读',
-          },
-          {
-            value: 16,
-            label: '热门政题',
-          },
-        ],
-      },
-      {
-        value: 2,
-        label: '开发动态',
-        children: [
-          {
-            value: 21,
-            label: '动态1',
-          },
-          {
-            value: 22,
-            label: '动态2',
-          },
-        ],
-      },
-      {
-        value: 3,
-        label: '目录',
-        children: [
-          {
-            value: 31,
-            label: '目录1',
-          },
-          {
-            value: 32,
-            label: '目录2',
-          },
-        ],
-      },
-    ],
-    sColList: [],
+    imageFlag: false,
   }
 
   componentDidMount() {
-    if (!this.state.sColList.length) {
+    this.props.dispatch({
+      type: 'articlePublication/getColumnList',
+    })
+    if (this.props.location.pathname === '/portalManagement/addCarousel') {
       this.setState({
-        sColList: this.state.columnList[0].children, // eslint-disable-line
+        carouselData: {},
+      })
+    } else {
+      this.props.dispatch({
+        type: 'carouselManagement/getCarousel',
+        payload: {
+          params: {
+            imgId: this.props.location.state.carouselId,
+          },
+        },
       })
     }
+
     this.props.form.validateFields()
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.carouselManagement.carouselData) {
+      this.setState({
+        carouselData: props.carouselManagement.carouselData,
+      }, () => {
+        this.setState({
+          fileList: [
+            {uid: -1, name: 'default.png', status: 'done', url: props.carouselManagement.carouselData.imagePath},
+          ],
+        })
+      })
+    }
   }
 
   uploadChange = ({ fileList }) => {
     this.setState({
       fileList,
     })
+    try {
+      if (fileList[0].status === 'done') {
+        this.props.form.setFieldsValue({
+          imagePath: fileList[0].response.result.data,
+        })
+      }
+    } catch (error) {
+     // eslint-disable-next-line 
+     console.log(error)
+    }
   }
 
   handlePreview = file => {
@@ -192,16 +170,8 @@ export default class AddCarousel extends Component {
   }
 
   columnChange = value => {
-    this.state.columnList.some(item => {
-      if (item.value === value.first) {
-        value.second = item.children[0].value
-        this.setState({
-          sColList: item.children,
-        })
-        return true
-      } else {
-        return false
-      }
+    this.props.form.setFieldsValue({
+      imgPid: value,
     })
   }
 
@@ -209,14 +179,14 @@ export default class AddCarousel extends Component {
     if (e && e.fileList && e.fileList[0]) {
       if (e.fileList[0].status === 'error') {
         this.setState({
-          image: true,
+          imageFlag: true,
         })
       }
       return e.fileList[0].status === 'error' ? null : '成功'
     } else {
       console.log('上传失败') // eslint-disable-line
       this.setState({
-        image: false,
+        imageFlag: false,
       })
       return null
     }
@@ -225,8 +195,19 @@ export default class AddCarousel extends Component {
   handleSave = () => {
     this.props.form.validateFieldsAndScroll((errors, values) => {
       if (!errors) {
-        message.success('通过表单验证,可以提交,控制台将打印表单值')
-        console.log(values) // eslint-disable-line
+        // message.success('通过表单验证,可以提交,控制台将打印表单值')
+        // console.log(values) // eslint-disable-line
+        this.props.dispatch({
+          type: 'carouselManagement/insertCarousel',
+          payload: {
+            body: {
+              imagePath: values.imagePath,
+              imgAddress: values.imgAddress,
+              imgName: values.imgName,
+              imgPid: +values.imgPid,
+            },
+          },
+        })
       } else {
         console.log('表单未通过验证', values) // eslint-disable-line
       }
@@ -234,28 +215,14 @@ export default class AddCarousel extends Component {
   }
 
   render() {
-    const {
-      name,
-      column,
-      sort,
-      urlType,
-      url,
-      image,
-      fileList,
-      previewUrl,
-      previewVisible,
-      sColList,
-      columnList,
-    } = this.state
-    const { getFieldDecorator, getFieldError, getFieldsError, isFieldTouched } = this.props.form
+    const { fileList, previewVisible, previewUrl, carouselData, imageFlag  } = this.state
+    const { form: {getFieldDecorator, getFieldError, getFieldsError, isFieldTouched}, loading, articlePublication:{ column, secondCategoryList } } = this.props
 
-    const fColList = columnList.map(item => ({ value: item.value, label: item.label }))
-
-    const nameError = isFieldTouched('name') && getFieldError('name')
-    const columnError = isFieldTouched('column') && getFieldError('column')
-    const sortError = isFieldTouched('sort') && getFieldError('sort')
-    const urlTypeError = isFieldTouched('urlType') && getFieldError('urlType')
-    const urlError = isFieldTouched('url') && getFieldError('url')
+    const nameError = isFieldTouched('imgName') && getFieldError('imgName')
+    const columnError = isFieldTouched('imgPid') && getFieldError('imgPid')
+    // const sortError = isFieldTouched('sort') && getFieldError('sort')
+    // const urlTypeError = isFieldTouched('urlType') && getFieldError('urlType')
+    const urlError = isFieldTouched('imgAddress') && getFieldError('imgAddress')
     const imageError = isFieldTouched('image') && getFieldError('image')
 
     const btnComs = (
@@ -285,129 +252,132 @@ export default class AddCarousel extends Component {
         <div className="common-layout">
           {/* 面包屑行的按钮 */}
           <div className="btncls">{btnComs}</div>
-          <Form>
-            <Item
-              label="名称"
-              {...itemLayout}
-              validateStatus={nameError ? 'error' : ''}
-              help={nameError ? '请输入名称' : ''}
-              >
-              {getFieldDecorator('name', {
-                initialValue: name,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入名称',
-                  },
-                ],
-              })(<Input className={styles.input} />)}
-            </Item>
-            <Item
-              label="栏目"
-              {...itemLayout}
-              validateStatus={columnError ? 'error' : ''}
-              help={columnError ? '选择栏目' : ''}
-              >
-              {getFieldDecorator('column', {
-                initialValue: column,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入名称',
-                  },
-                ],
-              })(
-                // 这里类似级联
-                <Column firstList={fColList} secondList={sColList} onChange={this.columnChange} />
-              )}
-            </Item>
-            <Item
-              label="排序"
-              {...itemLayout}
-              validateStatus={sortError ? 'error' : ''}
-              help={sortError ? '请输入排序' : ''}
-              >
-              {getFieldDecorator('sort', {
-                initialValue: sort,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入排序',
-                  },
-                ],
-              })(<InputNumber className={styles.input} />)}
-            </Item>
-            <Item
-              label="资源地址类型"
-              {...itemLayout}
-              validateStatus={urlTypeError ? 'error' : ''}
-              help={urlTypeError ? '请选择链接类型' : ''}
-              >
-              {getFieldDecorator('urlType', {
-                initialValue: urlType,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入名称',
-                  },
-                ],
-              })(
-                <Radio.Group>
-                  <Radio value={0}>绝对路径</Radio>
-                  <Radio value={1}>相对路径</Radio>
-                </Radio.Group>
-              )}
-            </Item>
-            <Item
-              label="资源地址"
-              {...itemLayout}
-              validateStatus={urlError ? 'error' : ''}
-              help={urlError ? '请输入链接地址' : ''}
-              >
-              {getFieldDecorator('url', {
-                initialValue: url,
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入名称',
-                  },
-                ],
-              })(<Input className={styles.input} />)}
-            </Item>
-            <Item
-              label={
-                <span>
-                  封面图&nbsp;
-                  <Tooltip title="说明：宽高1920*600，最大不超过5M，格式支持jpg 、png、gif、bmp">
-                    <Icon type="question-circle-o" />
-                  </Tooltip>&nbsp;
-                </span>
-              }
-              {...itemLayout}
-              validateStatus={imageError ? 'error' : ''}
-              help={imageError ? '请上传封面图' : ''}
-              extra={image ? '网络或者服务器错误,上传图片失败' : ''}
-              >
-              {getFieldDecorator('image', {
-                getValueFromEvent: this.normFile,
-                rules: [
-                  {
-                    required: true,
-                    message: '请上传图片',
-                  },
-                ],
-              })(
-                <Upload
-                  action="//jsonplaceholder.typicode.com/posts/" // 上传地址
-                  listType="picture-card"
-                  onChange={this.uploadChange}
-                  onPreview={this.handlePreview}
-                  >
-                  {fileList.length >= 1 ? null : uploadBtn}
-                </Upload>
-              )}
-            </Item>
-          </Form>
+          <Card loading={loading} bordered={false}>
+            <Form>
+              <Item
+                label="名称"
+                {...itemLayout}
+                validateStatus={nameError ? 'error' : ''}
+                help={nameError ? '请输入名称' : ''}
+                >
+                {getFieldDecorator('imgName', {
+                  initialValue: carouselData.imgName,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入名称',
+                    },
+                  ],
+                })(<Input className={styles.input} />)}
+              </Item>
+              <Item
+                label="栏目"
+                {...itemLayout}
+                validateStatus={columnError ? 'error' : ''}
+                help={columnError ? '选择栏目' : ''}
+                >
+                {getFieldDecorator('imgPid', {
+                  initialValue: carouselData.imgPid && `${carouselData.imgPid}`,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入名称',
+                    },
+                  ],
+                })(
+                  // 这里类似级联
+                  <Column data={column} dataList={secondCategoryList} onChange={value => this.columnChange(value)} />
+                )}
+              </Item>
+              {/* <Item
+                label="排序"
+                {...itemLayout}
+                validateStatus={sortError ? 'error' : ''}
+                help={sortError ? '请输入排序' : ''}
+                >
+                {getFieldDecorator('sort', {
+                  initialValue: sort,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入排序',
+                    },
+                  ],
+                })(<InputNumber className={styles.input} />)}
+              </Item>
+              <Item
+                label="资源地址类型"
+                {...itemLayout}
+                validateStatus={urlTypeError ? 'error' : ''}
+                help={urlTypeError ? '请选择链接类型' : ''}
+                >
+                {getFieldDecorator('urlType', {
+                  initialValue: urlType,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入名称',
+                    },
+                  ],
+                })(
+                  <Radio.Group>
+                    <Radio value={0}>绝对路径</Radio>
+                    <Radio value={1}>相对路径</Radio>
+                  </Radio.Group>
+                )}
+              </Item> */}
+              <Item
+                label="资源地址"
+                {...itemLayout}
+                validateStatus={urlError ? 'error' : ''}
+                help={urlError ? '请输入链接地址' : ''}
+                >
+                {getFieldDecorator('imgAddress', {
+                  initialValue: carouselData.imgAddress,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入名称',
+                    },
+                  ],
+                })(<Input className={styles.input} />)}
+              </Item>
+              <Item
+                label={
+                  <span>
+                    封面图&nbsp;
+                    <Tooltip title="说明：宽高1920*600，最大不超过5M，格式支持jpg 、png、gif、bmp">
+                      <Icon type="question-circle-o" />
+                    </Tooltip>&nbsp;
+                  </span>
+                }
+                {...itemLayout}
+                validateStatus={imageError ? 'error' : ''}
+                help={imageError ? '请上传封面图' : ''}
+                extra={imageFlag ? '网络或者服务器错误,上传图片失败' : ''}
+                >
+                {getFieldDecorator('imagePath', {
+                  getValueFromEvent: this.normFile,
+                  rules: [
+                    {
+                      required: true,
+                      message: '请上传图片',
+                    },
+                  ],
+                })(
+                  <Upload
+                    action={`${uploadServer}/uploadOssImage`} // 上传地址
+                    listType="picture-card"
+                    onChange={this.uploadChange}
+                    onPreview={this.handlePreview}
+                    fileList={fileList}
+                    >
+                    {fileList.length >= 1 ? null : uploadBtn}
+                  </Upload>
+                )}
+              </Item>
+            </Form>
+          </Card>
           <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel}>
             <img src={previewUrl} alt="图片预览" style={{ width: '100%' }} />
           </Modal>
