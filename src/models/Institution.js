@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels, getGoveDeptInfoByIds } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
+const { queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels, getGoveDeptInfoByIds, getGoveDeptInfos } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
 
 export default {
   namespace: 'Institution',
@@ -14,6 +14,7 @@ export default {
     provices:[],
     areas:[],
     getItemByIdInfo:{},
+    goveDeptInfos:[],
   },
   effects: {
     *querys({ payload }, { call, put }){
@@ -46,6 +47,19 @@ export default {
           yield put({
             type:'querys',
             payload:{pageNum:0,pageSize:10},
+          })
+        }
+      }catch(err){
+        console.log(err) // eslint-disable-line
+      }
+    },
+    *getGoveDeptInfos(_, { call, put }){
+      const response = yield call(getGoveDeptInfos)
+      try{
+        if(response.code === '200'){
+          yield put({
+            type:'goveDeptInfos',
+            payload:response.data.list,
           })
         }
       }catch(err){
@@ -138,6 +152,12 @@ export default {
       return {
         ...state,
         getItemByIdInfo:payload,
+      }
+    },
+    goveDeptInfos(state,{ payload }){
+      return {
+        ...state,
+        goveDeptInfos:payload,
       }
     },
     editId(state, {payload}){

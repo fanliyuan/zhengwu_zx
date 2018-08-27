@@ -26,9 +26,17 @@ export default class AddInstitution extends Component {
       })
       const { dispatch } = this.props
       dispatch({
+        type:'Institution/getGoveDeptInfos',
+      })
+      dispatch({
+        type:'Institution/getOneLevel',
+      })
+      dispatch({
         type:'Institution/getItmByIds',
         payload:{deptIds:editId},
       })
+
+
     }
     else{
       this.setState({
@@ -41,7 +49,8 @@ export default class AddInstitution extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const { Institution:{ getItemByIdInfo } } = this.props
+    const { Institution:{ getItemByIdInfo, goveDeptInfos } } = this.props
+    console.log(getItemByIdInfo,goveDeptInfos)
     const { addAction } = this.state
     const formItemLayout = {
       labelCol: {
@@ -60,42 +69,6 @@ export default class AddInstitution extends Component {
         sm: { span: 10, offset: 7 },
       },
     }
-    const treeData = [
-      {
-        label: '某一级机构1',
-        value: '0-0',
-        key: '0-0',
-        children: [
-          {
-            label: '某二级机构1',
-            value: '0-0-0',
-            key: '0-0-0',
-          },
-          {
-            label: '某二级机构2',
-            value: '0-0-1',
-            key: '0-0-1',
-          },
-        ],
-      },
-      {
-        label: '某一级机构2',
-        value: '0-1',
-        key: '0-1',
-        children: [
-          {
-            label: '某二级机构3',
-            value: '0-1-0',
-            key: '0-1-0',
-          },
-          {
-            label: '某二级机构4',
-            value: '0-1-1',
-            key: '0-1-1',
-          },
-        ],
-      },
-    ]
     const provinceData = [
       {
         value: '0',
@@ -131,7 +104,7 @@ export default class AddInstitution extends Component {
             </FormItem>
             <FormItem label="上级机构" {...formItemLayout}>
               {getFieldDecorator('parentJg')(
-                <TreeSelect treeData={treeData} placeholder="please select" treeDefaultExpandAll />
+                <TreeSelect treeData={goveDeptInfos} placeholder="please select" treeDefaultExpandAll />
               )}
             </FormItem>
             <FormItem label="排序" {...formItemLayout}>

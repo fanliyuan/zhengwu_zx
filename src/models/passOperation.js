@@ -69,7 +69,7 @@ export default {
     *getStartNode({ payload }, { call, put }){
       const response = yield call(startNode,{ params:payload })
       try{
-        response.result.unshift({key:-1,value:'开始节点'})
+        response.result.unshift({key:-1,value:'起始节点'})
         yield put({
           type:'startNode',
           payload:response.result,
