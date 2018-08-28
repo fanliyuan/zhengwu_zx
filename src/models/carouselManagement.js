@@ -3,7 +3,7 @@ import { routerRedux } from 'dva/router'
 
 import apis from '../api'
 
-const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarousel, getCarousel } = apis
+const { getCarousels, insertCarousel, updateCarousel, deleteCarousel, toggleCarousel, getCarousel } = apis
  export default {
   namespace:'carouselManagement',
 
@@ -24,7 +24,7 @@ const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarou
           },
         })
       } else {
-        payload = select(state => state.carouselManagement.queryData)
+        payload.body = yield select(state => state.carouselManagement.queryData)
       }
       let response
       try {
@@ -135,12 +135,12 @@ const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarou
         message.error('删除失败!')
       }
     },
-    *updateCarouse({ payload }, { call, put }) {
+    *updateCarousel({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(updateCarouse, {body: payload.body})
+        response = yield call(updateCarousel, {body: payload.body})
         if (+response.code === 0) {
-          message.success('删除成功!')
+          message.success('修改成功!')
           yield put(
             routerRedux.push('/portalManagement/carouselManagement')
           )
@@ -150,7 +150,7 @@ const { getCarousels, insertCarousel, updateCarouse, deleteCarousel, toggleCarou
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
-        message.error('删除失败!')
+        message.error('修改失败!')
       }
     },
   },

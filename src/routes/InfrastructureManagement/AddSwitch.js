@@ -106,6 +106,7 @@ export default class AddSwitch extends Component {
       treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
       searchPlaceholder: '请选择业务范围机构',
+      dropdownStyle:  {maxHeight: 200},
       style: {
         width: 300,
       },
@@ -115,6 +116,7 @@ export default class AddSwitch extends Component {
       treeCheckable: true,
       showCheckedStrategy: SHOW_PARENT,
       searchPlaceholder: '请选择业务范围节点',
+      dropdownStyle:{maxHeight: 200}, 
       style: {
         width: 300,
       },

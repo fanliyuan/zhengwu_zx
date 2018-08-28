@@ -127,7 +127,7 @@ export default class AddCarousel extends Component {
   }
 
   componentWillReceiveProps(props) {
-    if (props.carouselManagement.carouselData) {
+    if (this.props.carouselManagement.carouselData !== props.carouselManagement.carouselData) {
       this.setState({
         carouselData: props.carouselManagement.carouselData,
       }, () => {
@@ -177,16 +177,17 @@ export default class AddCarousel extends Component {
 
   normFile = e => {
     if (e && e.fileList && e.fileList[0]) {
-      if (e.fileList[0].status === 'error') {
+      if (e.fileList[0].status === 'done') {
         this.setState({
-          imageFlag: true,
+          imageFlag: false,
         })
       }
-      return e.fileList[0].status === 'error' ? null : '成功'
+      return e.fileList[0].status === 'done' ? e.fileList[0].response.result.data : ''
     } else {
       console.log('上传失败') // eslint-disable-line
       this.setState({
-        imageFlag: false,
+        imageFlag: true,
+        fileList: [],
       })
       return null
     }
