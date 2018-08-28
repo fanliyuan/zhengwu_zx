@@ -72,12 +72,12 @@ const module = {
     },
     {
       name: 'addRegion',
-      url: '/regionManager/region',
+      url: 'regionManager/region',
       method: 'post',
     },
     {
       name: 'editRegion',
-      url: '/regionManager/region',
+      url: 'regionManager/region',
       method: 'put',
     },
     {
@@ -87,13 +87,13 @@ const module = {
     },
     {
       name: 'getNodesByDepartment',
-      url: '/nodeManager/deptnodes',
+      url: 'nodeManager/deptnodes',
     },
   ],
 }
 module.apis.forEach(item => {
   if (!item.baseHost) {
-    item.baseHost = 'http://testgoverinfrast.tpaas.youedata.com/' // http://testgoverinfrast.tpaas.youedata.com/ http://goverinfrast.tpaas.youedata.com
+    item.baseHost = 'http://testgoverinfrast.tpaas.youedata.com' // http://testgoverinfrast.tpaas.youedata.com/ http://goverinfrast.tpaas.youedata.com
   }
 })
 

@@ -109,10 +109,13 @@ export default class PassManagement extends React.Component {
 
   handleTableChange = pagination => {
     const { pageSize, current } = pagination
+    const {startNodeId, targetNodeId } = this.state
     const { dispatch } = this.props
+    const start = +startNodeId === -1 ? '' : startNodeId
+    const target = +targetNodeId === -1 ? '' : targetNodeId
     dispatch({
       type:'passOperation/querys',
-      payload:{ pageSize, pageNumber:current},
+      payload:{ pageSize, pageNumber:current,startNodeId:start, targetNodeId:target},
     })
   }
 

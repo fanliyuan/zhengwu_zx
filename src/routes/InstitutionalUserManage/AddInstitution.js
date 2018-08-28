@@ -9,6 +9,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 const FormItem = Form.Item
 const { TextArea } = Input
 const { Option } = Select
+let parentId
 @Form.create()
 @connect(({Institution}) => ({
   Institution,
@@ -69,9 +70,13 @@ export default class AddInstitution extends Component {
           setTimeout(() => {dispatch(routerRedux.push('/institutionalUserManage/institutionalManage'))},2000)
         }
         else {
+          if(+parentId === 0){
+            values.deptParentId = 0
+          }
+          const proCityInfo = values.province === "所属省" ? undefined : `${values.province}|${values.city}|${values.area}`
           dispatch({
             type:'Institution/addItem',
-            payload:{...values,province:undefined,city:undefined,area:undefined,proCityAreaInfo:`${values.city}|${values.city}|${values.area}`},
+            payload:{...values,province:undefined,city:undefined,area:undefined,proCityAreaInfo:proCityInfo},
           })
           setTimeout(() => {dispatch(routerRedux.push('/institutionalUserManage/institutionalManage'))},2000)
         }
@@ -109,9 +114,20 @@ export default class AddInstitution extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas } } = this.props
-    const pro = getItemByIdInfo.proCityAreaInfo && `${getItemByIdInfo.proCityAreaInfo.split('|')[0]}|${getItemByIdInfo.proCityAreaInfo.split('|')[1]}`
-    const cit = getItemByIdInfo.proCityAreaInfo && `${getItemByIdInfo.proCityAreaInfo.split('|')[2]}|${getItemByIdInfo.proCityAreaInfo.split('|')[3]}`
-    const are = getItemByIdInfo.proCityAreaInfo && `${getItemByIdInfo.proCityAreaInfo.split('|')[4]}|${getItemByIdInfo.proCityAreaInfo.split('|')[5]}`
+    let pro
+    let cit 
+    let are
+    parentId = goveDeptInfos.length
+    if(getItemByIdInfo.proCityAreaInfo === "所属省|所属市|所属区"){
+      pro = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[0]
+      cit = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[1]
+      are = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[2]
+    }
+    else {
+      pro = getItemByIdInfo.proCityAreaInfo ? `${getItemByIdInfo.proCityAreaInfo.split('|')[0]}|${getItemByIdInfo.proCityAreaInfo.split('|')[1]}` :'所属省'
+      cit = getItemByIdInfo.proCityAreaInfo ? `${getItemByIdInfo.proCityAreaInfo.split('|')[2]}|${getItemByIdInfo.proCityAreaInfo.split('|')[3]}` :'所属市'
+      are = getItemByIdInfo.proCityAreaInfo ? `${getItemByIdInfo.proCityAreaInfo.split('|')[4]}|${getItemByIdInfo.proCityAreaInfo.split('|')[5]}` : '所属区'
+    }
     const { addAction } = this.state
     const ProData = provices.map(item => {
       return (<Option value={`${item.provinceId }|${ item.name}`} key={item.id}>{item.name}</Option>)
