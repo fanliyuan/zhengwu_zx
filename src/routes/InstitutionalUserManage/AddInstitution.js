@@ -101,6 +101,11 @@ export default class AddInstitution extends Component {
     })
   }
 
+  handleCancel = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/institutionalUserManage/institutionalManage'))
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
     const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas } } = this.props
@@ -210,7 +215,7 @@ export default class AddInstitution extends Component {
               <Button type="primary" htmlType="submit" style={{ marginRight: 20 }}>
                 确定
               </Button>
-              <Button type="primary">取消</Button>
+              <Button onClick={this.handleCancel}>取消</Button>
             </FormItem>
           </Form>
         </Card>

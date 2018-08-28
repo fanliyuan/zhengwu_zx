@@ -83,7 +83,7 @@ const module = {
     {
       name: 'getDepartments',
       url: 'getGoveDeptInfos',
-      baseHost: 'http://govecommons.tpaas.youedata.com',
+      baseHost: 'http://testcommons.tpaas.youedata.com',
     },
     {
       name: 'getNodesByDepartment',
@@ -93,7 +93,7 @@ const module = {
 }
 module.apis.forEach(item => {
   if (!item.baseHost) {
-    item.baseHost = 'http://goverinfrast.tpaas.youedata.com'
+    item.baseHost = 'http://testgoverinfrast.tpaas.youedata.com/' // http://testgoverinfrast.tpaas.youedata.com/ http://goverinfrast.tpaas.youedata.com
   }
 })
 

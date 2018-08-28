@@ -9,7 +9,7 @@ const module =  {
 }
 module.apis.forEach(item => {
   if (!item.baseHost) {
-    item.baseHost = 'http://govecommons.tpaas.youedata.com'
+    item.baseHost = 'http://testcommons.tpaas.youedata.com'
   }
 })
 export default module
