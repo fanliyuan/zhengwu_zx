@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:42:31
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-27 20:54:30
+ * @Last Modified time: 2018-08-28 11:49:28
  * @描述: 开放门户管理--资讯管理--轮播图管理
 */
 import React, { Component, Fragment } from 'react'
@@ -32,7 +32,12 @@ export default class CarouselManagement extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: 'carouselManagement/getCarousels',
-      payload: {},
+      payload: {
+        body: {
+          pageNum:1,
+          pageSize: 10,
+        },
+      },
     })
     this.props.dispatch({
       type: 'articlePublication/getColumnList',
@@ -84,7 +89,11 @@ export default class CarouselManagement extends Component {
     this.props.dispatch({
       type: 'carouselManagement/getCarousels',
       payload: {
-        body: queryParams,
+        body: {
+          ...queryParams,
+          pageNum: 1,
+          pageSize: 10,
+        },
       },
     })
     this.setState({
@@ -100,7 +109,7 @@ export default class CarouselManagement extends Component {
       payload: {
         body: {
           ...queryParams,
-          pagiSize: pagination.pageSize,
+          pageSize: pagination.pageSize,
           pageNum: pagination.current,
         },
       },
