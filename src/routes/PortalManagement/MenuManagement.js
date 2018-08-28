@@ -31,8 +31,9 @@ for (let i = 0; i < 120; i++) {
   })
 }
 
-@connect(({ portalManagement }) => ({
+@connect(({ portalManagement, loading }) => ({
   portalManagement,
+  loading,
 }))
 export default class MenuManagement extends Component {
   state = {
@@ -164,10 +165,7 @@ export default class MenuManagement extends Component {
       modalTitle,
       defaultValue,
     } = this.state
-    // const { lists } = this.props
-    // console.log(lists)
-    // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
-
+    const { portalManagement:{ lists }, loading } = this.props
     const stateList = [
       {
         value: 0,
@@ -196,19 +194,25 @@ export default class MenuManagement extends Component {
       },
       {
         title: '分类名称',
-        dataIndex: 'name',
+        dataIndex: 'typeName',
       },
       {
         title: '发布状态',
-        dataIndex: 'state',
+        dataIndex: 'typeState',
+        render: (text) => {
+          return +text === 0 ? '未发布': '已发布'
+        },
       },
       {
         title: '是否推荐',
-        dataIndex: 'recommend',
+        dataIndex: 'typeHotState',
+        render: (text) => {
+          return +text === 0 ? '未发布': '已发布'
+        },
       },
       {
         title: '操作人',
-        dataIndex: 'operator',
+        dataIndex: 'creator',
       },
       {
         title: '操作时间',
@@ -295,12 +299,12 @@ export default class MenuManagement extends Component {
             <Table
               bordered
               columns={columns}
-              dataSource={data}
+              dataSource={lists}
               // rowSelection={rowSelection}
               // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-              // loading={loading}
-              rowKey="id"
-              onChange={this.handleStandardTableChange}
+              loading={loading}
+              rowKey="typeId"
+              // onChange={this.handleStandardTableChange}
               />
           </div>
           <Modal
