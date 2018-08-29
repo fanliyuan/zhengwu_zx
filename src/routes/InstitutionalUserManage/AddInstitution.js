@@ -183,7 +183,7 @@ export default class AddInstitution extends Component {
             </FormItem>
             <FormItem label="上级机构" {...formItemLayout}>
               {getFieldDecorator('deptParentId')(
-                <TreeSelect treeData={goveDeptInfos} placeholder="please select" treeDefaultExpandAll />
+                <TreeSelect treeData={goveDeptInfos} placeholder="请输入上级机构" treeDefaultExpandAll />
               )}
             </FormItem>
             <FormItem label="排序" {...formItemLayout}>
