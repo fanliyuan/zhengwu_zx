@@ -349,8 +349,8 @@ export default class SourceSubscription extends Component {
                 <Input placeholder="请输入关键词" className={styles.input} />
                 <Button type="primary" icon="search" />
               </div>
-              <div>
-                <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8 mb16">
+              <div className='clearfix'>
+                <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8">
                   <Icon type="question-circle-o" />
                 </Tooltip>
                 <DirectoryTree

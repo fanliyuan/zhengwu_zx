@@ -59,7 +59,7 @@ export default class AddSwitch extends Component {
         regionId: this.state.regoinInfo.regionId ? +this.state.regoinInfo.regionId : undefined,
         nodeIds: value.nodeIds.map(item => +item),
         deptIds: value.deptIds.map(item => +item),
-        status: value.status ? 1 : 0,
+        status: value.status ? 0 : 1,
         desc: value.desc,
       }
       if (this.props.location.pathname === '/infrastructure/addSwitch') {

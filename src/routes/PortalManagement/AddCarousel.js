@@ -9,6 +9,18 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import config from '../../api/config'
 import styles from './AddCarousel.less'
 
+function getCookie(params) {
+  const temp = document.cookie.match(new RegExp(`${params}=.*;`))
+  const other = document.cookie.match(new RegExp(`${params}=.*`))
+  if (temp) {
+    return temp[0].replace(`${params}=`,'')
+  } else if (other) {
+    return other[0].replace(`${params}=`,'')
+  } else {
+    return ''
+  }
+}
+
 const { uploadServer } = config
 const { Item } = Form
 const itemLayout = {
@@ -380,7 +392,8 @@ export default class AddCarousel extends Component {
                   ],
                 })(
                   <Upload
-                    action={`${uploadServer}/uploadOssImage`} // 上传地址
+                    action={`${uploadServer}/uploadOssImage?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
+                    headers={{accessToken: getCookie('accessToken')}}
                     listType="picture-card"
                     onChange={this.uploadChange}
                     onPreview={this.handlePreview}

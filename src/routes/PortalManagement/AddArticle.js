@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-27 16:18:39
+ * @Last Modified time: 2018-08-29 14:06:32
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -20,6 +20,18 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import config from '../../api/config'
 import 'react-quill/dist/quill.snow.css'
 import styles from './AddArticle.less'
+
+function getCookie(params) {
+  const temp = document.cookie.match(new RegExp(`${params}=.*;`))
+  const other = document.cookie.match(new RegExp(`${params}=.*`))
+  if (temp) {
+    return temp[0].replace(`${params}=`,'')
+  } else if (other) {
+    return other[0].replace(`${params}=`,'')
+  } else {
+    return ''
+  }
+}
 
 const { downloadServer, uploadServer } = config
 
@@ -87,9 +99,12 @@ const base64UrlToUrl = (value, delta, _this) => {
   
       const formData = new FormData()
       formData.append('file', image, 'image.jpg')
-      fetch(uploadURL,{
+      fetch(`${uploadURL}?accessName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`,{
           method: 'POST',
           body: formData,
+          headers: {
+            accessToken: getCookie('accessToken'),
+          },
         }
       ).then(res => {
         return res.json()
@@ -165,22 +180,17 @@ export default class AddArticle extends Component {
     }
   }
 
-  componentWillReceiveProps(values) {
-    if (values.articleLibrary.articleInfo.articleContent) {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.articleLibrary.articleInfo !== nextProps.articleLibrary.articleInfo && nextProps.articleLibrary.articleInfo.articleContent) {
       this.setState({
-        quillText: values.articleLibrary.articleInfo.articleContent,
+        quillText: nextProps.articleLibrary.articleInfo.articleContent,
       })
     }
-    if (values.articleLibrary.articleInfo.imgPath) {
-      const {imgPath} = values.articleLibrary.articleInfo
+    if (this.props.articleLibrary.articleInfo !== nextProps.articleLibrary.articleInfo && nextProps.articleLibrary.articleInfo.imgPath) {
+      const {imgPath} = nextProps.articleLibrary.articleInfo
       this.setState({
         coverUrl: imgPath,
         fileList: [{uid: -1, name: 'default.png', status: 'done', url: imgPath}],
-      })
-    } else {
-      this.setState({
-        coverUrl: '',
-        fileList: [],
       })
     }
   }
@@ -438,7 +448,8 @@ export default class AddArticle extends Component {
               }
               >
               <Upload
-                action={`${uploadServer}/uploadOssImage`} // 上传地址
+                action={`${uploadServer}/uploadOssImage?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
+                headers={{accessToken: getCookie('accessToken')}}
                 onPreview={this.handlePreviewChange}
                 onChange={this.handleUploadChange}
                 fileList={fileList}
@@ -462,10 +473,14 @@ export default class AddArticle extends Component {
               label="附件"
               {...formItemLayout}
               extra={
-                <div style={{ color: '#e4393c' }}>说明：单个文件最大不超过100M,最多上传5个文件</div>
+                <div style={{ color: '#e4393c' }}>说明：文件最大不超过100M,多文件请上传压缩文件</div>
               }
               >
-              <Upload action={`${uploadServer}/uploadOssFile`} onChange={this.handleUploadFile}>
+              <Upload 
+                action={`${uploadServer}/uploadOssFile?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
+                headers={{accessToken: getCookie('accessToken')}}
+                onChange={this.handleUploadFile}
+                >
                 <Button>
                   <Icon type="upload" /> 上传
                 </Button>

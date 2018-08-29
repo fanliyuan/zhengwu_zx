@@ -415,7 +415,7 @@ export default class CatalogManagement extends Component {
               <Button type="primary" icon="search" />
             </div>
             <div className="clearfix">
-              <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8 mb16">
+              <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8">
                 <Icon type="question-circle-o" />
               </Tooltip>
               <DirectoryTree

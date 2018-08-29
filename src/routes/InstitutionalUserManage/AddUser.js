@@ -108,6 +108,8 @@ export default class AddUser extends Component {
             },
           })
         } else {
+          const { userInfo: { extendedProperties } } = this.state
+          const roleInfo = JSON.parse(extendedProperties)
           const body = {
               accountName: value.accountName,
               accountPasswd: value.psw ? sha('sha1').update(value.psw).digest('hex') : '',
@@ -116,7 +118,9 @@ export default class AddUser extends Component {
               extendedProperties: JSON.stringify({ 
                 projectId: '8aced467f44a4a458e763814912c3d47',
                 scope: '8aced467f44a4a458e763814912c3d47',
-                name: value.name, 
+                name: value.name,
+                roleId: roleInfo.roleId || '',
+                systemRole: roleInfo.systemRole || '',
               }),
             }
           this.props.dispatch({

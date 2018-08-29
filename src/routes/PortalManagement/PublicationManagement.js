@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-26 10:53:38
+ * @Last Modified time: 2018-08-29 14:19:40
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -16,9 +16,11 @@ import copy from 'copy-to-clipboard'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './PublicationManagement.less'
 import { format24, format0 } from '../../utils/utils'
+import config from '../../api/config'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
+const { portalsServer } = config
 
 // 这里可以优化,不必太多次的循环
 // function getSecondColumn(pid = -1, firstColumn = []) {
@@ -215,7 +217,7 @@ export default class PublicationManagement extends Component {
   }
 
   copyUrl = row => {
-    copy(`这是复制的${row.articleId}`)
+    copy(`${portalsServer}/article?article=${row.articleId}`)
     message.success('复制成功')
   }
 

@@ -41,6 +41,8 @@ function number2String(params) {
               pagination,
             },
           })
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -93,6 +95,7 @@ function number2String(params) {
             },
           }) 
         } else {
+          message.error(response.msg)
           throw new Error('非200')
         }
       } catch (error) {
@@ -131,7 +134,7 @@ function number2String(params) {
           message.success('新增成功')
           yield put(routerRedux.push('/infrastructure/node'))
         } else {
-          message.error('新增失败!')
+          message.error(`新增失败, ${response.msg}`)
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -147,7 +150,7 @@ function number2String(params) {
           message.success('修改成功')
           yield put(routerRedux.push('/infrastructure/node'))
         } else {
-          message.error('修改失败!')
+          message.error(`修改失败, ${response.msg}`)
         }
       } catch (error) {
         // eslint-disable-next-line

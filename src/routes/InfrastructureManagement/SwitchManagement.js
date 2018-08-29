@@ -208,7 +208,7 @@ export default class SwitchManagement extends Component {
         title: '更新时间',
         dataIndex: 'updateTime',
         render(text) {
-          return moment(~~text).format('YYYY-MM-DD HH:mm:ss')
+          return moment(+text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {

@@ -40,6 +40,9 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
               pagination,
             },
           })
+        } else {
+          message.error(response.msg)
+          throw new Error('返回非0')
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -85,6 +88,8 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
           yield put({
             type: 'getRegion',
           })
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -97,10 +102,12 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
         response = yield call(stopRegion, {path: payload.regionId})
         if (+response.code === 0) {
           message.success('交换域停用成功!')
+          yield put({
+            type: 'getRegion',
+          })
+        } else {
+          message.error(response.msg)
         }
-        yield put({
-          type: 'getRegion',
-        })
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
@@ -115,6 +122,8 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
           yield put({
             type: 'getRegion',
           })
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -128,6 +137,8 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
         if (+response.code === 0) {
           message.success('新建成功')
           yield put(routerRedux.push('/infrastructure/switch'))
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
        // eslint-disable-next-line 
@@ -141,6 +152,8 @@ const { getRegion, getRegionNodes, startRegion, stopRegion, deleteRegion, addReg
         if (+response.code === 0) {
           message.success('修改成功')
           yield put(routerRedux.push('/infrastructure/switch'))
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
        // eslint-disable-next-line 

@@ -2,14 +2,15 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:18:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-27 20:36:20
+ * @Last Modified time: 2018-08-29 14:20:19
  * @Description: 全局接口配置
  */
 const baseConfig = {
   // uploadServer: 'http://192.168.100.16:8804',
   // downloadServer: 'http://192.168.100.16:8804',
-  uploadServer: 'http://testgoveportalback.tpaas.youedata.com',
-  downloadServer: 'http://testgoveportalback.tpaas.youedata.com',
+  uploadServer: 'http://testgoveportalback.tpaas.youedata.com', // 文件上传的地址
+  downloadServer: 'http://testgoveportalback.tpaas.youedata.com', // 文件下载的地址
+  portalsServer: 'www.baidu.com/portals', // 门户网站的文章地址
   apiHost: 'http://api.tpaas.youedata.com',
   projectId: '8aced467f44a4a458e763814912c3d47',
 }

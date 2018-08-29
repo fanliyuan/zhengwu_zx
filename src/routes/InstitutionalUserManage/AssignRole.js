@@ -32,7 +32,6 @@ export default class AssignRole extends Component {
     queryData: {},
     queryParams: {},
     roleId: null,
-    roleName: '',
     userId: '',
   }
 
@@ -148,19 +147,18 @@ export default class AssignRole extends Component {
     })
   }
 
-  roleChange = (e, roleListObject) => {
+  roleChange = e => {
     this.setState({
       roleId: e.target.value,
-      roleName: roleListObject[e.target.value],
     })
   }
 
-  handleOk = async () => {
+  handleOk = roleListObject => {
     if (!this.state.roleId) {
       message.error('请选择角色!')
       return null
     }
-    await this.props.dispatch({
+    this.props.dispatch({
       type: 'roles/setPermissions',
       // payload: {
       //   body: [{
@@ -174,7 +172,7 @@ export default class AssignRole extends Component {
           extendedProperties: JSON.stringify({
             projectId: '8aced467f44a4a458e763814912c3d47',
             scope: '8aced467f44a4a458e763814912c3d47',
-            systemRole: this.state.roleName,
+            systemRole: roleListObject[this.state.roleId],
             roleId: `${this.state.roleId}`,
           }),
         },
@@ -183,7 +181,6 @@ export default class AssignRole extends Component {
     this.setState({
       visible: false,
       roleId: null,
-      roleName: '',
     })
   }
 
@@ -344,10 +341,10 @@ export default class AssignRole extends Component {
           <Modal
             title="分配角色"
             visible={visible}
-            onOk={this.handleOk}
+            onOk={() => this.handleOk(roleListObject)}
             onCancel={this.handleCancel}
             >
-            <RadioGroup value={this.state.roleId} onChange={(e) => this.roleChange(e, roleListObject)}>
+            <RadioGroup value={this.state.roleId} onChange={(e) => this.roleChange(e)}>
               {
                 data1.map(item => (
                   <Radio value={item.id} key={item.id}>{item.label}</Radio>
