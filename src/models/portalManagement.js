@@ -14,7 +14,7 @@ export default {
       const response = yield call(resourceSearchList,{ body: payload })
       try {
         if(+response.code === 0){
-          const pagination = response.result.datas.total > 9 ? {current:response.result.datas.pageNum,pageSize:response.result.datas.pageSize,total:response.result.datas.total} : false
+          const pagination = response.result.total > 9 ? {current:response.result.pageNum,pageSize:response.result.pageSize,total:response.result.total} : false
           yield put ({
             type:'queryDirectory',
             payload:{
@@ -35,12 +35,19 @@ export default {
         console.log(err) // eslint-disable-line
       }
     },
-    *updateItem ({ payload }, {call}){
+    *updateItem ({ payload }, {call, put}){
       const response = yield call(updateResource,{ body: payload })
       try {
         if(+response.code === 0){
           message.info(response.msg)
-      }
+          yield put ({
+            type:'querys',
+            payload:{pageNum:1,pageSize:10},
+          })
+        }
+        else {
+          message.info(response.msg)
+        }
       }catch(err){
         console.log(err) // eslint-disable-line
       }   
