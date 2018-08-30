@@ -63,9 +63,10 @@ export default class AddInstitution extends Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         if(!addAction){
+          const pro = values.province !== "所属省" && values.city !== "所属市" && values.area !== "所属区" ? `${values.province}|${values.city}|${values.area}` : undefined
           dispatch({
             type:'Institution/editItem',
-            payload:{...values,province:undefined,city:undefined,area:undefined,proCityAreaInfo:`${values.province}|${values.city}|${values.area}`,deptId},
+            payload:{...values,province:undefined,city:undefined,area:undefined,proCityAreaInfo:pro,deptId},
           })
           setTimeout(() => {dispatch(routerRedux.push('/institutionalUserManage/institutionalManage'))},2000)
         }
@@ -73,7 +74,7 @@ export default class AddInstitution extends Component {
           if(+parentId === 0){
             values.deptParentId = 0
           }
-          const proCityInfo = values.province === "所属省" ? undefined : `${values.province}|${values.city}|${values.area}`
+          const proCityInfo = values.province !== "所属省" && values.city !== "所属市" && values.area !== "所属区" ? `${values.province}|${values.city}|${values.area}` : undefined
           dispatch({
             type:'Institution/addItem',
             payload:{...values,province:undefined,city:undefined,area:undefined,proCityAreaInfo:proCityInfo},

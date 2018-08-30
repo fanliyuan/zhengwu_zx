@@ -269,7 +269,7 @@ export default class InstitutionalManage extends Component {
             </Button>
           </div>
           <div>
-            <Table columns={columns} dataSource={list} pagination={paginations} rowKey="deptId" onChange={this.handleTableChange} bordered />
+            <Table columns={columns} dataSource={list} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="deptId" onChange={this.handleTableChange} bordered />
           </div>
         </Card>
       </PageHeaderLayout>
