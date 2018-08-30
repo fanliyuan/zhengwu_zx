@@ -6,7 +6,7 @@
  * @描述: 开放门户管理 -- 栏目管理 -- 栏目位置
 */
 import React, { Component } from 'react'
-import { Form, Input, Select, DatePicker, Button, Table, Modal } from 'antd'
+import { Form, Input, Select, DatePicker, Button, Table, Modal, message } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { format0, format24 } from '../../utils/utils'
@@ -99,12 +99,11 @@ export default class ColumnPosition extends Component {
         return ''
       }
     })
-    console.log(format0(+times[0]),times[0])
-    const pages = page === -1 ? '' : page
+    const pages = page === -1 ? undefined : page
     const { dispatch } = this.props
     dispatch({
       type:'columnPosition/searchList',
-      payload:{columnPage:pages, columnPname:operator, pageNum:0,pageSize:0,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
+      payload:{columnId:pages, columnPname:operator || undefined, pageNum:0,pageSize:0,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
     })
   }
 
@@ -125,6 +124,10 @@ export default class ColumnPosition extends Component {
         this.setState({
           editShow: false,
         })
+        if(value.edit.length > 10){
+          message.error("输入栏目名称过长,请重新输入")
+          return
+        }
         const operator = localStorage.getItem("accountName")
         const { dispatch } = this.props
         const { editId } = this.state
@@ -142,6 +145,7 @@ export default class ColumnPosition extends Component {
       edit,
       editShow,
     } = this.state
+    const texts = {emptyText:"暂无相关数据"}
     const { getFieldDecorator } = this.props.form
     const { columnPosition:{list,pageList}, loadingTable } = this.props
     // const pageList = pageData
@@ -179,6 +183,9 @@ export default class ColumnPosition extends Component {
         // dataIndex: 'operation',
         render: (text, row) => {
          if(row.children){
+          return <span className={styles.disableEdit}>修改</span>
+         }
+         else if(+row.columnId === 1 || +row.columnId === 2 || +row.columnId === 3){
           return <span className={styles.disableEdit}>修改</span>
          }
          else {
@@ -233,6 +240,8 @@ export default class ColumnPosition extends Component {
             rowKey="columnId"
             bordered
             loading={loadingTable}
+            // defaultExpandAllRows={false}
+            locale={texts}
             />
           <Modal
             visible={editShow}

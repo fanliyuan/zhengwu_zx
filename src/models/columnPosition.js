@@ -49,7 +49,7 @@ export default {
         if(+response.code === 0){
           let list
           message.success(`搜索${response.msg}`)
-          if(payload.columnPage === ""){
+          if(payload.columnPage === undefined){
             list = response.result.datas.map(item => {
               if(+item.columnPid === 0){
                 return {
@@ -98,7 +98,7 @@ export default {
       try{
         if(+response.code === 0){
           message.success(`修改${response.msg}`)
-          const pagination={pageNum:1,pageSize:10}
+          const pagination={pageNum:0,pageSize:0}
           yield put({
             type:'queryList',
             payload:pagination,
