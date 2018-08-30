@@ -115,8 +115,11 @@ export default class AddNode extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '请输入正确的节点名称',
-                    max: 20,
+                    message: '节点名称为必填',
+                  },
+                  {
+                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
+                    message: '名称不能超过20个字,并且不能含有特殊字符',
                   },
                 ],
               })(<Input placeholder="节点名称" />)}
