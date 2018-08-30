@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'dva/router'
 import { connect } from 'dva'
-import { Form, Input, Select, Upload, Button, Icon, Modal, Tooltip, Card } from 'antd'
+import { Form, Input, Select, Upload, Button, Icon, Modal, Tooltip, Card, message } from 'antd'
 
 // import copy from 'copy-to-clipboard' //复制到剪切板
 
@@ -365,6 +365,10 @@ export default class AddCarousel extends Component {
                       required: true,
                       message: '请输入名称',
                     },
+                    {
+                      max: 50,
+                      message: '名称不超过50个字符',
+                    },
                   ],
                 })(<Input className={styles.input} />)}
               </Item>
@@ -395,9 +399,17 @@ export default class AddCarousel extends Component {
                     action={`${uploadServer}/uploadOssImage?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
                     headers={{accessToken: getCookie('accessToken')}}
                     listType="picture-card"
+                    fileList={fileList}
+                    beforeUpload={file => {
+                      if (file.type.startsWith('image/')) {
+                        return true
+                      } else {
+                        message.error('请上传图片格式文件')
+                        return false
+                      }
+                    }}
                     onChange={this.uploadChange}
                     onPreview={this.handlePreview}
-                    fileList={fileList}
                     >
                     {fileList.length >= 1 ? null : uploadBtn}
                   </Upload>
