@@ -130,7 +130,11 @@ export default class AddSwitch extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '填写交换域名称',
+                    message: '交换域名称未必填',
+                  },
+                  {
+                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
+                    message: '名称不能超过20个字,并且不能含有特殊字符',
                   },
                 ],
                 initialValue: regionName,
@@ -167,6 +171,12 @@ export default class AddSwitch extends Component {
             <FormItem label="交换域描述" {...FormItemLayout}>
               {getFieldDecorator('desc', {
                 initialValue: '',
+                rules: [
+                  {
+                    max: 256,
+                    message: '描述不超过256个字符',
+                  },
+                ],
               })(<TextArea rows={4} />)}
             </FormItem>
             <FormItem label="状态" {...FormItemLayout}>

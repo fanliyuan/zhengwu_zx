@@ -38,9 +38,7 @@ export default class UserManage extends Component {
     this.props.dispatch({
       type: 'accounts/getAccounts',
       payload: {
-        payload: {
-          filter: '(status = 0 OR status = 1)',
-        },
+        filter: '(status = 0 OR status = 1)',
       },
     })
     if (this.props.roles.roleList.length < 1) {

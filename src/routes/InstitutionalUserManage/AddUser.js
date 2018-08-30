@@ -111,18 +111,18 @@ export default class AddUser extends Component {
           const { userInfo: { extendedProperties } } = this.state
           const roleInfo = JSON.parse(extendedProperties)
           const body = {
-              accountName: value.accountName,
-              accountPasswd: value.psw ? sha('sha1').update(value.psw).digest('hex') : '',
-              status: value.status ? 0: 1,
-              telephone: value.tel,
-              extendedProperties: JSON.stringify({ 
-                projectId: '8aced467f44a4a458e763814912c3d47',
-                scope: '8aced467f44a4a458e763814912c3d47',
-                name: value.name,
-                roleId: roleInfo.roleId || '',
-                systemRole: roleInfo.systemRole || '',
-              }),
-            }
+            accountName: value.accountName,
+            accountPasswd: value.psw ? sha('sha1').update(value.psw).digest('hex') : undefined,
+            status: value.status ? 0: 1,
+            telephone: value.tel,
+            extendedProperties: JSON.stringify({ 
+              projectId: '8aced467f44a4a458e763814912c3d47',
+              scope: '8aced467f44a4a458e763814912c3d47',
+              name: value.name,
+              roleId: roleInfo.roleId || '',
+              systemRole: roleInfo.systemRole || '',
+            }),
+          }
           this.props.dispatch({
             type: 'accounts/updateAccount',
             payload: {
