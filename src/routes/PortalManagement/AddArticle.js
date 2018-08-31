@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-29 14:06:32
+ * @Last Modified time: 2018-08-30 16:55:52
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -203,6 +203,16 @@ export default class AddArticle extends Component {
     base64UrlToUrl(value, delta, this)
   }
 
+  // keywordChange = arrValue => {
+  //   return arrValue
+  //   // return e.target.value.trim()
+  // }
+
+  // keywordNormalize = (value, preValues) => {
+  //   console.log(value)
+  //   return value
+  // }
+
   handleUploadChange = ({ fileList, file }) => {
     this.setState({ fileList })
     try {
@@ -291,7 +301,7 @@ export default class AddArticle extends Component {
       if (!err) {
         const { dispatch } = this.props
         const { quillText, coverUrl, fileResponse } = this.state
-        values.articleWord = values.articleWord.replace(/；/g, ';').replace(/^;*/, '').replace(/;*$/, '')
+        values.articleWord = values.articleWord.join(',')
         // 这里是base64的正则,提交前需要保证所有地址被替换,也就是需要个标识符,代表是否已经提交
         const base64Reg = /src="data:image\/[a-z]{3,4};base64,.*"/
         // console.log(base64Reg.test('<p>111<img src="data:image/jpeg;base64,/1231231231321">'))// eslint-disable-line
@@ -400,19 +410,31 @@ export default class AddArticle extends Component {
                     required: true,
                     message: '请输入标题',
                   },
+                  {
+                    max: 50,
+                    message: '文章标题不超过50个字符',
+                  },
                 ],
               })(<Input className={styles.input} />)}
             </Item>
-            <Item label={<span>关键字 <Tooltip title='多个关键字用分号(;)分开'><Icon type='question-circle-o' /></Tooltip></span>} {...formItemLayout}>
+            <Item label={<span>关键字 <Tooltip title='输入逗号(,)或者按下回车将自动分隔关键字'><Icon type='question-circle-o' /></Tooltip></span>} {...formItemLayout}>
               {getFieldDecorator('articleWord', {
-                initialValue: articleInfo.articleWord,
+                initialValue: articleInfo.articleWord && articleInfo.articleWord.split(','),
+                // getValueFromEvent: this.keywordChange,
+                // normalize: this.keywordNormalize,
                 rules: [
                   {
                     required: true,
                     message: '请输入检索关键字',
                   },
+                  {
+                    max: 50,
+                    message: '最多设置50个关键字',
+                    transform: arrValue => arrValue.join(''),
+                  },
                 ],
-              })(<Input className={styles.input} placeholder="关键字1;关键字2" />)}
+              // })(<Input className={styles.input} placeholder="关键字1;关键字2" />)}
+              })(<Select mode='tags' dropdownStyle={{display: 'none'}} tokenSeparators={[',', '，']} className={styles.input} />)}
             </Item>
             <Item label="分类" {...formItemLayout}>
               {getFieldDecorator('articleFid', {
@@ -435,6 +457,10 @@ export default class AddArticle extends Component {
                     required: true,
                     message: '请输入文章来源',
                   },
+                  {
+                    max: 50,
+                    message: '来源不超过50个字符',
+                  },
                 ],
               })(<Input className={styles.input} />)}
             </Item>
@@ -450,10 +476,18 @@ export default class AddArticle extends Component {
               <Upload
                 action={`${uploadServer}/uploadOssImage?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
                 headers={{accessToken: getCookie('accessToken')}}
-                onPreview={this.handlePreviewChange}
-                onChange={this.handleUploadChange}
                 fileList={fileList}
                 listType="picture-card"
+                onPreview={this.handlePreviewChange}
+                onChange={this.handleUploadChange}
+                beforeUpload={file => {
+                  if (file.type.startsWith('image/')) {
+                    return true
+                  } else {
+                    message.error('请上传图片文件')
+                    return false
+                  }
+                }}
                 >
                 {fileList.length >= 1 ? null : uploadButton}
               </Upload>

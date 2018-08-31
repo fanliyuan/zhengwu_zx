@@ -172,9 +172,12 @@ export default class AddUser extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '请输入合法用户名',
-                    max: 20,
+                    message: '请输入用户名',
                     whitespace: true,
+                  },
+                  {
+                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
+                    message: '用户名不能超过20个字,并且不能含有特殊字符',
                   },
                 ],
               })(<Input placeholder="请输入用户名" autoComplete='fasle' />)}
@@ -214,7 +217,10 @@ export default class AddUser extends Component {
                     required: true,
                     message: '请输入姓名',
                     whitespace: true,
-                    max: 20,
+                  },
+                  {
+                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
+                    message: '用户名不能超过20个字,并且不能含有特殊字符',
                   },
                 ],
               })(<Input placeholder="姓名" />)}

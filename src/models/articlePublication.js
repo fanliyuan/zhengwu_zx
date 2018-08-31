@@ -177,7 +177,7 @@ export default {
       try {
         response = yield call(changeAricleState, {body: payload.body})
         if (+response.code === 0) {
-          message.success('修改成功!')
+          message.success('发布成功!')
           if (!payload.body.articleOpenState) {
             yield put({
               type: 'getArticleReleased',
@@ -195,7 +195,7 @@ export default {
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
-        message.error('修改失败!')
+        message.error('发布失败!')
       }
     },
     *cancleArticleReleased({ payload }, { call, put }) {
