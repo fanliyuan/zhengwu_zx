@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:07:52
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-27 14:37:25
+ * @Last Modified time: 2018-08-31 14:48:54
  * @描述: 开放门户管理--资讯管理-- 资讯库
 */
 import React, { Component, Fragment } from 'react'
@@ -202,7 +202,7 @@ export default class NewsLibrary extends Component {
                 修改
               </a>
               <Popconfirm
-                title={`是否要删除${row.articleTitle}?`}
+                title={`${row.articleOpenState === 1?'此文章已发布，':''}您是否确认删除此文章?`}
                 onConfirm={() => this.handleDelete(row)}
                 >
                 <a>删除</a>

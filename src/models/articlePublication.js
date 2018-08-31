@@ -102,7 +102,8 @@ export default {
       let response
       try {
         let column = yield select(state => state.articlePublication.column)
-        if (column.length !== 0) {
+        // if (column.length !== 0) {
+        if (0 in column) { // 判断数组是否为空数组
           return null
         } else {
           response = yield call(columnList, {body: {pageSize: 0, pageNum: 0}})

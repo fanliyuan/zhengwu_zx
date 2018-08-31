@@ -131,12 +131,10 @@ const module = {
    {
      name: 'deleteCarousel',
      url: 'deleteImg',
-     method: 'delete',
    },
    {
      name: 'toggleCarousel',
      url: 'stopImg',
-     method: 'delete',
    },
    {
      name: 'getCarousel',

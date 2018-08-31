@@ -29,6 +29,12 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
         response = yield call(getArticles, {body: payload.body})
         const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
         const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
+        // 列表顺序索引处理
+        // let index = pageSize * (pageNum-1)
+        // datas.forEach(item => {
+        //   index++
+        //   item.index = index
+        // })
         if (+response.code === 0) {
           yield put({
             type: 'saveArticles',

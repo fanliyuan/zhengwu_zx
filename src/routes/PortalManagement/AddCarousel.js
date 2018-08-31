@@ -387,6 +387,7 @@ export default class AddCarousel extends Component {
                 extra={imageFlag ? '网络或者服务器错误,上传图片失败' : ''}
                 >
                 {getFieldDecorator('imagePath', {
+                  initialValue: carouselData.imagePath,
                   getValueFromEvent: this.normFile,
                   rules: [
                     {

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-30 16:55:52
+ * @Last Modified time: 2018-08-31 11:19:45
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -482,7 +482,12 @@ export default class AddArticle extends Component {
                 onChange={this.handleUploadChange}
                 beforeUpload={file => {
                   if (file.type.startsWith('image/')) {
-                    return true
+                    if (file.size <= 5 * 1024 *1024) {
+                      return true
+                    } else {
+                      message.error('图片文件超过5M')
+                      return false
+                    }
                   } else {
                     message.error('请上传图片文件')
                     return false
@@ -513,6 +518,14 @@ export default class AddArticle extends Component {
               <Upload 
                 action={`${uploadServer}/uploadOssFile?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
                 headers={{accessToken: getCookie('accessToken')}}
+                beforeUpload={file => {
+                  if (file.size <= 100 * 1024 * 1024) {
+                    return true
+                  } else {
+                    message.error('文件大小超过100M')
+                    return false
+                  }
+                }}
                 onChange={this.handleUploadFile}
                 >
                 <Button>

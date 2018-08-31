@@ -59,18 +59,18 @@ const { getCarousels, insertCarousel, updateCarousel, deleteCarousel, toggleCaro
       try {
         response = yield call(toggleCarousel, {params: payload.params})
         if (+response.code === 0) {
-          message.success('停用成功')
+          message.success(`${payload.params.imgState ? '启用': '停用'}成功!`)
           yield put({
             type: 'getCarousels',
             payload: {},
           })
         } else {
-          message.error('停用失败')
+          message.error(`${payload.params.imgState ? '启用': '停用'}失败!`)
         }
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
-        message.error('停用失败')
+        message.error(`${payload.params.imgState ? '启用': '停用'}失败!`)
       }
     },
     *getCarousel({ payload }, { call, put }) {
