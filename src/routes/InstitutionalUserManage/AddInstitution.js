@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, TreeSelect, InputNumber, Button, Select } from 'antd'
+import { Input, Card, Form, TreeSelect, InputNumber, Button, Select, message } from 'antd'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -10,6 +10,7 @@ const FormItem = Form.Item
 const { TextArea } = Input
 const { Option } = Select
 let parentId
+let checkMsg = true
 @Form.create()
 @connect(({Institution}) => ({
   Institution,
@@ -26,7 +27,7 @@ export default class AddInstitution extends Component {
     this.setState({
       deptId:editId,
     })
-    if(editId !== -1){
+    if(+editId !== -1){
       this.setState({
         addAction:false,
       })
@@ -42,7 +43,7 @@ export default class AddInstitution extends Component {
         payload:{pkId:editId},
       })
     }
-    else{
+    else if(+editId === -1){
       const { dispatch } = this.props
       dispatch({
         type:'Institution/getGoveDeptInfos',
@@ -112,14 +113,43 @@ export default class AddInstitution extends Component {
     dispatch(routerRedux.push('/institutionalUserManage/institutionalManage'))
   }
 
+  handleNameCheck = (e) => {
+    if(e.target.value.trim().length > 20){
+      message.info("机构名称不能超过20个字符")
+      this.props.form.setFieldsValue({
+        deptName:"",
+      })
+    }
+  }
+
+  handleNameSameCheck = async(e) => {
+    const { dispatch } = this.props
+    await dispatch({
+      type:'Institution/deptNameCheck',
+      payload:{deptName:e.target.value},
+    })
+    if(!checkMsg){
+      this.props.form.setFieldsValue({
+        deptName:"",
+      }) 
+    }
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
-    const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas } } = this.props
+    const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas, isSameMessage } } = this.props
+    const { addAction } = this.state
+    checkMsg = isSameMessage
     let pro
     let cit 
     let are
     parentId = goveDeptInfos.length
-    if(getItemByIdInfo.proCityAreaInfo === "所属省|所属市|所属区"){
+    if(addAction){
+      pro='所属省'
+      cit='所属市'
+      are='所属区'
+    }
+    else if(!addAction && getItemByIdInfo.proCityAreaInfo === "所属省|所属市|所属区"){
       pro = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[0]
       cit = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[1]
       are = getItemByIdInfo.proCityAreaInfo && getItemByIdInfo.proCityAreaInfo.split('|')[2]
@@ -129,7 +159,6 @@ export default class AddInstitution extends Component {
       cit = getItemByIdInfo.proCityAreaInfo ? `${getItemByIdInfo.proCityAreaInfo.split('|')[2]}|${getItemByIdInfo.proCityAreaInfo.split('|')[3]}` :'所属市'
       are = getItemByIdInfo.proCityAreaInfo ? `${getItemByIdInfo.proCityAreaInfo.split('|')[4]}|${getItemByIdInfo.proCityAreaInfo.split('|')[5]}` : '所属区'
     }
-    const { addAction } = this.state
     const ProData = provices.map(item => {
       return (<Option value={`${item.provinceId }|${ item.name}`} key={item.id}>{item.name}</Option>)
     })
@@ -180,11 +209,11 @@ export default class AddInstitution extends Component {
                     message: '请输入机构名称',
                   },
                 ],
-              })(<Input placeholder="机构名称" />)}
+              })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
             </FormItem>
             <FormItem label="上级机构" {...formItemLayout}>
               {getFieldDecorator('deptParentId')(
-                <TreeSelect treeData={goveDeptInfos} placeholder="请输入上级机构" treeDefaultExpandAll />
+                <TreeSelect treeData={goveDeptInfos} placeholder="请选择" treeDefaultExpandAll />
               )}
             </FormItem>
             <FormItem label="排序" {...formItemLayout}>

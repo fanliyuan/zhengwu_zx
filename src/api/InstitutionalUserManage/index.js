@@ -17,6 +17,11 @@ const module = {
       method:'get',
     },
     {
+      name:'deptNameIsTrueOrFalse',
+      url:'deptNameIsTrueOrFalse',
+      method:'get',
+    },
+    {
       name:'getProThreeLevels',
       url:'getProThreeLevels',
       method:'get',

@@ -9,7 +9,7 @@ export default {
     pageList:[],
   },
   effects:{
-    *queryList({ payload },{ call, put }){
+    *queryList({ payload },{ call, put }){ // 这个接口目前不用了
       const response = yield call(columnList,{body:payload})
       try{
         if(+response.code === 0){
@@ -100,7 +100,7 @@ export default {
           message.success(`修改${response.msg}`)
           const pagination={pageNum:0,pageSize:0}
           yield put({
-            type:'queryList',
+            type:'searchList',
             payload:pagination,
           })
         }

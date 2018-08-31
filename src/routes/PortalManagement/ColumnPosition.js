@@ -37,7 +37,7 @@ export default class ColumnPosition extends Component {
     const pagination = {pageSize:0,pageNum:0}
     const { dispatch } = this.props
     dispatch({
-      type:'columnPosition/queryList',
+      type:'columnPosition/searchList',
       payload:{...pagination},
     })
     dispatch({
@@ -124,7 +124,7 @@ export default class ColumnPosition extends Component {
         this.setState({
           editShow: false,
         })
-        if(value.edit.length > 10){
+        if(value.edit.trim().length > 10){
           message.error("输入栏目名称过长,请重新输入")
           return
         }

@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels, getGoveDeptInfo, getGoveDeptInfos, insertGoveDept, updateGoveDept } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
+const { deptNameIsTrueOrFalse, queryGoveDeptInfoList, deleteGoveDept, getProOneLevels, getProThreeLevels, getProTwoLevels, getGoveDeptInfo, getGoveDeptInfos, insertGoveDept, updateGoveDept } = apis // , deleteGoveDept, getGoveDeptInfo, getGoveDeptInfoByIds, insertGoveDept, updateGoveDept
 
 export default {
   namespace: 'Institution',
@@ -15,6 +15,7 @@ export default {
     areas:[],
     getItemByIdInfo:{},
     goveDeptInfos:[],
+    isSameMessage:true,
   },
   effects: {
     *querys({ payload }, { call, put }){
@@ -50,7 +51,27 @@ export default {
           })
         }
         else {
-          message.err(response.msg)
+          message.error(response.msg)
+        }
+      }catch(err){
+        console.log(err) // eslint-disable-line
+      }
+    },
+    *deptNameCheck({ payload },{call, put}){
+      const response = yield call(deptNameIsTrueOrFalse,{params:payload})
+      try{
+        if(response.code === '200'){
+          yield put({
+            type:'getCheckMsg',
+            payload:true,
+          })
+        }
+        else {
+          message.error(response.msg)
+          yield put({
+            type:'getCheckMsg',
+            payload:false,
+          })
         }
       }catch(err){
         console.log(err) // eslint-disable-line
@@ -67,7 +88,7 @@ export default {
           })
         }
         else {
-          message.err(response.msg)
+          message.error(response.msg)
         }
       }catch(err){
         console.log(err) // eslint-disable-line
@@ -208,6 +229,12 @@ export default {
       return {
         ...state,
         editId:payload.deptId,
+      }
+    },
+    getCheckMsg(state, { payload }){
+      return {
+        ...state,
+        isSameMessage:payload,
       }
     },
     getProvices(state, {payload}){
