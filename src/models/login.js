@@ -24,7 +24,7 @@ export default {
           yield call(insertLogging, {body: {
             createUser: payload.accountName,
             createTime: Date.now(),
-            realUser: '外星人',
+            realUser: '佚名',
             logState: 0,
             logType: 3,
           }})
@@ -35,18 +35,19 @@ export default {
           yield call(insertLogging, {body: {
             createUser: payload.accountName,
             createTime: Date.now(),
-            realUser: '外星人',
+            realUser: '佚名',
             logState: 0,
             logType: 3,
           }})
           return null
         }
-        const { accountId, accessToken, accountName } = response.result.datas
+        const { accountId, accessToken, accountName, tenantId } = response.result.datas
         if (response.code === 0) {
           // localStorage.setItem('accessToken', accessToken)
           document.cookie = `accessToken=${accessToken};path=/`
           localStorage.setItem('accountId', accountId)
           localStorage.setItem('accountName', accountName)
+          localStorage.setItem('tenantId', tenantId)
         }
         // Login successfully
         yield put({
@@ -62,7 +63,7 @@ export default {
         } catch (error) {
          // eslint-disable-next-line 
          console.log(error)
-         realUser = '外星人'
+         realUser = '佚名'
         }
         yield call(insertLogging, {body: {
           createUser: payload.accountName,
@@ -76,7 +77,7 @@ export default {
         yield call(insertLogging, {body: {
           createUser: payload.accountName,
           createTime: Date.now(),
-          realUser: '外星人',
+          realUser: '佚名',
           logState: 0,
           logType: 3,
         }})

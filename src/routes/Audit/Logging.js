@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Form, Input, DatePicker, Select, Button, Table, Tooltip } from 'antd'
+import moment from 'moment'
 
 import { format0, format24 } from '../../utils/utils'
 import styles from './Logging.less'
@@ -155,6 +156,9 @@ export default class Logging extends Component {
         title: '登录时间',
         dataIndex: 'createTime',
         align: 'center',
+        render: val => {
+          return <span>{moment(val).format('lll')}</span>
+        },
       },
       {
         title: '登录IP',

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-27 17:28:48
+ * @Last Modified time: 2018-09-03 11:01:27
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -121,7 +121,7 @@ export default class NodeManagement extends Component {
       nodeName: nodeName || undefined,
       mac: mac || undefined,
       pid: [...pid].pop(),
-      depId: [...depId].pop(),
+      deptId: [...depId].pop(),
       nodeState: nodeState === '全部状态' ? undefined : nodeState,
     }
     const { dispatch } = this.props

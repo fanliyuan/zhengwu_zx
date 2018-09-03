@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-31 11:19:45
+ * @Last Modified time: 2018-09-03 17:41:55
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -30,6 +30,36 @@ function getCookie(params) {
     return other[0].replace(`${params}=`,'')
   } else {
     return ''
+  }
+}
+
+// 为了实现控制输入字数功能
+class MyInput extends Component {
+  state = {
+    value: '',
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value !== this.props.value) {
+      this.setState({
+        value: nextProps.value,
+      })
+    }
+  }
+
+  onChange = e => {
+    this.setState({
+      value: e.target.value.substr(0,50) || '',
+    }, () => {
+      const { value } = this.state
+      this.props.onItemChange(value)
+    })
+  }
+
+  render() {
+    const {value} = this.state
+    const {placeholder, className} = this.props
+    return <Input value={value} onChange={this.onChange} placeholder={placeholder} className={className} />
   }
 }
 
@@ -99,7 +129,7 @@ const base64UrlToUrl = (value, delta, _this) => {
   
       const formData = new FormData()
       formData.append('file', image, 'image.jpg')
-      fetch(`${uploadURL}?accessName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`,{
+      fetch(`${uploadURL}?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`,{
           method: 'POST',
           body: formData,
           headers: {
@@ -193,6 +223,22 @@ export default class AddArticle extends Component {
         fileList: [{uid: -1, name: 'default.png', status: 'done', url: imgPath}],
       })
     }
+  }
+
+  titleChange = value => {
+    // const value = e.target.value
+    this.props.form.setFieldsValue({
+      articleTitle: value,
+    })
+    this.props.form.validateFields(['articleTitle'])
+  }
+
+  originChange = value => {
+    // const value = e.target.value
+    this.props.form.setFieldsValue({
+      articleSource: value,
+    })
+    this.props.form.validateFields(['articleSource'])
   }
 
   // eslint-disable-next-line
@@ -319,6 +365,7 @@ export default class AddArticle extends Component {
           })
           return null
         }
+        // return console.log(values)
         if (this.props.location.pathname === '/portalManagement/AddArticle') {
               // console.log('新增')// eslint-disable-line
               dispatch({
@@ -415,7 +462,8 @@ export default class AddArticle extends Component {
                     message: '文章标题不超过50个字符',
                   },
                 ],
-              })(<Input className={styles.input} />)}
+              // })(<Input className={styles.input} onChange={this.titleChange} />)}
+              })(<MyInput className={styles.input} onItemChange={this.titleChange} />)}
             </Item>
             <Item label={<span>关键字 <Tooltip title='输入逗号(,)或者按下回车将自动分隔关键字'><Icon type='question-circle-o' /></Tooltip></span>} {...formItemLayout}>
               {getFieldDecorator('articleWord', {
@@ -430,7 +478,7 @@ export default class AddArticle extends Component {
                   {
                     max: 50,
                     message: '最多设置50个关键字',
-                    transform: arrValue => arrValue.join(''),
+                    transform: (arrValue=[]) => arrValue.join(''),
                   },
                 ],
               // })(<Input className={styles.input} placeholder="关键字1;关键字2" />)}
@@ -451,7 +499,7 @@ export default class AddArticle extends Component {
             </Item>
             <Item label={<span>来源 <Tooltip title='文章来自某某媒体或者原创'><Icon type='question-circle-o' /></Tooltip></span>} {...formItemLayout}>
               {getFieldDecorator('articleSource', {
-                initialValue: articleInfo.articleSource || '原创',
+                initialValue: articleInfo.articleSource,
                 rules: [
                   {
                     required: true,
@@ -462,7 +510,7 @@ export default class AddArticle extends Component {
                     message: '来源不超过50个字符',
                   },
                 ],
-              })(<Input className={styles.input} />)}
+              })(<MyInput className={styles.input} onItemChange={this.originChange} />)}
             </Item>
             <Item
               label="封面图"
@@ -474,7 +522,7 @@ export default class AddArticle extends Component {
               }
               >
               <Upload
-                action={`${uploadServer}/uploadOssImage?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
+                action={`${uploadServer}/uploadOssImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
                 headers={{accessToken: getCookie('accessToken')}}
                 fileList={fileList}
                 listType="picture-card"
@@ -516,7 +564,7 @@ export default class AddArticle extends Component {
               }
               >
               <Upload 
-                action={`${uploadServer}/uploadOssFile?accountName=${localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId')}`} // 上传地址
+                action={`${uploadServer}/uploadOssFile?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
                 headers={{accessToken: getCookie('accessToken')}}
                 beforeUpload={file => {
                   if (file.size <= 100 * 1024 * 1024) {

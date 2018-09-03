@@ -58,7 +58,7 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
         })
       }
     },
-    *getCategories(_, { call, put, selecet }) {
+    *getCategories(_, { call, put, select }) {
       let response
       try {
         response = yield call(categoryList, {body: {pageNum: 0, pageSize: 0}})
@@ -74,7 +74,7 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
-        const payload = selecet(state => state.articleLibrary.categoryList)
+        const payload = select(state => state.articleLibrary.categoryList)
         yield put({
           type: 'saveCategory',
           payload,
