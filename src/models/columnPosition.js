@@ -7,6 +7,7 @@ export default {
   state:{
     list:[],
     pageList:[],
+    pagination:{},
   },
   effects:{
     *queryList({ payload },{ call, put }){ // 这个接口目前不用了
@@ -48,7 +49,8 @@ export default {
       try{
         if(+response.code === 0){
           let list
-          message.success(`搜索${response.msg}`)
+          const pagination = response.result.total > 9 ? { current:response.result.pageNum,total:response.result.total,pageSize:response.result.pageSize } : false
+          // message.success(`搜索${response.msg}`)
           if(payload.columnPage === undefined){
             list = response.result.datas.map(item => {
               if(+item.columnPid === 0){
@@ -80,13 +82,13 @@ export default {
           }
           yield put({
             type:'columnPositions',
-            payload:list,
+            payload:{list,pagination},
           })
         }
         else {
           yield put({
             type:'columnPositions',
-            payload:[],
+            payload:{list:[],pagination:false},
           })
         }
       }catch(error){
@@ -127,7 +129,8 @@ export default {
     columnPositions(state, { payload }){
       return {
         ...state,
-        list:payload,
+        list:payload.list,
+        pagination:payload.pagination,
       }
     },
     columnPage(state, { payload }){

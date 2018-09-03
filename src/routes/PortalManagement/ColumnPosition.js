@@ -139,6 +139,33 @@ export default class ColumnPosition extends Component {
     })
   }
 
+  tableChange = (pagination) => {
+    const { query:{ page,operator,time } } = this.state
+    const times = time.map(item => {
+      if(moment.isMoment(item)){
+        return item.format('x')
+      }
+      else {
+        return ''
+      }
+    })
+    const pages = page === -1 ? undefined : page
+    const { dispatch } = this.props
+    dispatch({
+      type:'columnPosition/searchList',
+      payload:{columnId:pages, columnPname:operator || undefined, pageNum:pagination.current,pageSize:pagination.pageSize,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
+    })
+  }
+
+  handleLengthCheck = (e) => {
+    if(e.target.value.length > 20){
+      this.props.form.setFieldsValue({
+        edit:e.target.value.slice(0,20),
+      })
+      message.error("栏目名称不能超过20个字符!")
+    }
+  }
+ 
   render() {
     const {
       query: { page, operator, time },
@@ -147,7 +174,7 @@ export default class ColumnPosition extends Component {
     } = this.state
     const texts = {emptyText:"暂无相关数据"}
     const { getFieldDecorator } = this.props.form
-    const { columnPosition:{list,pageList}, loadingTable } = this.props
+    const { columnPosition:{list,pageList, pagination}, loadingTable } = this.props
     // const pageList = pageData
     const colums = [
       {
@@ -236,11 +263,12 @@ export default class ColumnPosition extends Component {
           <Table
             dataSource={list}
             columns={colums}
-            pagination={false}
+            pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
             rowKey="columnId"
             bordered
             loading={loadingTable}
             // defaultExpandAllRows={false}
+            onChange={this.tableChange}
             locale={texts}
             />
           <Modal
@@ -257,7 +285,7 @@ export default class ColumnPosition extends Component {
                 {getFieldDecorator('edit', {
                   initialValue: edit,
                   rules: [{ required: true, message: '请输入栏目名称' }],
-                })(<Input />)}
+                })(<Input onKeyUp={this.handleLengthCheck} />)}
               </Form.Item>
             </Form>
           </Modal>

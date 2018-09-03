@@ -67,7 +67,7 @@ export default {
           })
         }
         else {
-          message.error(response.msg)
+          // message.error(response.msg)
           yield put({
             type:'getCheckMsg',
             payload:false,

@@ -11,6 +11,7 @@ const { TextArea } = Input
 const { Option } = Select
 let parentId
 let checkMsg = true
+let jgName = ""
 @Form.create()
 @connect(({Institution}) => ({
   Institution,
@@ -115,23 +116,33 @@ export default class AddInstitution extends Component {
 
   handleNameCheck = (e) => {
     if(e.target.value.trim().length > 20){
-      message.info("机构名称不能超过20个字符")
       this.props.form.setFieldsValue({
-        deptName:"",
+        deptName:e.target.value.slice(0,20),
       })
+      message.info("机构名称不能超过20个字符")
     }
   }
 
   handleNameSameCheck = async(e) => {
     const { dispatch } = this.props
+    const { addAction } = this.state
     await dispatch({
       type:'Institution/deptNameCheck',
       payload:{deptName:e.target.value},
     })
-    if(!checkMsg){
+    if(addAction && !checkMsg){
       this.props.form.setFieldsValue({
         deptName:"",
-      }) 
+      })
+      message.error("机构名称已存在,请重填!")
+    }
+    else if(!addAction && !checkMsg){
+      if(e.target.value !== jgName){
+        this.props.form.setFieldsValue({
+          deptName:"",
+        })
+        message.error("机构名称已存在,请重填!")
+      }
     }
   }
 
@@ -140,6 +151,7 @@ export default class AddInstitution extends Component {
     const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas, isSameMessage } } = this.props
     const { addAction } = this.state
     checkMsg = isSameMessage
+    jgName = getItemByIdInfo.deptName
     let pro
     let cit 
     let are
