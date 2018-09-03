@@ -172,7 +172,7 @@ export default class NewsLibrary extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'articleId',
+        dataIndex: 'index',
       },
       {
         title: '标题',

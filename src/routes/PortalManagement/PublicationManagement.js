@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-29 14:19:40
+ * @Last Modified time: 2018-09-03 09:18:25
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -266,7 +266,7 @@ export default class PublicationManagement extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'articleId',
+        dataIndex: 'index',
       },
       {
         title: '标题',

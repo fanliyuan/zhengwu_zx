@@ -31,6 +31,11 @@ const { getCarousels, insertCarousel, updateCarousel, deleteCarousel, toggleCaro
         response = yield call(getCarousels, {body: payload.body})
         const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
         const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
+        let index = pageSize*(pageNum-1)
+        datas.forEach(item => {
+          index++
+          item.index = index
+        })
         if (+response.code === 0) {
           yield put({
             type: 'saveCarouselList',

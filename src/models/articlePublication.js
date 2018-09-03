@@ -36,6 +36,11 @@ export default {
         response = yield call(getArticleReleased, { body: payload.body })
         const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
         const pagination = total > 10 ? {total, pageSize, current: pageNum} : false
+        let index = (pageNum-1)*pageSize
+        datas.forEach(item => {
+          index++
+          item.index = index
+        })
         if (+response.code === 0) {
           yield put({
             type: 'saveReleasedList',
@@ -75,6 +80,11 @@ export default {
         response = yield call(getArticleNoRelease, {body: payload.body})
         const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
         const pagination = total > 10 ? {total, pageSize, current: pageNum} : false
+        let index = (pageNum-1)*pageSize
+        datas.forEach(item => {
+          index++
+          item.index = index
+        })
         if (+response.code === 0) {
           yield put({
             type: 'saveNoReleaseList',

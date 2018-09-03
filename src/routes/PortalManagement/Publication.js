@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-26 18:21:39
+ * @Last Modified time: 2018-09-03 09:18:17
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -246,7 +246,7 @@ export default class Publication extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'articleId',
+        dataIndex: 'index',
         render(text) {
           return (
             <div>
