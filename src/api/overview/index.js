@@ -14,7 +14,7 @@ const module =  {
 }
 module.apis.forEach(item => {
   if (!item.baseHost) {
-    item.baseHost = 'http://govecommons.tpaas.youedata.com'
+    item.baseHost = 'http://testcommons.tpaas.youedata.com'
     // item.baseHost = 'http://192.168.100.11:8801'
   }
 })
