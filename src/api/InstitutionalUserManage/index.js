@@ -59,7 +59,7 @@ const module = {
 }
 module.apis.forEach(item => {
   if(!item.baseHost){
-    item.baseHost = 'http://testcommons.tpaas.youedata.com' // http://192.168.100.11:8801  http://testcommons.tpaas.youedata.com http://testcommons.tpaas.youedata.com
+    item.baseHost = 'http://192.168.100.11:8801' // http://192.168.100.11:8801  http://testcommons.tpaas.youedata.com http://testcommons.tpaas.youedata.com
   }
 })
 

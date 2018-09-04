@@ -40,7 +40,7 @@ export default class MenuManagement extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'portalManagement/querys',
-      payload:{pageNum:0,pageSize:10},
+      payload:{pageNum:1,pageSize:10},
     })
   }
 

@@ -158,6 +158,11 @@ export default class AddInstitution extends Component {
   render() {
     const { getFieldDecorator } = this.props.form
     const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas, isSameMessage } } = this.props
+    if(goveDeptInfos){
+      goveDeptInfos.forEach(item => {
+        item.key = item.value
+      })
+    }
     const { addAction } = this.state
     checkMsg = isSameMessage
     jgName = getItemByIdInfo.deptName
