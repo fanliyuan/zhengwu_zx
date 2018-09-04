@@ -32,9 +32,9 @@ export default class Logging extends Component {
       type: 'loginAudit/getLoginAudit',
       payload: {
         params: {
+          logType: 3,
           pageSize: 10,
           pageNum: 1,
-          logType: 3,
         },
       },
     },)
@@ -84,15 +84,16 @@ export default class Logging extends Component {
       pageNum: 1,
     }
     const queryParams = {
+      logType: 3,
       createUser: queryData.createUser || undefined,
       logIpAddress: queryData.logIpAddress || undefined,
       logState: queryData.logState || undefined,
-      logType: 3,
       startTime: queryData.time[0] && format0(queryData.time[0].format('x')),
       endTime: queryData.time[1] && format24(queryData.time[1].format('x')),
     }
     this.setState({
       isChanged: false,
+      queryParams,
     })
     dispatch({
       type: 'loginAudit/getLoginAudit',
