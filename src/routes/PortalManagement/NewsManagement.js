@@ -173,7 +173,7 @@ export default class NewsManagement extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'categoryId',
+        dataIndex: 'kid',
       },
       {
         title: '名称',

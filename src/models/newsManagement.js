@@ -14,12 +14,27 @@ export default {
     *querysCatagory({ payload }, { call, put }){
       const response = yield call(categoryList, { body:payload })  
       try{
-        const pagination = response.result.total > 9 ? {current:response.result.pageNum,pageSize:response.result.pageSize,total:response.result.total} : false
-        yield put({
-          type:'querys',
-          payload:{list:response.result.datas,pagination},
-        })
-      }catch(err){
+        if(response.code === 0){
+          const { pageNum = 1, pageSize = 10 } = response.result
+          const pagination = response.result.total > 9 ? {current:response.result.pageNum,pageSize:response.result.pageSize,total:response.result.total} : false
+          let index = ( pageNum -1 ) * pageSize < 0 ? 0 :( pageNum -1 ) * pageSize
+          response.result.datas.forEach(item => {
+            index++
+            item.kid = index
+          })
+          yield put({
+            type:'querys',
+            payload:{list:response.result.datas,pagination},
+          })
+        }
+        else {
+          yield put({
+            type:'querys',
+            payload:{list:[],pagination:false},
+          })
+        }
+      }
+      catch(err){
         console.log(err) // eslint-disable-line
         yield put({
           type:'querys',

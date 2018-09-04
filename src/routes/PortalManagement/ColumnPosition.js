@@ -34,7 +34,7 @@ export default class ColumnPosition extends Component {
   }
 
   componentDidMount = () => {
-    const pagination = {pageSize:0,pageNum:0}
+    const pagination = {pageSize:10,pageNum:1}
     const { dispatch } = this.props
     dispatch({
       type:'columnPosition/searchList',

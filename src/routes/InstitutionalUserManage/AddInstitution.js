@@ -146,6 +146,15 @@ export default class AddInstitution extends Component {
     }
   }
 
+  handleNameCheck = (e) => {
+    if(e.target.value > 20){
+      this.props.form.setFieldsValue({
+        chargeUser:e.target.value.slice(0,20),
+      })
+      message.error("负责人姓名不能超过20个字符")
+    }
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
     const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas, isSameMessage } } = this.props
@@ -242,11 +251,15 @@ export default class AddInstitution extends Component {
             <FormItem label="负责人" {...formItemLayout}>
               {getFieldDecorator('chargeUser',{
                 initialValue:getItemByIdInfo.chargeUser && !addAction ? getItemByIdInfo.chargeUser : '',
-              })(<Input placeholder="姓名" />)}
+              })(<Input placeholder="姓名" onKeyUp={this.handleNameCheck} />)}
             </FormItem>
             <FormItem label="负责人手机" {...formItemLayout}>
               {getFieldDecorator('chargePhone',{
                 initialValue:getItemByIdInfo.chargePhone && !addAction ? getItemByIdInfo.chargePhone :'',
+                rules:[{
+                  pattern:/^1[345789]\d{9}$/,
+                  message:'请输入正确手机号码格式',
+                }],
               })(<Input placeholder="11位数字" />)}
             </FormItem>
             <FormItem label="所属省" {...inputItemLayout}>
