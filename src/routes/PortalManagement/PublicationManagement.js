@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-03 09:18:25
+ * @Last Modified time: 2018-09-05 15:25:41
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -203,8 +203,8 @@ export default class PublicationManagement extends Component {
       firstColumnValue: value,
     }, () => {
       this.setState({
-        secondColumnValue: [...this.state.secondColumn].unshift().value,// eslint-disable-line
-        secondColumnLabel: [...this.state.secondColumn].unshift().label,// eslint-disable-line
+        secondColumnValue: [...this.state.secondColumn].shift() && [...this.state.secondColumn].shift().value,// eslint-disable-line
+        secondColumnLabel: [...this.state.secondColumn].shift() && [...this.state.secondColumn].shift().label,// eslint-disable-line
       })
     })
   }
