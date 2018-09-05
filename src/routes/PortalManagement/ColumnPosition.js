@@ -128,7 +128,7 @@ export default class ColumnPosition extends Component {
           message.error("输入栏目名称过长,请重新输入")
           return
         }
-        const operator = localStorage.getItem("accountName")
+        const operator = localStorage.getItem("accountRealName")
         const { dispatch } = this.props
         const { editId } = this.state
         dispatch({
