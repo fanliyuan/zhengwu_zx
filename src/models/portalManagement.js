@@ -14,7 +14,13 @@ export default {
       const response = yield call(resourceSearchList,{ body: payload })
       try {
         if(+response.code === 0){
+          const { pageNum = 1, pageSize = 10 } = response.result
           const pagination = response.result.total > 9 ? {current:response.result.pageNum,pageSize:response.result.pageSize,total:response.result.total} : false
+          let index = ( pageNum -1 ) * pageSize < 0 ? 0 :( pageNum -1 ) * pageSize
+          response.result.datas.forEach(item => {
+            index++
+            item.kid = index
+          })
           yield put ({
             type:'queryDirectory',
             payload:{

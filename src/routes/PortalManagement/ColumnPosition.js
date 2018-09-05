@@ -34,7 +34,7 @@ export default class ColumnPosition extends Component {
   }
 
   componentDidMount = () => {
-    const pagination = {pageSize:0,pageNum:0}
+    const pagination = {pageSize:10,pageNum:1}
     const { dispatch } = this.props
     dispatch({
       type:'columnPosition/searchList',
@@ -128,7 +128,7 @@ export default class ColumnPosition extends Component {
           message.error("输入栏目名称过长,请重新输入")
           return
         }
-        const operator = localStorage.getItem("accountName")
+        const operator = localStorage.getItem("accountRealName")
         const { dispatch } = this.props
         const { editId } = this.state
         dispatch({

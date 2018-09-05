@@ -146,9 +146,23 @@ export default class AddInstitution extends Component {
     }
   }
 
+  handleNamePCheck = (e) => {
+    if(e.target.value.length > 20){
+      this.props.form.setFieldsValue({
+        chargeUser:e.target.value.slice(0,20),
+      })
+      message.error("负责人姓名不能超过20个字符")
+    }
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
     const { Institution:{ getItemByIdInfo, goveDeptInfos, provices, cities, areas, isSameMessage } } = this.props
+    if(goveDeptInfos){
+      goveDeptInfos.forEach(item => {
+        item.key = item.value
+      })
+    }
     const { addAction } = this.state
     checkMsg = isSameMessage
     jgName = getItemByIdInfo.deptName
@@ -224,7 +238,9 @@ export default class AddInstitution extends Component {
               })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
             </FormItem>
             <FormItem label="上级机构" {...formItemLayout}>
-              {getFieldDecorator('deptParentId')(
+              {getFieldDecorator('deptParentId',{
+                initialValue:getItemByIdInfo.deptParentId && !addAction ? getItemByIdInfo.deptParentId.toString() :'',
+              })(
                 <TreeSelect treeData={goveDeptInfos} placeholder="请选择" treeDefaultExpandAll />
               )}
             </FormItem>
@@ -242,11 +258,15 @@ export default class AddInstitution extends Component {
             <FormItem label="负责人" {...formItemLayout}>
               {getFieldDecorator('chargeUser',{
                 initialValue:getItemByIdInfo.chargeUser && !addAction ? getItemByIdInfo.chargeUser : '',
-              })(<Input placeholder="姓名" />)}
+              })(<Input placeholder="姓名" onKeyUp={this.handleNamePCheck} />)}
             </FormItem>
             <FormItem label="负责人手机" {...formItemLayout}>
               {getFieldDecorator('chargePhone',{
                 initialValue:getItemByIdInfo.chargePhone && !addAction ? getItemByIdInfo.chargePhone :'',
+                rules:[{
+                  pattern:/^1[345789]\d{9}$/,
+                  message:'请输入正确手机号码格式',
+                }],
               })(<Input placeholder="11位数字" />)}
             </FormItem>
             <FormItem label="所属省" {...inputItemLayout}>

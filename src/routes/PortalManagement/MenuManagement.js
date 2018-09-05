@@ -40,7 +40,7 @@ export default class MenuManagement extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'portalManagement/querys',
-      payload:{pageNum:0,pageSize:10},
+      payload:{pageNum:1,pageSize:10},
     })
   }
 
@@ -159,13 +159,13 @@ export default class MenuManagement extends Component {
     if(text.modalTitle === "取消发布"){
       dispatch({
         type:'portalManagement/updateItem',
-        payload:{typeId:text.rowId,typeState:text.typeState, mender:oper},
+        payload:{typeId:text.rowId,typeState:text.typeState, mender:oper, id:text.ids},
       })
     }
     else if(text.modalTitle === "设置" || text.modalTitle === "发布"){
       dispatch({
         type:'portalManagement/updateItem',
-        payload:{typeId:text.rowId,typeHotState:defaultValue,typeState:text.typeState, mender:oper},
+        payload:{typeId:text.rowId,typeHotState:defaultValue,typeState:text.typeState, mender:oper, id:text.ids},
       })
     }
     this.setState({
@@ -187,11 +187,6 @@ export default class MenuManagement extends Component {
       rowId,
     } = this.state
     const { portalManagement:{ lists, pagination }, loading } = this.props
-    if(lists){
-      lists.forEach((value,key) => {
-        value.kid = key+1
-      })
-    }
     const stateList = [
       {
         value: 1,

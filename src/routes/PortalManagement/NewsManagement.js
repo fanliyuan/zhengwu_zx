@@ -119,7 +119,7 @@ export default class NewsManagement extends Component {
         this.setState({
           modalShow: false,
         })
-        const operator = localStorage.getItem("accountName")
+        const operator = localStorage.getItem("accountRealName")
         this.props.form.setFieldsValue({ name: '' })
         const { dispatch } = this.props
         const { submitId } = this.state
@@ -173,7 +173,7 @@ export default class NewsManagement extends Component {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'categoryId',
+        dataIndex: 'kid',
       },
       {
         title: '名称',
