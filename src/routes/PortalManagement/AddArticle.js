@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-03 17:41:55
+ * @Last Modified time: 2018-09-05 16:24:58
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -180,7 +180,7 @@ export default class AddArticle extends Component {
     previewArticle: false,
     hasSubmit: false,// eslint-disable-line
     coverUrl: '',
-    // uploadFileList: [],
+    uploadFileList: [],
     previewHTML: '',
     fileResponse: '',
     timeFlag: undefined,
@@ -221,6 +221,11 @@ export default class AddArticle extends Component {
       this.setState({
         coverUrl: imgPath,
         fileList: [{uid: -1, name: 'default.png', status: 'done', url: imgPath}],
+      })
+    }
+    if (this.props.articleLibrary.articleInfo !== nextProps.articleLibrary.articleInfo && nextProps.articleLibrary.articleInfo.filePath) {
+      this.setState({
+        uploadFileList: [{uid: -2, name: '已有附件', status: 'done'}],
       })
     }
   }
@@ -300,7 +305,7 @@ export default class AddArticle extends Component {
     })
   }
 
-  handleUploadFile = ({ file }) => {
+  handleUploadFile = ({ file, fileList }) => {
     // if (fileList.length !== 0) {
     //   this.setState({
     //     uploadFileList: fileList.filter(item => item.status === 'done').map(item => {
@@ -319,6 +324,9 @@ export default class AddArticle extends Component {
     //     fileResponse: '',
     //   })
     // }
+    this.setState({
+      uploadFileList: [[...fileList].pop()],
+    })
     if (file && file.status === 'done') {
       this.setState({
         fileResponse: file.response.result.data,
@@ -328,6 +336,13 @@ export default class AddArticle extends Component {
         fileResponse: '',
       })
     }
+  }
+
+  handleRemove = () => {
+    this.setState({
+      fileResponse: '',
+      uploadFileList: [],
+    })
   }
 
   // saveChange = () => {
@@ -403,7 +418,7 @@ export default class AddArticle extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form
-    const { fileList, previewImage, previewVisible, previewArticle, previewHTML } = this.state
+    const { fileList, uploadFileList, previewImage, previewVisible, previewArticle, previewHTML } = this.state
     const { articleLibrary: { articleInfo, categoryList } } = this.props
     const quillModules = {
       toolbar: [
@@ -544,7 +559,7 @@ export default class AddArticle extends Component {
                 >
                 {fileList.length >= 1 ? null : uploadButton}
               </Upload>
-              <Modal visible={previewVisible} onCancel={this.handlePreviewCancel} footer={null}>
+              <Modal visible={previewVisible} onCancel={this.handlePreviewCancel} footer={null} className={styles.img}>
                 <img alt="上传预览" style={{ width: '100%' }} src={previewImage} />
               </Modal>
             </Item>
@@ -574,7 +589,9 @@ export default class AddArticle extends Component {
                     return false
                   }
                 }}
+                fileList={uploadFileList}
                 onChange={this.handleUploadFile}
+                onRemove={this.handleRemove}
                 >
                 <Button>
                   <Icon type="upload" /> 上传
