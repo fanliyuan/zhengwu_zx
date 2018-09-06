@@ -103,7 +103,7 @@ export default class ColumnPosition extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'columnPosition/searchList',
-      payload:{columnId:pages, columnPname:operator || undefined, pageNum:0,pageSize:0,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
+      payload:{columnId:pages, columnPname:operator || undefined, pageNum:1,pageSize:10,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
     })
   }
 
