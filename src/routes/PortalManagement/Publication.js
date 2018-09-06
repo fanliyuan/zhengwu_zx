@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-03 09:18:17
+ * @Last Modified time: 2018-09-05 15:24:28
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -16,39 +16,48 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Publication.less'
 
 const { Option } = Select
-const classifyList = [
-  {
-    value: -1,
-    label: '全部分类',
-  },
-  {
-    value: 0,
-    label: '政策',
-  },
-  {
-    value: 1,
-    label: '法律',
-  },
-  {
-    value: 2,
-    label: '工作报告',
-  },
-]
-const data = []
-for (let i = 0; i < 255; i++) {
-  const random = Math.ceil(Math.random() * 3)
-  data.push({
-    id: i,
-    title: `标题${i}`,
-    classify: classifyList[random].label,
-    operator: `操作人人${i}`,
-    time: moment(new Date() - 1000 * 60 * 60 * 13 * i).format('lll'),
-  })
+
+class MySelect extends Component {
+  state = {
+    second: undefined,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.value !== nextProps.value) {
+      this.setState({
+        second: nextProps.value,
+      })
+    }
+  }
+  
+  firstColumnChange = value => {
+    this.props.firstColumnChange.call(null, value)
+  }
+
+  secondColumnChange = value => {
+    this.setState({
+      second: value,
+    })
+    this.props.secondColumnChange(value)
+  }
+
+  render() {
+    const { firstClassName, secondClassName, firstComs, secondeComs } = this.props
+    const { second } = this.state
+    return (
+      <div>
+        <Select className={firstClassName} onChange={this.firstColumnChange}>{firstComs}</Select>
+        <Select value={second} className={secondClassName} onChange={this.secondColumnChange}>{secondeComs}</Select>
+      </div>
+    )
+  }
 }
+
 @connect(({ articlePublication, loading }) => ({
   articlePublication,
   loading: loading.models.articlePublication,
 }))
+@Form.create()
 export default class Publication extends Component {
   state = {
     queryData: {
@@ -177,6 +186,10 @@ export default class Publication extends Component {
   firstColumnChange = (value, columnObejct) => {
     this.setState({
       secondColumnList: columnObejct[value],
+    }, () => {
+      this.props.form.setFieldsValue({
+        columns: [...this.state.secondColumnList].shift() && [...this.state.secondColumnList].shift().value,
+      })
     })
   }
 
@@ -188,6 +201,9 @@ export default class Publication extends Component {
         articleCid: +value,
         articleCname: secondColumnList.filter(item => item.value === value)[0] && secondColumnList.filter(item => item.value === value)[0].label,
       },
+    })
+    this.props.form.setFieldsValue({
+      columns: value,
     })
   }
 
@@ -219,30 +235,34 @@ export default class Publication extends Component {
   }
 
   handlePublish = () => {
-    const { articleId, publishData: { articleCid, articleCname, articleTopState, articleHotState } } = this.state
-    const body = {
-      articleId,
-      articleCid,
-      articleCname,
-      articleTopState,
-      articleHotState,
-      articleOpenState: 1,
-      articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
-    }
-    this.props.dispatch({
-      type: 'articlePublication/changeAricleState',
-      payload: {
-        body,
-      },
-    })
-    this.setState({
-      showModal: false,
+    this.props.form.validateFieldsAndScroll(errors =>{
+      if (!errors) {
+        const { articleId, publishData: { articleCid, articleCname, articleTopState, articleHotState } } = this.state
+        const body = {
+          articleId,
+          articleCid,
+          articleCname,
+          articleTopState,
+          articleHotState,
+          articleOpenState: 1,
+          articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+        }
+        this.props.dispatch({
+          type: 'articlePublication/changeAricleState',
+          payload: {
+            body,
+          },
+        })
+        this.setState({
+          showModal: false,
+        })
+      }
     })
   }
 
   render() {
     const { showModal, secondColumnList } = this.state
-    const { articlePublication: { noReleaseList, pagination, category, column, columnObejct }, loading } = this.props
+    const { articlePublication: { noReleaseList, pagination, category, column, columnObejct }, loading, form: { getFieldDecorator } } = this.props
     const columns = [
       {
         title: '序号',
@@ -307,6 +327,7 @@ export default class Publication extends Component {
         </Option>
       )
     })
+
     return (
       <PageHeaderLayout>
         <div className="clearfix btncls">
@@ -359,20 +380,65 @@ export default class Publication extends Component {
           >
           <Form>
             <Form.Item label="栏目" labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
-              <Select className={styles.selectInner1} onChange={(value) => this.firstColumnChange(value, columnObejct)}>{firstComs}</Select>
-              <Select className={styles.selectInner2} onChange={this.secondColumnChange}>{secondeComs}</Select>
+              {
+                getFieldDecorator('columns', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择栏目',
+                    },
+                  ],
+                })(
+                  <MySelect firstClassName={styles.selectInner1} secondClassName={styles.selectInner2} firstComs={firstComs} secondeComs={secondeComs} firstColumnChange={(value) => this.firstColumnChange(value, columnObejct)} secondColumnChange={this.secondColumnChange} />
+                )
+              }
+              {/* 这里不能使用两个表单域修饰,只能自己封装 */}
+              {/* {
+                getFieldDecorator('column2', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择栏目',
+                    },
+                  ],
+                })(
+                  <Select className={styles.selectInner2} onChange={this.secondColumnChange}>{secondeComs}</Select>
+                )
+              } */}
             </Form.Item>
             <Form.Item label="是否置顶" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-              <Radio.Group onChange={this.ontopstateChange}>
-                <Radio value="是">是</Radio>
-                <Radio value="否">否</Radio>
-              </Radio.Group>
+              {
+              getFieldDecorator('top', {
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择是否置顶',
+                  },
+                ],
+              })(
+                <Radio.Group onChange={this.ontopstateChange}>
+                  <Radio value="是">是</Radio>
+                  <Radio value="否">否</Radio>
+                </Radio.Group>
+              )
+            }
             </Form.Item>
             <Form.Item label="是否为推荐" labelCol={{ span: 5 }} wrapperCol={{ span: 12 }}>
-              <Radio.Group onChange={this.recommendChange}>
-                <Radio value="是">是</Radio>
-                <Radio value="否">否</Radio>
-              </Radio.Group>
+              {
+                getFieldDecorator('recommend', {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请选择是否推荐',
+                    },
+                  ],
+                })(
+                  <Radio.Group onChange={this.recommendChange}>
+                    <Radio value="是">是</Radio>
+                    <Radio value="否">否</Radio>
+                  </Radio.Group>
+                )
+              }
             </Form.Item>
           </Form>
         </Modal>

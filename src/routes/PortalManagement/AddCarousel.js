@@ -157,9 +157,20 @@ export default class AddCarousel extends Component {
       fileList,
     })
     try {
-      if (fileList[0].status === 'done') {
+      if (fileList[0] && fileList[0].status === 'done') {
+        this.setState({
+          removeFlag: false,
+        })
         this.props.form.setFieldsValue({
           imagePath: fileList[0].response.result.data,
+        })
+      } else if (fileList[0] && fileList[0].status === 'done') {
+        this.setState({
+          removeFlag: true,
+        })
+      } else {
+        this.setState({
+          removeFlag: false,
         })
       }
     } catch (error) {
@@ -188,6 +199,7 @@ export default class AddCarousel extends Component {
   }
 
   normFile = e => {
+    const { removeFlag } = this.state
     if (e && e.fileList && e.fileList[0]) {
       if (e.fileList[0].status === 'done') {
         this.setState({
@@ -196,9 +208,9 @@ export default class AddCarousel extends Component {
       }
       return e.fileList[0].status === 'done' ? e.fileList[0].response.result.data : ''
     } else {
-      console.log('上传失败') // eslint-disable-line
+      removeFlag && console.log('上传失败') // eslint-disable-line
       this.setState({
-        imageFlag: true,
+        imageFlag: removeFlag && true,
         fileList: [],
       })
       return null
@@ -418,7 +430,7 @@ export default class AddCarousel extends Component {
               </Item>
             </Form>
           </Card>
-          <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel}>
+          <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel} className={styles.img}>
             <img src={previewUrl} alt="图片预览" style={{ width: '100%' }} />
           </Modal>
           {/* <Button onClick={this.getFieldStates} >获取验证状态</Button> */}
