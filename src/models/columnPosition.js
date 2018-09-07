@@ -1,13 +1,14 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { columnList, updateColumnInfo, selectColumnPage, searchColumn} = apis
+const { columnList, updateColumnInfo, selectColumnPage, searchColumn, judgeColumn} = apis
 export default {
   namespace:'columnPosition',
   state:{
     list:[],
     pageList:[],
     pagination:{},
+    msg:"",
   },
   effects:{
     *queryList({ payload },{ call, put }){ // 这个接口目前不用了
@@ -35,6 +36,22 @@ export default {
         }
       }catch(error){
         console.log(error) // eslint-disable-line
+      }
+    },
+    *checkColumn({ payload }, { call, put }){
+      const response = yield call(judgeColumn, { params:payload })
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'getMsg',
+            payload:response.result.data,
+          })
+        }
+        else{
+          message.error(response.msg)
+        }
+      }catch(error){
+        console.log(err) // eslint-disable-line
       }
     },
     *searchList({ payload },{ call, put, select }){
@@ -143,6 +160,12 @@ export default {
       return {
         ...state,
         pageList:payload,
+      }
+    },
+    getMsg( state, { payload }){
+      return {
+        ...state,
+        msg:payload,
       }
     },
   },

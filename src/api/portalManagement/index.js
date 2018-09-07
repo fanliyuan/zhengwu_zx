@@ -133,6 +133,11 @@ const module = {
     url: 'judgeCategory',
     method: 'get',
   },
+  {
+    name: 'judgeColumn',
+    url: 'judgeColumn',
+    method: 'get',
+  },
    {
      name: 'deleteCarousel',
      url: 'deleteImg',
