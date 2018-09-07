@@ -114,9 +114,13 @@ export default class AddCarousel extends Component {
     previewVisible: false,
     previewUrl: '',
     imageFlag: false,
+    tempData: {},
   }
 
   componentDidMount() {
+    this.setState({
+      tempData: {},
+    })
     this.props.dispatch({
       type: 'articlePublication/getColumnList',
     })
@@ -134,7 +138,6 @@ export default class AddCarousel extends Component {
         },
       })
     }
-
     this.props.form.validateFields()
   }
 
@@ -153,6 +156,7 @@ export default class AddCarousel extends Component {
   }
 
   uploadChange = ({ fileList }) => {
+    const { tempData } = this.state
     this.setState({
       fileList,
     })
@@ -160,6 +164,10 @@ export default class AddCarousel extends Component {
       if (fileList[0] && fileList[0].status === 'done') {
         this.setState({
           removeFlag: false,
+          tempData: {
+            ...tempData,
+            imagePath: fileList[0].response.result.data,
+          },
         })
         this.props.form.setFieldsValue({
           imagePath: fileList[0].response.result.data,
@@ -193,8 +201,35 @@ export default class AddCarousel extends Component {
   }
 
   columnChange = value => {
+    const { tempData } = this.state
     this.props.form.setFieldsValue({
       imgPid: value,
+    })
+    this.setState({
+      tempData: {
+        ...tempData,
+        imgPid: value,
+      },
+    })
+  }
+
+  nameChange = e => {
+    const { tempData } = this.state
+    this.setState({
+      tempData: {
+        ...tempData,
+        imgName: e.target.value,
+      },
+    })
+  }
+
+  addressChange = e => {
+    const { tempData } = this.state
+    this.setState({
+      tempData: {
+        ...tempData,
+        imgAddress: e.target.value,
+      },
     })
   }
 
@@ -246,23 +281,19 @@ export default class AddCarousel extends Component {
             },
           })
         }
-      } else {
-        console.log('表单未通过验证', values) // eslint-disable-line
       }
     })
   }
 
   render() {
-    const { fileList, previewVisible, previewUrl, carouselData, imageFlag  } = this.state
+    const { fileList, previewVisible, previewUrl, carouselData, imageFlag, tempData  } = this.state
     const { form: {getFieldDecorator, getFieldError, getFieldsError, isFieldTouched}, loading, articlePublication:{ column, secondCategoryList } } = this.props
-
     const nameError = isFieldTouched('imgName') && getFieldError('imgName')
     const columnError = isFieldTouched('imgPid') && getFieldError('imgPid')
     // const sortError = isFieldTouched('sort') && getFieldError('sort')
     // const urlTypeError = isFieldTouched('urlType') && getFieldError('urlType')
     const urlError = isFieldTouched('imgAddress') && getFieldError('imgAddress')
     const imageError = isFieldTouched('image') && getFieldError('image')
-
     const btnComs = (
       <Fragment>
         <Link to="/portalManagement/carouselManagement" className={styles.fr}>
@@ -299,14 +330,18 @@ export default class AddCarousel extends Component {
                 help={nameError ? '请输入名称' : ''}
                 >
                 {getFieldDecorator('imgName', {
-                  initialValue: carouselData.imgName,
+                  initialValue: tempData.imgName || carouselData.imgName,
                   rules: [
                     {
                       required: true,
                       message: '请输入名称',
                     },
+                    {
+                      max: 50,
+                      message: '名称不超过50个字符',
+                    },
                   ],
-                })(<Input className={styles.input} />)}
+                })(<Input className={styles.input} onChange={this.nameChange} />)}
               </Item>
               <Item
                 label="栏目"
@@ -315,7 +350,7 @@ export default class AddCarousel extends Component {
                 help={columnError ? '选择栏目' : ''}
                 >
                 {getFieldDecorator('imgPid', {
-                  initialValue: carouselData.imgPid && `${carouselData.imgPid}`,
+                  initialValue: tempData.imgPid || `${carouselData.imgPid || ''}`,
                   rules: [
                     {
                       required: true,
@@ -371,18 +406,18 @@ export default class AddCarousel extends Component {
                 help={urlError ? '请输入链接地址' : ''}
                 >
                 {getFieldDecorator('imgAddress', {
-                  initialValue: carouselData.imgAddress,
+                  initialValue: tempData.imgAddress || carouselData.imgAddress,
                   rules: [
                     {
                       required: true,
-                      message: '请输入名称',
+                      message: '请输入链接地址',
                     },
                     {
-                      max: 50,
-                      message: '名称不超过50个字符',
+                      max: 100,
+                      message: '地址不超过100个字符',
                     },
                   ],
-                })(<Input className={styles.input} />)}
+                })(<Input className={styles.input} onChange={this.addressChange} />)}
               </Item>
               <Item
                 label={
@@ -399,7 +434,7 @@ export default class AddCarousel extends Component {
                 extra={imageFlag ? '网络或者服务器错误,上传图片失败' : ''}
                 >
                 {getFieldDecorator('imagePath', {
-                  initialValue: carouselData.imagePath,
+                  initialValue: tempData.imagePath || carouselData.imagePath,
                   getValueFromEvent: this.normFile,
                   rules: [
                     {

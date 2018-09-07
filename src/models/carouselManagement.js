@@ -113,12 +113,16 @@ const { getCarousels, insertCarousel, updateCarousel, deleteCarousel, toggleCaro
             routerRedux.push('/portalManagement/carouselManagement')
           )
         } else {
-          throw new Error('返回非0')
+          throw response.msg
         }
       } catch (error) {
-        // eslint-disable-next-line
-        console.log(error)
-        message.error('新增失败!')
+        if (error instanceof Error) {
+          // eslint-disable-next-line
+          console.log(error)
+          message.error('新增失败!')
+        } else {
+          message.error(error || '新增失败!')
+        }
       }
     },
     *deleteCarousel({ payload }, { call, put }) {
