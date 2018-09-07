@@ -14,6 +14,7 @@ import { format0, format24 } from '../../utils/utils'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './ColumnPosition.less'
 
+let msgs
 @Form.create()
 @connect(({columnPosition,loading}) => ({
   columnPosition,
@@ -31,6 +32,7 @@ export default class ColumnPosition extends Component {
     edit: '',
     editShow: false,
     editId:-1,
+    parentId:-1,
   }
 
   componentDidMount = () => {
@@ -103,7 +105,7 @@ export default class ColumnPosition extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'columnPosition/searchList',
-      payload:{columnId:pages, columnPname:operator || undefined, pageNum:0,pageSize:0,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
+      payload:{columnId:pages, columnPname:operator || undefined, pageNum:1,pageSize:10,createTime:times[0] ? format0(+times[0]) :undefined,updateTime:times[1] ? format24(+times[1]) : undefined},
     })
   }
 
@@ -112,6 +114,7 @@ export default class ColumnPosition extends Component {
       editShow: true,
       edit: row.name,
       editId:row.columnId,
+      parentId:row.columnPid,
     })
     this.props.form.setFieldsValue({
       edit: row.name,
@@ -165,6 +168,22 @@ export default class ColumnPosition extends Component {
       message.error("栏目名称不能超过20个字符!")
     }
   }
+
+  handleNameCheck = async (e) => {
+    const vl = e.target.value
+    const { dispatch } = this.props
+    const { edit, parentId } = this.state
+    await dispatch({
+      type:'columnPosition/checkColumn',
+      payload:{columnPage:e.target.value, columnPid:parentId},
+    })
+     if(!msgs && edit !== vl){
+      message.error("分类名称重复,请重新输入")
+      this.props.form.setFieldsValue({
+        edit:"",
+      }) 
+     }
+  }
  
   render() {
     const {
@@ -174,12 +193,13 @@ export default class ColumnPosition extends Component {
     } = this.state
     const texts = {emptyText:"暂无相关数据"}
     const { getFieldDecorator } = this.props.form
-    const { columnPosition:{list,pageList, pagination}, loadingTable } = this.props
+    const { columnPosition:{list,pageList, pagination,msg}, loadingTable } = this.props
+    msgs = msg
     // const pageList = pageData
     const colums = [
       {
         title: '序号',
-        dataIndex: 'columnId',
+        dataIndex: 'kid',
         align:'left',
       },
       {
@@ -285,7 +305,7 @@ export default class ColumnPosition extends Component {
                 {getFieldDecorator('edit', {
                   initialValue: edit,
                   rules: [{ required: true, message: '请输入栏目名称' }],
-                })(<Input onKeyUp={this.handleLengthCheck} />)}
+                })(<Input onKeyUp={this.handleLengthCheck} onBlur={this.handleNameCheck} />)}
               </Form.Item>
             </Form>
           </Modal>

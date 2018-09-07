@@ -1,13 +1,14 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { columnList, updateColumnInfo, selectColumnPage, searchColumn} = apis
+const { columnList, updateColumnInfo, selectColumnPage, searchColumn, judgeColumn} = apis
 export default {
   namespace:'columnPosition',
   state:{
     list:[],
     pageList:[],
     pagination:{},
+    msg:"",
   },
   effects:{
     *queryList({ payload },{ call, put }){ // 这个接口目前不用了
@@ -37,6 +38,22 @@ export default {
         console.log(error) // eslint-disable-line
       }
     },
+    *checkColumn({ payload }, { call, put }){
+      const response = yield call(judgeColumn, { params:payload })
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'getMsg',
+            payload:response.result.data,
+          })
+        }
+        else{
+          message.error(response.msg)
+        }
+      }catch(error){
+        console.log(err) // eslint-disable-line
+      }
+    },
     *searchList({ payload },{ call, put, select }){
       const response = yield call(searchColumn,{body:payload})
       const pageList = yield select(state => state.columnPosition.pageList)
@@ -50,6 +67,8 @@ export default {
         if(+response.code === 0){
           let list
           const pagination = response.result.total > 9 ? { current:response.result.pageNum,total:response.result.total,pageSize:response.result.pageSize } : false
+          const { pageNum = 1, pageSize = 10 } = response.result
+          let index = ( pageNum -1 ) * pageSize < 0 ? 0 :( pageNum -1 ) * pageSize
           // message.success(`搜索${response.msg}`)
           if(payload.columnPage === undefined){
             list = response.result.datas.map(item => {
@@ -80,6 +99,10 @@ export default {
               }
             })
           }
+          list.forEach(item => {
+            index++
+            item.kid = index
+          })
           yield put({
             type:'columnPositions',
             payload:{list,pagination},
@@ -137,6 +160,12 @@ export default {
       return {
         ...state,
         pageList:payload,
+      }
+    },
+    getMsg( state, { payload }){
+      return {
+        ...state,
+        msg:payload,
       }
     },
   },

@@ -128,6 +128,16 @@ const module = {
     url: 'updateResource',
     method: 'post',
   },
+  {
+    name: 'judgeCategory',
+    url: 'judgeCategory',
+    method: 'get',
+  },
+  {
+    name: 'judgeColumn',
+    url: 'judgeColumn',
+    method: 'get',
+  },
    {
      name: 'deleteCarousel',
      url: 'deleteImg',

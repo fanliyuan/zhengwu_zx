@@ -8,7 +8,7 @@
 import React, { Component, Fragment } from 'react'
 // import { Link } from 'dva/router';
 import { connect } from 'dva'
-import { DatePicker, Input, Button, Table, Modal, Form, Popconfirm } from 'antd'
+import { DatePicker, Input, Button, Table, Modal, Form, Popconfirm, message } from 'antd'
 import moment from 'moment'
 import { format0, format24 } from '../../utils/utils'
 
@@ -16,6 +16,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './NewsManagement.less'
 
 const { RangePicker } = DatePicker
+let msgs
 
 @Form.create()
 @connect(({newsManagement,loading}) => ({
@@ -166,10 +167,35 @@ export default class NewsManagement extends Component {
     })
   }
 
+  handleNameCheck = async (e) => {
+    const vl = e.target.value
+    const { dispatch } = this.props
+    const { submitId, classifyName } = this.state
+    await dispatch({
+      type:'newsManagement/checkNames',
+      payload:{categoryName:e.target.value},
+    })
+    if(!msgs && +submitId === -1){
+      message.error("分类名称重复,请重新输入")
+      this.props.form.setFieldsValue({
+        name:"",
+      })
+    }
+   else if(!msgs && +submitId !== -1){
+     if( classifyName !== vl){
+      message.error("分类名称重复,请重新输入")
+      this.props.form.setFieldsValue({
+        name:"",
+      }) 
+     }
+    }
+  }
+
   render() {
     const { name, date, operator, modalShow, classifyName } = this.state
     const { getFieldDecorator } = this.props.form
-    const { newsManagement:{list,pagination},loading } = this.props
+    const { newsManagement:{list,pagination,msg},loading } = this.props
+    msgs = msg
     const columns = [
       {
         title: '序号',
@@ -270,7 +296,7 @@ export default class NewsManagement extends Component {
               <Form.Item label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('name', {
                   rules: [{ required: true, message: '请输入文章分类' }],
-                })(<Input />)}
+                })(<Input onBlur={this.handleNameCheck} />)}
               </Form.Item>
             </Form>
           </Modal>

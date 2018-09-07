@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { categoryList, deleteCategory, updateCategory, insertCategory} = apis // searchCategory,
+const { categoryList, deleteCategory, updateCategory, insertCategory, judgeCategory} = apis // searchCategory,
 
 export default {
   namespace:'newsManagement',
@@ -9,6 +9,7 @@ export default {
     list:[],
     searchList:[],
     pagination:{},
+    msg:"",
   },
   effects:{
     *querysCatagory({ payload }, { call, put }){
@@ -40,6 +41,22 @@ export default {
           type:'querys',
           payload:{list:[],pagination:false},
         })
+      }
+    },
+    *checkNames({ payload }, { call, put }){
+      const response = yield call(judgeCategory, { params:payload })
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'getMsg',
+            payload:response.result.data,
+          })
+        }
+        else{
+          message.error(response.msg)
+        }
+      }catch(error){
+        console.log(err) // eslint-disable-line
       }
     },
     *deleteCatagory({ payload }, { call, put}){
@@ -117,6 +134,12 @@ export default {
         ...state,
         list:payload.list,
         pagination:payload.pagination,
+      }
+    },
+    getMsg( state, { payload }){
+      return {
+        ...state,
+        msg:payload,
       }
     },
   },
