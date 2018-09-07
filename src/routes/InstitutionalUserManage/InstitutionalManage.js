@@ -218,7 +218,7 @@ export default class InstitutionalManage extends Component {
         dataIndex: 'proCityAreaInfo',
       },
       {
-        title: '更新时间',
+        title: '操作时间',
         dataIndex: 'updateTime',
         render(text) {
           return text ? moment(+text).format('lll') : ''
