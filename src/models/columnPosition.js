@@ -50,6 +50,8 @@ export default {
         if(+response.code === 0){
           let list
           const pagination = response.result.total > 9 ? { current:response.result.pageNum,total:response.result.total,pageSize:response.result.pageSize } : false
+          const { pageNum = 1, pageSize = 10 } = response.result
+          let index = ( pageNum -1 ) * pageSize < 0 ? 0 :( pageNum -1 ) * pageSize
           // message.success(`搜索${response.msg}`)
           if(payload.columnPage === undefined){
             list = response.result.datas.map(item => {
@@ -80,6 +82,10 @@ export default {
               }
             })
           }
+          list.forEach(item => {
+            index++
+            item.kid = index
+          })
           yield put({
             type:'columnPositions',
             payload:{list,pagination},

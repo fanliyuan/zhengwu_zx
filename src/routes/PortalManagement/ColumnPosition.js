@@ -179,7 +179,7 @@ export default class ColumnPosition extends Component {
     const colums = [
       {
         title: '序号',
-        dataIndex: 'columnId',
+        dataIndex: 'kid',
         align:'left',
       },
       {
