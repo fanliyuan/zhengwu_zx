@@ -119,8 +119,8 @@ export default class AddUser extends Component {
               projectId: '8aced467f44a4a458e763814912c3d47',
               scope: '8aced467f44a4a458e763814912c3d47',
               name: value.name,
-              roleId: roleInfo.roleId || '',
-              systemRole: roleInfo.systemRole || '',
+              roleId: roleInfo && roleInfo.roleId || '',
+              systemRole: roleInfo && roleInfo.systemRole || '',
             }),
           }
           this.props.dispatch({
