@@ -133,10 +133,10 @@ export default class ColumnPosition extends Component {
         }
         const operator = localStorage.getItem("accountRealName")
         const { dispatch } = this.props
-        const { editId } = this.state
+        const { editId, parentId } = this.state
         dispatch({
           type:'columnPosition/updateItem',
-          payload:{columnPage:value.edit,columnId:editId,columnPname:operator},
+          payload:{columnPage:value.edit,columnPid:parentId,columnId:editId,columnPname:operator},
         })
       }
     })
@@ -305,7 +305,7 @@ export default class ColumnPosition extends Component {
                 {getFieldDecorator('edit', {
                   initialValue: edit,
                   rules: [{ required: true, message: '请输入栏目名称' }],
-                })(<Input onKeyUp={this.handleLengthCheck} onBlur={this.handleNameCheck} />)}
+                })(<Input onKeyUp={this.handleLengthCheck} />)} {/*  onBlur={this.handleNameCheck} */}
               </Form.Item>
             </Form>
           </Modal>
