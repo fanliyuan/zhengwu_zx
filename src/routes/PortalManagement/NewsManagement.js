@@ -296,7 +296,7 @@ export default class NewsManagement extends Component {
               <Form.Item label="名称" labelCol={{ span: 4 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('name', {
                   rules: [{ required: true, message: '请输入文章分类' }],
-                })(<Input onBlur={this.handleNameCheck} />)}
+                })(<Input />)}{/* onBlur={this.handleNameCheck} */}
               </Form.Item>
             </Form>
           </Modal>

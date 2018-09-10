@@ -211,7 +211,7 @@ export default class InstitutionalManage extends Component {
       },
       {
         title: '排序',
-        dataIndex: 'orderFlag',
+        dataIndex: 'deptOrder',
       },
       {
         title: '所属省市区',
