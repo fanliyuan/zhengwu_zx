@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-05 16:24:58
+ * @Last Modified time: 2018-09-10 11:47:06
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -40,7 +40,7 @@ class MyInput extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.value !== this.props.value) {
+    if (nextProps.value) {
       this.setState({
         value: nextProps.value,
       })
