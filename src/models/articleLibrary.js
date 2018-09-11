@@ -109,12 +109,14 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
             routerRedux.push('/portalManagement/newsLibrary')
           )
         } else {
-          throw new Error('返回非0')
+          throw response.msg
         }
       } catch (error) {
-       // eslint-disable-next-line 
-       console.log(error)
-       message.error('新增失败')
+        if (error instanceof Error) {
+          console.log(error)// eslint-disable-line
+        } else {
+          message.error(error || '新增失败')
+        }
       }
     },
     *getArticleInfo({ payload }, { call, put }) {
@@ -148,12 +150,14 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
             routerRedux.push('/portalManagement/newsLibrary')
           )
         } else {
-          throw new Error('返回非0')
+          throw response.msg
         }
       } catch (error) {
-        // eslint-disable-next-line
-        console.log(error)
-        message.error('修改失败')
+        if (error instanceof Error) {
+          console.log(error)// eslint-disable-line
+        } else {
+          message.error(error || '修改失败!')
+        }
       }
     },
   },
