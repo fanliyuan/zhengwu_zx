@@ -245,8 +245,8 @@ export default class AddInstitution extends Component {
               )}
             </FormItem>
             <FormItem label="排序" {...formItemLayout}>
-              {getFieldDecorator('orderFlag', {
-                initialValue:getItemByIdInfo.orderFlag !== undefined && !addAction ? +getItemByIdInfo.orderFlag :99,
+              {getFieldDecorator('deptOrder', {
+                initialValue:getItemByIdInfo.deptOrder !== undefined && !addAction ? +getItemByIdInfo.deptOrder :99,
                 rules: [
                   {
                     required: true,
