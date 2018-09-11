@@ -15,6 +15,7 @@ const roleObject = {
   security: '安全员',
   auditor: '审计员',
   operator: '操作员',
+  'operator-n': '节点操作员',
 }
 
 @connect(({ roles, accounts, loading }) => ({
