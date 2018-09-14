@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-10 11:47:06
+ * @Last Modified time: 2018-09-14 11:37:30
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -295,7 +295,7 @@ export default class AddArticle extends Component {
     const { quillText } = this.state
     this.setState({
       previewArticle: true,
-      previewHTML: quillText.replace(/<p/, `<p class="ql-align-center" style="color:silver;font-size:14px;margin:16px 0;" ><span style="margin-right: 120px" >来源 : ${this.props.form.getFieldValue('articleSource')}</span><span>日期 : ${moment(Date.now()).format('ll')}</span></p><p`),
+    previewHTML: `<h1 class="ql-align-center">${this.props.form.getFieldValue('articleTitle')}</h1><p class="ql-align-center" style="color:silver;font-size:14px;margin:16px 0;" ><span style="margin-right: 120px" >来源 : ${this.props.form.getFieldValue('articleSource')}</span><span>日期 : ${moment(Date.now()).format('ll')}</span></p>${quillText}`,
     })
   }
 
