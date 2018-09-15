@@ -18,9 +18,14 @@ function RouterConfig({ history, app }) {
   const UserLayout = routerData['/user'].component
   const BasicLayout = routerData['/'].component
   // 这里用的sessionStorage,应该用models
-  let redirect
-  if (window.location.search) {
-    redirect = window.location.search.substring(10)
+  // let redirect
+  // if (window.location.search) {
+  //   redirect = window.location.search.substring(10)
+  //   sessionStorage.setItem('redirect', redirect)
+  // }
+  const urlParams = new URL(window.location.href)
+  const redirect = urlParams.searchParams.get('redirect')
+  if (redirect && redirect !== '/user/login') {
     sessionStorage.setItem('redirect', redirect)
   }
   return (

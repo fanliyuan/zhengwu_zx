@@ -115,11 +115,12 @@ export default {
     *logout(_, { put, select, call }) {
       try {
         // get location pathname
-        const urlParams = new URL(window.location.href)
+        // const urlParams = new URL(window.location.href)
         const pathname = yield select(state => state.routing.location.pathname)
         // add the parameters in the url
-        urlParams.searchParams.set('redirect', pathname)
-        window.history.replaceState(null, 'login', urlParams.href)
+        // urlParams.searchParams.set('redirect', pathname)
+        // window.history.replaceState(null, 'login', urlParams.href)
+        sessionStorage.setItem('redirect', pathname)
       } finally {
         yield put({
           type: 'changeLoginStatus',

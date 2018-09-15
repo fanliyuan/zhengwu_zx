@@ -49,8 +49,11 @@ async function checkToken(response) {
           key,
           message: '登录已失效,请重新登录',
         })
+        if (window.location.pathname !== '/user/login') {
+          sessionStorage.setItem('redirect', window.location.pathname)
+        }
         store.dispatch(
-          routerRedux.push(`/user/login?redirect=${window.location.pathname}`)
+          routerRedux.push(`/user/login`)
         )
       }
     })
