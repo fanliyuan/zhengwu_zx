@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:42:31
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-03 09:20:05
+ * @Last Modified time: 2018-09-14 17:17:34
  * @描述: 开放门户管理--资讯管理--轮播图管理
 */
 import React, { Component, Fragment } from 'react'
@@ -250,7 +250,17 @@ export default class CarouselManagement extends Component {
               onChange={this.handleNameChange}
               className={styles.name}
               />
-            <Cascader options={column} placeholder="栏目" style={{ marginRight: 16 }} onChange={this.handleColumnChange} />
+            <Cascader
+              options={[...column].filter(item => {// eslint-disable-line
+              if (item.label==='首页' || item.label === '开放动态') {
+                delete item.children
+                return item
+              }
+              })}
+              placeholder="栏目"
+              style={{ marginRight: 16 }}
+              onChange={this.handleColumnChange}
+              />
             <RangePicker onChange={this.handlePick} className={styles.date} />
             <Button type="primary" onClick={this.handleSearch} icon="search">
               搜索

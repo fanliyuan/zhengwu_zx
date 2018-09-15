@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-17 11:30:40
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-17 14:21:26
+ * @Last Modified time: 2018-09-14 17:41:46
  * @描述: 开放门户管理 -- 栏目管理 -- 栏目位置
 */
 import React, { Component } from 'react'
@@ -18,13 +18,13 @@ let msgs
 @Form.create()
 @connect(({columnPosition,loading}) => ({
   columnPosition,
-  loadingTable:loading.effects['columnPosition/queryList'],
+  loadingTable:loading.models.columnPosition,
 }))
 export default class ColumnPosition extends Component {
   state = {
     query: {
       name: '',
-      page: -1,
+      page: null,
       operator: '',
       time: [],
     },
@@ -200,7 +200,6 @@ export default class ColumnPosition extends Component {
       {
         title: '序号',
         dataIndex: 'kid',
-        align:'left',
       },
       {
         title: '栏目名称',
@@ -244,7 +243,6 @@ export default class ColumnPosition extends Component {
     colums.forEach(item => {
       item.align = 'center'
     })
-    colums[0].align="left"
 
     const pageComs = pageList.map(item => (
       <Select.Option value={item.columnId} key={item.columnId}>

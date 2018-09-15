@@ -61,7 +61,7 @@ export default {
         const name = arr.filter(item => {
           return +item.columnId === +ids
         })
-        return name[0].columnPage
+        return name[0] && name[0].columnPage
       }
       try{
         if(+response.code === 0){
@@ -140,7 +140,8 @@ export default {
       const response = yield call(selectColumnPage)
       try{
         if(+response.code === 0){
-          response.result.datas.unshift({columnId:-1,columnPage:'功能页面'})
+          // response.result.datas.unshift({columnId:-1,columnPage:'功能页面'})
+          response.result.datas = response.result.datas.filter(item => item.columnPage === '首页' || item.columnPage === '开放动态')
           yield put({
             type:'columnPage',
             payload:response.result.datas,

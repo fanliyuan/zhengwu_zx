@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-05 15:25:41
+ * @Last Modified time: 2018-09-14 16:09:36
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -225,7 +225,7 @@ export default class PublicationManagement extends Component {
     this.setState({
       showModal: true,
       articleId: row.articleId,
-      secondColumnValue: `${row.articleCid}`,
+      secondColumnValue: `${row.articleCid || ''}`,
       secondColumnLabel: `${row.articleCname}`,
       firstColumnValue: getParentValue(row.articleCid, list),
       articleTopState: row.articleTopState,
@@ -233,7 +233,7 @@ export default class PublicationManagement extends Component {
     }, () => {
       this.setState({
         // secondColumn: getSecondColumn(this.state.firstColumnValue, firstColumn),// eslint-disable-line
-        secondColumn: columnObejct[this.state.firstColumnValue],// eslint-disable-line
+        secondColumn: columnObejct[this.state.firstColumnValue] || [],// eslint-disable-line
       })
     })
     // message.success(row.top)

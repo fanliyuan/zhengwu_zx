@@ -36,74 +36,74 @@ function hasErrors(fieldErrors) {
   return Object.keys(fieldErrors).some(item => fieldErrors[item])
 }
 
-class Column extends Component {
-  state = {
-    first: undefined,
-    second: undefined,
-    secondList: [],
-  }
+// class Column extends Component {
+//   state = {
+//     first: undefined,
+//     second: undefined,
+//     secondList: [],
+//   }
 
-  componentDidMount() {
-    if (this.props.value && this.props.dataList) {
-       const secondObject = this.props.dataList.filter(item => this.props.value === item.value)[0] || {}
-       const secondList = this.props.dataList.filter(item => item.columnPid === secondObject.columnPid)
-       this.setState({
-        secondList,
-        first: secondObject.columnPid && `${secondObject.columnPid}`,
-        second: this.props.value,
-       })
-    }
-  }
+//   componentDidMount() {
+//     if (this.props.value && this.props.dataList) {
+//        const secondObject = this.props.dataList.filter(item => this.props.value === item.value)[0] || {}
+//        const secondList = this.props.dataList.filter(item => item.columnPid === secondObject.columnPid)
+//        this.setState({
+//         secondList,
+//         first: secondObject.columnPid && `${secondObject.columnPid}`,
+//         second: this.props.value,
+//        })
+//     }
+//   }
 
-  firstChange = (val, column) => {
-    this.setState(
-      {
-        first: val,
-        secondList: column.filter(item => item.value === val).length ? column.filter(item => item.value === val)[0].children : [],
-      },
-      () => {
-        this.setState({
-          second: this.state.secondList[0] && this.state.secondList[0].value,// eslint-disable-line
-        })
-        this.props.onChange(this.state.secondList[0] && this.state.secondList[0].value)
-      }
-    )
-  }
+//   firstChange = (val, column) => {
+//     this.setState(
+//       {
+//         first: val,
+//         secondList: column.filter(item => item.value === val).length ? column.filter(item => item.value === val)[0].children : [],
+//       },
+//       () => {
+//         this.setState({
+//           second: this.state.secondList[0] && this.state.secondList[0].value,// eslint-disable-line
+//         })
+//         this.props.onChange(this.state.secondList[0] && this.state.secondList[0].value)
+//       }
+//     )
+//   }
 
-  secondChange = val => {
-    this.setState(
-      {
-        second: val,
-      },
-      () => this.props.onChange(this.state.second)
-    )
-  }
+//   secondChange = val => {
+//     this.setState(
+//       {
+//         second: val,
+//       },
+//       () => this.props.onChange(this.state.second)
+//     )
+//   }
 
-  render() {
-    const { first, second, secondList } = this.state
-    const { data = [] } = this.props
-    const firstComs = data.map(item => (
-      <Select.Option value={item.value} key={item.value}>
-        {item.label}
-      </Select.Option>
-    ))
-    const secondComs = secondList.map(item => (
-      <Select.Option value={item.value} key={item.value}>
-        {item.label}
-      </Select.Option>
-    ))
-    return (
-      <Fragment>
-        <Select value={first} onChange={value => this.firstChange(value, data)} className={styles.select1}>
-          {firstComs}
-        </Select>
-        <Select value={second} onChange={this.secondChange} className={styles.select2}>
-          {secondComs}
-        </Select>
-      </Fragment>
-    )
-  }
-}
+//   render() {
+//     const { first, second, secondList } = this.state
+//     const { data = [] } = this.props
+//     const firstComs = data.map(item => (
+//       <Select.Option value={item.value} key={item.value}>
+//         {item.label}
+//       </Select.Option>
+//     ))
+//     const secondComs = secondList.map(item => (
+//       <Select.Option value={item.value} key={item.value}>
+//         {item.label}
+//       </Select.Option>
+//     ))
+//     return (
+//       <Fragment>
+//         <Select value={first} onChange={value => this.firstChange(value, data)} className={styles.select1}>
+//           {firstComs}
+//         </Select>
+//         <Select value={second} onChange={this.secondChange} className={styles.select2}>
+//           {secondComs}
+//         </Select>
+//       </Fragment>
+//     )
+//   }
+// }
 
 @connect(({carouselManagement, loading, articlePublication}) => ({carouselManagement, loading: loading.models.carouselManagement, articlePublication}))
 @Form.create() // eslint-disable-line
@@ -287,7 +287,7 @@ export default class AddCarousel extends Component {
 
   render() {
     const { fileList, previewVisible, previewUrl, carouselData, imageFlag, tempData  } = this.state
-    const { form: {getFieldDecorator, getFieldError, getFieldsError, isFieldTouched}, loading, articlePublication:{ column, secondCategoryList } } = this.props
+    const { form: {getFieldDecorator, getFieldError, getFieldsError, isFieldTouched}, loading, articlePublication:{ column, secondCategoryList/* eslint-disable-line */ } } = this.props
     const nameError = isFieldTouched('imgName') && getFieldError('imgName')
     const columnError = isFieldTouched('imgPid') && getFieldError('imgPid')
     // const sortError = isFieldTouched('sort') && getFieldError('sort')
@@ -359,7 +359,15 @@ export default class AddCarousel extends Component {
                   ],
                 })(
                   // 这里类似级联
-                  <Column data={column} dataList={secondCategoryList} onChange={value => this.columnChange(value)} />
+                  // <Column data={column} dataList={secondCategoryList} onChange={value => this.columnChange(value)} />
+                  // 上面已经改为下拉选择
+                  <Select className={styles.input} onChange={value => this.columnChange(value)}>
+                    {
+                      [...column].filter(item => item.label === '首页' || item.label === '开放动态').map(item => {
+                        return <Select.Option value={item.value} key={item.label}>{item.label}</Select.Option>
+                      })
+                    }
+                  </Select>
                 )}
               </Item>
               {/* <Item
