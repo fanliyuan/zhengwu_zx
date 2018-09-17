@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, TreeSelect, InputNumber, Button, Select, message } from 'antd'
+import { Input, Card, Form, TreeSelect, Button, Select, message } from 'antd'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -244,7 +244,7 @@ export default class AddInstitution extends Component {
                 <TreeSelect treeData={goveDeptInfos} placeholder="请选择" treeDefaultExpandAll />
               )}
             </FormItem>
-            <FormItem label="排序" {...formItemLayout}>
+            {/* <FormItem label="排序" {...formItemLayout}>
               {getFieldDecorator('deptOrder', {
                 initialValue:getItemByIdInfo.deptOrder !== undefined && !addAction ? +getItemByIdInfo.deptOrder :99,
                 rules: [
@@ -254,7 +254,7 @@ export default class AddInstitution extends Component {
                   },
                 ],
               })(<InputNumber />)}
-            </FormItem>
+            </FormItem> */}
             <FormItem label="负责人" {...formItemLayout}>
               {getFieldDecorator('chargeUser',{
                 initialValue:getItemByIdInfo.chargeUser && !addAction ? getItemByIdInfo.chargeUser : '',
