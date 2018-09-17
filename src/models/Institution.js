@@ -47,7 +47,7 @@ export default {
           message.success(response.msg)
           yield put({
             type:'querys',
-            payload:{pageNum:0,pageSize:10},
+            payload:{pageNum:1,pageSize:10},
           })
         }
         else {
@@ -84,7 +84,7 @@ export default {
           message.success(response.msg)
           yield put({
             type:'querys',
-            payload:{pageNum:0,pageSize:10},
+            payload:{pageNum:1,pageSize:10},
           })
         }
         else {
@@ -101,7 +101,7 @@ export default {
           message.success(response.msg)
           yield put({
             type:'querys',
-            payload:{pageNum:0,pageSize:10},
+            payload:{pageNum:1,pageSize:10},
           })
         }
       }catch(err){

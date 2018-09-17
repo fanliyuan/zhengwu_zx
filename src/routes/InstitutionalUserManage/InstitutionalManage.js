@@ -209,10 +209,10 @@ export default class InstitutionalManage extends Component {
         title: '负责人手机号',
         dataIndex: 'chargePhone',
       },
-      {
-        title: '排序',
-        dataIndex: 'deptOrder',
-      },
+      // {
+      //   title: '排序',
+      //   dataIndex: 'deptOrder',
+      // },
       {
         title: '所属省市区',
         dataIndex: 'proCityAreaInfo',
