@@ -6,48 +6,105 @@ import { routerRedux } from 'dva/router'
 
 import styles from './SourceManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import { format0, format24 } from '../../utils/utils'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
-@connect(({ sourceManagement }) => ({
+@connect(({ sourceManagement, nodeManagement, loading }) => ({
   sourceManagement,
+  nodeManagement,
+  loading: loading.models.sourceManagement || loading.models.nodeManagement,
 }))
 export default class SourceManagement extends Component {
   state = {
-    dataType: '0',
-    // nodeName: '0',
-    // owingJg: '0',
-    status: '0',
     isNodeOperator: false,
+    queryData: {},
+    isChanged: false,
   }
 
   componentDidMount() {
     this.setState({
       isNodeOperator: localStorage['antd-pro-authority'] === 'operator-n',
     })
-  }
-
-  dataTypeChange = val => {
-    this.setState({
-      dataType: val,
+    this.props.dispatch({
+      type: 'nodeManagement/getParentNodes',
     })
   }
 
-  nodeNameChange = () => {
+  nameChange = e => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        sourceTitle: e.target.value.trim(),
+      },
+      isChanged: true,
+    })
+  }
+
+  dataTypeChange = val => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        dataType: val,
+      },
+      isChanged: true,
+    })
+  }
+
+  nodeChange = val => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        nodeId: val[0] && +[...val].pop(),
+      },
+      isChanged: true,
+    })
+  }
+
+  // nodeNameChange = () => {
     // this.setState({
     //   nodeName: val,
     // })
-  }
+  // }
 
-  owingJgChange = () => {
-    // this.setState({
-    //   owingJg: val,
-    // })
-  }
+  // owingJgChange = () => {
+  //   this.setState({
+  //     owingJg: val,
+  //   })
+  // }
 
   statusChange = val => {
+    const { queryData } = this.state
     this.setState({
-      status: val,
+      queryData: {
+        ...queryData,
+        status: val,
+      },
+      isChanged: true,
+    })
+  }
+
+  timeChange = val => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        startTime: val[0] ? format0(val[0].format('x')):undefined,
+        endTime: val[1] ? format24(val[1].format('x')):undefined,
+      },
+      isChanged: true,
+    })
+  }
+
+  searchHandle = () => {
+    const { queryData, isChanged } = this.state
+    if (!isChanged) return null
+    console.log(queryData) // eslint-disable-line
+    this.setState({
+      isChanged: false,
     })
   }
 
@@ -61,10 +118,10 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/fileSource'))
   }
 
-  handleTask = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/task'))
-  }
+  // handleTask = () => {
+  //   const { dispatch } = this.props
+  //   dispatch(routerRedux.push('/dataSourceManagement/task'))
+  // }
 
   handleEdit = () => {
     const { dispatch } = this.props
@@ -88,38 +145,40 @@ export default class SourceManagement extends Component {
 
   render() {
     const that = this
-    const { dataType, status, isNodeOperator } = this.state
-    const options = [
-      {
-        value: '0-0',
-        label: '北京国土局',
-        children: [
-          {
-            value: '0-0-1',
-            label: '海淀国土局',
-            // children: [{
-            //   value: 'xihu',
-            //   label: 'West Lake',
-            // }],
-          },
-        ],
-      },
-      {
-        value: '0-1',
-        label: '河北国土局',
-        children: [
-          {
-            value: '0-1-0',
-            label: '保定国土局',
-            // children: [{
-            //   value: 'zhonghuamen',
-            //   label: 'Zhong Hua Men',
-            // }],
-          },
-        ],
-      },
-    ]
+    const { isNodeOperator } = this.state
+    const { nodeManagement: { parentNodeList }, loading } = this.props
+    // const options = [
+    //   {
+    //     value: '0-0',
+    //     label: '北京国土局',
+    //     children: [
+    //       {
+    //         value: '0-0-1',
+    //         label: '海淀国土局',
+    //         // children: [{
+    //         //   value: 'xihu',
+    //         //   label: 'West Lake',
+    //         // }],
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     value: '0-1',
+    //     label: '河北国土局',
+    //     children: [
+    //       {
+    //         value: '0-1-0',
+    //         label: '保定国土局',
+    //         // children: [{
+    //         //   value: 'zhonghuamen',
+    //         //   label: 'Zhong Hua Men',
+    //         // }],
+    //       },
+    //     ],
+    //   },
+    // ]
     const data = [
+      { value: '-1', id: -1, label: '全部数据' },
       { value: '0', id: 0, label: '数据类型' },
       { value: '1', id: 1, label: '数据类型1' },
     ]
@@ -150,8 +209,10 @@ export default class SourceManagement extends Component {
     //   )
     // })
     const data4 = [
-      { value: '0', id: 0, label: '审核状态' },
-      { value: '1', id: 1, label: '审核状态1' },
+      { value: '-1', id: 0, label: '全部状态' },
+      { value: '0', id: 1, label: '已拒绝' },
+      { value: '1', id: 1, label: '已通过' },
+      { value: '2', id: 1, label: '待审核' },
     ]
     const selectData4 = data4.map(item => {
       return (
@@ -223,9 +284,9 @@ export default class SourceManagement extends Component {
                 <span className={styles.clickBtn} onClick={that.handleSource1}>
                   资源
                 </span>
-                <span className={styles.clickBtn} onClick={that.handleTask}>
+                {/* <span className={styles.clickBtn} onClick={that.handleTask}>
                   任务
-                </span>
+                </span> */}
                 {isNodeOperator && (
                   <span className={styles.clickBtn} onClick={that.handleEdit}>
                     修改
@@ -255,9 +316,9 @@ export default class SourceManagement extends Component {
                 <span className={styles.clickBtn} onClick={that.handleSource}>
                   资源
                 </span>
-                <span className={styles.clickBtn} onClick={that.handleTask}>
+                {/* <span className={styles.clickBtn} onClick={that.handleTask}>
                   任务
-                </span>
+                </span> */}
                 {isNodeOperator && (
                   <span className={styles.clickBtn} onClick={that.handleEdit}>
                     修改
@@ -342,11 +403,11 @@ export default class SourceManagement extends Component {
       <PageHeaderLayout>
         <Card>
           <div className={styles.form}>
-            <Input placeholder="资源名称" style={{ width: 150, marginRight: 20 }} />
+            <Input placeholder="资源名称" style={{ width: 150, marginRight: 20 }} onChange={this.nameChange} />
             {/* <Input placeholder="应用系统名称" style={{ width: 150, marginRight: 20 }} /> */}
             <Select
               style={{ marginRight: 20, width: 120 }}
-              value={dataType}
+              defaultValue='-1'
               onChange={this.dataTypeChange}
               >
               {selectData}
@@ -358,7 +419,7 @@ export default class SourceManagement extends Component {
             >
               {selectData1}
             </Select> */}
-            {!isNodeOperator && <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />}
+            {!isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={label => [...label].pop()} onChange={this.nodeChange} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} />}
             {/* <Select
               style={{ marginRight: 20, width: 120 }}
               value={owingJg}
@@ -368,16 +429,17 @@ export default class SourceManagement extends Component {
             </Select> */}
             <Select
               style={{ marginRight: 20, width: 120 }}
-              value={status}
+              defaultValue='-1'
               onChange={this.statusChange}
               >
               {selectData4}
             </Select>
-            <RangePicker style={{ marginRight: 20, width: 210 }} />
-            <Button type="primary">搜索</Button>
+            <RangePicker style={{ marginRight: 20, width: 210 }} onChange={this.timeChange} />
+            <Button type="primary" onClick={this.searchHandle}>搜索</Button>
           </div>
           <div>
             <Table
+              loading={loading}
               columns={columns}
               dataSource={list}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}

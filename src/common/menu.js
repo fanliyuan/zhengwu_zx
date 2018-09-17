@@ -178,11 +178,11 @@ const menuData = [
     icon: 'database',
     path: 'dataSourceManagement',
     children: [
-      {
-        name: '接入管理',
-        path: 'accessManagement',
-        authority: ['operator', 'operator-n'],
-      },
+      // {
+      //   name: '接入管理',
+      //   path: 'accessManagement',
+      //   authority: ['operator', 'operator-n'],
+      // },
       {
         name: '新建接入',
         path: 'addAccess',
@@ -362,11 +362,11 @@ const menuData = [
     icon: 'sync',
     path: 'dataSwitchManagement',
     children: [
-      {
-        name: '资源集市',
-        path: 'sourceSubscription',
-        authority: ['operator', 'operator-n'],
-      },
+      // {
+      //   name: '资源集市',
+      //   path: 'sourceSubscription',
+      //   authority: ['operator', 'operator-n'],
+      // },
       {
         name: '订阅审核',
         path: 'subscriptionAudit',

@@ -2,13 +2,13 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 15:21:32
+ * @Last Modified time: 2018-09-17 16:46:13
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import { Link } from 'dva/router'
-import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal, Tooltip, Tree, Icon } from 'antd'
+import { Link, routerRedux } from 'dva/router'
+import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal, Tooltip, Tree, Icon, Badge } from 'antd'
 import moment from 'moment'
 import { isArray } from 'util'
 
@@ -189,6 +189,11 @@ export default class AllSub extends Component {
     })
   }
 
+  handleTask = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/task'))
+  }
+
   render() {
     const { name, date, state, theme, selectKeys, organization, isNodeOperator, modalVisible } = this.state
 
@@ -241,6 +246,9 @@ export default class AllSub extends Component {
       {
         title: '运行状态',
         dataIndex: 'state',
+        render: (text) => {
+          return <Badge status={text==='运行中'?'success': 'default'} text={text} />
+        },
       },
       {
         title: '操作',
@@ -261,6 +269,9 @@ export default class AllSub extends Component {
               {isNodeOperator && (
                 <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
               )}
+              <a onClick={() => this.handleTask(row)}>
+                任务
+              </a>
             </Fragment>
           ) : (
             <Fragment>

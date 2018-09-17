@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-27 14:13:54
+ * @Last Modified time: 2018-09-17 11:52:04
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component, Fragment } from 'react'
@@ -18,7 +18,7 @@ function ButtonList(props) {
   const { onClick = () => {}, disabled = false, isNodeOperator = false } = props
   return (
     <div className="btncls clearfix">
-      <Link to="/dataSwitchManagement/sourceSubscription" className="fr mr40">
+      <Link to="/dataSwitchManagement/allSub" className="fr mr40">
         <Button>返回</Button>
       </Link>
       {isNodeOperator && (

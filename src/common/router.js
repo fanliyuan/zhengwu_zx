@@ -192,11 +192,11 @@ export const getRouterData = app => {
         import('../routes/InstitutionalUserManage/AssignRole')
       ),
     },
-    '/dataSourceManagement/accessManagement': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/AccessManagement')
-      ),
-    },
+    // '/dataSourceManagement/accessManagement': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataSourceManagement/AccessManagement')
+    //   ),
+    // },
     '/dataSourceManagement/addAccess': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/AddAccess')),
     },
@@ -294,7 +294,7 @@ export const getRouterData = app => {
       ),
     },
     '/dataSourceManagement/sourceManagement': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['sourceManagement', 'nodeManagement'], () =>
         import('../routes/DataSourceManagement/SourceManagement')
       ),
     },
@@ -405,11 +405,11 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/SubscriptionAudit')
       ),
     },
-    '/dataSwitchManagement/sourceSubscription': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSwitchManagement/SourceSubscription')
-      ),
-    },
+    // '/dataSwitchManagement/sourceSubscription': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataSwitchManagement/SourceSubscription')
+    //   ),
+    // },
     '/dataSwitchManagement/viewDirectory': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/ViewDirectory')

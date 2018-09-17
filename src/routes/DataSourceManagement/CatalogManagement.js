@@ -21,6 +21,7 @@ import { isArray } from 'util'
 
 import styles from './CatalogManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import { format0, format24 } from '../../utils/utils'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
@@ -124,33 +125,96 @@ const menuData = [
   },
 ]
 
-@connect(({ catalogManagement }) => ({
+@connect(({ catalogManagement, nodeManagement, loading }) => ({
   catalogManagement,
+  nodeManagement,
+  loading: loading.models.nodeManagement,
 }))
 export default class CatalogManagement extends Component {
   state = {
-    provider: '0',
-    status: '0',
     isHover: false,
-    loading: false,
     isNodeOperator: false,
+    queryData: {},
+    isChanged: false,
   }
 
   componentDidMount() {
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
     })
+    this.props.dispatch({
+      type: 'nodeManagement/getParentNodes',
+    })
+  }
+
+  nameChange = e => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        catalogName: e.target.value.trim(),
+      },
+      isChanged: true,
+    })
   }
 
   providerChange = val => {
+    const { queryData } = this.state
     this.setState({
-      provider: val,
+      queryData: {
+        ...queryData,
+        providerName: val,
+      },
+      isChanged: true,
+    })
+  }
+
+  nodeChange = val => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        nodeId: val[0] && +[...val].pop(),
+      },
+      isChanged: true,
     })
   }
 
   statusChange = val => {
+    const { queryData } = this.state
     this.setState({
-      status: val,
+      queryData: {
+        ...queryData,
+        status: val,
+      },
+      isChanged: true,
+    })
+  }
+
+  timeChange = val => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        startTime: val[0] && format0(val[0].format('x')),
+        endTime: val[1] && format24(val[1].format('x')),
+      },
+      isChanged: true,
+    })
+  }
+
+  checkChange = e => {
+    console.log(e.target.checked)// eslint-disable-line
+  }
+
+  searchHandle = () =>{
+    const { isChanged, queryData } = this.state
+    if (!isChanged) {
+      return null
+    }
+    console.log(queryData) // eslint-disable-line
+    this.setState({
+      isChanged: false,
     })
   }
 
@@ -167,13 +231,7 @@ export default class CatalogManagement extends Component {
 
   uploadFun = ({ event }) => {
     if (event) {
-      this.setState({
-        loading: true,
-      })
       setTimeout(() => {
-        this.setState({
-          loading: false,
-        })
         message.success('上传成功,不过这个只是假的')
       }, 1000)
     }
@@ -202,17 +260,14 @@ export default class CatalogManagement extends Component {
     }
   }
 
-  directoryChange = e => {
-    try {
-      message.success(`选择了${e.node.props.title}`)
-    } catch (error) {
-      message.error('页面出错')
-    }
+  directoryChange = val => {
+    message.success(`选择了${val}`)
   }
 
   render() {
     const that = this
-    const { provider, status, isHover, isNodeOperator } = this.state
+    const { nodeManagement: { parentNodeList }, loading } = this.props
+    const { isHover, isNodeOperator } = this.state
     const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
     const selectData = data.map(item => {
       return (
@@ -221,39 +276,11 @@ export default class CatalogManagement extends Component {
         </Option>
       )
     })
-    const options = [
-      {
-        value: '0-0',
-        label: '北京国土局',
-        children: [
-          {
-            value: '0-0-1',
-            label: '海淀国土局',
-            // children: [{
-            //   value: 'xihu',
-            //   label: 'West Lake',
-            // }],
-          },
-        ],
-      },
-      {
-        value: '0-1',
-        label: '河北国土局',
-        children: [
-          {
-            value: '0-1-0',
-            label: '保定国土局',
-            // children: [{
-            //   value: 'zhonghuamen',
-            //   label: 'Zhong Hua Men',
-            // }],
-          },
-        ],
-      },
-    ]
     const data1 = [
-      { value: '0', id: 0, label: '审核状态' },
-      { value: '1', id: 1, label: '审核状态1' },
+      { value: '-1', id: -1, label: '全部状态' },
+      { value: '0', id: 0, label: '已拒绝' },
+      { value: '1', id: 1, label: '已通过' },
+      { value: '2', id: 2, label: '待审核' },
     ]
     const selectData1 = data1.map(item => {
       return (
@@ -415,13 +442,14 @@ export default class CatalogManagement extends Component {
               <Button type="primary" icon="search" />
             </div>
             <div className="clearfix">
-              <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8">
+              <Tooltip title="双击展开目录,单击选择文件" className="fr mr8">
                 <Icon type="question-circle-o" />
               </Tooltip>
               <DirectoryTree
                 defaultExpandAll
-                onRightClick={this.directoryChange}
+                onSelect={this.directoryChange}
                 className={styles.tree}
+                expandAction='doubleClick'
                 >
                 {renderTreeNode(menuData)}
               </DirectoryTree>
@@ -429,30 +457,29 @@ export default class CatalogManagement extends Component {
           </div>
           <div className={styles.column2}>
             <div className={styles.form}>
-              <Input placeholder="名称" style={{ width: 100, marginRight: 20 }} />
+              <Input placeholder="名称" style={{ width: 180, marginRight: 20 }} onChange={this.nameChange} />
               {/* {isNodeOperator && (
                 <Input placeholder="节点名称" style={{ width: 100, marginRight: 20 }} />
               )} */}
               <Select
                 style={{ marginRight: 20, width: 120 }}
-                value={provider}
                 onChange={this.providerChange}
                 >
                 {selectData}
               </Select>
               {
-                !isNodeOperator && <Cascader options={options} placeholder="所属节点" style={{ marginRight: 16 }} />
+                !isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={lables => [...lables].pop()} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} />
               }
               <Select
+                defaultValue='-1'
                 style={{ marginRight: 20, width: 120 }}
-                value={status}
                 onChange={this.statusChange}
                 >
                 {selectData1}
               </Select>
-              <RangePicker style={{ marginRight: 20, width: 200 }} />
-              <Checkbox style={{ marginRight: 10 }}>已挂接资源</Checkbox>
-              <Button type="primary">搜索</Button>
+              <RangePicker style={{ marginRight: 20, width: 200 }} onChange={this.timeChange} />
+              <Checkbox style={{ marginRight: 10 }} onChange={this.checkChange}>已挂接资源</Checkbox>
+              <Button type="primary" onClick={this.searchHandle}>搜索</Button>
             </div>
             {isNodeOperator && (
               <div className={styles.createBtn}>
@@ -481,7 +508,7 @@ export default class CatalogManagement extends Component {
                 pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                 rowKey="id"
                 // rowSelection={rowSelection}
-                loading={this.state.loading}
+                loading={loading}
                 bordered
                 />
             </div>
