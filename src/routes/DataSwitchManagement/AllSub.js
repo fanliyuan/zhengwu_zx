@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-17 16:46:13
+ * @Last Modified time: 2018-09-18 19:24:30
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -15,6 +15,7 @@ import { isArray } from 'util'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import { getName, getAddress, getDepartment } from '../../utils/faker'
 import styles from './AllSub.less'
+import { format0, format24 } from '../../utils/utils'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -96,6 +97,7 @@ function getData3() {
 const data1 = getData1()
 const data2 = getData2()
 const data3 = getData3()
+let directoryData = {}
 
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
@@ -104,10 +106,7 @@ const data3 = getData3()
 @connect(({ login }) => ({ login }))
 export default class AllSub extends Component {
   state = {
-    name: '',
-    theme: '',
-    state: '运行状态',
-    date: [],
+    queryData: {},
     isChanged: false,
     selectKeys: [],
     isNodeOperator: false,
@@ -121,43 +120,46 @@ export default class AllSub extends Component {
   }
 
   handleNameChange = e => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        title: e.target.value.trim(),
+      },
       isChanged: true,
-    })
-    this.setState({
-      name: e.target.value.trim(),
     })
   }
 
   handleThemeChange = e => {
-    this.setState({
-      isChanged: true,
-    })
-    this.setState({
-      theme: e.target.value.trim(),
-    })
+    console.log(e)// eslint-disable-line
   }
 
   handSelectChange = val => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        state: val,
+      },
       isChanged: true,
-    })
-    this.setState({
-      state: val,
     })
   }
 
   handlePick = val => {
+    const { queryData } = this.state
     this.setState({
+      queryData: {
+        ...queryData,
+        startTime: val[0] && format0(val[0].format('x')),
+        endTime: val[1] && format24(val[1].format('x')),
+      },
       isChanged: true,
-    })
-    this.setState({
-      date: val,
     })
   }
 
   handleSearch = () => {
     if (!this.state.isChanged) return // eslint-disable-line
+    console.log(this.state.queryData) // eslint-disable-line
     this.setState({
       isChanged: false,
     })
@@ -172,8 +174,15 @@ export default class AllSub extends Component {
   }
 
   modalOk = () => {
+    // console.log(directoryData)
+    const { queryData } = this.setState
     this.setState({
       modalVisible:false,
+      queryData: {
+        ...queryData,
+        classifyId: directoryData && directoryData.key,
+        classisyName: directoryData && directoryData.props.title,
+      },
     })
   }
 
@@ -194,18 +203,27 @@ export default class AllSub extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/task'))
   }
 
+  directoryChange = (val, e) => {
+    // console.log(val)// eslint-disable-line
+    directoryData = e && e.selectedNodes[0]
+  }
+
   render() {
-    const { name, date, state, theme, selectKeys, organization, isNodeOperator, modalVisible } = this.state
+    const { selectKeys, isNodeOperator, modalVisible, queryData: { classisyName } } = this.state
 
     // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
 
     const stateList = [
       {
-        value: 0,
+        value: '-1',
+        label: '全部状态',
+      },
+      {
+        value: '1',
         label: '运行中',
       },
       {
-        value: 1,
+        value: '0',
         label: '已停止',
       },
     ]
@@ -547,20 +565,19 @@ export default class AllSub extends Component {
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
-          <Tabs className={tabscls}>
+          <Tabs className={tabscls} defaultActiveKey='hasSubscribed'>
             <TabPane tab="已订阅" key="hasSubscribed">
               <div className={styles.search}>
                 <Input
+                  value={classisyName}
+                  title={classisyName}
                   className={styles.theme}
                   placeholder="搜索分类"
-                  value={theme}
-                  onPressEnter={this.handleSearch}
                   onChange={this.handleThemeChange}
                   onClick={this.handleFocus}
                   />
                 <Input
                   placeholder="订阅名称/目录名称"
-                  value={name}
                   onPressEnter={this.handleSearch}
                   onChange={this.handleNameChange}
                   className={styles.name}
@@ -568,14 +585,13 @@ export default class AllSub extends Component {
                 <Input
                   className={styles.name}
                   placeholder={isNodeOperator ? '发布机构' : '订阅机构/发布机构'}
-                  value={organization}
                   onPressEnter={this.handleSearch}
                   onChange={this.handleOrganizationChange}
                   />
-                <Select value={state} onChange={this.handSelectChange} className={styles.state}>
+                <Select defaultValue='-1' onChange={this.handSelectChange} className={styles.state}>
                   {optionComs1}
                 </Select>
-                <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
+                <RangePicker onChange={this.handlePick} className={styles.date} />
                 <Button type="primary" onClick={this.handleSearch} icon="search">
                   搜索
                 </Button>
@@ -634,14 +650,12 @@ export default class AllSub extends Component {
                   <Input
                     className={styles.theme}
                     placeholder="搜索分类"
-                    value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}
                     onClick={this.handleFocus}
                     />
                   <Input
                     placeholder="订阅名称/目录名称"
-                    value={name}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleNameChange}
                     className={styles.name}
@@ -649,14 +663,13 @@ export default class AllSub extends Component {
                   <Input
                     className={styles.theme}
                     placeholder="发布机构"
-                    value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}
                     />
-                  <Select value={state} onChange={this.handSelectChange} className={styles.state}>
+                  <Select onChange={this.handSelectChange} className={styles.state}>
                     {optionComs2}
                   </Select>
-                  <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
+                  <RangePicker onChange={this.handlePick} className={styles.date} />
                   <Button type="primary" onClick={this.handleSearch} icon="search">
                     搜索
                   </Button>
@@ -670,14 +683,12 @@ export default class AllSub extends Component {
                   <Input
                     className={styles.theme}
                     placeholder="搜索分类"
-                    value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}
                     onClick={this.handleFocus}
                     />
                   <Input
                     placeholder="订阅名称/目录名称"
-                    value={name}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleNameChange}
                     className={styles.name}
@@ -685,14 +696,13 @@ export default class AllSub extends Component {
                   <Input
                     className={styles.theme}
                     placeholder="发布机构"
-                    value={theme}
                     onPressEnter={this.handleSearch}
                     onChange={this.handleThemeChange}
                     />
-                  <Select value={state} onChange={this.handSelectChange} className={styles.state}>
+                  <Select onChange={this.handSelectChange} className={styles.state}>
                     {optionComs2}
                   </Select>
-                  <RangePicker value={date} onChange={this.handlePick} className={styles.date} />
+                  <RangePicker onChange={this.handlePick} className={styles.date} />
                   <Button type="primary" onClick={this.handleSearch} icon="search">
                     搜索
                   </Button>
@@ -712,14 +722,15 @@ export default class AllSub extends Component {
               <Input placeholder="请输入关键词" className={styles.input} />
               <Button type="primary" icon="search" />
             </div>
-            <div>
-              <Tooltip title="左键单击展开目录,右键单击选择文件" className="fr mr8 mb16">
+            <div className="clearfix mt8">
+              <Tooltip title="双击展开目录,单击选择文件" className="fr mr8">
                 <Icon type="question-circle-o" />
               </Tooltip>
               <DirectoryTree
                 defaultExpandAll
-                onRightClick={this.directoryChange}
+                onSelect={this.directoryChange}
                 className={styles.tree}
+                expandAction='doubleClick'
                 >
                 {renderTreeNode(menuData)}
               </DirectoryTree>
