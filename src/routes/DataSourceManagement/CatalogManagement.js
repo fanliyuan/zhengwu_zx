@@ -44,86 +44,7 @@ function renderTreeNode(renderList) {
   })
 }
 
-const menuData = [
-  {
-    title: '01|-雄安政务信息资源',
-    key: '4',
-  },
-  {
-    title: '02|-雄安市民服务中心信息资源',
-    key: '5',
-  },
-  {
-    title: '03|-雄安个人数据信息资源',
-    key: '6',
-  },
-  {
-    title: '001|-药品局',
-    key: '7',
-  },
-  {
-    title: '002|-医疗器械',
-    key: '8',
-  },
-  {
-    title: '130|-保定',
-    key: '1',
-    children: [
-      {
-        title: '638|-雄县',
-        key: '1-1',
-      },
-      {
-        title: '632|-安新县',
-        key: '1-2',
-      },
-      {
-        title: '629|-容城县',
-        key: '1-3',
-      },
-    ],
-  },
-  {
-    title: '132|-雄安新区',
-    key: '2',
-    children: [
-      {
-        title: '1|-政府',
-        key: '2-1',
-      },
-      {
-        title: '2|-政府',
-        key: '2-2',
-      },
-    ],
-  },
-  {
-    title: '1306|-XA政务信息资源',
-    key: '3',
-    children: [
-      {
-        title: '1|-直属委办局',
-        key: '3-1',
-      },
-      {
-        title: '123|住房和城乡建设局',
-        key: '3-2',
-      },
-      {
-        title: '124|环境保护局',
-        key: '3-3',
-      },
-      {
-        title: '125|旅游文物局',
-        key: '3-4',
-      },
-      {
-        title: '126|规划局',
-        key: '3-5',
-      },
-    ],
-  },
-]
+// const menuData = [ { title: '01|-雄安政务信息资源', key: '4', }, { title: '02|-雄安市民服务中心信息资源', key: '5', }, { title: '03|-雄安个人数据信息资源', key: '6', }, { title: '001|-药品局', key: '7', }, { title: '002|-医疗器械', key: '8', }, { title: '130|-保定', key: '1', children: [ { title: '638|-雄县', key: '1-1', }, { title: '632|-安新县', key: '1-2', }, { title: '629|-容城县', key: '1-3', }, ], }, { title: '132|-雄安新区', key: '2', children: [ { title: '1|-政府', key: '2-1', }, { title: '2|-政府', key: '2-2', }, ], }, { title: '1306|-XA政务信息资源', key: '3', children: [ { title: '1|-直属委办局', key: '3-1', }, { title: '123|住房和城乡建设局', key: '3-2', }, { title: '124|环境保护局', key: '3-3', }, { title: '125|旅游文物局', key: '3-4', }, { title: '126|规划局', key: '3-5', }, ], }, ]
 
 @connect(({ catalogManagement, nodeManagement, loading }) => ({
   catalogManagement,
@@ -144,6 +65,9 @@ export default class CatalogManagement extends Component {
     })
     this.props.dispatch({
       type: 'nodeManagement/getParentNodes',
+    })
+    this.props.dispatch({
+      type: 'catalogManagement/getCatalogList',
     })
   }
 
@@ -271,16 +195,16 @@ export default class CatalogManagement extends Component {
 
   render() {
     const that = this
-    const { nodeManagement: { parentNodeList }, loading } = this.props
+    const { nodeManagement: { parentNodeList }, catalogManagement: { catalogTreeList }, loading } = this.props
     const { isHover, isNodeOperator } = this.state
-    const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
-    const selectData = data.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
+    // const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
+    // const selectData = data.map(item => {
+    //   return (
+    //     <Option value={item.value} key={item.id} title={item.label}>
+    //       {item.label}
+    //     </Option>
+    //   )
+    // })
     const data1 = [
       { value: '-1', id: -1, label: '全部状态' },
       { value: '0', id: 0, label: '已拒绝' },
@@ -450,16 +374,16 @@ export default class CatalogManagement extends Component {
               <Button type="primary" icon="search" />
             </div>
             <div className="clearfix">
-              <Tooltip title="双击展开目录,单击选择文件" className="fr mr8">
+              <Tooltip title="单击选择文件或者目录,单击箭头展开目录" className="fr mr8">
                 <Icon type="question-circle-o" />
               </Tooltip>
               <DirectoryTree
                 defaultExpandAll
                 onSelect={this.directoryChange}
                 className={styles.tree}
-                expandAction='doubleClick'
+                expandAction={false}
                 >
-                {renderTreeNode(menuData)}
+                {renderTreeNode(catalogTreeList)}
               </DirectoryTree>
             </div>
           </div>
@@ -469,12 +393,13 @@ export default class CatalogManagement extends Component {
               {/* {isNodeOperator && (
                 <Input placeholder="节点名称" style={{ width: 100, marginRight: 20 }} />
               )} */}
-              <Select
+              {/* <Select
                 style={{ marginRight: 20, width: 120 }}
                 onChange={this.providerChange}
                 >
                 {selectData}
-              </Select>
+              </Select> */}
+              <Input placeholder="提供方名称" style={{ width: 180, marginRight: 20 }} />
               {
                 !isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={lables => [...lables].pop()} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} />
               }

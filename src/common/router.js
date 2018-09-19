@@ -317,7 +317,7 @@ export const getRouterData = app => {
       ),
     },
     '/dataSourceManagement/catalogManagement': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['catalogManagement', 'nodeManagement'], () =>
         import('../routes/DataSourceManagement/CatalogManagement')
       ),
     },
