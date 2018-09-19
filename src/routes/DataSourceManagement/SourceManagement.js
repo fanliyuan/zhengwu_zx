@@ -135,7 +135,8 @@ export default class SourceManagement extends Component {
 
   handleCatalog = () => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/catalog'))
+    // dispatch(routerRedux.push('/dataSourceManagement/catalog'))
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
   }
 
   handleCatalog1 = () => {

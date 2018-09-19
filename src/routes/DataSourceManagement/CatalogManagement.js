@@ -264,6 +264,11 @@ export default class CatalogManagement extends Component {
     message.success(`选择了${val}`)
   }
 
+  handleTask = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/task'))
+  }
+
   render() {
     const that = this
     const { nodeManagement: { parentNodeList }, loading } = this.props
@@ -328,7 +333,7 @@ export default class CatalogManagement extends Component {
       {
         title: '操作',
         dataIndex: 'operate',
-        render(text, row) {
+        render: (text, row) => {
           return (
             <div>
               <span className={styles.clickBtn} onClick={that.handleInfoItem}>
@@ -351,9 +356,12 @@ export default class CatalogManagement extends Component {
                   修改
                 </Link>
               ) : (
-                <Link to="/dataSourceManagement/checkMenu/one" className={styles.clickBtn}>
-                  查看
-                </Link>
+                // <Link to="/dataSourceManagement/checkMenu/one" className={styles.clickBtn}>
+                //   查看
+                // </Link>
+                <a onClick={() => this.handleTask(row)}>
+                  任务
+                </a>
               )}
               {isNodeOperator && (
                 <Popconfirm

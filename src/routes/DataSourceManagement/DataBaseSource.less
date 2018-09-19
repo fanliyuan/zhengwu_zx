@@ -16,3 +16,25 @@
   color: #e4393c;
   padding: 0 8px;
 }
+.title{
+  padding: 0;
+}
+.title::before{
+  content: "";
+  display: table;
+  clear: both;
+}
+.title h2{
+  margin-bottom: 0;
+}
+.item{
+  list-style-type: none;
+  float: left;
+  line-height: 42px;
+  width: 380px;
+  .label::after{
+    content: ":";
+    margin-left: 4px;
+    margin-right: 4px;
+  }
+}

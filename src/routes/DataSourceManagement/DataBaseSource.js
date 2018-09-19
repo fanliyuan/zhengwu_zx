@@ -2,7 +2,7 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 16:54:26
+ * @Last Modified time: 2018-09-19 13:54:19
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react'
@@ -69,10 +69,10 @@ export default class DataBaseSource extends Component {
       onChange: () => {},
     }
     const columns = [
-      {
-        title: '序号',
-        dataIndex: 'id',
-      },
+      // {
+      //   title: '序号',
+      //   dataIndex: 'id',
+      // },
       {
         title: '表名称',
         dataIndex: 'tableName',
@@ -110,11 +110,6 @@ export default class DataBaseSource extends Component {
         id: 0,
         tableName: 'dig_user',
         chineseLabel: '用户表',
-      },
-      {
-        id: 1,
-        tableName: 'dig_order',
-        chineseLabel: '订单表',
       },
     ]
     const columns1 = [
@@ -210,6 +205,11 @@ export default class DataBaseSource extends Component {
         dataIndex: 'chineseLabel',
       },
     ]
+    columns2.forEach(item => {
+      if (!item.align) {
+        item.align = 'center'
+      }
+    })
     const list2 = [
       {
         id: 0,
@@ -247,7 +247,7 @@ export default class DataBaseSource extends Component {
           )}
         </div>
         <Card>
-          <Row>
+          {/* <Row>
             <Col span={4}>
               <h2>
                 数据库
@@ -278,25 +278,66 @@ export default class DataBaseSource extends Component {
                 <span>2018-06-20 15:08:08</span>
               </h3>
             </Col>
-          </Row>
+          </Row> */}
+          <ul className={styles.title}>
+            <li className={styles.item}>
+              <h2>
+                <span className={styles.label}>数据库</span>
+                <span>Youedata_dig</span>
+              </h2>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>数据类型</span>
+              <span>Mysql</span>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>资源名称</span>
+              <span>城市低保标准表</span>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>所属机构</span>
+              <span>石家庄市民政局</span>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>数据更新时间</span>
+              <span>2018-06-20 15:08:08</span>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>应用系统名称</span>
+              <span>城市低保标准表</span>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>负责人姓名</span>
+              <span>王老三</span>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>负责人手机号</span>
+              <span>18912341234</span>
+            </li>
+            <li className={styles.item}>
+              <span className={styles.label}>负责人职位</span>
+              <span>架构师</span>
+            </li>
+          </ul>
           <Divider />
           <Row>
             <Col span={24}>
               <h3>
-                数据表 共<span className={styles.spe}>32</span>张
+                数据表
               </h3>
               <Table
                 columns={columns}
                 dataSource={list}
-                pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                rowSelection={rowSelection}
+                // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                pagination={false}
+                // rowSelection={rowSelection}
                 rowKey="id"
                 bordered
                 />
             </Col>
             {view && (
               <Col span={24}>
-                <h3>
+                <h3 className='mt16'>
                   数据 共<span className={styles.spe}>32</span>行
                 </h3>
                 <Table
@@ -311,14 +352,14 @@ export default class DataBaseSource extends Component {
             )}
             {agency && (
               <Col span={24}>
-                <h3>
+                <h3 className='mt16'>
                   数据项 共<span className={styles.spe}>6</span>行
                 </h3>
                 <Table
                   columns={columns2}
                   dataSource={list2}
                   pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                  rowSelection={rowSelection}
+                  // rowSelection={rowSelection}
                   rowKey="id"
                   bordered
                   />

@@ -16,7 +16,7 @@ export default class Task extends Component {
 
   handleBack = () => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSwitchManagement/allSub'))
+    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
   }
 
   render() {

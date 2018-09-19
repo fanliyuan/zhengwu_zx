@@ -74,7 +74,7 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
-        const payload = select(state => state.articleLibrary.categoryList)
+        const payload = yield select(state => state.articleLibrary.categoryList)
         yield put({
           type: 'saveCategory',
           payload,
@@ -179,7 +179,7 @@ const { getArticles, categoryList, deleteArticle, insertArticle, getArticleInfo,
     saveCategory(state, { payload }) {
       return {
         ...state,
-        categoryList: payload,
+        categoryList: payload || [],
       }
     },
     saveArticleInfo(state, { payload }) {
