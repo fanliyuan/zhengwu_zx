@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-13 21:10:37
+ * @Last Modified time: 2018-09-19 09:31:20
  * @Description: 删除底部蚂蚁金服相关信息
  */
 import React, { Fragment } from 'react'
@@ -233,7 +233,9 @@ class BasicLayout extends React.PureComponent {
       location,
     } = this.props
     const { isMobile: mb } = this.state
-    const redirect = sessionStorage.getItem('redirect')
+    // console.log(sessionStorage.getItem('authority'))
+    // console.log(localStorage.getItem('antd-pro-authority'))
+    const redirect = sessionStorage.getItem('authority') === localStorage.getItem('antd-pro-authority') ? sessionStorage.getItem('redirect') : ''
     const bashRedirect = this.getBaseRedirect()
     const layout = (
       <Layout>

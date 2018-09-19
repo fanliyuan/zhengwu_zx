@@ -121,6 +121,7 @@ export default {
         // urlParams.searchParams.set('redirect', pathname)
         // window.history.replaceState(null, 'login', urlParams.href)
         sessionStorage.setItem('redirect', pathname)
+        sessionStorage.setItem('authority', localStorage.getItem('antd-pro-authority'))
       } finally {
         yield put({
           type: 'changeLoginStatus',
