@@ -1,22 +1,36 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-20 10:00:21
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-09-20 16:38:50
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
  *  
 */
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import { Modal, DatePicker, Input, Select, Button, Table, Radio } from 'antd'
+import { Modal, DatePicker, Input, Select, Button, Table, Radio, Icon, Upload, message } from 'antd'
 import moment from 'moment'
 import {format0, format24} from '../../utils/utils'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import config from '../../api/config'
 import styles from './MenuManagement.less'
+
+function getCookie(params) {
+  const temp = document.cookie.match(new RegExp(`${params}=.*;`))
+  const other = document.cookie.match(new RegExp(`${params}=.*`))
+  if (temp) {
+    return temp[0].replace(`${params}=`,'')
+  } else if (other) {
+    return other[0].replace(`${params}=`,'')
+  } else {
+    return ''
+  }
+}
 
 const { RangePicker } = DatePicker
 const { Option } = Select
+const { uploadServer } = config
 
 @connect(({ portalManagement, loading }) => ({
   portalManagement,
@@ -34,6 +48,11 @@ export default class MenuManagement extends Component {
     modalTitle: '',
     defaultValue: '0',
     rowId:'',
+    fileList: [],
+    fileList1: [],
+    // imageFlag: false,
+    tempData: {},
+    tempData1: {},
   }
 
   componentDidMount() {
@@ -155,7 +174,7 @@ export default class MenuManagement extends Component {
   handleModalSure = (text) => {
     const oper = localStorage.getItem("accountRealName")
     const { dispatch } = this.props
-    const { defaultValue } = this.state
+    const { defaultValue, tempData:{imagePath},tempData1 } = this.state
     if(text.modalTitle === "取消发布"){
       dispatch({
         type:'portalManagement/updateItem',
@@ -165,11 +184,88 @@ export default class MenuManagement extends Component {
     else if(text.modalTitle === "设置" || text.modalTitle === "发布"){
       dispatch({
         type:'portalManagement/updateItem',
-        payload:{typeId:text.rowId,typeHotState:defaultValue,typeState:text.typeState, mender:oper, id:text.ids},
+        payload:{typeId:text.rowId,typeHotState:defaultValue,typeState:text.typeState, mender:oper, id:text.ids,typePathOne:imagePath,typePathTwo:tempData1.imagePath},
       })
     }
     this.setState({
       showModal:false,
+    })
+  }
+
+  uploadChange = ({ fileList }) => {
+    const { tempData } = this.state
+    this.setState({
+      fileList,
+    })
+    try {
+      if (fileList[0] && fileList[0].status === 'done') {
+        this.setState({
+          // removeFlag: false,
+          tempData: {
+            ...tempData,
+            imagePath: fileList[0].response.result.data,
+          },
+        })
+        // this.props.form.setFieldsValue({
+        //   imagePath: fileList[0].response.result.data,
+        // })
+      } else if (fileList[0] && fileList[0].status === 'done') {
+        // this.setState({
+        //   removeFlag: true,
+        // })
+      } else {
+        // this.setState({
+        //   removeFlag: false,
+        // })
+      }
+    } catch (error) {
+     // eslint-disable-next-line 
+     console.log(error)
+    }
+  }
+
+  uploadChange1 = ({ fileList }) => {
+    const { tempData1 } = this.state
+    this.setState({
+      fileList1:fileList,
+    })
+    try {
+      if (fileList[0] && fileList[0].status === 'done') {
+        this.setState({
+          // removeFlag: false,
+          tempData1: {
+            ...tempData1,
+            imagePath: fileList[0].response.result.data,
+          },
+        })
+        // this.props.form.setFieldsValue({
+        //   imagePath: fileList[0].response.result.data,
+        // })
+      } else if (fileList[0] && fileList[0].status === 'done') {
+        // this.setState({
+        //   removeFlag: true,
+        // })
+      } else {
+        // this.setState({
+        //   removeFlag: false,
+        // })
+      }
+    } catch (error) {
+     // eslint-disable-next-line 
+     console.log(error)
+    }
+  }
+
+  handlePreview = file => {
+    this.setState({
+      previewUrl: file.url || file.thumbUrl,
+      previewVisible: true,
+    })
+  }
+
+  previewCancel = () => {
+    this.setState({
+      previewVisible: false,
     })
   }
 
@@ -185,6 +281,10 @@ export default class MenuManagement extends Component {
       defaultValue,
       typeState,
       rowId,
+      fileList,
+      fileList1,
+      previewVisible,
+      previewUrl,
     } = this.state
     const { portalManagement:{ lists, pagination }, loading } = this.props
     const stateList = [
@@ -288,6 +388,13 @@ export default class MenuManagement extends Component {
       })
     }
 
+    const uploadBtn = (
+      <Fragment>
+        <Icon type="upload" />
+        <div>点击上传</div>
+      </Fragment>
+    )
+
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
@@ -364,8 +471,55 @@ export default class MenuManagement extends Component {
                     <Radio value={0}>否</Radio>
                   </Radio.Group>
                 </span>
+                <div style={{marginTop:15}}>
+                  <div style={{display:'inline-block',marginRight:20}}>
+                    <span style={{display:'inline-block',marginBottom:10}}>上传图标1</span>
+                    <Upload
+                      action={`${uploadServer}/uploadOssImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
+                      headers={{accessToken: getCookie('accessToken')}}
+                      listType="picture-card"
+                      fileList={fileList}
+                      beforeUpload={file => {
+                        if (file.type.startsWith('image/')) {
+                          return true
+                        } else {
+                          message.error('请上传图片格式文件')
+                          return false
+                        }
+                      }}
+                      onChange={this.uploadChange}
+                      onPreview={this.handlePreview}
+                      >
+                      {fileList.length >= 1 ? null : uploadBtn}
+                    </Upload>
+                  </div>
+                  <div style={{display:'inline-block'}}>
+                    <span style={{display:'inline-block',marginBottom:10}}>上传图标2</span>
+                    <Upload
+                      action={`${uploadServer}/uploadOssImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
+                      headers={{accessToken: getCookie('accessToken')}}
+                      listType="picture-card"
+                      fileList={fileList1}
+                      beforeUpload={file => {
+                        if (file.type.startsWith('image/')) {
+                          return true
+                        } else {
+                          message.error('请上传图片格式文件')
+                          return false
+                        }
+                      }}
+                      onChange={this.uploadChange1}
+                      onPreview={this.handlePreview}
+                      >
+                      {fileList1.length >= 1 ? null : uploadBtn}
+                    </Upload>
+                  </div>
+                </div>
               </Fragment>
             ) : null}
+          </Modal>
+          <Modal visible={previewVisible} footer={null} onCancel={this.previewCancel} className={styles.img}>
+            <img src={previewUrl} alt="图片预览" style={{ width: '100%' }} />
           </Modal>
         </div>
       </PageHeaderLayout>
