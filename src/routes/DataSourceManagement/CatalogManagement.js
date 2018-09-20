@@ -14,6 +14,7 @@ import {
   Tooltip,
   Popconfirm,
   Cascader,
+  Spin,
 } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
@@ -21,7 +22,6 @@ import { isArray } from 'util'
 
 import styles from './CatalogManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-import { format0, format24 } from '../../utils/utils'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
@@ -49,13 +49,14 @@ function renderTreeNode(renderList) {
 @connect(({ catalogManagement, nodeManagement, loading }) => ({
   catalogManagement,
   nodeManagement,
-  loading: loading.models.nodeManagement,
+  loading: loading.models.nodeManagement || loading.models.catalogManagement,
 }))
 export default class CatalogManagement extends Component {
   state = {
     isHover: false,
     isNodeOperator: false,
     queryData: {},
+    query: '',
     isChanged: false,
   }
 
@@ -82,12 +83,12 @@ export default class CatalogManagement extends Component {
     })
   }
 
-  providerChange = val => {
+  providerChange = e => {
     const { queryData } = this.state
     this.setState({
       queryData: {
         ...queryData,
-        providerName: val,
+        providerName: e.target.value.trim(),
       },
       isChanged: true,
     })
@@ -109,7 +110,7 @@ export default class CatalogManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        status: val,
+        status: val === '-2' ? undefined: val,
       },
       isChanged: true,
     })
@@ -120,25 +121,67 @@ export default class CatalogManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        startTime: val[0] && format0(val[0].format('x')),
-        endTime: val[1] && format24(val[1].format('x')),
+        startTime: val[0] && `${val[0].format().substr(0,10)}`,
+        endTime: val[1] && `${val[1].format().substr(0,10)}`,
       },
       isChanged: true,
     })
   }
 
   checkChange = e => {
-    console.log(e.target.checked)// eslint-disable-line
+    // console.log(e.target.checked)// eslint-disable-line
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        isMount: e.target.checked?'1':'0',
+      },
+      isChanged: true,
+    })
   }
 
-  searchHandle = () =>{
-    const { isChanged, queryData } = this.state
-    if (!isChanged) {
+  searchHandle = ({pageSize = '10', pageNum = '1'}, flag) =>{
+    const { isChanged } = this.state
+    if (!isChanged && flag) {
       return null
     }
-    console.log(queryData) // eslint-disable-line
+    const { queryData: { catalogName, providerName, status, startTime, endTime, typeId, isMount } } = this.state
+    if (!typeId) {
+      message.error('请在右边选择目录')
+      return null
+    }
+    this.props.dispatch({
+      type: 'catalogManagement/getCatalog',
+      payload: {
+        params: {
+          index: pageNum,
+          limit: pageSize,
+          resourceName: catalogName,
+          resourceProviderName: providerName,
+          checkStatus: status,
+          isMount,
+          typeId,
+          startTime,
+          endTime,
+        },
+      },
+    })
     this.setState({
       isChanged: false,
+    })
+  }
+
+  treeListChange = e => {
+    this.setState({
+      query: e.target.value.trim(),
+    })
+  }
+
+  handleSearchList = () => {
+    const { query } = this.state
+    this.props.dispatch({
+      type: 'catalogManagement/queryCatalog',
+      payload: query,
     })
   }
 
@@ -161,9 +204,9 @@ export default class CatalogManagement extends Component {
     }
   }
 
-  handleInfoItem = () => {
+  handleInfoItem = row => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', {resourceId: row.resourceId}))
   }
 
   handleSourceConnect = val => {
@@ -185,7 +228,19 @@ export default class CatalogManagement extends Component {
   }
 
   directoryChange = val => {
-    message.success(`选择了${val}`)
+    // message.success(`选择了${val}`)
+    this.setState({
+      queryData: {
+        ...this.state.queryData,// eslint-disable-line
+        typeId: val[0],
+      },
+    }, () => {
+      this.searchHandle({})
+    })
+  }
+
+  tableChange = (pagination) => {
+    this.searchHandle({pageSize: pagination.pageSize, pageNum: pagination.current})
   }
 
   handleTask = () => {
@@ -195,7 +250,7 @@ export default class CatalogManagement extends Component {
 
   render() {
     const that = this
-    const { nodeManagement: { parentNodeList }, catalogManagement: { catalogTreeList }, loading } = this.props
+    const { nodeManagement: { parentNodeList }, catalogManagement: { catalogTreeList, catalogList, catalogData, pagination }, loading } = this.props
     const { isHover, isNodeOperator } = this.state
     // const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
     // const selectData = data.map(item => {
@@ -206,10 +261,10 @@ export default class CatalogManagement extends Component {
     //   )
     // })
     const data1 = [
-      { value: '-1', id: -1, label: '全部状态' },
+      { value: '-2', id: -2, label: '全部状态' },
       { value: '0', id: 0, label: '已拒绝' },
       { value: '1', id: 1, label: '已通过' },
-      { value: '2', id: 2, label: '待审核' },
+      { value: '-1', id: -1, label: '待审核' },
     ]
     const selectData1 = data1.map(item => {
       return (
@@ -218,7 +273,6 @@ export default class CatalogManagement extends Component {
         </Option>
       )
     })
-    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       // {
       //   title: '目录编码',
@@ -226,11 +280,11 @@ export default class CatalogManagement extends Component {
       // },
       {
         title: '名称',
-        dataIndex: 'name',
+        dataIndex: 'resourceName',
       },
       {
         title: '提供方',
-        dataIndex: 'provider',
+        dataIndex: 'resourceProviderName',
       },
       // {
       //   title: '所属节点',
@@ -238,20 +292,26 @@ export default class CatalogManagement extends Component {
       // },
       // {
       //   title: '目录节点',
-      //   dataIndex: 'nodes',
+      //   dataIndex: 'typeName',
       // },
       {
         title: '审核状态',
         dataIndex: 'status',
         render(text) {
-          return +text === 0 ? '待审核' : '已通过'
+          if (text === '-1') {
+            return '待审核'
+          } else if (text === '0') {
+            return '已拒绝'
+          } else {
+            return '已通过'
+          }
         },
       },
       {
         title: '注册时间',
         dataIndex: 'createTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss')
+          return moment(text).format('lll')
         },
       },
       {
@@ -260,7 +320,7 @@ export default class CatalogManagement extends Component {
         render: (text, row) => {
           return (
             <div>
-              <span className={styles.clickBtn} onClick={that.handleInfoItem}>
+              <span className={styles.clickBtn} onClick={() => that.handleInfoItem(row)}>
                 信息项
               </span>
               {/* <a style={{marginRight:10}}>资源挂接</a> */}
@@ -303,56 +363,56 @@ export default class CatalogManagement extends Component {
     if(!isNodeOperator){
       columns.splice(2,0,{
           title: '目录节点',
-          dataIndex: 'nodes',
+          dataIndex: 'typeName',
         })
     }
     columns.forEach(item => {
       item.align = 'center'
     })
-    const list = [
-      {
-        id: 0,
-        catalogEncoding: '330003130681126-0001',
-        name: '花名册信息',
-        provider: '规划局',
-        createTime: 344344242,
-        isMouontSource: 0,
-        oweNode: '石家庄民政局',
-        isOpen: 1,
-        information: 14,
-        status: '0',
-        nodes: '节点1',
-        type: 'file',
-      },
-      {
-        id: 1,
-        catalogEncoding: '330003130681126-0002',
-        name: '资产负债表信息',
-        provider: '规划局',
-        oweNode: '石家庄民政局',
-        createTime: 344344242,
-        isMouontSource: 1,
-        isOpen: 0,
-        information: 6,
-        status: '1',
-        nodes: '节点2',
-        type: 'table',
-      },
-      {
-        id: 2,
-        catalogEncoding: '330003130681126-0003',
-        name: '资产总值表',
-        provider: '规划局',
-        oweNode: '石家庄民政局',
-        createTime: 344344242,
-        isMouontSource: 0,
-        isOpen: 0,
-        information: 2,
-        status: '1',
-        nodes: '节点3',
-        type: 'file',
-      },
-    ]
+    // const list = [
+    //   {
+    //     id: 0,
+    //     catalogEncoding: '330003130681126-0001',
+    //     name: '花名册信息',
+    //     provider: '规划局',
+    //     createTime: 344344242,
+    //     isMouontSource: 0,
+    //     oweNode: '石家庄民政局',
+    //     isOpen: 1,
+    //     information: 14,
+    //     status: '0',
+    //     nodes: '节点1',
+    //     type: 'file',
+    //   },
+    //   {
+    //     id: 1,
+    //     catalogEncoding: '330003130681126-0002',
+    //     name: '资产负债表信息',
+    //     provider: '规划局',
+    //     oweNode: '石家庄民政局',
+    //     createTime: 344344242,
+    //     isMouontSource: 1,
+    //     isOpen: 0,
+    //     information: 6,
+    //     status: '1',
+    //     nodes: '节点2',
+    //     type: 'table',
+    //   },
+    //   {
+    //     id: 2,
+    //     catalogEncoding: '330003130681126-0003',
+    //     name: '资产总值表',
+    //     provider: '规划局',
+    //     oweNode: '石家庄民政局',
+    //     createTime: 344344242,
+    //     isMouontSource: 0,
+    //     isOpen: 0,
+    //     information: 2,
+    //     status: '1',
+    //     nodes: '节点3',
+    //     type: 'file',
+    //   },
+    // ]
     // let rowSelection = {
     //   // onChange: selectedRows => {
     //   // },
@@ -370,10 +430,10 @@ export default class CatalogManagement extends Component {
         <div className="clearfix">
           <div className={styles.column1}>
             <div className={styles.search}>
-              <Input placeholder="请输入关键词" className={styles.input} />
-              <Button type="primary" icon="search" />
+              <Input placeholder="请输入关键词" className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
+              <Button type="primary" icon="search" onClick={this.handleSearchList} />
             </div>
-            <div className="clearfix">
+            <Spin className="clearfix" spinning={loading}>
               <Tooltip title="单击选择文件或者目录,单击箭头展开目录" className="fr mr8">
                 <Icon type="question-circle-o" />
               </Tooltip>
@@ -383,9 +443,9 @@ export default class CatalogManagement extends Component {
                 className={styles.tree}
                 expandAction={false}
                 >
-                {renderTreeNode(catalogTreeList)}
+                {renderTreeNode(catalogList.length === 0 ? catalogTreeList : catalogList)}
               </DirectoryTree>
-            </div>
+            </Spin>
           </div>
           <div className={styles.column2}>
             <div className={styles.form}>
@@ -399,12 +459,12 @@ export default class CatalogManagement extends Component {
                 >
                 {selectData}
               </Select> */}
-              <Input placeholder="提供方名称" style={{ width: 180, marginRight: 20 }} />
+              <Input placeholder="提供方名称" style={{ width: 180, marginRight: 20 }} onChange={this.providerChange} />
               {
                 !isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={lables => [...lables].pop()} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} />
               }
               <Select
-                defaultValue='-1'
+                defaultValue='-2'
                 style={{ marginRight: 20, width: 120 }}
                 onChange={this.statusChange}
                 >
@@ -412,7 +472,7 @@ export default class CatalogManagement extends Component {
               </Select>
               <RangePicker style={{ marginRight: 20, width: 200 }} onChange={this.timeChange} />
               <Checkbox style={{ marginRight: 10 }} onChange={this.checkChange}>已挂接资源</Checkbox>
-              <Button type="primary" onClick={this.searchHandle}>搜索</Button>
+              <Button type="primary" onClick={() => this.searchHandle({}, true)}>搜索</Button>
             </div>
             {isNodeOperator && (
               <div className={styles.createBtn}>
@@ -437,10 +497,11 @@ export default class CatalogManagement extends Component {
             <div>
               <Table
                 columns={columns}
-                dataSource={list}
-                pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                rowKey="id"
+                dataSource={this.state.queryData.typeId ? catalogData : []}
+                pagination={this.state.queryData.typeId && pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                rowKey="resourceId"
                 // rowSelection={rowSelection}
+                onChange={this.tableChange}
                 loading={loading}
                 bordered
                 />
