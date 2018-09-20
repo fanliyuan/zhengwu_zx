@@ -118,7 +118,7 @@ export default {
         } else {
           response = yield call(columnList, {body: {pageSize: 0, pageNum: 0}})
           if (+response.code === 0) {
-            column = number2String(JSON.parse(JSON.stringify(response.result.datas).replace(/columnId/g, 'value').replace(/columnPage/g, 'label')))
+            column = number2String(JSON.parse(JSON.stringify(response.result.datas.filter(item => item.columnPage !== '资源目录')).replace(/columnId/g, 'value').replace(/columnPage/g, 'label')))
             const secondCategoryList = column.reduce((pre, cur) => {
               if (cur.children.length > 0) {
                 pre = [...pre, ...cur.children]
