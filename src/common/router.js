@@ -263,7 +263,7 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/FTP/Step3')),
     },
     '/dataSourceManagement/task': {
-      component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Task')),
+      component: dynamicWrapper(app, ['catalogManagement'], () => import('../routes/DataSourceManagement/Task')),
     },
     '/dataSourceManagement/catalog': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/Catalog')),

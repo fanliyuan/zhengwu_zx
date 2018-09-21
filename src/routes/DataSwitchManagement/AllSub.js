@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-19 13:27:14
+ * @Last Modified time: 2018-09-21 18:02:07
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -103,7 +103,7 @@ let directoryData = {}
 //   overviewLogging,
 //   loading: loading.models.overviewLogging,
 // }))
-@connect(({ login }) => ({ login }))
+@connect(({ catalogManagement }) => ({ catalogManagement }))
 export default class AllSub extends Component {
   state = {
     queryData: {},
@@ -111,11 +111,15 @@ export default class AllSub extends Component {
     selectKeys: [],
     isNodeOperator: false,
     modalVisible:false,
+    query: '',
   }
 
   componentDidMount() {
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+    })
+    this.props.dispatch({
+      type: 'catalogManagement/getCatalogList',
     })
   }
 
@@ -198,6 +202,20 @@ export default class AllSub extends Component {
     })
   }
 
+  treeListChange = e => {
+    this.setState({
+      query: e.target.value.trim(),
+    })
+  }
+  
+  handleSearchList = () => {
+    const { query } = this.state
+    this.props.dispatch({
+      type: 'catalogManagement/queryCatalog',
+      payload: query,
+    })
+  }
+
   directoryChange = (val, e) => {
     // console.log(val)// eslint-disable-line
     directoryData = e && e.selectedNodes[0]
@@ -205,8 +223,7 @@ export default class AllSub extends Component {
 
   render() {
     const { selectKeys, isNodeOperator, modalVisible, queryData: { classisyName } } = this.state
-
-    // const { overviewLogging: { data, pagination, stateList }, loading } = this.props
+    const { catalogManagement: { catalogTreeList, catalogList }, loading } = this.props // eslint-disable-line
 
     const stateList = [
       {
@@ -476,86 +493,86 @@ export default class AllSub extends Component {
 
     const tabscls = isNodeOperator ? '' : styles.tabscls
 
-    const menuData = [
-      {
-        title: '01|-雄安政务信息资源',
-        key: '4',
-      },
-      {
-        title: '02|-雄安市民服务中心信息资源',
-        key: '5',
-      },
-      {
-        title: '03|-雄安个人数据信息资源',
-        key: '6',
-      },
-      {
-        title: '001|-药品局',
-        key: '7',
-      },
-      {
-        title: '002|-医疗器械',
-        key: '8',
-      },
-      {
-        title: '130|-保定',
-        key: '1',
-        children: [
-          {
-            title: '638|-雄县',
-            key: '1-1',
-          },
-          {
-            title: '632|-安新县',
-            key: '1-2',
-          },
-          {
-            title: '629|-容城县',
-            key: '1-3',
-          },
-        ],
-      },
-      {
-        title: '132|-雄安新区',
-        key: '2',
-        children: [
-          {
-            title: '1|-政府',
-            key: '2-1',
-          },
-          {
-            title: '1|-政府',
-            key: '2-2',
-          },
-        ],
-      },
-      {
-        title: '1306|-XA政务信息资源',
-        key: '3',
-        children: [
-          {
-            title: '1|-直属委办局',
-            key: '3-1',
-          },
-          {
-            title: '123|住房和城乡建设局',
-            key: '3-2',
-          },
-          {
-            title: '124|环境保护局',
-            key: '3-3',
-          },
-          {
-            title: '125|旅游文物局',
-            key: '3-4',
-          },
-          {
-            title: '126|规划局',
-            key: '3-5',
-          },
-        ],
-      },
-    ]
+    // const menuData = [
+    //   {
+    //     title: '01|-雄安政务信息资源',
+    //     key: '4',
+    //   },
+    //   {
+    //     title: '02|-雄安市民服务中心信息资源',
+    //     key: '5',
+    //   },
+    //   {
+    //     title: '03|-雄安个人数据信息资源',
+    //     key: '6',
+    //   },
+    //   {
+    //     title: '001|-药品局',
+    //     key: '7',
+    //   },
+    //   {
+    //     title: '002|-医疗器械',
+    //     key: '8',
+    //   },
+    //   {
+    //     title: '130|-保定',
+    //     key: '1',
+    //     children: [
+    //       {
+    //         title: '638|-雄县',
+    //         key: '1-1',
+    //       },
+    //       {
+    //         title: '632|-安新县',
+    //         key: '1-2',
+    //       },
+    //       {
+    //         title: '629|-容城县',
+    //         key: '1-3',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     title: '132|-雄安新区',
+    //     key: '2',
+    //     children: [
+    //       {
+    //         title: '1|-政府',
+    //         key: '2-1',
+    //       },
+    //       {
+    //         title: '1|-政府',
+    //         key: '2-2',
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     title: '1306|-XA政务信息资源',
+    //     key: '3',
+    //     children: [
+    //       {
+    //         title: '1|-直属委办局',
+    //         key: '3-1',
+    //       },
+    //       {
+    //         title: '123|住房和城乡建设局',
+    //         key: '3-2',
+    //       },
+    //       {
+    //         title: '124|环境保护局',
+    //         key: '3-3',
+    //       },
+    //       {
+    //         title: '125|旅游文物局',
+    //         key: '3-4',
+    //       },
+    //       {
+    //         title: '126|规划局',
+    //         key: '3-5',
+    //       },
+    //     ],
+    //   },
+    // ]
 
     return (
       <PageHeaderLayout>
@@ -714,8 +731,8 @@ export default class AllSub extends Component {
             >
             {/* <div> */}
             <div className={styles.search}>
-              <Input placeholder="请输入关键词" className={styles.input} />
-              <Button type="primary" icon="search" />
+              <Input placeholder="请输入关键词" className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
+              <Button type="primary" icon="search" onClick={this.handleSearchList} />
             </div>
             <div className="clearfix mt8">
               <Tooltip title="双击展开目录,单击选择文件" className="fr mr8">
@@ -727,7 +744,7 @@ export default class AllSub extends Component {
                 className={styles.tree}
                 expandAction='doubleClick'
                 >
-                {renderTreeNode(menuData)}
+                {renderTreeNode(0 in catalogList ? catalogList : catalogTreeList)}
               </DirectoryTree>
             </div>
             {/* </div> */}

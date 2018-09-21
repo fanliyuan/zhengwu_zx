@@ -8,8 +8,9 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Task.less'
 
 const { TabPane } = Tabs
-@connect(({ task }) => ({
-  task,
+@connect(({ catalogManagement, loading }) => ({
+  catalogManagement,
+  loading: loading.models.catalogManagement,
 }))
 export default class Task extends Component {
   state = {}
@@ -20,6 +21,7 @@ export default class Task extends Component {
   }
 
   render() {
+    const { loading, catalogManagement: { resourceTaskInfo } } = this.props // eslint-disable-line
     const pagination = {
       pageSize: 10,
       current: 1,
@@ -176,38 +178,50 @@ export default class Task extends Component {
         </div>
         <Card>
           <p className={styles.titleName}>
-            &nbsp;数据库: &nbsp;<span>Youedata_dig</span>
+            {/* &nbsp;数据库: &nbsp;<span>Youedata_dig</span>
             &nbsp;&nbsp;数据类型: &nbsp;<span>Mysql</span>
             &nbsp;&nbsp;资源名称: &nbsp;<span>城市低保标准表</span>
             &nbsp;&nbsp;所属机构: &nbsp;<span>石家庄市民政局</span>
-            &nbsp;&nbsp;数据更新时间: &nbsp;<span>2018-06-20 15:08:08</span>
+            &nbsp;&nbsp;数据更新时间: &nbsp;<span>2018-06-20 15:08:08</span> */}
+            <span className={styles.label}>数据库</span>
+            <span className={styles.value}>Youedata_dig</span>
+            <span className={styles.label}>数据类型</span>
+            <span className={styles.value}>MySQL</span>
+            <span className={styles.label}>资源名称</span>
+            <span className={styles.value}>城市低保标准表</span>
+            <span className={styles.label}>所属机构</span>
+            <span className={styles.value}>石家庄市民政局</span>
+            <span className={styles.label}>数据更新时间</span>
+            <span className={styles.value}>2018-06-20 15:08:08</span>
           </p>
           <div className={styles.contentInfo}>
             <Tabs defaultActiveKey="1">
               <TabPane tab="基本信息" key="1">
-                <ul>
-                  <li>
-                    <span>同步模式:</span> 增量-日志
-                  </li>
-                  <li>
-                    <span>同步频率:</span> 定时-每日 00:15:00
-                  </li>
-                  <li>
-                    <span>任务状态:</span> 运行中
-                  </li>
-                  <li>
-                    <span>注册时间:</span> 2018-06-20 00:20:00
-                  </li>
-                  <li>
-                    <span>最近同步时间:</span>2018-06-08 10:11:10
-                  </li>
-                  <li>
-                    <span>数据库文件大小:</span>102.34MB
-                  </li>
-                  {/* <li>
-                    <span>数据资源:</span> <a href="">查看</a>
-                  </li> */}
-                </ul>
+                <Card loading={loading} bordered={false}>
+                  <ul>
+                    <li>
+                      <span>同步模式:</span> 增量-日志
+                    </li>
+                    <li>
+                      <span>同步频率:</span> 定时-每日 00:15:00
+                    </li>
+                    <li>
+                      <span>任务状态:</span> 运行中
+                    </li>
+                    <li>
+                      <span>注册时间:</span> 2018-06-20 00:20:00
+                    </li>
+                    <li>
+                      <span>最近同步时间:</span>2018-06-08 10:11:10
+                    </li>
+                    <li>
+                      <span>数据库文件大小:</span>102.34MB
+                    </li>
+                    {/* <li>
+                      <span>数据资源:</span> <a href="">查看</a>
+                    </li> */}
+                  </ul>
+                </Card>
               </TabPane>
               <TabPane tab="运行日志" key="2">
                 <Table

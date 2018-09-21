@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-19 09:31:20
+ * @Last Modified time: 2018-09-21 13:40:33
  * @Description: 删除底部蚂蚁金服相关信息
  */
 import React, { Fragment } from 'react'

@@ -58,6 +58,7 @@ export default class CatalogManagement extends Component {
     queryData: {},
     query: '',
     isChanged: false,
+    selectedKeys: [],
   }
 
   componentDidMount() {
@@ -70,7 +71,23 @@ export default class CatalogManagement extends Component {
     this.props.dispatch({
       type: 'catalogManagement/getCatalogList',
     })
+    this.props.dispatch({
+      type: 'catalogManagement/getCatalog',
+      payload: {},
+    })
+    const { params: { typeId } = {} } = this.props.catalogManagement.queryData
+    this.setState({
+      selectedKeys: [typeId],
+    })
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.catalogManagement.queryData !== this.props.catalogManagement.queryData && nextProps.catalogManagement.queryData.params && nextProps.catalogManagement.queryData.params.typeId) {
+  //     this.setState({
+  //       selectedKeys: [nextProps.catalogManagement.queryData.params.typeId],
+  //     })
+  //   }
+  // }
 
   nameChange = e => {
     const { queryData } = this.state
@@ -146,7 +163,8 @@ export default class CatalogManagement extends Component {
       return null
     }
     const { queryData: { catalogName, providerName, status, startTime, endTime, typeId, isMount } } = this.state
-    if (!typeId) {
+    const { queryData: { params: { typeId: propsTypeId } = {} } } = this.props.catalogManagement
+    if (!typeId && !propsTypeId) {
       message.error('请在右边选择目录')
       return null
     }
@@ -160,7 +178,7 @@ export default class CatalogManagement extends Component {
           resourceProviderName: providerName,
           checkStatus: status,
           isMount,
-          typeId,
+          typeId: typeId || propsTypeId,
           startTime,
           endTime,
         },
@@ -234,6 +252,7 @@ export default class CatalogManagement extends Component {
         ...this.state.queryData,// eslint-disable-line
         typeId: val[0],
       },
+      selectedKeys: val,
     }, () => {
       this.searchHandle({})
     })
@@ -250,8 +269,8 @@ export default class CatalogManagement extends Component {
 
   render() {
     const that = this
-    const { nodeManagement: { parentNodeList }, catalogManagement: { catalogTreeList, catalogList, catalogData, pagination }, loading } = this.props
-    const { isHover, isNodeOperator } = this.state
+    const { nodeManagement: { parentNodeList }, catalogManagement: { catalogTreeList, catalogList, catalogData, pagination, queryData: { params: { typeId } = {} } }, loading } = this.props
+    const { isHover, isNodeOperator, selectedKeys } = this.state
     // const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
     // const selectData = data.map(item => {
     //   return (
@@ -296,7 +315,7 @@ export default class CatalogManagement extends Component {
       // },
       {
         title: '审核状态',
-        dataIndex: 'status',
+        dataIndex: 'checkStatus',
         render(text) {
           if (text === '-1') {
             return '待审核'
@@ -439,6 +458,7 @@ export default class CatalogManagement extends Component {
               </Tooltip>
               <DirectoryTree
                 defaultExpandAll
+                selectedKeys={selectedKeys}
                 onSelect={this.directoryChange}
                 className={styles.tree}
                 expandAction={false}
@@ -497,8 +517,8 @@ export default class CatalogManagement extends Component {
             <div>
               <Table
                 columns={columns}
-                dataSource={this.state.queryData.typeId ? catalogData : []}
-                pagination={this.state.queryData.typeId && pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                dataSource={this.state.queryData.typeId || typeId ? catalogData : []}
+                pagination={(this.state.queryData.typeId || typeId) && pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                 rowKey="resourceId"
                 // rowSelection={rowSelection}
                 onChange={this.tableChange}

@@ -6,7 +6,7 @@ import { routerRedux } from 'dva/router'
 
 import styles from './SourceManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-import { format0, format24 } from '../../utils/utils'
+// import { format0, format24 } from '../../utils/utils'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
@@ -29,6 +29,7 @@ export default class SourceManagement extends Component {
     this.props.dispatch({
       type: 'nodeManagement/getParentNodes',
     })
+    this.searchHandle({})
   }
 
   nameChange = e => {
@@ -81,7 +82,7 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        status: val,
+        status: val === '-2' ? undefined:val,
       },
       isChanged: true,
     })
@@ -92,31 +93,44 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        startTime: val[0] ? format0(val[0].format('x')):undefined,
-        endTime: val[1] ? format24(val[1].format('x')):undefined,
+        startTime: val[0] ? val[0].format().substr(0,10) :undefined,
+        endTime: val[1] ? val[1].format().substr(0,10) :undefined,
       },
       isChanged: true,
     })
   }
 
-  searchHandle = () => {
-    const { queryData, isChanged } = this.state
-    if (!isChanged) return null
-    console.log(queryData) // eslint-disable-line
+  searchHandle = ({pageSize, current}, flag) => {
+    const { isChanged } = this.state
+    if (!isChanged && flag) return null
+    const { queryData: { sourceTitle, status,startTime, endTime } } = this.state
+    this.props.dispatch({
+      type: 'sourceManagement/getResources',
+      payload: {
+        params: {
+          limit: pageSize || '10',
+          index: current || '1',
+          resourceName: sourceTitle,
+          checkStatus: status,
+          startTime,
+          endTime,
+        },
+      },
+    })
     this.setState({
       isChanged: false,
     })
   }
 
-  handleSource = () => {
+  handleSource = row => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource'))
+    dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { resourceId: row.resourceId }))
   }
 
-  handleSource1 = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/fileSource'))
-  }
+  // handleSource1 = () => {
+  //   const { dispatch } = this.props
+  //   dispatch(routerRedux.push('/dataSourceManagement/fileSource'))
+  // }
 
   // handleTask = () => {
   //   const { dispatch } = this.props
@@ -128,26 +142,30 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
   }
 
-  handleCheck = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/checkDataInfo'))
-  }
+  // handleCheck = () => {
+  //   const { dispatch } = this.props
+  //   dispatch(routerRedux.push('/dataSourceManagement/checkDataInfo'))
+  // }
 
-  handleCatalog = () => {
+  handleCatalog = row => {
     const { dispatch } = this.props
     // dispatch(routerRedux.push('/dataSourceManagement/catalog'))
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', { resourceId: row.resourceId }))
   }
 
-  handleCatalog1 = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
+  // handleCatalog1 = () => {
+  //   const { dispatch } = this.props
+  //   dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
+  // }
+
+  tableChange = pagination => {
+    this.searchHandle(pagination)
   }
 
   render() {
     const that = this
     const { isNodeOperator } = this.state
-    const { nodeManagement: { parentNodeList }, loading } = this.props
+    const { nodeManagement: { parentNodeList }, sourceManagement: {dataList,pagination}, loading } = this.props
     // const options = [
     //   {
     //     value: '0-0',
@@ -180,8 +198,8 @@ export default class SourceManagement extends Component {
     // ]
     const data = [
       { value: '-1', id: -1, label: '全部数据' },
-      { value: '0', id: 0, label: '数据类型' },
-      { value: '1', id: 1, label: '数据类型1' },
+      { value: '0', id: 0, label: '数据库' },
+      { value: '1', id: 1, label: '文件' },
     ]
     const selectData = data.map(item => {
       return (
@@ -210,19 +228,18 @@ export default class SourceManagement extends Component {
     //   )
     // })
     const data4 = [
-      { value: '-1', id: 0, label: '全部状态' },
-      { value: '0', id: 1, label: '已拒绝' },
-      { value: '1', id: 1, label: '已通过' },
-      { value: '2', id: 1, label: '待审核' },
+      { value: '-2',  label: '全部状态' },
+      { value: '0',  label: '已拒绝' },
+      { value: '1', label: '已通过' },
+      { value: '-1', label: '待审核' },
     ]
     const selectData4 = data4.map(item => {
       return (
-        <Option value={item.value} key={item.id} title={item.label}>
+        <Option value={item.value} key={item.value} title={item.label}>
           {item.label}
         </Option>
       )
     })
-    const pagination = { pageSize: 10, current: 1 }
     const columns = [
       // {
       //   title: 'ID',
@@ -230,7 +247,7 @@ export default class SourceManagement extends Component {
       // },
       {
         title: '资源名称',
-        dataIndex: 'name',
+        dataIndex: 'resourceName',
       },
       {
         title: '数据类型',
@@ -252,7 +269,7 @@ export default class SourceManagement extends Component {
         title: '数据更新时间',
         dataIndex: 'createTime',
         render(text) {
-          return moment(text).format('YYYY-MM-DD HH:mm:ss')
+          return moment(text).format('lll')
         },
       },
       // {
@@ -268,123 +285,96 @@ export default class SourceManagement extends Component {
       // },
       {
         title: '审核状态',
-        dataIndex: 'status',
+        dataIndex: 'checkStatus',
         render(text) {
-          return +text === 0 ? '待审核' : +text === 1 ? '已通过' : '已拒绝'
+          switch (text) {
+            case '-1':
+              return '待审核'
+            case '0':
+              return '已拒绝'
+            default:
+              return '已通过'
+          }
         },
       },
       {
         title: '操作',
-        render(text, row) {
-          if (+row.id === 2) {
-            return (
-              <div>
-                <span className={styles.clickBtn} onClick={that.handleCatalog}>
-                  目录
+        render: (text, row) => {
+          return (
+            <div>
+              <span className={styles.clickBtn} onClick={() => that.handleCatalog(row)}>
+                目录
+              </span>
+              <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
+                资源
+              </span>
+              {/* <span className={styles.clickBtn} onClick={that.handleTask}>
+                任务
+              </span> */}
+              {isNodeOperator && (
+                <span className={styles.clickBtn} onClick={that.handleEdit}>
+                  修改
                 </span>
-                <span className={styles.clickBtn} onClick={that.handleSource1}>
-                  资源
+              )}
+              {/* {!isNodeOperator && (
+                <span className={styles.clickBtn} onClick={that.handleCheck}>
+                  查看
                 </span>
-                {/* <span className={styles.clickBtn} onClick={that.handleTask}>
-                  任务
-                </span> */}
-                {isNodeOperator && (
-                  <span className={styles.clickBtn} onClick={that.handleEdit}>
-                    修改
-                  </span>
-                )}
-                {!isNodeOperator && (
-                  <span className={styles.clickBtn} onClick={that.handleCheck}>
-                    查看
-                  </span>
-                )}
-                {isNodeOperator && (
-                  <Popconfirm
-                    title={`确认删除${row.name}?`}
-                    onConfirm={() => message.info('删除成功')}
-                    >
-                    <a>删除</a>
-                  </Popconfirm>
-                )}
-              </div>
-            )
-          } else {
-            return (
-              <div>
-                <span className={styles.clickBtn} onClick={that.handleCatalog1}>
-                  目录
-                </span>
-                <span className={styles.clickBtn} onClick={that.handleSource}>
-                  资源
-                </span>
-                {/* <span className={styles.clickBtn} onClick={that.handleTask}>
-                  任务
-                </span> */}
-                {isNodeOperator && (
-                  <span className={styles.clickBtn} onClick={that.handleEdit}>
-                    修改
-                  </span>
-                )}
-                {!isNodeOperator && (
-                  <span className={styles.clickBtn} onClick={that.handleCheck}>
-                    查看
-                  </span>
-                )}
-                {isNodeOperator && (
-                  <Popconfirm
-                    title={`确认删除${row.name}?`}
-                    onConfirm={() => message.info('删除成功')}
-                    >
-                    <a>删除</a>
-                  </Popconfirm>
-                )}
-              </div>
-            )
-          }
+              )} */}
+              {isNodeOperator && (
+                <Popconfirm
+                  title={`确认删除${row.name}?`}
+                  onConfirm={() => message.info('删除成功')}
+                  >
+                  <a>删除</a>
+                </Popconfirm>
+              )}
+            </div>
+          )
         },
       },
     ]
     columns.forEach(item => {
       item.align = 'center'
     })
-    const list = [
-      {
-        id: 0,
-        name: '城市低保标准表(各市第1季度)',
-        dataType: 'Mysql',
-        node: '石家庄民政部',
-        institution: '石家庄民政部',
-        applicationSystemName: '统计系统',
-        createTime: 233435354,
-        lastUpdataTime: 343435354,
-        subscription: 2,
-        status: '0',
-      },
-      {
-        id: 1,
-        name: '农村低保标准表(各市第1季度)',
-        dataType: 'Mysql',
-        node: '石家庄民政部',
-        institution: '石家庄民政部',
-        applicationSystemName: '统计系统',
-        createTime: 233435354,
-        lastUpdataTime: 343435354,
-        subscription: 1,
-        status: '1',
-      },
-      {
-        id: 2,
-        name: '人口普查数据',
-        dataType: '文件',
-        node: '石家庄民政部',
-        institution: '石家庄民政部',
-        applicationSystemName: '统计系统',
-        createTime: 233435354,
-        lastUpdataTime: 343435354,
-        subscription: 5,
-        status: '2',
-      },
-    ]
+    // const list = [
+    //   {
+    //     id: 0,
+    //     name: '城市低保标准表(各市第1季度)',
+    //     dataType: 'Mysql',
+    //     node: '石家庄民政部',
+    //     institution: '石家庄民政部',
+    //     applicationSystemName: '统计系统',
+    //     createTime: 233435354,
+    //     lastUpdataTime: 343435354,
+    //     subscription: 2,
+    //     status: '0',
+    //   },
+    //   {
+    //     id: 1,
+    //     name: '农村低保标准表(各市第1季度)',
+    //     dataType: 'Mysql',
+    //     node: '石家庄民政部',
+    //     institution: '石家庄民政部',
+    //     applicationSystemName: '统计系统',
+    //     createTime: 233435354,
+    //     lastUpdataTime: 343435354,
+    //     subscription: 1,
+    //     status: '1',
+    //   },
+    //   {
+    //     id: 2,
+    //     name: '人口普查数据',
+    //     dataType: '文件',
+    //     node: '石家庄民政部',
+    //     institution: '石家庄民政部',
+    //     applicationSystemName: '统计系统',
+    //     createTime: 233435354,
+    //     lastUpdataTime: 343435354,
+    //     subscription: 5,
+    //     status: '2',
+    //   },
+    // ]
     let rowSelection = {
       // onChange: selectedRows => {
       // },
@@ -397,7 +387,8 @@ export default class SourceManagement extends Component {
       rowSelection = null
       columns.splice(2,0,{
         title: '所属节点',
-        dataIndex: 'institution',
+        dataIndex: 'nodeName',
+        align: 'center',
       })    
     }
     return (
@@ -430,23 +421,24 @@ export default class SourceManagement extends Component {
             </Select> */}
             <Select
               style={{ marginRight: 20, width: 120 }}
-              defaultValue='-1'
+              defaultValue='-2'
               onChange={this.statusChange}
               >
               {selectData4}
             </Select>
             <RangePicker style={{ marginRight: 20, width: 210 }} onChange={this.timeChange} />
-            <Button type="primary" onClick={this.searchHandle}>搜索</Button>
+            <Button type="primary" onClick={() => this.searchHandle({}, true)}>搜索</Button>
           </div>
           <div>
             <Table
               loading={loading}
               columns={columns}
-              dataSource={list}
+              dataSource={dataList}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-              rowKey="id"
+              rowKey="resourceId"
               rowSelection={rowSelection}
               bordered
+              onChange={this.tableChange}
               />
           </div>
           <div>{isNodeOperator && <Button type="primary">删除</Button>}</div>

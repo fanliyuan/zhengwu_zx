@@ -51,6 +51,7 @@ async function checkToken(response) {
         })
         if (window.location.pathname !== '/user/login') {
           sessionStorage.setItem('redirect', window.location.pathname)
+          sessionStorage.setItem('authority', localStorage.getItem('antd-pro-authority'))
         }
         store.dispatch(
           routerRedux.push(`/user/login`)

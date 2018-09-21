@@ -13,6 +13,18 @@ const module = {
       name: 'getResourceItemList',
       url: 'getResourceItemList',
     },
+    {
+      name: 'getResourceTitle',
+      url: 'getResourceTypeById',
+    },
+    {
+      name: 'getResourceList',
+      url: '',
+    },
+    {
+      name: 'getResourceTaskInfo',
+      url: 'getResourceTaskInfo',
+    },
   ],
 }
 module.apis.forEach(item => {

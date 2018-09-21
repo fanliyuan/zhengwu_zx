@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Table, Button, Input, Select, Card, Row, Col } from 'antd'
-import { Link } from 'dva/router'
+// import { Link, routerRedux } from 'dva/router'
 
 import styles from './ViewDirectory.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -25,6 +25,14 @@ export default class ViewDirectory extends Component {
         params: {
           index: '1',
           limit: '10',
+          resourceId,
+        },
+      },
+    })
+    this.props.dispatch({
+      type: 'catalogManagement/getResourceTitle',
+      payload: {
+        params: {
           resourceId,
         },
       },
@@ -106,7 +114,7 @@ export default class ViewDirectory extends Component {
   }
 
   render() {
-    const { catalogManagement: { catalogInfo, pagination1 }, loading } = this.props
+    const { catalogManagement: { catalogInfo, pagination1, resourceTitle }, loading } = this.props
     const data = [
       { value: '-1', id: -1, label: '全部共享类型' },
       { value: '1', id: 1, label: '无条件共享' },
@@ -181,40 +189,41 @@ export default class ViewDirectory extends Component {
     return (
       <PageHeaderLayout>
         <div className="btncls">
-          <Link to="/dataSourceManagement/sourceManagement" className="fr mr40">
+          {/* <Link to="/dataSourceManagement/sourceManagement" className="fr mr40">
             <Button>返回</Button>
-          </Link>
+          </Link> */}
+          <Button className='fr mr40' onClick={() => this.props.history.go(-1)}>返回</Button>
         </div>
         <div>
           <Card className={styles.InfoBlock}>
             <Row style={{ marginBottom: 10 }}>
               <Col span={6}>
-                名称: <span>订单目录</span>
+                名称: <span>{resourceTitle.resourceName}</span>
               </Col>
               <Col span={6}>
-                分类: <span>建筑数据</span>
+                分类: <span>{resourceTitle.resourceFormatClassifyName}</span>
               </Col>
               <Col span={6}>
-                信息资源代码: <span>10602/000000</span>
+                信息资源代码: <span>{resourceTitle.resourceCode}</span>
               </Col>
               <Col span={6}>
-                信息资源格式: <span>电子文件</span>
+                信息资源格式: <span>{resourceTitle.resourceFormatClassifyName}</span>
               </Col>
             </Row>
             <Row style={{ marginBottom: 10 }}>
               <Col span={6}>
-                提供方名称: <span>金区国土局</span>
+                提供方名称: <span>{resourceTitle.resourceProviderName}</span>
               </Col>
               <Col span={6}>
-                提供方内部部门: <span>金区国土局</span>
+                提供方内部部门: <span>{resourceTitle.resourceProviderDepartment}</span>
               </Col>
               <Col span={6}>
-                资源提供方代码: <span>113</span>
+                资源提供方代码: <span>{resourceTitle.resourceProviderCode}</span>
               </Col>
             </Row>
             <Row style={{ marginBottom: 10 }}>
               <Col span={24}>
-                摘要: <span>国土局国土局国土局国土局国土局</span>
+                摘要: <span>{resourceTitle.resourceAbstract}</span>
               </Col>
             </Row>
             {/* <Row>

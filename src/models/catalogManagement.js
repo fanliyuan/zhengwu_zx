@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../api'
 
-const { getCatalogList, getCatalog, getResourceItemList } = apis
+const { getCatalogList, getCatalog, getResourceItemList, getResourceTaskInfo, getResourceTitle } = apis
 
 // 用来过滤树形数据的
 function filter(params, data) {
@@ -40,8 +40,11 @@ function filterTreeList(params, data) {
     catalogList: [],
     catalogData: [],
     pagination: false,
+    queryData: {},
     catalogInfo: [],
+    resourceTitle: {},
     pagination1: false,
+    resourceTaskInfo: {},
   },
 
   effects:{
@@ -73,8 +76,22 @@ function filterTreeList(params, data) {
       }
       }
     },
-    *getCatalog({ payload }, { call, put }) {
+    *getCatalog({ payload }, { call, put, select }) {
       let response
+      if (payload && payload.params) {
+        yield put({
+          type: 'saveQueryData',
+          payload: {
+            queryData: payload,
+          },
+        })
+      } else {
+        payload = yield select(state => state.catalogManagement.queryData)
+      }
+      if (!payload || !payload.params) {
+        // console.log('无查询信息') // eslint-disable-line
+        return null
+      }
       try {
         response = yield call(getCatalog, {params: payload.params})
         const { rows, total = 0, limit = 10, index = 1 } = response.data
@@ -86,6 +103,10 @@ function filterTreeList(params, data) {
               catalogData: rows,
               pagination,
             },
+          })
+          yield put({
+            type: 'catalogManagement/queryCatalog',
+            payload: '',
           })
         } else {
           throw response.msg
@@ -135,6 +156,49 @@ function filterTreeList(params, data) {
       }
       }
     },
+    *getResourceTitle({ payload }, { call, put }) {
+      const response = yield call(getResourceTitle, { params: payload.params })
+      if (typeof response.data === 'string') {
+        response.data = JSON.parse(response.data.replace(/"\{/g,'{').replace(/\}"/g,'}'))
+      }
+      try {
+        if (+response.code === 0) {
+          yield put({
+            type: 'savaResourceTitle',
+            payload: {
+              resourceTitle: response.data,
+            },
+          })
+        }
+      } catch (error) {
+       // eslint-disable-next-line 
+       console.log(error)
+      }
+    },
+    *getResourceTaskInfo({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call(getResourceTaskInfo, {params: payload.params})
+        const { data } = response
+        if (+response.code === 200) {
+          yield put({
+            type: 'savaResourceTaskInfo',
+            payload: {
+              resourceTaskInfo: data,
+            },
+          })
+        } else {
+          throw response.msg
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+       // eslint-disable-next-line
+       console.log(error)
+      } else {
+        message.error(error || '操作失败')
+      }
+      }
+    },
   },
 
   reducers:{
@@ -162,6 +226,24 @@ function filterTreeList(params, data) {
         ...state,
         catalogInfo,
         pagination1,
+      }
+    },
+    savaResourceTaskInfo(state, {payload: {resourceTaskInfo}}) {
+      return {
+        ...state,
+        resourceTaskInfo,
+      }
+    },
+    saveQueryData(state, {payload: {queryData}}) {
+      return {
+        ...state,
+        queryData,
+      }
+    },
+    savaResourceTitle(state, {payload: {resourceTitle}}) {
+      return {
+        ...state,
+        resourceTitle,
       }
     },
   },

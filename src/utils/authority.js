@@ -1,3 +1,5 @@
+import { message } from 'antd'
+
 import apis from '../api'
 
 const { getPermission } = apis 
@@ -18,12 +20,15 @@ export async function getPermissions() {
     if (+response.code === 0) {
       permissions = response.result.datas
     } else {
-      throw Error('权限返回错误')
+      throw response.msg
     }
   } catch (error) {
    // eslint-disable-next-line 
-   console.log(error)
-   permissions = []
+   if (error instanceof Error) {
+     console.log(error)// eslint-disable-line
+   } else {
+     message.error(error || '无权限登录')
+   }
   }
   return permissions
 }

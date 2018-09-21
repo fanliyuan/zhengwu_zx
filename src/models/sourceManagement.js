@@ -2,13 +2,14 @@ import { message } from 'antd'
 
 import apis from '../api'
 
-const { getResources } = apis
+const { getCatalog } = apis
  export default {
   namespace:'sourceManagement',
 
   state:{
     queryData: {},
     dataList: [],
+    pagination: false,
   },
 
   effects:{
@@ -22,17 +23,17 @@ const { getResources } = apis
           },
         })
       } else {
-        payload.params = select(state => state.queryData)
+        payload = select(state => state.sourceManagement.queryData)
       }
       try {
-        response = yield call(getResources, {params: payload.params})
-        const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
+        response = yield call(getCatalog, {params: payload.params})
+        const { rows, total = 0, limit: pageSize = 10, index: pageNum = 1 } = response.data
         const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
         if (+response.code === 0) {
           yield put({
             type: 'savaDataList',
             payload: {
-              dataList: datas,
+              dataList: rows || [],
               pagination,
             },
           })
@@ -57,7 +58,7 @@ const { getResources } = apis
         queryData,
       }
     },
-    savaDataList(state, { dataList, pagination }) {
+    savaDataList(state, { payload:{dataList, pagination} }) {
       return {
         ...state,
         dataList,
