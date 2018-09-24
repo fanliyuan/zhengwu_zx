@@ -45,6 +45,7 @@ function filterTreeList(params, data) {
     resourceTitle: {},
     pagination1: false,
     resourceTaskInfo: {},
+    catalogQueryData: '',
   },
 
   effects:{
@@ -72,6 +73,12 @@ function filterTreeList(params, data) {
         yield put({
           type: 'savaCatalogTreeList',
           payload: [],
+        })
+        yield put({
+          type: 'savaCatalogList',
+          payload: {
+            catalogList: [],
+          },
         })
       }
       }
@@ -104,10 +111,6 @@ function filterTreeList(params, data) {
               pagination,
             },
           })
-          yield put({
-            type: 'catalogManagement/queryCatalog',
-            payload: '',
-          })
         } else {
           throw response.msg
         }
@@ -127,6 +130,12 @@ function filterTreeList(params, data) {
         type: 'savaCatalogList',
         payload: {
           catalogList,
+        },
+      })
+      yield put({
+        type: 'saveCatalogQueryData',
+        payload: {
+          catalogQueryData: payload,
         },
       })
     },
@@ -244,6 +253,12 @@ function filterTreeList(params, data) {
       return {
         ...state,
         resourceTitle,
+      }
+    },
+    saveCatalogQueryData(state,{payload: {catalogQueryData}}) {
+      return {
+        ...state,
+        catalogQueryData,
       }
     },
   },

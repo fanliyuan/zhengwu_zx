@@ -81,13 +81,18 @@ export default class CatalogManagement extends Component {
     })
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.catalogManagement.queryData !== this.props.catalogManagement.queryData && nextProps.catalogManagement.queryData.params && nextProps.catalogManagement.queryData.params.typeId) {
-  //     this.setState({
-  //       selectedKeys: [nextProps.catalogManagement.queryData.params.typeId],
-  //     })
-  //   }
-  // }
+  componentWillReceiveProps(nextProps) {
+    // if (nextProps.catalogManagement.queryData !== this.props.catalogManagement.queryData && nextProps.catalogManagement.queryData.params && nextProps.catalogManagement.queryData.params.typeId) {
+    //   this.setState({
+    //     selectedKeys: [nextProps.catalogManagement.queryData.params.typeId],
+    //   })
+    // }
+    if (nextProps.catalogManagement.catalogQueryData !== this.state.query) {
+      this.setState({
+        query: nextProps.catalogManagement.catalogQueryData,
+      })
+    }
+  }
 
   nameChange = e => {
     const { queryData } = this.state
@@ -270,7 +275,7 @@ export default class CatalogManagement extends Component {
   render() {
     const that = this
     const { nodeManagement: { parentNodeList }, catalogManagement: { catalogTreeList, catalogList, catalogData, pagination, queryData: { params: { typeId } = {} } }, loading } = this.props
-    const { isHover, isNodeOperator, selectedKeys } = this.state
+    const { isHover, isNodeOperator, selectedKeys, query } = this.state
     // const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
     // const selectData = data.map(item => {
     //   return (
@@ -449,7 +454,7 @@ export default class CatalogManagement extends Component {
         <div className="clearfix">
           <div className={styles.column1}>
             <div className={styles.search}>
-              <Input placeholder="请输入关键词" className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
+              <Input placeholder="请输入关键词" value={query} className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
               <Button type="primary" icon="search" onClick={this.handleSearchList} />
             </div>
             <Spin className="clearfix" spinning={loading}>

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-21 18:02:07
+ * @Last Modified time: 2018-09-24 21:08:58
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -123,6 +123,14 @@ export default class AllSub extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.catalogManagement.catalogQueryData !== this.state.query) {
+      this.setState({
+        query: nextProps.catalogManagement.catalogQueryData,
+      })
+    }
+  }
+
   handleNameChange = e => {
     const { queryData } = this.state
     this.setState({
@@ -134,8 +142,8 @@ export default class AllSub extends Component {
     })
   }
 
-  handleThemeChange = e => {
-    console.log(e)// eslint-disable-line
+  handleThemeChange = () => {
+    // console.log(e.target.value)// eslint-disable-line
   }
 
   handSelectChange = val => {
@@ -187,6 +195,7 @@ export default class AllSub extends Component {
         classifyId: directoryData && directoryData.key,
         classisyName: directoryData && directoryData.props.title,
       },
+      isChanged: true,
     })
   }
 
@@ -221,8 +230,20 @@ export default class AllSub extends Component {
     directoryData = e && e.selectedNodes[0]
   }
 
+  handleClear = () => {
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        classisyName: undefined,
+        classifyId: undefined,
+      },
+      isChanged: true,
+    })
+  }
+
   render() {
-    const { selectKeys, isNodeOperator, modalVisible, queryData: { classisyName } } = this.state
+    const { selectKeys, isNodeOperator, modalVisible, queryData: { classisyName }, query } = this.state
     const { catalogManagement: { catalogTreeList, catalogList }, loading } = this.props // eslint-disable-line
 
     const stateList = [
@@ -584,9 +605,10 @@ export default class AllSub extends Component {
                   value={classisyName}
                   title={classisyName}
                   className={styles.theme}
-                  placeholder="搜索分类"
+                  placeholder="点击选择分类"
                   onChange={this.handleThemeChange}
                   onClick={this.handleFocus}
+                  suffix={<Icon type='close' onClick={this.handleClear} />}
                   />
                 <Input
                   placeholder="订阅名称/目录名称"
@@ -647,6 +669,7 @@ export default class AllSub extends Component {
               )}
               <div>
                 <Table
+                  loading={loading}
                   bordered
                   columns={columns}
                   dataSource={data1}
@@ -726,12 +749,13 @@ export default class AllSub extends Component {
           <Modal
             title="分类"
             visible={modalVisible}
+            className={styles.modal}
             onOk={this.modalOk}
             onCancel={this.modalCancel}
             >
             {/* <div> */}
             <div className={styles.search}>
-              <Input placeholder="请输入关键词" className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
+              <Input placeholder="请输入关键词" value={query} className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
               <Button type="primary" icon="search" onClick={this.handleSearchList} />
             </div>
             <div className="clearfix mt8">
