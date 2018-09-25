@@ -8,6 +8,38 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './Task.less'
 
 const { TabPane } = Tabs
+
+function getSyncfrequency(params) {
+  if (typeof params !== 'string') {
+    console.log('传入参数非字符串') // eslint-disable-line
+    return undefined
+  }
+  let arr = params.split(',')
+  if (arr.length !== 5) {
+    console.log('传入参数长度不够') // eslint-disable-line
+    return undefined
+  }
+  arr = arr.map(item => +item)// eslint-disable-line
+  if (0 in arr.filter(item => isNaN(item))) {
+    console.log('传入参数非数字形式') // eslint-disable-line
+    return undefined
+  }
+  if (arr[3]) {
+    return `每年${arr[3]}月${arr[2]}日${arr[1]}小时${arr[0]}分`
+  }
+  if (arr[2]) {
+    return `每月${arr[2]}日${arr[1]}小时${arr[0]}分`
+  }
+  if (arr[4]) {
+    return `每周${arr[4]}的${arr[1]}小时${arr[0]}分`
+  }
+  if (arr[1]) {
+    return `每日${arr[1]}小时${arr[0]}分`
+  }
+  if (arr[0]) {
+    return `每小时${arr[0]}分`
+  }
+}
 @connect(({ catalogManagement, loading }) => ({
   catalogManagement,
   loading: loading.models.catalogManagement,
@@ -15,17 +47,28 @@ const { TabPane } = Tabs
 export default class Task extends Component {
   state = {}
 
+  componentDidMount() {
+    this.props.dispatch({
+      type: 'catalogManagement/getResourceTaskInfo',
+      payload: {
+        params: {
+          id: this.props.history.location.state && this.props.history.location.state.resourceId, 
+        },
+      },
+    })
+  }
+
   handleBack = () => {
     const { dispatch } = this.props
     dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
   }
 
   render() {
-    const { loading, catalogManagement: { resourceTaskInfo } } = this.props // eslint-disable-line
-    const pagination = {
-      pageSize: 10,
-      current: 1,
-    }
+    const { loading, catalogManagement: { resourceTaskInfo: { pubMode, pubfreQuency, timeSetting, taskState, createdTime, syncTime, dataSize } } } = this.props // eslint-disable-line
+    // const pagination = {
+    //   pageSize: 10,
+    //   current: 1,
+    // }
     const columns = [
       {
         title: 'ID',
@@ -200,22 +243,22 @@ export default class Task extends Component {
                 <Card loading={loading} bordered={false}>
                   <ul>
                     <li>
-                      <span>同步模式:</span> 增量-日志
+                      <span>同步模式:</span> {pubMode}
                     </li>
                     <li>
-                      <span>同步频率:</span> 定时-每日 00:15:00
+                      <span>同步频率:</span> {getSyncfrequency(timeSetting)}
                     </li>
                     <li>
-                      <span>任务状态:</span> 运行中
+                      <span>任务状态:</span> {taskState}
                     </li>
                     <li>
-                      <span>注册时间:</span> 2018-06-20 00:20:00
+                      <span>注册时间:</span> {createdTime}
                     </li>
                     <li>
-                      <span>最近同步时间:</span>2018-06-08 10:11:10
+                      <span>最近同步时间:</span> {syncTime}
                     </li>
                     <li>
-                      <span>数据库文件大小:</span>102.34MB
+                      <span>数据库文件大小:</span> {dataSize}
                     </li>
                     {/* <li>
                       <span>数据资源:</span> <a href="">查看</a>
@@ -228,7 +271,8 @@ export default class Task extends Component {
                   bordered
                   columns={columns}
                   dataSource={data}
-                  pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                  pagination={false}
+                  // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                   // loading={loading}
                   rowKey="id"
                   />
@@ -238,7 +282,8 @@ export default class Task extends Component {
                   bordered
                   columns={columns1}
                   dataSource={data1}
-                  pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                  pagination={false}
+                  // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                   // loading={loading}
                   rowKey="id"
                   />

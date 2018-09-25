@@ -23,6 +23,29 @@
   width: 150px;
   margin-right: 10px;
   position: relative;
+  cursor: pointer;
+  .icon{
+    font-size: 12px;
+    opacity: 0.5;
+    &:hover{
+      opacity: 1;
+    }
+  }
+  :global{
+    .ant-input{
+      cursor: pointer;
+    }
+    .anticon-close-circle{
+      display: none;
+    }
+  }
+  &:hover{
+    :global{
+      .anticon-close-circle{
+        display: inline-block;
+      }
+    }
+  }
 }
 .state {
   display: inline-block;

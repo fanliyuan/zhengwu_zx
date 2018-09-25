@@ -103,7 +103,7 @@ export default class SourceManagement extends Component {
   searchHandle = ({pageSize, current}, flag) => {
     const { isChanged } = this.state
     if (!isChanged && flag) return null
-    const { queryData: { sourceTitle, status,startTime, endTime } } = this.state
+    const { queryData: { sourceTitle, status,startTime, endTime, nodeId } } = this.state
     this.props.dispatch({
       type: 'sourceManagement/getResources',
       payload: {
@@ -112,6 +112,7 @@ export default class SourceManagement extends Component {
           index: current || '1',
           resourceName: sourceTitle,
           checkStatus: status,
+          nodeId,
           startTime,
           endTime,
         },
@@ -124,7 +125,11 @@ export default class SourceManagement extends Component {
 
   handleSource = row => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { resourceId: row.resourceId }))
+    if (row.dataType === 'file') {
+      dispatch(routerRedux.push('/dataSourceManagement/fileSource', { resourceId: row.resourceId }))
+    } else {
+      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { resourceId: row.resourceId }))
+    }
   }
 
   // handleSource1 = () => {

@@ -14,7 +14,7 @@ const { getSubscription } = apis
     *getSubscription({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(getSubscription, {params: payload.params})
+        response = yield call(getSubscription, {body: payload.body})
         const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
         const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
         if (+response.code === 0) {

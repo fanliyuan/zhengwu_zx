@@ -2,7 +2,7 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-19 13:54:19
+ * @Last Modified time: 2018-09-25 14:42:27
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react'
@@ -15,8 +15,9 @@ import { routerRedux } from 'dva/router'
 import styles from './DataBaseSource.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-@connect(({ dataBaseSource }) => ({
-  dataBaseSource,
+@connect(({ sourceManagement, loading }) => ({
+  sourceManagement,
+  loading: loading.models.sourceManagement,
 }))
 export default class DataBaseSource extends Component {
   state = {
@@ -30,11 +31,21 @@ export default class DataBaseSource extends Component {
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
     })
+    this.props.dispatch({
+      type: 'sourceManagement/getDBInfo',
+      payload: {
+        params: {
+          id: this.props.history.location.state && this.props.history.location.state.resourceId,
+          // id: 'db20',
+        },
+      },
+    })
   }
 
   handleBack = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'))
+    // const { dispatch } = this.props
+    // dispatch(routerRedux.push('/dataSourceManagement/sourceManagement'))
+    this.props.history.go(-1)
   }
 
   handleView = row => {
@@ -60,14 +71,16 @@ export default class DataBaseSource extends Component {
 
   render() {
     const { view, agency, showRow, isNodeOperator } = this.state
+    const { sourceManagement: { DBInfo: { name, updataTime ,value: { tableName, resourceType, appsysName, dutyName, dutyPhone, dutyPosition, dbName, dbDescribe, deptName, structAddDtoList = [] } = {} } } } = this.props
+    structAddDtoList.forEach((item,index) => item.index = index+1) // eslint-disable-line
     const that = this
-    const pagination = {
-      current: 1,
-      pageSize: 10,
-    }
-    const rowSelection = {
-      onChange: () => {},
-    }
+    // const pagination = {
+    //   current: 1,
+    //   pageSize: 10,
+    // }
+    // const rowSelection = {
+    //   onChange: () => {},
+    // }
     const columns = [
       // {
       //   title: '序号',
@@ -86,13 +99,13 @@ export default class DataBaseSource extends Component {
         render(text, row) {
           return (
             <div>
-              <span
+              {/* <span
                 className={styles.clickBtn}
                 onClick={() => that.handleView(row)}
                 style={view && row.id === showRow ? { cursor: 'default', color: 'silver' } : {}}
                 >
                 浏览
-              </span>
+              </span> */}
               <span
                 className={styles.clickBtn}
                 onClick={() => that.handleAgency(row)}
@@ -105,11 +118,16 @@ export default class DataBaseSource extends Component {
         },
       },
     ]
+    columns.forEach(item => {
+      if(!item.align) {
+        item.align = 'center'
+      }
+    })
     const list = [
       {
         id: 0,
-        tableName: 'dig_user',
-        chineseLabel: '用户表',
+        tableName: dbName,
+        chineseLabel: dbDescribe,
       },
     ]
     const columns1 = [
@@ -186,23 +204,28 @@ export default class DataBaseSource extends Component {
     const columns2 = [
       {
         title: '序号',
-        dataIndex: 'id',
+        dataIndex: 'index',
       },
       {
         title: '主键',
-        dataIndex: 'blog_id',
+        dataIndex: 'primaryKey',
+        render: (text) => {
+          if (text) {
+            return '是'
+          }
+        },
       },
       {
         title: '字段名称',
-        dataIndex: 'fieldName',
+        dataIndex: 'columnName',
       },
       {
         title: '数据类型',
-        dataIndex: 'dataType',
+        dataIndex: 'columnType',
       },
       {
         title: '中文标注',
-        dataIndex: 'chineseLabel',
+        dataIndex: 'note',
       },
     ]
     columns2.forEach(item => {
@@ -210,29 +233,6 @@ export default class DataBaseSource extends Component {
         item.align = 'center'
       }
     })
-    const list2 = [
-      {
-        id: 0,
-        blog_id: '',
-        fieldName: 'blog_id',
-        dataType: 'bigint(20)',
-        chineseLabel: '',
-      },
-      {
-        id: 1,
-        blog_id: '',
-        fieldName: 'public',
-        dataType: 'tinyint(2)',
-        chineseLabel: '',
-      },
-      {
-        id: 2,
-        blog_id: '',
-        fieldName: 'last_updated',
-        dataType: 'datetime',
-        chineseLabel: '',
-      },
-    ]
     return (
       <PageHeaderLayout>
         <div className="btncls clearfix">
@@ -283,40 +283,40 @@ export default class DataBaseSource extends Component {
             <li className={styles.item}>
               <h2>
                 <span className={styles.label}>数据库</span>
-                <span>Youedata_dig</span>
+                <span>{tableName}</span>
               </h2>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>数据类型</span>
-              <span>Mysql</span>
+              <span>{resourceType}</span>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>资源名称</span>
-              <span>城市低保标准表</span>
+              <span>{name}</span>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>所属机构</span>
-              <span>石家庄市民政局</span>
+              <span>{deptName}</span>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>数据更新时间</span>
-              <span>2018-06-20 15:08:08</span>
+              <span>{updataTime}</span>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>应用系统名称</span>
-              <span>城市低保标准表</span>
+              <span>{appsysName}</span>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>负责人姓名</span>
-              <span>王老三</span>
+              <span>{dutyName}</span>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>负责人手机号</span>
-              <span>18912341234</span>
+              <span>{dutyPhone}</span>
             </li>
             <li className={styles.item}>
               <span className={styles.label}>负责人职位</span>
-              <span>架构师</span>
+              <span>{dutyPosition}</span>
             </li>
           </ul>
           <Divider />
@@ -343,8 +343,8 @@ export default class DataBaseSource extends Component {
                 <Table
                   columns={columns1}
                   dataSource={list1}
-                  pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                  rowSelection={rowSelection}
+                  // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                  // rowSelection={rowSelection}
                   rowKey="id"
                   bordered
                   />
@@ -353,14 +353,15 @@ export default class DataBaseSource extends Component {
             {agency && (
               <Col span={24}>
                 <h3 className='mt16'>
-                  数据项 共<span className={styles.spe}>6</span>行
+                  数据项 共<span className={styles.spe}>{structAddDtoList.length}</span>行
                 </h3>
                 <Table
                   columns={columns2}
-                  dataSource={list2}
-                  pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                  dataSource={structAddDtoList}
+                  // pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                   // rowSelection={rowSelection}
-                  rowKey="id"
+                  pagination={false}
+                  rowKey="index"
                   bordered
                   />
               </Col>

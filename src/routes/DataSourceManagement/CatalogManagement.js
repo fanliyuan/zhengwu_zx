@@ -156,7 +156,7 @@ export default class CatalogManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        isMount: e.target.checked?'1':'0',
+        isMount: e.target.checked?'1':undefined,
       },
       isChanged: true,
     })
@@ -167,10 +167,10 @@ export default class CatalogManagement extends Component {
     if (!isChanged && flag) {
       return null
     }
-    const { queryData: { catalogName, providerName, status, startTime, endTime, typeId, isMount } } = this.state
+    const { queryData: { catalogName, providerName, nodeId, status, startTime, endTime, typeId, isMount } } = this.state
     const { queryData: { params: { typeId: propsTypeId } = {} } } = this.props.catalogManagement
     if (!typeId && !propsTypeId) {
-      message.error('请在右边选择目录')
+      message.error('请在左边选择目录')
       return null
     }
     this.props.dispatch({
@@ -182,6 +182,7 @@ export default class CatalogManagement extends Component {
           resourceName: catalogName,
           resourceProviderName: providerName,
           checkStatus: status,
+          nodeId,
           isMount,
           typeId: typeId || propsTypeId,
           startTime,
@@ -232,12 +233,12 @@ export default class CatalogManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', {resourceId: row.resourceId}))
   }
 
-  handleSourceConnect = val => {
+  handleSourceConnect = row => {
     const { dispatch } = this.props
-    if (+val === 0) {
+    if (row.dataType === 'file') {
       dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData'))
     } else {
-      dispatch(routerRedux.push('/dataSourceManagement/resourceConnection'))
+      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { resourceId: row.resourceId }))
     }
   }
 
@@ -267,9 +268,9 @@ export default class CatalogManagement extends Component {
     this.searchHandle({pageSize: pagination.pageSize, pageNum: pagination.current})
   }
 
-  handleTask = () => {
+  handleTask = row => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/task'))
+    dispatch(routerRedux.push('/dataSourceManagement/task', {resourceId: row.resourceId}))
   }
 
   render() {
@@ -350,7 +351,7 @@ export default class CatalogManagement extends Component {
               {/* <a style={{marginRight:10}}>资源挂接</a> */}
               <span
                 className={styles.clickBtn}
-                onClick={that.handleSourceConnect.bind(null, row.id)}
+                onClick={that.handleSourceConnect.bind(null, row)}
                 >
                 资源挂接
               </span>
@@ -486,7 +487,7 @@ export default class CatalogManagement extends Component {
               </Select> */}
               <Input placeholder="提供方名称" style={{ width: 180, marginRight: 20 }} onChange={this.providerChange} />
               {
-                !isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={lables => [...lables].pop()} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} />
+                !isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={lables => [...lables].pop()} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} onChange={this.nodeChange} />
               }
               <Select
                 defaultValue='-2'

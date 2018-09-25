@@ -2,7 +2,7 @@ import { message } from 'antd'
 
 import apis from '../api'
 
-const { getCatalog } = apis
+const { getCatalog, getDBInfo } = apis
  export default {
   namespace:'sourceManagement',
 
@@ -10,6 +10,7 @@ const { getCatalog } = apis
     queryData: {},
     dataList: [],
     pagination: false,
+    DBInfo: {},
   },
 
   effects:{
@@ -49,6 +50,36 @@ const { getCatalog } = apis
       }
       }
     },
+    *getDBInfo({ payload }, { call, put }) {
+      let response
+      try {
+        response = yield call(getDBInfo, {params: payload.params})
+        const { data } = response
+        if (+response.code === 200) {
+          yield put({
+            type: 'saveDBInfo',
+            payload: {
+              DBInfo: data,
+            },
+          })
+        } else {
+          throw response.msg
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+       // eslint-disable-next-line
+       console.log(error)
+      } else {
+        message.error(error || '操作失败')
+        yield put({
+          type: 'saveDBInfo',
+          payload: {
+            DBInfo: {},
+          },
+        })
+      }
+      }
+    },
   },
 
   reducers:{
@@ -63,6 +94,12 @@ const { getCatalog } = apis
         ...state,
         dataList,
         pagination,
+      }
+    },
+    saveDBInfo(state, {payload: {DBInfo}}) {
+      return {
+        ...state,
+        DBInfo,
       }
     },
   },

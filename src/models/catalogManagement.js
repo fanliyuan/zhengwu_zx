@@ -193,7 +193,7 @@ function filterTreeList(params, data) {
           yield put({
             type: 'savaResourceTaskInfo',
             payload: {
-              resourceTaskInfo: data,
+              resourceTaskInfo: data || {},
             },
           })
         } else {
@@ -205,6 +205,12 @@ function filterTreeList(params, data) {
        console.log(error)
       } else {
         message.error(error || '操作失败')
+        yield put({
+          type: 'savaResourceTaskInfo',
+          payload: {
+            resourceTaskInfo: {},
+          },
+        })
       }
       }
     },

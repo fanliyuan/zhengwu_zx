@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-24 21:08:58
+ * @Last Modified time: 2018-09-25 16:55:50
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -608,7 +608,7 @@ export default class AllSub extends Component {
                   placeholder="点击选择分类"
                   onChange={this.handleThemeChange}
                   onClick={this.handleFocus}
-                  suffix={<Icon type='close' onClick={this.handleClear} />}
+                  suffix={<Icon type='close-circle' onClick={this.handleClear} className={styles.icon} />}
                   />
                 <Input
                   placeholder="订阅名称/目录名称"
