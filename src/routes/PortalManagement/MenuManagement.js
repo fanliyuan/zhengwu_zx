@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-09-20 16:38:50
+ * @Last Modified time: 2018-09-26 15:36:20
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
  *  
 */
@@ -162,6 +162,12 @@ export default class MenuManagement extends Component {
       rowId:row.typeId,
       typeState:row.typeState,
       defaultValue: row.typeHotState,
+      fileList:row.typePathOne && modalTitle === '设置' ? [
+        {uid: -1, name: 'default.png', status: 'done', url:row.typePathOne }] 
+      : [],
+      fileList1:row.typePathTwo ? [
+        {uid: -1, name: '暂无', status: 'done', url:row.typePathTwo },
+      ] : [],
     })
   }
 
@@ -189,6 +195,8 @@ export default class MenuManagement extends Component {
     }
     this.setState({
       showModal:false,
+      fileList:[],
+      fileList1:[],
     })
   }
 
@@ -199,6 +207,7 @@ export default class MenuManagement extends Component {
     })
     try {
       if (fileList[0] && fileList[0].status === 'done') {
+
         this.setState({
           // removeFlag: false,
           tempData: {
@@ -209,11 +218,21 @@ export default class MenuManagement extends Component {
         // this.props.form.setFieldsValue({
         //   imagePath: fileList[0].response.result.data,
         // })
-      } else if (fileList[0] && fileList[0].status === 'done') {
+      // } else if (fileList[0] && fileList[0].status === 'done') {
         // this.setState({
         //   removeFlag: true,
         // })
-      } else {
+      }
+      else if(fileList .length <= 0){
+        this.setState({
+          // removeFlag: false,
+          tempData: {
+            ...tempData,
+            imagePath:"",
+          },
+        })
+      }
+       else {
         // this.setState({
         //   removeFlag: false,
         // })
@@ -241,11 +260,17 @@ export default class MenuManagement extends Component {
         // this.props.form.setFieldsValue({
         //   imagePath: fileList[0].response.result.data,
         // })
-      } else if (fileList[0] && fileList[0].status === 'done') {
-        // this.setState({
-        //   removeFlag: true,
-        // })
-      } else {
+      } 
+      else if(fileList .length <= 0){
+        this.setState({
+          // removeFlag: false,
+          tempData1: {
+            ...tempData1,
+            imagePath:"",
+          },
+        })
+      }
+      else {
         // this.setState({
         //   removeFlag: false,
         // })
