@@ -81,13 +81,15 @@ export default class noticeDetail extends Component {
       <PageHeaderLayout>
         <Card>
           {/* <div>{state && backInfo && this.deleteSuccess('删除成功')}</div> */}
-          <div className={styles.btns}>
-            <a href={`/overview/noticeDetail/${layLess}`}>上一封</a>
-            <a href={`/overview/noticeDetail/${layMore}`}>下一封</a>
-            <Button onClick={this.handleDelete}>删除</Button>
-          </div>
-          <div className={styles.back}>
-            <Link to="/overview/SystemNotification">返回</Link>
+          <div className='clearfix'>
+            <div className={styles.btns}>
+              <a href={`/overview/noticeDetail/${layLess}`}>上一封</a>
+              <a href={`/overview/noticeDetail/${layMore}`}>下一封</a>
+              <Button onClick={this.handleDelete}>删除</Button>
+            </div>
+            <div className={styles.back}>
+              <Link to="/overview/SystemNotification">返回</Link>
+            </div>
           </div>
           <div className={styles.content}>
             <h1>{infos.noteTitle}</h1>
