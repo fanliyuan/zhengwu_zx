@@ -18,7 +18,7 @@ export default class ViewDirectory extends Component {
   }
 
   componentDidMount() {
-    const { resourceId } = this.props.history.location.state
+    const { state: {resourceId} = {} } = this.props.history.location
     this.props.dispatch({
       type: 'catalogManagement/getCatalogInfo',
       payload: {

@@ -2,18 +2,18 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-25 16:55:50
+ * @Last Modified time: 2018-09-26 13:55:10
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import { Link } from 'dva/router'
+import { Link, routerRedux } from 'dva/router'
 import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal, Tooltip, Tree, Icon, Badge } from 'antd'
 import moment from 'moment'
 import { isArray } from 'util'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-import { getName, getAddress, getDepartment } from '../../utils/faker'
+import { getName, getAddress } from '../../utils/faker'
 import styles from './AllSub.less'
 import { format0, format24 } from '../../utils/utils'
 
@@ -39,7 +39,8 @@ function renderTreeNode(renderList) {
     }
   })
 }
-function getData1() {
+/** 
+ function getData1() {
   const data = []
   for (let i = 0; i < 120; i++) {
     data.push({
@@ -57,6 +58,8 @@ function getData1() {
   }
   return data
 }
+*/
+
 function getData2() {
   const data = []
   for (let i = 0; i < 120; i++) {
@@ -94,7 +97,7 @@ function getData3() {
   }
   return data
 }
-const data1 = getData1()
+// const data1 = getData1()
 const data2 = getData2()
 const data3 = getData3()
 let directoryData = {}
@@ -103,7 +106,7 @@ let directoryData = {}
 //   overviewLogging,
 //   loading: loading.models.overviewLogging,
 // }))
-@connect(({ catalogManagement }) => ({ catalogManagement }))
+@connect(({ catalogManagement, allSubscription, loading }) => ({ catalogManagement, allSubscription, loading: loading.models.allSubscription }))
 export default class AllSub extends Component {
   state = {
     queryData: {},
@@ -121,6 +124,7 @@ export default class AllSub extends Component {
     this.props.dispatch({
       type: 'catalogManagement/getCatalogList',
     })
+    this.handleSearch({pageSize: 10, current: 1})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -136,7 +140,7 @@ export default class AllSub extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        title: e.target.value.trim(),
+        dsName: e.target.value.trim(),
       },
       isChanged: true,
     })
@@ -169,9 +173,23 @@ export default class AllSub extends Component {
     })
   }
 
-  handleSearch = () => {
-    if (!this.state.isChanged) return // eslint-disable-line
-    console.log(this.state.queryData) // eslint-disable-line
+  handleSearch = ({pageSize=10, current: pageNum=1} = {}, flag) => {
+    if (!this.state.isChanged && flag) return null // eslint-disable-line
+    // console.log(this.state.queryData) // eslint-disable-line
+    const { queryData: { startTime, endTime, dsName, dsDir } } = this.state
+    this.props.dispatch({
+      type: 'allSubscription/getSubscription',
+      payload: {
+        body: {
+          dsDir,
+          dsName,
+          startTime,
+          endTime,
+          pageNum,
+          pageSize,
+        },
+      },
+    })
     this.setState({
       isChanged: false,
     })
@@ -182,7 +200,8 @@ export default class AllSub extends Component {
   }
 
   handleStandardTableChange = pagination => {
-    console.log(pagination) // eslint-disable-line
+    // console.log(pagination) // eslint-disable-line
+    this.handleSearch(pagination)
   }
 
   modalOk = () => {
@@ -192,6 +211,7 @@ export default class AllSub extends Component {
       modalVisible:false,
       queryData: {
         ...queryData,
+        dsDir: directoryData && directoryData.key,
         classifyId: directoryData && directoryData.key,
         classisyName: directoryData && directoryData.props.title,
       },
@@ -244,7 +264,7 @@ export default class AllSub extends Component {
 
   render() {
     const { selectKeys, isNodeOperator, modalVisible, queryData: { classisyName }, query } = this.state
-    const { catalogManagement: { catalogTreeList, catalogList }, loading } = this.props // eslint-disable-line
+    const { catalogManagement: { catalogTreeList, catalogList }, allSubscription: { dataList, pagination }, loading } = this.props // eslint-disable-line
 
     const stateList = [
       {
@@ -268,15 +288,18 @@ export default class AllSub extends Component {
       // },
       {
         title: '订阅名称',
-        dataIndex: 'name',
+        dataIndex: 'subscriberName',
       },
       {
         title: '订阅申请人',
-        dataIndex: 'person',
+        dataIndex: 'subscriberPeople',
       },
       {
         title: '订阅时间',
-        dataIndex: 'time',
+        dataIndex: 'subscriberTime',
+        render: (text) => {
+          return moment(text).format('lll')
+        },
       },
       // {
       //   title: '目录名称',
@@ -288,17 +311,17 @@ export default class AllSub extends Component {
       // },
       {
         title: '目录名称',
-        dataIndex: 'menuName',
+        dataIndex: 'dsName',
       },
       {
         title: '发布机构',
-        dataIndex: 'menuOrganization',
+        dataIndex: 'publisherDeptName',
       },
       {
         title: '运行状态',
         dataIndex: 'state',
         render: (text) => {
-          return <Badge status={text==='运行中'?'success': 'default'} text={text} />
+          return <Badge status={text?'success': 'default'} text={text?'运行中':'已停止'} />
         },
       },
       {
@@ -308,14 +331,7 @@ export default class AllSub extends Component {
           return row.state === '运行中' ? (
             <Fragment>
               {!isNodeOperator && (
-                <Link
-                  to={`/dataSwitchManagement/${
-                    row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
-                  }/${row.id}`}
-                  className="mr8"
-                  >
-                  查看
-                </Link>
+                <a className='mr8' onClick={() => this.props.dispatch(routerRedux.push(`/dataSwitchManagement/${row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'}`, {subInfo: row}))}>查看</a>
               )}
               {isNodeOperator && (
                 <Link to={`/dataSwitchManagement/logAudit/${row.id}`}>审核日志</Link>
@@ -342,14 +358,7 @@ export default class AllSub extends Component {
                   <Link className="mr8" to={`/dataSwitchManagement/subscriptionFile/${row.id}`}>修改</Link>
                 )}
               {!isNodeOperator && (
-                <Link
-                  to={`/dataSwitchManagement/${
-                    row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'
-                  }/${row.id}`}
-                  className="mr8"
-                  >
-                  查看
-                </Link>
+                <a className='mr8' onClick={() => this.props.dispatch(routerRedux.push(`/dataSwitchManagement/${row.type === 'file' ? 'subscriptionFile' : 'subscriptionTable'}`, {subInfo: row}))}>查看</a>
               )}
               {isNodeOperator && (
                 <Popconfirm
@@ -370,7 +379,7 @@ export default class AllSub extends Component {
     if(!isNodeOperator){
       columns.splice(3,0,{
         title: '订阅机构',
-        dataIndex: 'organization',
+        dataIndex: 'subscriberDeptName',
       })
     }
     const willAuditColumns = [
@@ -612,21 +621,21 @@ export default class AllSub extends Component {
                   />
                 <Input
                   placeholder="订阅名称/目录名称"
-                  onPressEnter={this.handleSearch}
+                  onPressEnter={() => this.handleSearch({}, true)}
                   onChange={this.handleNameChange}
                   className={styles.name}
                   />
                 <Input
                   className={styles.name}
                   placeholder={isNodeOperator ? '发布机构' : '订阅机构/发布机构'}
-                  onPressEnter={this.handleSearch}
+                  onPressEnter={() => this.handleSearch({}, true)}
                   onChange={this.handleOrganizationChange}
                   />
                 <Select defaultValue='-1' onChange={this.handSelectChange} className={styles.state}>
                   {optionComs1}
                 </Select>
                 <RangePicker onChange={this.handlePick} className={styles.date} />
-                <Button type="primary" onClick={this.handleSearch} icon="search">
+                <Button type="primary" onClick={() => this.handleSearch({}, true)} icon="search">
                   搜索
                 </Button>
               </div>
@@ -672,9 +681,10 @@ export default class AllSub extends Component {
                   loading={loading}
                   bordered
                   columns={columns}
-                  dataSource={data1}
+                  dataSource={dataList}
                   rowSelection={rowSelection}
                   rowKey="id"
+                  pagination={pagination && { ...pagination,showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
                   onChange={this.handleStandardTableChange}
                   />
               </div>
@@ -685,27 +695,27 @@ export default class AllSub extends Component {
                   <Input
                     className={styles.theme}
                     placeholder="搜索分类"
-                    onPressEnter={this.handleSearch}
+                    onPressEnter={() => this.handleSearch({}, true)}
                     onChange={this.handleThemeChange}
                     onClick={this.handleFocus}
                     />
                   <Input
                     placeholder="订阅名称/目录名称"
-                    onPressEnter={this.handleSearch}
+                    onPressEnter={() => this.handleSearch({}, true)}
                     onChange={this.handleNameChange}
                     className={styles.name}
                     />
                   <Input
                     className={styles.theme}
                     placeholder="发布机构"
-                    onPressEnter={this.handleSearch}
+                    onPressEnter={() => this.handleSearch({}, true)}
                     onChange={this.handleThemeChange}
                     />
                   <Select onChange={this.handSelectChange} className={styles.state}>
                     {optionComs2}
                   </Select>
                   <RangePicker onChange={this.handlePick} className={styles.date} />
-                  <Button type="primary" onClick={this.handleSearch} icon="search">
+                  <Button type="primary" onClick={() => this.handleSearch({}, true)} icon="search">
                     搜索
                   </Button>
                 </div>
@@ -718,27 +728,27 @@ export default class AllSub extends Component {
                   <Input
                     className={styles.theme}
                     placeholder="搜索分类"
-                    onPressEnter={this.handleSearch}
+                    onPressEnter={() => this.handleSearch({}, true)}
                     onChange={this.handleThemeChange}
                     onClick={this.handleFocus}
                     />
                   <Input
                     placeholder="订阅名称/目录名称"
-                    onPressEnter={this.handleSearch}
+                    onPressEnter={() => this.handleSearch({}, true)}
                     onChange={this.handleNameChange}
                     className={styles.name}
                     />
                   <Input
                     className={styles.theme}
                     placeholder="发布机构"
-                    onPressEnter={this.handleSearch}
+                    onPressEnter={() => this.handleSearch({}, true)}
                     onChange={this.handleThemeChange}
                     />
                   <Select onChange={this.handSelectChange} className={styles.state}>
                     {optionComs2}
                   </Select>
                   <RangePicker onChange={this.handlePick} className={styles.date} />
-                  <Button type="primary" onClick={this.handleSearch} icon="search">
+                  <Button type="primary" onClick={() => this.handleSearch({}, true)} icon="search">
                     搜索
                   </Button>
                 </div>

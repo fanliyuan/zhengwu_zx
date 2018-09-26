@@ -2,8 +2,11 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-21 13:40:33
+ * @Last Modified time: 2018-09-26 14:52:09
  * @Description: 删除底部蚂蚁金服相关信息
+ * @important: 感觉权限应该从这里入手,在这里获取到登录后的路由信息,然后在这里生成routerData,来自memu和router两个数据
+ *   不需要权限authority,直接根据后台的数据生成路由信息.要求在登录成功后就返回router和token等信息;
+ *                      
  */
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'

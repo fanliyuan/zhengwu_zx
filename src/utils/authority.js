@@ -13,6 +13,10 @@ export function setAuthority(authority = 'guest') {
 }
 
 // 从服务器获取权限
+/** 
+ * 返回[{path: 'xxx',permission: true},{path: 'xxxx', premission: false,children:[]}]
+ * @returns {Array}
+*/
 export async function getPermissions() {
   let permissions = []
   try {

@@ -2,13 +2,14 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-17 11:52:04
+ * @Last Modified time: 2018-09-26 13:56:38
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Form, Input, InputNumber, Select, Button, Table, Card, Divider, Icon } from 'antd'
-import { Link } from 'dva/router'
+import { Link, routerRedux } from 'dva/router'
 
+import { connect } from 'dva'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './SubscriptionTable.less'
 
@@ -40,19 +41,25 @@ function Label(props) {
 }
 
 @Form.create()
+@connect()
 export default class SubscriptionTable extends Component {
   state = {
     isNodeOperator: false,
+    subInfo: {},
   }
 
   componentDidMount() {
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
     })
+    const { state: {subInfo={}} = {} } = this.props.history.location
+    this.setState({
+      subInfo,
+    })
   }
 
   render() {
-    const { isNodeOperator } = this.state
+    const { isNodeOperator,subInfo: { subscriberName, publisherDeptName, resourceId } } = this.state
     const columns = [
       {
         title: '字段',
@@ -109,18 +116,19 @@ export default class SubscriptionTable extends Component {
           <ButtonList onClick={this.handleSave} isNodeOperator={isNodeOperator} />
           <div>
             <Label label="订阅名称">
-              <Input className={styles.value} disabled={!isNodeOperator} />
+              <Input className={styles.value} disabled={!isNodeOperator} value={subscriberName} />
             </Label>
             <Label label="目录名称">石家庄东城区国土数据</Label>
           </div>
           <div>
-            <Label label="发布机构">石家庄东城区</Label>
+            <Label label="发布机构">{publisherDeptName}</Label>
             <Label label="数据类型">数据库</Label>
           </div>
           <div>
             <Label label="所属分类">国土数据</Label>
             <Label label="详情">
-              <Link to="/dataSourceManagement/viewDirectory">查看</Link>
+              {/* <Link to={`/dataSourceManagement/viewDirectory${}`}>查看</Link> */}
+              <a onClick={() => this.props.dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', {resourceId}))}>查看</a>
             </Label>
           </div>
           <div>
@@ -197,19 +205,19 @@ export default class SubscriptionTable extends Component {
                 title={() => (
                   <span>
                     {isNodeOperator ? (
-                      <Fragment>
+                      <span className='operate clearfix'>
                         <a className="fl">自动映射</a>
                         <a className="fr">清除映射</a>
-                      </Fragment>
+                      </span>
                     ) : (
-                      <Fragment>
+                      <span className='operate clearfix'>
                         <span className="fl" style={{ cursor: 'no-drop', color: 'silver' }}>
                           自动映射
                         </span>
                         <span className="fr" style={{ cursor: 'no-drop', color: 'silver' }}>
                           清除映射
                         </span>
-                      </Fragment>
+                      </span>
                     )}
                   </span>
                 )}
@@ -247,19 +255,19 @@ export default class SubscriptionTable extends Component {
                 title={() => (
                   <span>
                     {isNodeOperator ? (
-                      <Fragment>
+                      <span className='operate clearfix'>
                         <a className="fl">自动映射</a>
                         <a className="fr">清除映射</a>
-                      </Fragment>
+                      </span>
                     ) : (
-                      <Fragment>
+                      <span className='operate clearfix'>
                         <span className="fl" style={{ cursor: 'no-drop', color: 'silver' }}>
                           自动映射
                         </span>
                         <span className="fr" style={{ cursor: 'no-drop', color: 'silver' }}>
                           清除映射
                         </span>
-                      </Fragment>
+                      </span>
                     )}
                   </span>
                 )}

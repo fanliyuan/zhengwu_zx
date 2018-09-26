@@ -415,18 +415,18 @@ export const getRouterData = app => {
         import('../routes/DataSwitchManagement/ViewDirectory')
       ),
     },
-    '/dataSwitchManagement/subscriptionFile/:id': {
+    '/dataSwitchManagement/subscriptionFile': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/SubscriptionFile')
       ),
     },
-    '/dataSwitchManagement/subscriptionTable/:id': {
+    '/dataSwitchManagement/subscriptionTable': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSwitchManagement/SubscriptionTable')
       ),
     },
     '/dataSwitchManagement/allSub': {
-      component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/AllSub')),
+      component: dynamicWrapper(app, ['allSubscription'], () => import('../routes/DataSwitchManagement/AllSub')),
     },
     '/dataSwitchManagement/source': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSwitchManagement/Source')),

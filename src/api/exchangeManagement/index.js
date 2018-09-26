@@ -4,7 +4,7 @@ const module = {
     {
       name: 'getSubscription',
       url: 'queryResourceSubscribeInfoInfoList',
-      type: 'post',
+      method: 'post',
     },
   ],
 }

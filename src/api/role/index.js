@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:00
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-08-14 16:29:26
+ * @Last Modified time: 2018-09-25 17:32:13
  * @Description: 角色模块请求
  */
 const module = {
@@ -19,8 +19,8 @@ const module = {
   ],
 }
 module.apis.forEach(item => {
-  if (!item.baseUrl) {
-    item.baseUrl = 'yyqxzx/api/v1'
+  if (!item.baseHost) {
+    item.baseHost = 'http://api.tpaas.youedata.com/yyqxzx/api/v1'
   }
 })
 

@@ -15,13 +15,13 @@ const { getSubscription } = apis
       let response
       try {
         response = yield call(getSubscription, {body: payload.body})
-        const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
-        const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
-        if (+response.code === 0) {
+        const { data, total = 0, pageSize = 10, pageNum: current = 1 } = response.data
+        const pagination = total > pageSize ? {total, pageSize, current} : false
+        if (+response.code === 604) {
           yield put({
             type: 'savaDataList',
             payload: {
-              dataList: datas,
+              dataList: data,
               pagination,
             },
           })

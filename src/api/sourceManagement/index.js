@@ -34,6 +34,7 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseHost) {
     item.baseHost = 'http://192.168.100.16:8803'
+    // item.baseUrl = 'apis'
     // item.baseHost = 'http://testresource.tpaas.youedata.com'
   }
 })
