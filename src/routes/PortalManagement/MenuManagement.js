@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-09-26 15:36:20
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-09-26 16:37:51
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
  *  
 */
@@ -187,10 +187,15 @@ export default class MenuManagement extends Component {
         payload:{typeId:text.rowId,typeState:text.typeState, mender:oper, id:text.ids},
       })
     }
-    else if(text.modalTitle === "设置" || text.modalTitle === "发布"){
+    else if(text.modalTitle === "设置"){
       dispatch({
         type:'portalManagement/updateItem',
         payload:{typeId:text.rowId,typeHotState:defaultValue,typeState:text.typeState, mender:oper, id:text.ids,typePathOne:imagePath,typePathTwo:tempData1.imagePath},
+      })
+    } else {
+      dispatch({
+        type:'portalManagement/updateItem',
+        payload:{typeId:text.rowId,typeHotState:defaultValue,typeState:text.typeState, mender:oper, id:text.ids},
       })
     }
     this.setState({
