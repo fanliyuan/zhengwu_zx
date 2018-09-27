@@ -71,7 +71,7 @@ export default {
           })
         }
         else {
-          message.info(response.msg)
+          message.error(response.msg)
         }
       }catch(err){
         message.error("网络连接错误")
@@ -103,7 +103,7 @@ export default {
           })
         }
         else {
-          message.info(response.msg)
+          message.error(response.msg)
         }
       }catch(err){
         message.error("网络连接错误")
@@ -121,7 +121,7 @@ export default {
           })
         }
         else {
-          message.info(response.msg)
+          message.error(response.msg)
         }
       }catch(err){
         message.error("网络连接错误")

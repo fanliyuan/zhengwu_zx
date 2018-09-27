@@ -45,14 +45,14 @@ export default {
       const response = yield call(updateResource,{ body: payload })
       try {
         if(+response.code === 0){
-          message.info(response.msg)
+          message.success(response.msg)
           yield put ({
             type:'querys',
             payload:{pageNum:1,pageSize:10},
           })
         }
         else {
-          message.info(response.msg)
+          message.error(response.msg)
         }
       }catch(err){
         console.log(err) // eslint-disable-line

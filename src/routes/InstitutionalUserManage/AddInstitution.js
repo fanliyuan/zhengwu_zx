@@ -119,7 +119,7 @@ export default class AddInstitution extends Component {
       this.props.form.setFieldsValue({
         deptName:e.target.value.slice(0,20),
       })
-      message.info("机构名称不能超过20个字符")
+      message.error("机构名称不能超过20个字符")
     }
   }
 
