@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-09-27 10:16:05
+ * @Last Modified time: 2018-09-27 14:01:33
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
  *  
 */
@@ -365,8 +365,8 @@ export default class MenuManagement extends Component {
       {
         title: '是否推荐',
         dataIndex: 'typeHotState',
-        render: (text) => {
-          return +text === 0 ? '否': '是'
+        render: (text,row) => {
+          return +row.typeState === 0 ? '-': (+text === 0 ? '否':'是')
         },
       },
       {
