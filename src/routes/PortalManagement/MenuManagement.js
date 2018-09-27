@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-26 16:37:51
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-09-27 10:16:05
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
  *  
 */
@@ -108,8 +108,8 @@ export default class MenuManagement extends Component {
     if (!this.state.isChanged) return // eslint-disable-line
     const { dispatch } = this.props
     const { name, state, recommend, date, operator } = this.state
-    const states = state === "发布状态" ? undefined : state
-    const recommends = recommend === "是否推荐" ? undefined : recommend
+    const states = (state === "发布状态" || state === -1) ? undefined : state
+    const recommends = (recommend === "是否推荐" || recommend === -1) ? undefined : recommend
     const names = name === "" ? undefined : name
     const operators = operator === "" ? undefined : operator
     const pagination = {
@@ -135,8 +135,8 @@ export default class MenuManagement extends Component {
   handleStandardTableChange = pagination => {
     const { dispatch } = this.props
     const { name, state, recommend, date, operator } = this.state
-    const states = state === "发布状态" ? undefined : state
-    const recommends = recommend === "是否推荐" ? undefined : recommend
+    const states = (state === "发布状态" || state === -1) ? undefined : state
+    const recommends = (recommend === "是否推荐" || recommend === -1) ? undefined : recommend
     const names = name === "" ? undefined : name
     const operators = operator === "" ? undefined : operator
     const dateRange = date.map((item) => {
@@ -319,6 +319,10 @@ export default class MenuManagement extends Component {
     const { portalManagement:{ lists, pagination }, loading } = this.props
     const stateList = [
       {
+        value: -1,
+        label: '全部',
+      },
+      {
         value: 1,
         label: '已发布',
       },
@@ -328,6 +332,10 @@ export default class MenuManagement extends Component {
       },
     ]
     const recommendList = [
+      {
+        value: -1,
+        label: '全部',
+      },
       {
         value: 1,
         label: '是',
