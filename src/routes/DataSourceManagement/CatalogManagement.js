@@ -236,9 +236,9 @@ export default class CatalogManagement extends Component {
   handleSourceConnect = row => {
     const { dispatch } = this.props
     if (row.dataType === 'file') {
-      dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData'))
+      dispatch(routerRedux.push('/dataSourceManagement/resourceConnection', { resourceId: row.resourceId, resourceInfo: row }))
     } else {
-      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { resourceId: row.resourceId }))
+      dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData', { resourceId: row.resourceId, resourceInfo: row }))
     }
   }
 

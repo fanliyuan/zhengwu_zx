@@ -222,25 +222,25 @@ export const getRouterData = app => {
       ),
     },
     '/dataSourceManagement/resourceConnection': {
-      component: dynamicWrapper(app, [], () =>
+      component: dynamicWrapper(app, ['sourceManagement'], () =>
         import('../routes/DataSourceManagement/ResourceConnection')
       ),
     },
-    '/dataSourceManagement/resourceConnection/:id': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/ResourceConnection')
-      ),
-    },
+    // '/dataSourceManagement/resourceConnection/:id': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataSourceManagement/ResourceConnection')
+    //   ),
+    // },
     '/dataSourceManagement/resourceConnectionData': {
       component: dynamicWrapper(app, [], () =>
         import('../routes/DataSourceManagement/ResourceConnectionData')
       ),
     },
-    '/dataSourceManagement/resourceConnectionData/:id': {
-      component: dynamicWrapper(app, [], () =>
-        import('../routes/DataSourceManagement/ResourceConnectionData')
-      ),
-    },
+    // '/dataSourceManagement/resourceConnectionData/:id': {
+    //   component: dynamicWrapper(app, [], () =>
+    //     import('../routes/DataSourceManagement/ResourceConnectionData')
+    //   ),
+    // },
     '/dataSourceManagement/setPlan': {
       component: dynamicWrapper(app, [], () => import('../routes/DataSourceManagement/SetPlan')),
     },

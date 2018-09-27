@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-27 14:49:28
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-27 15:11:44
+ * @Last Modified time: 2018-09-27 17:35:31
  * @Description: 这个页面值得研究
  */
 import React, { Component } from 'react'
@@ -20,11 +20,13 @@ import {
   DatePicker,
   Form,
   Checkbox,
+  Icon,
 } from 'antd'
 import moment from 'moment'
 
 import styles from './ResourceConnectionData.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+// import arrImage from '../../assets/arrow.png'
 
 const { RangePicker } = DatePicker
 
@@ -76,8 +78,9 @@ class EditableCell extends React.Component {
   }
 }
 
-@connect(({ resourceConnectionData }) => ({
-  resourceConnectionData,
+@connect(({ sourceManagement, loading }) => ({
+  sourceManagement,
+  loading: loading.models.sourceManagement,
 }))
 export default class ResourceConnectionData extends Component {
   state = {
@@ -85,11 +88,23 @@ export default class ResourceConnectionData extends Component {
     visible1: false,
     visible2: false,
     isNodeOperator: false,
+    resourceInfo: {},
   }
 
   componentDidMount() {
+    const { state: { resourceInfo = {} } = {} } = this.props.history.location
     this.setState({
       isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      resourceInfo,
+    })
+    this.props.dispatch({
+      type: 'sourceManagement/getDBInfo',
+      payload: {
+        params: {
+          id: resourceInfo.resourceId,
+          // id: 'db20',
+        },
+      },
     })
   }
 
@@ -182,8 +197,10 @@ export default class ResourceConnectionData extends Component {
   }
 
   render() {
-    const { ItemConnect, visible1, visible2, isNodeOperator } = this.state
+    const { ItemConnect, visible1, visible2, isNodeOperator, resourceInfo: { typeId, resourceName, createTime, resourceProviderName } } = this.state // eslint-disable-line
     const pagination = { pageSize: 10, current: 1 }
+    const { sourceManagement: { DBInfo: { structAddDtoList = [] } = {} } } = this.props
+    structAddDtoList.forEach((item,index) => item.index = index+1) // eslint-disable-line
     const columns = [
       {
         title: '信息编码',
@@ -267,7 +284,7 @@ export default class ResourceConnectionData extends Component {
       },
       {
         id: 1,
-        tableName: '',
+        tableName: '1232132',
         field: '',
         types: '',
         intro: '',
@@ -530,6 +547,19 @@ export default class ResourceConnectionData extends Component {
       },
     }
 
+    const arrowColumns = [
+      {
+        dataIndex: 'key',
+        render: () => {
+          return (
+            <Divider dashed orientation="right" className={styles.divider}>
+              <Icon type="right" />
+            </Divider>
+          )
+        },
+      },
+    ]
+
     return (
       <PageHeaderLayout>
         <div className="btncls clearfix">
@@ -545,10 +575,10 @@ export default class ResourceConnectionData extends Component {
         <Card>
           <div className={styles.form}>
             <h3>
-              目录编码:<span> 3300031306381126/00001</span>
-              名称:<span> 资产负债表信息</span>
-              提供方:<span> 规划局</span>
-              创建时间:<span> 2018-06-08 10:11:10</span>
+              目录编码:<span> {typeId}</span>
+              名称:<span> {resourceName}</span>
+              提供方:<span> {resourceProviderName}</span>
+              创建时间:<span> {moment(createTime).format('lll')}</span>
             </h3>
             <Divider />
           </div>
@@ -566,18 +596,18 @@ export default class ResourceConnectionData extends Component {
               </div>
             )}
           </div>
-          <div style={{ marginBottom: 20 }}>
-            <div style={{ display: 'inline-block', marginRight: 20 }}>
-              <h3>挂接资源检索关系设置&nbsp;:&nbsp;</h3>
-            </div>
-            {isNodeOperator && (
+          {isNodeOperator && (
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ display: 'inline-block', marginRight: 20 }}>
+                <h3>挂接资源检索关系设置&nbsp;:&nbsp;</h3>
+              </div>
               <div style={{ display: 'inline-block' }}>
                 <span className={styles.linkBtn} onClick={this.showModal2}>
                   去选择
                 </span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
           {/* <Row style={{ marginBottom: 20 }}>
             <Col span={4}>
               <Input placeholder="信息编码" />
@@ -589,77 +619,51 @@ export default class ResourceConnectionData extends Component {
               <Button type="primary">搜索</Button>
             </Col>
           </Row> */}
-          <Row>
-            <Col span={10}>
-              <Table
-                columns={columns}
-                dataSource={list}
-                pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                rowKey="id"
-                bordered
-                />
-            </Col>
-            <Col span={4} style={{ textAlign: 'center' }}>
-              <Row>
-                <Col span={11}>
-                  <Button onClick={this.handleConnect} size="small" type="primary">
-                    自动映射
-                  </Button>
-                </Col>
-                <Col span={11} offset={2}>
-                  <Button onClick={this.handleClearConnect} size="small" type="primary">
-                    清除映射
-                  </Button>
-                </Col>
-              </Row>
-              {/* <Radio.Group value={target} onChange={this.handleSizeChange}>
-                <Radio.Button value="a1">Large</Radio.Button>
-                <Radio.Button value="a2">Default</Radio.Button>
-              </Radio.Group> */}
-              <Row
-                style={{
-                  marginTop: 40,
-                  padding: '0 10px',
-                  display: ItemConnect ? 'block' : 'none',
-                }}
-                >
-                <Col>
-                  <img src="/src/assets/arrow.png" alt="arrow" style={{ width: '100%' }} />
-                </Col>
-              </Row>
-              <Row
-                style={{
-                  padding: '0 10px',
-                  marginTop: 30,
-                  display: ItemConnect ? 'block' : 'none',
-                }}
-                >
-                <Col>
-                  <img src="/src/assets/arrow.png" alt="arrow" style={{ width: '100%' }} />
-                </Col>
-              </Row>
-              <Row
-                style={{
-                  padding: '0 10px',
-                  marginTop: 30,
-                  display: ItemConnect ? 'block' : 'none',
-                }}
-                >
-                <Col>
-                  <img src="/src/assets/arrow.png" alt="arrow" style={{ width: '100%' }} />
-                </Col>
-              </Row>
-            </Col>
-            <Col span={10}>
-              <Table
-                columns={columns1}
-                dataSource={list1}
-                pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                rowKey="id"
-                bordered
-                />
-            </Col>
-          </Row>
+          <div>
+            <Table
+              columns={columns}
+              dataSource={structAddDtoList}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+              rowKey="id"
+              bordered
+              className={styles.table}
+              />
+            {/* 这里已经去掉了映射的另外一个 */}
+            <Table
+              dataSource={list}
+              title={() => (
+                <span>
+                  {isNodeOperator ? (
+                    <span className='operate clearfix'>
+                      <a className="fl">自动映射</a>
+                      <a className="fr">清除映射</a>
+                    </span>
+                  ) : (
+                    <span className='operate clearfix'>
+                      <span className="fl" style={{ cursor: 'no-drop', color: 'silver' }}>
+                        自动映射
+                      </span>
+                      <span className="fr" style={{ cursor: 'no-drop', color: 'silver' }}>
+                        清除映射
+                      </span>
+                    </span>
+                  )}
+                </span>
+              )}
+              columns={arrowColumns}
+              className={styles.arrow}
+              pagination={false}
+              rowKey='id'
+              />
+            <Table
+              columns={columns1}
+              dataSource={list1}
+              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+              rowKey="id"
+              bordered
+              className={styles.table}
+              />
+          </div>
           <Modal
             title="选择要挂接的资源"
             visible={visible1}

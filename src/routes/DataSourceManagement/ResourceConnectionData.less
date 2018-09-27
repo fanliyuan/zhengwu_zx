@@ -15,24 +15,59 @@
   color: #1890ff;
   cursor: pointer;
 }
-.table {
-  :global {
-    .ant-table-thead {
-      th {
-        height: 54px !important;
-        padding: 0 16px;
-      }
-    }
-    .ant-form-item {
-      margin-bottom: 0 !important;
-      height: 39px;
-    }
-    .has-error {
-      margin-top: -4px;
-    }
-  }
-}
+// .table {
+//   :global {
+//     .ant-table-thead {
+//       th {
+//         height: 54px !important;
+//         padding: 0 16px;
+//       }
+//     }
+//     .ant-form-item {
+//       margin-bottom: 0 !important;
+//       height: 39px;
+//     }
+//     .has-error {
+//       margin-top: -4px;
+//     }
+//   }
+// }
 .spe {
   color: #e4393c;
   padding: 0 8px;
+}
+
+.table {
+  display: inline-block;
+  width: 40%;
+  vertical-align: top;
+  :global(.ant-table-title) {
+    background: #ccc;
+  }
+}
+.arrow {
+  display: inline-block;
+  width: 16%;
+  margin: 0 2%;
+  vertical-align: top;
+  :global {
+    .ant-table-thead {
+      th {
+        height: 54px;
+        background: white;
+      }
+    }
+    .ant-table-content{
+      width: 100%;
+      .ant-table-thead {
+        th {
+          display: none;
+        }
+      }
+    }
+  }
+}
+.divider {
+  margin: 0 !important;
+  line-height: 21px;
 }
