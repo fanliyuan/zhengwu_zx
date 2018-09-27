@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 16:47:50
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-26 11:35:50
+ * @Last Modified time: 2018-09-26 16:58:38
  * @Description: 描述请求配置,以及请求生成.
  */
 import apiBase from './apiBase'
@@ -16,6 +16,7 @@ import overview from './overview'
 import audit from './audit'
 import sourceManagement from './sourceManagement'
 import exchangeManagement from './exchangeManagement'
+import notification from './notification'
 
 class ApiSub extends apiBase {
   constructor (module) {
@@ -35,4 +36,5 @@ export default {
   ...apiFactory(new ApiSub(audit)),
   ...apiFactory(new ApiSub(sourceManagement)),
   ...apiFactory(new ApiSub(exchangeManagement)),
+  ...apiFactory(new ApiSub(notification)),
 }
