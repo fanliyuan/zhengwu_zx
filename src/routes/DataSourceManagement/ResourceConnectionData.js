@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-27 14:49:28
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-27 17:35:31
+ * @Last Modified time: 2018-09-28 09:15:46
  * @Description: 这个页面值得研究
  */
 import React, { Component } from 'react'
@@ -101,8 +101,8 @@ export default class ResourceConnectionData extends Component {
       type: 'sourceManagement/getDBInfo',
       payload: {
         params: {
-          id: resourceInfo.resourceId,
-          // id: 'db20',
+          id: resourceInfo.mountResourceId,
+          // id: 'db28',
         },
       },
     })
