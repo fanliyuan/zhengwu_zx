@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-29 11:32:12
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-09-29 14:37:03
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -775,6 +775,7 @@ export default class AllSub extends Component {
             title="分类"
             visible={modalVisible}
             className={styles.modal}
+            wrapClassName={styles.box}
             onOk={this.modalOk}
             onCancel={this.modalCancel}
             >
