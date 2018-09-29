@@ -93,8 +93,8 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        startTime: val[0] ? val[0].format().substr(0,10) :undefined,
-        endTime: val[1] ? val[1].format().substr(0,10) :undefined,
+        startTime: val[0] ? `${val[0].format().substr(0,10)} 0:00:00` :undefined,
+        endTime: val[1] ? `${val[1].format().substr(0,10)} 23:59:59` :undefined,
       },
       isChanged: true,
     })

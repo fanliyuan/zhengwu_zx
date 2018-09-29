@@ -270,7 +270,7 @@ export default class CatalogManagement extends Component {
 
   handleTask = row => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/task', {resourceId: row.resourceId}))
+    dispatch(routerRedux.push('/dataSourceManagement/task', {resourceId: row.resourceId, resourceInfo: row}))
   }
 
   render() {

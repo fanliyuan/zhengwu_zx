@@ -43,7 +43,7 @@ const { getSubscription, getResourceSubscribeInfoInfo } = apis
       try {
         response = yield call(getResourceSubscribeInfoInfo, {params: payload.params})
         const { data } = response
-        if (+response.code === 602) {
+        if (+response.code === 200) {
           yield put({
             type: 'savaSubData',
             payload: {

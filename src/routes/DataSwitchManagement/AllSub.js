@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-29 09:43:12
+ * @Last Modified time: 2018-09-29 11:32:12
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -178,8 +178,8 @@ export default class AllSub extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        createTime: val[0] && val[0].format().substr(0,10),
-        updateTime: val[1] && val[1].format().substr(0,10),
+        createTime: val[0] ? `${val[0].format().substr(0,10)} 0:00:00` : undefined,
+        updateTime: val[1] ? `${val[1].format().substr(0,10)} 23:59:59` : undefined,
       },
       isChanged: true,
     })

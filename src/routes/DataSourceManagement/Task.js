@@ -40,19 +40,42 @@ function getSyncfrequency(params) {
     return `每小时${arr[0]}分`
   }
 }
-@connect(({ catalogManagement, loading }) => ({
+@connect(({ catalogManagement, sourceManagement, loading }) => ({
   catalogManagement,
-  loading: loading.models.catalogManagement,
+  sourceManagement,
+  loading: loading.models.catalogManagement || loading.models.sourceManagement,
 }))
 export default class Task extends Component {
-  state = {}
+  state = {
+    resourceInfo: {},
+  }
 
   componentDidMount() {
+    const { state: { resourceInfo = {}, resourceInfo: { mountResourceId } = {}, resourceId } = {} } = this.props.location
     this.props.dispatch({
       type: 'catalogManagement/getResourceTaskInfo',
       payload: {
         params: {
-          id: this.props.history.location.state && this.props.history.location.state.resourceId, 
+          id: resourceId, 
+        },
+      },
+    })
+    this.setState({
+      resourceInfo,
+    })
+    this.props.dispatch({
+      type: 'sourceManagement/getDBInfo',
+      payload: {
+        params: {
+          id: mountResourceId,
+        },
+      },
+    })
+    this.props.dispatch({
+      type: 'catalogManagement/getResourceTitle',
+      payload: {
+        params: {
+          resourceId,
         },
       },
     })
@@ -64,7 +87,8 @@ export default class Task extends Component {
   }
 
   render() {
-    const { loading, catalogManagement: { resourceTaskInfo: { pubMode, pubfreQuency, timSetting, taskState, createdTime, syncTime, dataSize } } } = this.props // eslint-disable-line
+    const { loading, catalogManagement: { resourceTaskInfo: { pubMode, pubfreQuency, timSetting, taskState, createdTime, syncTime, dataSize }, resourceTitle: { dataType, updateTime } }, sourceManagement: { DBInfo: { value: { dbName } = {}, updataTime } = {} }} = this.props // eslint-disable-line
+    const { resourceInfo: { resourceName, resourceProviderName } } = this.state
     // const pagination = {
     //   pageSize: 10,
     //   current: 1,
@@ -227,15 +251,15 @@ export default class Task extends Component {
             &nbsp;&nbsp;所属机构: &nbsp;<span>石家庄市民政局</span>
             &nbsp;&nbsp;数据更新时间: &nbsp;<span>2018-06-20 15:08:08</span> */}
             <span className={styles.label}>数据库</span>
-            <span className={styles.value}>Youedata_dig</span>
+            <span className={styles.value}>{dbName}</span>
             <span className={styles.label}>数据类型</span>
-            <span className={styles.value}>MySQL</span>
+            <span className={styles.value}>{dataType}</span>
             <span className={styles.label}>资源名称</span>
-            <span className={styles.value}>城市低保标准表</span>
+            <span className={styles.value}>{resourceName}</span>
             <span className={styles.label}>所属机构</span>
-            <span className={styles.value}>石家庄市民政局</span>
+            <span className={styles.value}>{resourceProviderName}</span>
             <span className={styles.label}>数据更新时间</span>
-            <span className={styles.value}>2018-06-20 15:08:08</span>
+            <span className={styles.value}>{updataTime?moment(updataTime).format('lll'):'暂无'}</span>
           </p>
           <div className={styles.contentInfo}>
             <Tabs defaultActiveKey="1">

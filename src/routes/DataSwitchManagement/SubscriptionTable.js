@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-28 16:27:49
+ * @Last Modified time: 2018-09-29 11:20:50
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component } from 'react'
@@ -188,7 +188,7 @@ export default class SubscriptionTable extends Component {
                 <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
               </Label>
             </div>
-            <div>
+            {/* <div>
               <Label label="订阅存储数据库">
                 <Select className={styles.rate} disabled={!isNodeOperator}>
                   <Option value={1}>数据库1</Option>
@@ -197,7 +197,7 @@ export default class SubscriptionTable extends Component {
                   <Option value={4}>数据库5</Option>
                 </Select>
               </Label>
-            </div>
+            </div> */}
           </Card>
           {/* <div>
             <span className={styles.label}>订阅存储数据表</span>
