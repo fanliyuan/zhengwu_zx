@@ -143,8 +143,8 @@ export default class CatalogManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        startTime: val[0] && `${val[0].format().substr(0,10)}`,
-        endTime: val[1] && `${val[1].format().substr(0,10)}`,
+        startTime: val[0] && `${val[0].format().substr(0,10)} 0:00:00`,
+        endTime: val[1] && `${val[1].format().substr(0,10)} 23:59:59`,
       },
       isChanged: true,
     })
