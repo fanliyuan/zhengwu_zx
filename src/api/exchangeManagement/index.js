@@ -6,6 +6,10 @@ const module = {
       url: 'queryResourceSubscribeInfoInfoList',
       method: 'post',
     },
+    {
+      name: 'getResourceSubscribeInfoInfo',
+      url: 'getResourceSubscribeInfoInfo',
+    },
   ],
 }
 module.apis.forEach(item => {

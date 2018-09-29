@@ -128,7 +128,7 @@ export default class SourceManagement extends Component {
     if (row.dataType === 'file') {
       dispatch(routerRedux.push('/dataSourceManagement/fileSource', { resourceId: row.resourceId }))
     } else {
-      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { resourceId: row.resourceId }))
+      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.mountResourceId }))
     }
   }
 

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-27 14:49:28
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-28 09:15:46
+ * @Last Modified time: 2018-09-28 14:15:36
  * @Description: 这个页面值得研究
  */
 import React, { Component } from 'react'
@@ -198,9 +198,9 @@ export default class ResourceConnectionData extends Component {
 
   render() {
     const { ItemConnect, visible1, visible2, isNodeOperator, resourceInfo: { typeId, resourceName, createTime, resourceProviderName } } = this.state // eslint-disable-line
-    const pagination = { pageSize: 10, current: 1 }
-    const { sourceManagement: { DBInfo: { structAddDtoList = [] } = {} } } = this.props
-    structAddDtoList.forEach((item,index) => item.index = index+1) // eslint-disable-line
+    const pagination = false
+    const { sourceManagement: { DBInfo: { name, value: {structAddDtoList = [], tableName} = {} } = {} } } = this.props
+    structAddDtoList.forEach((item,index) => {item.tableName = tableName}) // eslint-disable-line
     const columns = [
       {
         title: '信息编码',
@@ -222,29 +222,6 @@ export default class ResourceConnectionData extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const list = [
-      {
-        id: 0,
-        infoCode: '',
-        infoName: 'id',
-        dataTypes: 'int',
-        dataSize: '',
-      },
-      {
-        id: 1,
-        infoCode: '',
-        infoName: 'name',
-        dataTypes: 'varchar',
-        dataSize: '',
-      },
-      {
-        id: 2,
-        infoCode: '',
-        infoName: 'sex',
-        dataTypes: 'varchar',
-        dataSize: '',
-      },
-    ]
     const columns1 = [
       {
         title: '表名称',
@@ -252,15 +229,15 @@ export default class ResourceConnectionData extends Component {
       },
       {
         title: '字段',
-        dataIndex: 'field',
+        dataIndex: 'columnName',
       },
       {
         title: '类型',
-        dataIndex: 'types',
+        dataIndex: 'columnType',
       },
       {
         title: '说明',
-        dataIndex: 'intro',
+        dataIndex: 'note',
       },
     ]
     if (isNodeOperator) {
@@ -274,29 +251,6 @@ export default class ResourceConnectionData extends Component {
     columns1.forEach(item => {
       item.align = 'center'
     })
-    const list1 = [
-      {
-        id: 0,
-        tableName: 'Dtable1',
-        field: 'id',
-        types: 'int',
-        intro: '',
-      },
-      {
-        id: 1,
-        tableName: '1232132',
-        field: '',
-        types: '',
-        intro: '',
-      },
-      {
-        id: 2,
-        tableName: 'Dtable2',
-        field: 'sex',
-        types: 'varchar',
-        intro: '',
-      },
-    ]
     const columnsModal1 = [
       {
         title: 'ID',
@@ -585,7 +539,7 @@ export default class ResourceConnectionData extends Component {
           <div style={{ marginBottom: 15 }}>
             <div style={{ display: 'inline-block', marginRight: 20 }}>
               <h3>
-                挂接资源名称&nbsp;:&nbsp;<span>城市低保标准</span>
+                挂接资源名称&nbsp;:&nbsp;<span>{name}</span>
               </h3>
             </div>
             {isNodeOperator && (
@@ -620,17 +574,17 @@ export default class ResourceConnectionData extends Component {
             </Col>
           </Row> */}
           <div>
+            {/* 这张表暂时没实现 */}
             <Table
               columns={columns}
-              dataSource={structAddDtoList}
+              dataSource={[]}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-              rowKey="id"
+              rowKey="columnName"
               bordered
               className={styles.table}
               />
-            {/* 这里已经去掉了映射的另外一个 */}
             <Table
-              dataSource={list}
+              dataSource={structAddDtoList}
               title={() => (
                 <span>
                   {isNodeOperator ? (
@@ -657,7 +611,7 @@ export default class ResourceConnectionData extends Component {
               />
             <Table
               columns={columns1}
-              dataSource={list1}
+              dataSource={structAddDtoList}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
               rowKey="id"
               bordered

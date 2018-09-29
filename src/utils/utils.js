@@ -214,6 +214,7 @@ export function format24(time) {
 export function number2String(params) {
   return params.map((item) => {
     if ((!Array.isArray(item.children)) || item.children.length === 0) {
+      item.children = null
       return {...item, value: `${item.value}`}
     } else {
       return {...item, value: `${item.value}`, children: number2String(item.children)}

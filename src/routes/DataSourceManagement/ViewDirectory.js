@@ -117,8 +117,8 @@ export default class ViewDirectory extends Component {
     const { catalogManagement: { catalogInfo, pagination1, resourceTitle }, loading } = this.props
     const data = [
       { value: '-1', id: -1, label: '全部共享类型' },
-      { value: '1', id: 1, label: '无条件共享' },
-      { value: '2', id: 2, label: '有条件共享' },
+      { value: '1', id: 1, label: '有条件共享' },
+      { value: '2', id: 2, label: '无条件共享' },
       { value: '3', id: 3, label: '不予共享' },
     ]
     const selectData = data.map(item => {
@@ -201,13 +201,13 @@ export default class ViewDirectory extends Component {
                 名称: <span>{resourceTitle.resourceName}</span>
               </Col>
               <Col span={6}>
-                分类: <span>{resourceTitle.resourceFormatClassifyName}</span>
+                分类: <span>{resourceTitle.dataType}</span>
               </Col>
               <Col span={6}>
                 信息资源代码: <span>{resourceTitle.resourceCode}</span>
               </Col>
               <Col span={6}>
-                信息资源格式: <span>{resourceTitle.resourceFormatClassifyName}</span>
+                信息资源格式: <span>{resourceTitle.resourceFormatClassify}</span>
               </Col>
             </Row>
             <Row style={{ marginBottom: 10 }}>

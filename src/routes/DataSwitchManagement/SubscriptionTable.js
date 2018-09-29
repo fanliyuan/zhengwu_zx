@@ -2,11 +2,11 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-26 13:56:38
+ * @Last Modified time: 2018-09-28 16:27:49
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component } from 'react'
-import { Form, Input, InputNumber, Select, Button, Table, Card, Divider, Icon } from 'antd'
+import { Form, Input, InputNumber, Select, Button, Table, Card, Divider, Icon } from 'antd' // eslint-disable-line
 import { Link, routerRedux } from 'dva/router'
 
 import { connect } from 'dva'
@@ -41,7 +41,10 @@ function Label(props) {
 }
 
 @Form.create()
-@connect()
+@connect(({ allSubscription, loading }) => ({
+  loading: loading.models.allSubscription,
+  allSubscription,
+}))
 export default class SubscriptionTable extends Component {
   state = {
     isNodeOperator: false,
@@ -56,132 +59,147 @@ export default class SubscriptionTable extends Component {
     this.setState({
       subInfo,
     })
+    this.props.dispatch({
+      type: 'allSubscription/getResourceSubscribeInfoInfo',
+      payload: {
+        params: {
+          id: subInfo.id,
+        },
+      },
+    })
   }
 
   render() {
-    const { isNodeOperator,subInfo: { subscriberName, publisherDeptName, resourceId } } = this.state
-    const columns = [
-      {
-        title: '字段',
-        dataIndex: 'field',
-        align: 'center',
-      },
-      {
-        title: '类型',
-        dataIndex: 'classify',
-        align: 'center',
-      },
-      {
-        title: '描述',
-        dataIndex: 'description',
-        align: 'center',
-      },
-    ]
-    const arrowColumns = [
-      {
-        title: '',
-        dataIndex: 'key',
-        render: () => {
-          return (
-            <Divider dashed orientation="right" className={styles.divider}>
-              <Icon type="right" />
-            </Divider>
-          )
-        },
-      },
-    ]
-    const data = [
-      {
-        id: 1,
-        key: 1,
-        field: 'id',
-        classify: 'init',
-      },
-      {
-        id: 2,
-        key: 2,
-        field: 'name',
-        classify: 'varchar',
-      },
-      {
-        id: 3,
-        key: 3,
-        field: 'gender',
-        classify: 'varchar',
-      },
-    ]
+    const { isNodeOperator,subInfo: { subscriberName, publisherDeptName } } = this.state
+    const { loading, allSubscription: { subData: { mountResourceId } } } = this.props
+    // const columns = [
+    //   {
+    //     title: '字段',
+    //     dataIndex: 'field',
+    //     align: 'center',
+    //   },
+    //   {
+    //     title: '类型',
+    //     dataIndex: 'classify',
+    //     align: 'center',
+    //   },
+    //   {
+    //     title: '描述',
+    //     dataIndex: 'description',
+    //     align: 'center',
+    //   },
+    // ]
+    // const arrowColumns = [
+    //   {
+    //     title: '',
+    //     dataIndex: 'key',
+    //     render: () => {
+    //       return (
+    //         <Divider dashed orientation="right" className={styles.divider}>
+    //           <Icon type="right" />
+    //         </Divider>
+    //       )
+    //     },
+    //   },
+    // ]
+    // const data = [
+    //   {
+    //     id: 1,
+    //     key: 1,
+    //     field: 'id',
+    //     classify: 'init',
+    //   },
+    //   {
+    //     id: 2,
+    //     key: 2,
+    //     field: 'name',
+    //     classify: 'varchar',
+    //   },
+    //   {
+    //     id: 3,
+    //     key: 3,
+    //     field: 'gender',
+    //     classify: 'varchar',
+    //   },
+    // ]
     return (
       <PageHeaderLayout>
         <div className="common-layout">
           <ButtonList onClick={this.handleSave} isNodeOperator={isNodeOperator} />
-          <div>
-            <Label label="订阅名称">
-              <Input className={styles.value} disabled={!isNodeOperator} value={subscriberName} />
-            </Label>
-            <Label label="目录名称">石家庄东城区国土数据</Label>
-          </div>
-          <div>
-            <Label label="发布机构">{publisherDeptName}</Label>
-            <Label label="数据类型">数据库</Label>
-          </div>
-          <div>
-            <Label label="所属分类">国土数据</Label>
-            <Label label="详情">
-              {/* <Link to={`/dataSourceManagement/viewDirectory${}`}>查看</Link> */}
-              <a onClick={() => this.props.dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', {resourceId}))}>查看</a>
-            </Label>
-          </div>
-          <div>
-            <Label label="发布模式">
-              <Select className={styles.method} disabled={!isNodeOperator}>
-                <Option value={0}>全量</Option>
-                <Option value={1}>增量</Option>
-              </Select>
-              <Select className={styles.method} disabled={!isNodeOperator}>
-                <Option value={0}>日志</Option>
-                <Option value={1}>数据</Option>
-              </Select>
-            </Label>
-          </div>
-          <div>
-            <Label label="发布频率">
-              <Select className={styles.rate} disabled={!isNodeOperator}>
-                <Option value={0}>定时</Option>
-              </Select>
-            </Label>
-          </div>
-          <div>
-            <Label label="定时设置" className={styles.timeSetting}>
-              <InputNumber
-                max={60}
-                min={0}
-                className={styles.time}
-                placeholder="分钟"
-                disabled={!isNodeOperator}
-                />
-              <InputNumber
-                max={23}
-                min={0}
-                className={styles.time}
-                placeholder="小时"
-                disabled={!isNodeOperator}
-                />
-              <Input className={styles.time} placeholder="日" disabled={!isNodeOperator} />
-              <Input className={styles.time} placeholder="月" disabled={!isNodeOperator} />
-              <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
-            </Label>
-          </div>
-          <div>
-            <Label label="订阅存储数据库">
-              <Select className={styles.rate} disabled={!isNodeOperator}>
-                <Option value={1}>数据库1</Option>
-                <Option value={2}>数据库2</Option>
-                <Option value={3}>数据库3</Option>
-                <Option value={4}>数据库5</Option>
-              </Select>
-            </Label>
-          </div>
-          <div>
+          <Card loading={loading} bordered={false}>
+            <div>
+              <Label label="订阅名称">
+                <Input className={styles.value} disabled={!isNodeOperator} value={subscriberName} />
+              </Label>
+              <Label label="目录名称">石家庄东城区国土数据</Label>
+            </div>
+            <div>
+              <Label label="发布机构">{publisherDeptName}</Label>
+              <Label label="数据类型">数据库</Label>
+            </div>
+            <div>
+              <Label label="所属分类">国土数据</Label>
+              <Label label="详情">
+                {/* <Link to={`/dataSourceManagement/viewDirectory${}`}>查看</Link> */}
+                {
+                  mountResourceId || mountResourceId === 0 || mountResourceId === '0' ? 
+                    <a onClick={() => this.props.dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', {mountResourceId}))}>查看</a> : 
+                    <a style={{cursor: 'no-drop', color: 'silver'}}>查看</a>
+                }
+              </Label>
+            </div>
+            <div>
+              <Label label="发布模式">
+                <Select className={styles.method} disabled={!isNodeOperator}>
+                  <Option value={0}>全量</Option>
+                  <Option value={1}>增量</Option>
+                </Select>
+                <Select className={styles.method} disabled={!isNodeOperator}>
+                  <Option value={0}>日志</Option>
+                  <Option value={1}>数据</Option>
+                </Select>
+              </Label>
+            </div>
+            <div>
+              <Label label="发布频率">
+                <Select className={styles.rate} disabled={!isNodeOperator}>
+                  <Option value={0}>定时</Option>
+                </Select>
+              </Label>
+            </div>
+            <div>
+              <Label label="定时设置" className={styles.timeSetting}>
+                <InputNumber
+                  max={60}
+                  min={0}
+                  className={styles.time}
+                  placeholder="分钟"
+                  disabled={!isNodeOperator}
+                  />
+                <InputNumber
+                  max={23}
+                  min={0}
+                  className={styles.time}
+                  placeholder="小时"
+                  disabled={!isNodeOperator}
+                  />
+                <Input className={styles.time} placeholder="日" disabled={!isNodeOperator} />
+                <Input className={styles.time} placeholder="月" disabled={!isNodeOperator} />
+                <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
+              </Label>
+            </div>
+            <div>
+              <Label label="订阅存储数据库">
+                <Select className={styles.rate} disabled={!isNodeOperator}>
+                  <Option value={1}>数据库1</Option>
+                  <Option value={2}>数据库2</Option>
+                  <Option value={3}>数据库3</Option>
+                  <Option value={4}>数据库5</Option>
+                </Select>
+              </Label>
+            </div>
+          </Card>
+          {/* <div>
             <span className={styles.label}>订阅存储数据表</span>
             <Card className={styles.card}>
               <div className="mb16">
@@ -283,7 +301,7 @@ export default class SubscriptionTable extends Component {
                 bordered
                 />
             </Card>
-          </div>
+          </div> */}
         </div>
       </PageHeaderLayout>
     )

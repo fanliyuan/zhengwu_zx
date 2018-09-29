@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-26 13:55:10
+ * @Last Modified time: 2018-09-29 09:43:12
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -15,7 +15,7 @@ import { isArray } from 'util'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import { getName, getAddress } from '../../utils/faker'
 import styles from './AllSub.less'
-import { format0, format24 } from '../../utils/utils'
+// import { format0, format24 } from '../../utils/utils'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
@@ -135,19 +135,31 @@ export default class AllSub extends Component {
     }
   }
 
+  handleThemeChange = () => {
+
+  }
+
   handleNameChange = e => {
     const { queryData } = this.state
     this.setState({
       queryData: {
         ...queryData,
-        dsName: e.target.value.trim(),
+        subscriberName: e.target.value.trim(),
       },
       isChanged: true,
     })
   }
 
-  handleThemeChange = () => {
+  handleOrganizationChange = e => {
     // console.log(e.target.value)// eslint-disable-line
+    const { queryData } = this.state
+    this.setState({
+      queryData: {
+        ...queryData,
+        subscriberDeptName: e.target.value.trim(),
+      },
+      isChanged: true,
+    })
   }
 
   handSelectChange = val => {
@@ -155,7 +167,7 @@ export default class AllSub extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        state: val,
+        runStatus: val === '-1'?undefined:val,
       },
       isChanged: true,
     })
@@ -166,8 +178,8 @@ export default class AllSub extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        startTime: val[0] && format0(val[0].format('x')),
-        endTime: val[1] && format24(val[1].format('x')),
+        createTime: val[0] && val[0].format().substr(0,10),
+        updateTime: val[1] && val[1].format().substr(0,10),
       },
       isChanged: true,
     })
@@ -176,15 +188,17 @@ export default class AllSub extends Component {
   handleSearch = ({pageSize=10, current: pageNum=1} = {}, flag) => {
     if (!this.state.isChanged && flag) return null // eslint-disable-line
     // console.log(this.state.queryData) // eslint-disable-line
-    const { queryData: { startTime, endTime, dsName, dsDir } } = this.state
+    const { queryData: { createTime, updateTime, subscriberName, dsDir, runStatus, subscriberDeptName } } = this.state
     this.props.dispatch({
       type: 'allSubscription/getSubscription',
       payload: {
         body: {
           dsDir,
-          dsName,
-          startTime,
-          endTime,
+          subscriberDeptName,
+          subscriberName,
+          runStatus,
+          createTime,
+          updateTime,
           pageNum,
           pageSize,
         },
@@ -255,6 +269,7 @@ export default class AllSub extends Component {
     this.setState({
       queryData: {
         ...queryData,
+        dsDir: undefined,
         classisyName: undefined,
         classifyId: undefined,
       },
@@ -439,7 +454,7 @@ export default class AllSub extends Component {
       },
       {
         title: '订阅名称',
-        dataIndex: 'name',
+        dataIndex: 'subscriberName',
       },
       {
         title: '订阅申请人',
@@ -620,7 +635,7 @@ export default class AllSub extends Component {
                   suffix={<Icon type='close-circle' onClick={this.handleClear} className={styles.icon} />}
                   />
                 <Input
-                  placeholder="订阅名称/目录名称"
+                  placeholder="订阅名称" // 目录名称
                   onPressEnter={() => this.handleSearch({}, true)}
                   onChange={this.handleNameChange}
                   className={styles.name}
