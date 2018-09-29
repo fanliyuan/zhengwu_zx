@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-04 17:32:51
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-05 15:24:28
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-09-29 17:12:41
  * 描述: 开放门户管理 -- 资讯管理 -- 发布管理 -- 发布
 */
 import React, { Component } from 'react'
@@ -23,13 +23,14 @@ class MySelect extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // console.log(nextProps.value)
     if (this.props.value !== nextProps.value) {
       this.setState({
         second: nextProps.value,
       })
     }
   }
-  
+
   firstColumnChange = value => {
     this.props.firstColumnChange.call(null, value)
   }
@@ -64,7 +65,8 @@ export default class Publication extends Component {
       time: [],
     },
     queryParams: {},
-    publishData: {},
+    publishData: {
+    },
     secondColumnList: [],
     isChange: false,
     // selectRowKeys: [],
@@ -186,11 +188,13 @@ export default class Publication extends Component {
   firstColumnChange = (value, columnObejct) => {
     this.setState({
       secondColumnList: columnObejct[value],
-    }, () => {
+    }
+    , () => {
       this.props.form.setFieldsValue({
         columns: [...this.state.secondColumnList].shift() && [...this.state.secondColumnList].shift().value,
       })
-    })
+    }
+    )
   }
 
   secondColumnChange = value => {
@@ -235,12 +239,14 @@ export default class Publication extends Component {
   }
 
   handlePublish = () => {
-    this.props.form.validateFieldsAndScroll(errors =>{
+    this.props.form.validateFieldsAndScroll((errors,values) =>{
+      // console.log(values)
       if (!errors) {
-        const { articleId, publishData: { articleCid, articleCname, articleTopState, articleHotState } } = this.state
+        const { articleId, publishData: { articleCname, articleTopState, articleHotState } } = this.state // articleCid, 
+        // console.log(articleCids)
         const body = {
           articleId,
-          articleCid,
+          articleCid:values.columns,
           articleCname,
           articleTopState,
           articleHotState,
