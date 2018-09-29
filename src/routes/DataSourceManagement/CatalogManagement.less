@@ -21,6 +21,16 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding: 16px;
+  transition: 0.15s all linear;
+}
+.active{
+  .column1{
+    width: 0;
+    padding: 0;
+  }
+  .column2{
+    width: 99%;
+  }
 }
 @media screen and(min-height: 900px) {
   .column1 {
@@ -32,6 +42,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: 16px;
+    transition: 0.15s all linear;
   }
 }
 .column2 {
@@ -39,6 +50,13 @@
   float: left;
   background: #fff;
   padding: 16px;
+  transition: 0.15s all linear;
+  position: relative;
+  .icon{
+    position: absolute;
+    left: -20px;
+    cursor: pointer;
+  }
 }
 .search {
   margin-bottom: 16px;
