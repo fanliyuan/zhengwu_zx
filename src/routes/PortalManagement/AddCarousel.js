@@ -172,11 +172,13 @@ export default class AddCarousel extends Component {
         this.props.form.setFieldsValue({
           imagePath: fileList[0].response.result.data,
         })
-      } else if (fileList[0] && fileList[0].status === 'done') {
-        this.setState({
-          removeFlag: true,
-        })
-      } else {
+      }
+      //  else if (fileList[0] && fileList[0].status === 'done') {
+      //   this.setState({
+      //     removeFlag: true,
+      //   })
+      // }
+       else {
         this.setState({
           removeFlag: false,
         })
