@@ -59,6 +59,7 @@ export default class CatalogManagement extends Component {
     query: '',
     isChanged: false,
     selectedKeys: [],
+    hiddenFlag: false,
   }
 
   componentDidMount() {
@@ -273,10 +274,17 @@ export default class CatalogManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/task', {resourceId: row.resourceId, resourceInfo: row}))
   }
 
+  changeHidden = () => {
+    const { hiddenFlag } = this.state
+    this.setState({
+      hiddenFlag: !hiddenFlag,
+    })
+  }
+
   render() {
     const that = this
     const { nodeManagement: { parentNodeList }, catalogManagement: { catalogTreeList, catalogList, catalogData, pagination, queryData: { params: { typeId } = {} } }, loading } = this.props
-    const { isHover, isNodeOperator, selectedKeys, query } = this.state
+    const { isHover, isNodeOperator, selectedKeys, query, hiddenFlag } = this.state
     // const data = [{ value: '0', id: 0, label: '提供方' }, { value: '1', id: 1, label: '提供方1' }]
     // const selectData = data.map(item => {
     //   return (
@@ -452,87 +460,90 @@ export default class CatalogManagement extends Component {
     // }
     return (
       <PageHeaderLayout>
-        <div className="clearfix">
-          <div className={styles.column1}>
-            <div className={styles.search}>
-              <Input placeholder="请输入关键词" value={query} className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
-              <Button type="primary" icon="search" onClick={this.handleSearchList} />
-            </div>
-            <Spin className="clearfix" spinning={loading}>
-              <Tooltip title="单击选择文件或者目录,单击箭头展开目录" className="fr mr8">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-              <DirectoryTree
-                defaultExpandAll
-                selectedKeys={selectedKeys}
-                onSelect={this.directoryChange}
-                className={styles.tree}
-                expandAction={false}
-                >
-                {renderTreeNode(catalogList.length === 0 ? catalogTreeList : catalogList)}
-              </DirectoryTree>
-            </Spin>
-          </div>
-          <div className={styles.column2}>
-            <div className={styles.form}>
-              <Input placeholder="名称" style={{ width: 180, marginRight: 20 }} onChange={this.nameChange} />
-              {/* {isNodeOperator && (
-                <Input placeholder="节点名称" style={{ width: 100, marginRight: 20 }} />
-              )} */}
-              {/* <Select
-                style={{ marginRight: 20, width: 120 }}
-                onChange={this.providerChange}
-                >
-                {selectData}
-              </Select> */}
-              <Input placeholder="提供方名称" style={{ width: 180, marginRight: 20 }} onChange={this.providerChange} />
-              {
-                !isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={lables => [...lables].pop()} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} onChange={this.nodeChange} />
-              }
-              <Select
-                defaultValue='-2'
-                style={{ marginRight: 20, width: 120 }}
-                onChange={this.statusChange}
-                >
-                {selectData1}
-              </Select>
-              <RangePicker style={{ marginRight: 20, width: 200 }} onChange={this.timeChange} />
-              <Checkbox style={{ marginRight: 10 }} onChange={this.checkChange}>已挂接资源</Checkbox>
-              <Button type="primary" onClick={() => this.searchHandle({}, true)}>搜索</Button>
-            </div>
-            {isNodeOperator && (
-              <div className={styles.createBtn}>
-                <Link to="/dataSourceManagement/newMenu" style={{ color: 'white' }}>
-                  <Button icon="plus" type="primary">
-                    新建
-                  </Button>
-                </Link>
-                <span onMouseEnter={this.hoverFun} onMouseLeave={this.hoverFun}>
-                  <Upload
-                    name="file"
-                    action="//jsonplaceholder.typicode.com/posts/"
-                    showUploadList={false}
-                    onChange={this.uploadFun}
-                    >
-                    <Button icon="upload">导入</Button>
-                  </Upload>
-                  {isHover && <a onClick={this.downTpl}>下载模板</a>}
-                </span>
+        <div className={hiddenFlag?styles.active:''}>
+          <div className="clearfix">
+            <div className={styles.column1}>
+              <div className={styles.search}>
+                <Input placeholder="请输入关键词" value={query} className={styles.input} onChange={this.treeListChange} onPressEnter={this.handleSearchList} />
+                <Button type="primary" icon="search" onClick={this.handleSearchList} />
               </div>
-            )}
-            <div>
-              <Table
-                columns={columns}
-                dataSource={this.state.queryData.typeId || typeId ? catalogData : []}
-                pagination={(this.state.queryData.typeId || typeId) && pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                rowKey="resourceId"
-                // rowSelection={rowSelection}
-                onChange={this.tableChange}
-                loading={loading}
-                bordered
-                />
+              <Spin className="clearfix" spinning={loading}>
+                <Tooltip title="单击选择文件或者目录,单击箭头展开目录" className="fr mr8">
+                  <Icon type="question-circle-o" />
+                </Tooltip>
+                <DirectoryTree
+                  defaultExpandAll
+                  selectedKeys={selectedKeys}
+                  onSelect={this.directoryChange}
+                  className={styles.tree}
+                  expandAction={false}
+                  >
+                  {renderTreeNode(catalogList.length === 0 ? catalogTreeList : catalogList)}
+                </DirectoryTree>
+              </Spin>
             </div>
-            {/* <div>{isNodeOperator && <Button type="primary">删除</Button>}</div> */}
+            <div className={styles.column2}>
+              <Icon type={hiddenFlag?'step-forward':'step-backward'} onClick={this.changeHidden} className={styles.icon} />
+              <div className={styles.form}>
+                <Input placeholder="名称" style={{ width: 180, marginRight: 20 }} onChange={this.nameChange} />
+                {/* {isNodeOperator && (
+                  <Input placeholder="节点名称" style={{ width: 100, marginRight: 20 }} />
+                )} */}
+                {/* <Select
+                  style={{ marginRight: 20, width: 120 }}
+                  onChange={this.providerChange}
+                  >
+                  {selectData}
+                </Select> */}
+                <Input placeholder="提供方名称" style={{ width: 180, marginRight: 20 }} onChange={this.providerChange} />
+                {
+                  !isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={lables => [...lables].pop()} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} onChange={this.nodeChange} />
+                }
+                <Select
+                  defaultValue='-2'
+                  style={{ marginRight: 20, width: 120 }}
+                  onChange={this.statusChange}
+                  >
+                  {selectData1}
+                </Select>
+                <RangePicker style={{ marginRight: 20, width: 200 }} onChange={this.timeChange} />
+                <Checkbox style={{ marginRight: 10 }} onChange={this.checkChange}>已挂接资源</Checkbox>
+                <Button type="primary" onClick={() => this.searchHandle({}, true)}>搜索</Button>
+              </div>
+              {isNodeOperator && (
+                <div className={styles.createBtn}>
+                  <Link to="/dataSourceManagement/newMenu" style={{ color: 'white' }}>
+                    <Button icon="plus" type="primary">
+                      新建
+                    </Button>
+                  </Link>
+                  <span onMouseEnter={this.hoverFun} onMouseLeave={this.hoverFun}>
+                    <Upload
+                      name="file"
+                      action="//jsonplaceholder.typicode.com/posts/"
+                      showUploadList={false}
+                      onChange={this.uploadFun}
+                      >
+                      <Button icon="upload">导入</Button>
+                    </Upload>
+                    {isHover && <a onClick={this.downTpl}>下载模板</a>}
+                  </span>
+                </div>
+              )}
+              <div>
+                <Table
+                  columns={columns}
+                  dataSource={this.state.queryData.typeId || typeId ? catalogData : []}
+                  pagination={(this.state.queryData.typeId || typeId) && pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
+                  rowKey="resourceId"
+                  // rowSelection={rowSelection}
+                  onChange={this.tableChange}
+                  loading={loading}
+                  bordered
+                  />
+              </div>
+              {/* <div>{isNodeOperator && <Button type="primary">删除</Button>}</div> */}
+            </div>
           </div>
         </div>
       </PageHeaderLayout>

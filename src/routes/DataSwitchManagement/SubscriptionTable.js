@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-29 11:20:50
+ * @Last Modified time: 2018-09-29 14:46:32
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component } from 'react'
@@ -59,19 +59,19 @@ export default class SubscriptionTable extends Component {
     this.setState({
       subInfo,
     })
-    this.props.dispatch({
-      type: 'allSubscription/getResourceSubscribeInfoInfo',
-      payload: {
-        params: {
-          id: subInfo.id,
-        },
-      },
-    })
+    // this.props.dispatch({
+    //   type: 'allSubscription/getResourceSubscribeInfoInfo',
+    //   payload: {
+    //     params: {
+    //       id: subInfo.id,
+    //     },
+    //   },
+    // })
   }
 
   render() {
     const { isNodeOperator,subInfo: { subscriberName, publisherDeptName } } = this.state
-    const { loading, allSubscription: { subData: { mountResourceId } } } = this.props
+    const { loading, allSubscription: { subData: { mountResourceId, timSetting, dsDirName, dataType, classifyName  } } } = this.props
     // const columns = [
     //   {
     //     title: '字段',
@@ -131,14 +131,14 @@ export default class SubscriptionTable extends Component {
               <Label label="订阅名称">
                 <Input className={styles.value} disabled={!isNodeOperator} value={subscriberName} />
               </Label>
-              <Label label="目录名称">石家庄东城区国土数据</Label>
+              <Label label="目录名称">{dsDirName}</Label>
             </div>
             <div>
               <Label label="发布机构">{publisherDeptName}</Label>
-              <Label label="数据类型">数据库</Label>
+              <Label label="数据类型">{dataType}</Label>
             </div>
             <div>
-              <Label label="所属分类">国土数据</Label>
+              <Label label="所属分类">{classifyName || '暂无'}</Label>
               <Label label="详情">
                 {/* <Link to={`/dataSourceManagement/viewDirectory${}`}>查看</Link> */}
                 {
@@ -172,6 +172,7 @@ export default class SubscriptionTable extends Component {
                 <InputNumber
                   max={60}
                   min={0}
+                  defaultValue={timSetting.split(',')[0]}
                   className={styles.time}
                   placeholder="分钟"
                   disabled={!isNodeOperator}
@@ -179,13 +180,14 @@ export default class SubscriptionTable extends Component {
                 <InputNumber
                   max={23}
                   min={0}
+                  defaultValue={timSetting.split(',')[1]}
                   className={styles.time}
                   placeholder="小时"
                   disabled={!isNodeOperator}
                   />
-                <Input className={styles.time} placeholder="日" disabled={!isNodeOperator} />
-                <Input className={styles.time} placeholder="月" disabled={!isNodeOperator} />
-                <Input className={styles.time} placeholder="星期" disabled={!isNodeOperator} />
+                <Input className={styles.time} defaultValue={timSetting.split(',')[2]} placeholder="日" disabled={!isNodeOperator} />
+                <Input className={styles.time} defaultValue={timSetting.split(',')[3]} placeholder="月" disabled={!isNodeOperator} />
+                <Input className={styles.time} defaultValue={timSetting.split(',')[4]} placeholder="星期" disabled={!isNodeOperator} />
               </Label>
             </div>
             {/* <div>
