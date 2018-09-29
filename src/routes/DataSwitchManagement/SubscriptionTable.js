@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-29 14:46:32
+ * @Last Modified time: 2018-09-29 18:09:26
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component } from 'react'
@@ -71,7 +71,7 @@ export default class SubscriptionTable extends Component {
 
   render() {
     const { isNodeOperator,subInfo: { subscriberName, publisherDeptName } } = this.state
-    const { loading, allSubscription: { subData: { mountResourceId, timSetting, dsDirName, dataType, classifyName  } } } = this.props
+    const { loading, allSubscription: { subData: { mountResourceId, timSetting = '', dsDirName, dataType, classifyName  } } } = this.props
     // const columns = [
     //   {
     //     title: '字段',
