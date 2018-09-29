@@ -64,7 +64,7 @@ export default class Task extends Component {
   }
 
   render() {
-    const { loading, catalogManagement: { resourceTaskInfo: { pubMode, pubfreQuency, timeSetting, taskState, createdTime, syncTime, dataSize } } } = this.props // eslint-disable-line
+    const { loading, catalogManagement: { resourceTaskInfo: { pubMode, pubfreQuency, timSetting, taskState, createdTime, syncTime, dataSize } } } = this.props // eslint-disable-line
     // const pagination = {
     //   pageSize: 10,
     //   current: 1,
@@ -246,12 +246,12 @@ export default class Task extends Component {
                       <span>同步模式:</span> {pubMode}
                     </li>
                     <li>
-                      <span>同步频率:</span> {getSyncfrequency(timeSetting)}
+                      <span>同步频率:</span> {getSyncfrequency(timSetting)}
                     </li>
                     <li>
                       <span>任务状态:</span> {taskState}
                     </li>
-                    <li>
+                    {/* <li>
                       <span>注册时间:</span> {createdTime}
                     </li>
                     <li>
@@ -259,7 +259,7 @@ export default class Task extends Component {
                     </li>
                     <li>
                       <span>数据库文件大小:</span> {dataSize}
-                    </li>
+                    </li> */}
                     {/* <li>
                       <span>数据资源:</span> <a href="">查看</a>
                     </li> */}
