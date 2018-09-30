@@ -83,7 +83,7 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        status: val === '-2' ? undefined:val,
+        rsKey: val === '-2' ? undefined:val,
       },
       isChanged: true,
     })
@@ -104,17 +104,17 @@ export default class SourceManagement extends Component {
   searchHandle = ({pageSize, current}, flag) => {
     const { isChanged } = this.state
     if (!isChanged && flag) return null
-    const { queryData: { rsName, dataType, status,startTime, endTime, nodeId } } = this.state
+    const { queryData: { rsName, dataType, rsKey,startTime, endTime, nodeName } } = this.state
     this.props.dispatch({
       type: 'sourceManagement/getResources',
       payload: {
         body: {
           pageSize: pageSize || '10',
           pageNum: current || '1',
-          checkStatus: status,
+          rsKey,
           rsName,
           dataType,
-          nodeId,
+          nodeName,
           startTime,
           endTime,
         },
@@ -205,8 +205,8 @@ export default class SourceManagement extends Component {
     // ]
     const data = [
       { value: '-1', id: -1, label: '全部数据' },
-      { value: 'db', id: 0, label: '数据库' },
-      { value: 'file', id: 1, label: '文件' },
+      { value: '0', id: 0, label: '数据库' },
+      { value: '1', id: 1, label: '文件' },
       // { value: 'ftp', id: 2, label: 'FTP' },
     ]
     const selectData = data.map(item => {
