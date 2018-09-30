@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-29 18:09:26
+ * @Last Modified time: 2018-09-30 11:06:43
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component } from 'react'
@@ -13,7 +13,7 @@ import { connect } from 'dva'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './SubscriptionTable.less'
 
-const { Option } = Select
+const { Option } = Select // eslint-disable-line
 
 function ButtonList(props) {
   const { onClick = () => {}, disabled = false, isNodeOperator = false } = props
@@ -59,19 +59,19 @@ export default class SubscriptionTable extends Component {
     this.setState({
       subInfo,
     })
-    // this.props.dispatch({
-    //   type: 'allSubscription/getResourceSubscribeInfoInfo',
-    //   payload: {
-    //     params: {
-    //       id: subInfo.id,
-    //     },
-    //   },
-    // })
+    this.props.dispatch({
+      type: 'allSubscription/getResourceSubscribeInfoInfo',
+      payload: {
+        params: {
+          id: subInfo.id,
+        },
+      },
+    })
   }
 
   render() {
     const { isNodeOperator,subInfo: { subscriberName, publisherDeptName } } = this.state
-    const { loading, allSubscription: { subData: { mountResourceId, timSetting = '', dsDirName, dataType, classifyName  } } } = this.props
+    const { loading, allSubscription: { subData: { mountResourceId, timSetting = '', pubMode,  dsDirName, dataType, classifyName  } } } = this.props
     // const columns = [
     //   {
     //     title: '字段',
@@ -150,44 +150,45 @@ export default class SubscriptionTable extends Component {
             </div>
             <div>
               <Label label="发布模式">
-                <Select className={styles.method} disabled={!isNodeOperator}>
+                {/* <Select className={styles.method} disabled={!isNodeOperator}>
                   <Option value={0}>全量</Option>
                   <Option value={1}>增量</Option>
                 </Select>
                 <Select className={styles.method} disabled={!isNodeOperator}>
                   <Option value={0}>日志</Option>
                   <Option value={1}>数据</Option>
-                </Select>
+                </Select> */}
+                <Input className={styles.method} value={pubMode} disabled />
               </Label>
             </div>
-            <div>
+            {/* <div>
               <Label label="发布频率">
                 <Select className={styles.rate} disabled={!isNodeOperator}>
                   <Option value={0}>定时</Option>
                 </Select>
               </Label>
-            </div>
+            </div> */}
             <div>
               <Label label="定时设置" className={styles.timeSetting}>
-                <InputNumber
+                <Input
                   max={60}
                   min={0}
                   defaultValue={timSetting.split(',')[0]}
                   className={styles.time}
-                  placeholder="分钟"
                   disabled={!isNodeOperator}
+                  suffix='分钟'
                   />
                 <InputNumber
                   max={23}
                   min={0}
                   defaultValue={timSetting.split(',')[1]}
                   className={styles.time}
-                  placeholder="小时"
+                  suffix='小时'
                   disabled={!isNodeOperator}
                   />
-                <Input className={styles.time} defaultValue={timSetting.split(',')[2]} placeholder="日" disabled={!isNodeOperator} />
-                <Input className={styles.time} defaultValue={timSetting.split(',')[3]} placeholder="月" disabled={!isNodeOperator} />
-                <Input className={styles.time} defaultValue={timSetting.split(',')[4]} placeholder="星期" disabled={!isNodeOperator} />
+                <Input className={styles.time} defaultValue={timSetting.split(',')[2]} suffix='日' disabled={!isNodeOperator} />
+                <Input className={styles.time} defaultValue={timSetting.split(',')[3]} suffix='月' disabled={!isNodeOperator} />
+                <Input className={styles.time} defaultValue={timSetting.split(',')[4]} prefix='星期' disabled={!isNodeOperator} />
               </Label>
             </div>
             {/* <div>

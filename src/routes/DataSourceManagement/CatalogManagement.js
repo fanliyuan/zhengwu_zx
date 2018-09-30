@@ -357,12 +357,30 @@ export default class CatalogManagement extends Component {
                 信息项
               </span>
               {/* <a style={{marginRight:10}}>资源挂接</a> */}
-              <span
+              {/* <span
                 className={styles.clickBtn}
                 onClick={that.handleSourceConnect.bind(null, row)}
                 >
                 资源挂接
-              </span>
+              </span> */}
+              {
+                row.mountResourceId ? 
+                (
+                  <span
+                    className={styles.clickBtn}
+                    onClick={that.handleSourceConnect.bind(null, row)}
+                    >
+                      资源挂接
+                  </span>
+                ):(
+                  <span
+                    className={styles.clickBtn}
+                    style={{color: 'silver',cursor: 'default'}}
+                    >
+                      资源挂接
+                  </span>
+                )
+              }
               {isNodeOperator && (
                 <span className={styles.clickBtn} onClick={that.handleOpenShare.bind(null, row.id)}>
                   共享开放

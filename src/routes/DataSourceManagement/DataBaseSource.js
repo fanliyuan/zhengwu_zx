@@ -2,7 +2,7 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-28 13:14:01
+ * @Last Modified time: 2018-09-30 11:10:22
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react'
@@ -72,7 +72,7 @@ export default class DataBaseSource extends Component {
 
   render() {
     const { view, agency, showRow, isNodeOperator } = this.state
-    const { sourceManagement: { DBInfo: { name, updataTime ,value: { tableName, resourceType, appsysName, dutyName, dutyPhone, dutyPosition, dbName, dbDescribe, deptName, structAddDtoList = [] } = {} } } } = this.props
+    const { sourceManagement: { DBInfo: { name, updataTime ,value: { tableName, resourceType, appsysName, dutyName, dutyPhone, dutyPosition, dbName, dbDescribe, deptName, structAddDtoList = [] } = {} } }, loading } = this.props
     structAddDtoList.forEach((item,index) => item.index = index+1) // eslint-disable-line
     const that = this
     // const pagination = {
@@ -247,7 +247,7 @@ export default class DataBaseSource extends Component {
             </Button>
           )}
         </div>
-        <Card>
+        <Card loading={loading}>
           {/* <Row>
             <Col span={4}>
               <h2>
