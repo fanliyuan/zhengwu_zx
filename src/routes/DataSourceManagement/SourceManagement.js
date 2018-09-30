@@ -37,7 +37,7 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        sourceTitle: e.target.value.trim(),
+        rsName: e.target.value.trim(),
       },
       isChanged: true,
     })
@@ -48,18 +48,19 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        dataType: val === '-1'?undefined:val,
+        rsKey: val === '-1'?undefined:val,
       },
       isChanged: true,
     })
   }
 
-  nodeChange = val => {
+  nodeChange = (val, params) => {
     const { queryData } = this.state
     this.setState({
       queryData: {
         ...queryData,
         nodeId: val[0] && +[...val].pop(),
+        nodeName: params[0] && params[0].label,
       },
       isChanged: true,
     })
@@ -103,15 +104,15 @@ export default class SourceManagement extends Component {
   searchHandle = ({pageSize, current}, flag) => {
     const { isChanged } = this.state
     if (!isChanged && flag) return null
-    const { queryData: { sourceTitle, dataType, status,startTime, endTime, nodeId } } = this.state
+    const { queryData: { rsName, dataType, status,startTime, endTime, nodeId } } = this.state
     this.props.dispatch({
       type: 'sourceManagement/getResources',
       payload: {
-        params: {
-          limit: pageSize || '10',
-          index: current || '1',
-          resourceName: sourceTitle,
+        body: {
+          pageSize: pageSize || '10',
+          pageNum: current || '1',
           checkStatus: status,
+          rsName,
           dataType,
           nodeId,
           startTime,
@@ -127,9 +128,9 @@ export default class SourceManagement extends Component {
   handleSource = row => {
     const { dispatch } = this.props
     if (row.dataType === 'file') {
-      dispatch(routerRedux.push('/dataSourceManagement/fileSource', { resourceId: row.resourceId }))
+      dispatch(routerRedux.push('/dataSourceManagement/fileSource', { mountResourceId: row.id }))
     } else {
-      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.mountResourceId }))
+      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.id }))
     }
   }
 
@@ -206,7 +207,7 @@ export default class SourceManagement extends Component {
       { value: '-1', id: -1, label: '全部数据' },
       { value: 'db', id: 0, label: '数据库' },
       { value: 'file', id: 1, label: '文件' },
-      { value: 'ftp', id: 2, label: 'FTP' },
+      // { value: 'ftp', id: 2, label: 'FTP' },
     ]
     const selectData = data.map(item => {
       return (
@@ -254,7 +255,7 @@ export default class SourceManagement extends Component {
       // },
       {
         title: '资源名称',
-        dataIndex: 'resourceName',
+        dataIndex: 'rsName',
       },
       {
         title: '数据类型',
@@ -274,7 +275,7 @@ export default class SourceManagement extends Component {
       // },
       {
         title: '数据更新时间',
-        dataIndex: 'createTime',
+        dataIndex: 'updataTime',
         render(text) {
           return moment(text).format('lll')
         },
@@ -309,9 +310,9 @@ export default class SourceManagement extends Component {
         render: (text, row) => {
           return (
             <div>
-              <span className={styles.clickBtn} onClick={() => that.handleCatalog(row)}>
+              {/* <span className={styles.clickBtn} onClick={() => that.handleCatalog(row)}>
                 目录
-              </span>
+              </span> */}
               <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
                 资源
               </span>
@@ -442,7 +443,7 @@ export default class SourceManagement extends Component {
               columns={columns}
               dataSource={dataList}
               pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-              rowKey="resourceId"
+              rowKey="rsId"
               rowSelection={rowSelection}
               bordered
               onChange={this.tableChange}

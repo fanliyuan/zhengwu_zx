@@ -29,6 +29,11 @@ const module = {
       name: 'getDBInfo',
       url: 'getReqBeanEntityInfo',
     },
+    {
+      name: 'getSourceList',
+      url: 'queryResourceList',
+      method: 'post',
+    },
   ],
 }
 module.apis.forEach(item => {

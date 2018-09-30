@@ -2,7 +2,7 @@ import { message } from 'antd'
 
 import apis from '../api'
 
-const { getCatalog, getDBInfo } = apis
+const { getSourceList, getDBInfo } = apis
  export default {
   namespace:'sourceManagement',
 
@@ -16,25 +16,25 @@ const { getCatalog, getDBInfo } = apis
   effects:{
     *getResources({ payload }, { call, put, select }) {
       let response
-      if (payload && payload.params) {
+      if (payload && payload.body) {
         yield put({
           type: 'savaQueryData',
           payload: {
-            savaQueryData: payload.params,
+            savaQueryData: payload.body,
           },
         })
       } else {
         payload = select(state => state.sourceManagement.queryData)
       }
       try {
-        response = yield call(getCatalog, {params: payload.params})
-        const { rows, total = 0, limit: pageSize = 10, index: pageNum = 1 } = response.data
+        response = yield call(getSourceList, {body: payload.body})
+        const { data, total = 0, pageSize = 10, pageNum = 1 } = response.data
         const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
-        if (+response.code === 0) {
+        if (+response.code === 604) {
           yield put({
             type: 'savaDataList',
             payload: {
-              dataList: rows || [],
+              dataList: data || [],
               pagination,
             },
           })
