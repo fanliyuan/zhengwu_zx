@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-09-29 14:37:03
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-09-30 11:23:36
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -334,9 +334,9 @@ export default class AllSub extends Component {
       },
       {
         title: '运行状态',
-        dataIndex: 'state',
+        dataIndex: 'runStatus',
         render: (text) => {
-          return <Badge status={text?'success': 'default'} text={text?'运行中':'已停止'} />
+          return <Badge status={text?'success': 'default'} text={text==='1'?'运行中':'已停止'} />
         },
       },
       {
