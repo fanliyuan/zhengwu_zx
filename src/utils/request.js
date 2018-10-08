@@ -1,6 +1,7 @@
 import fetch from 'dva/fetch'
 import { notification } from 'antd'
 import { routerRedux } from 'dva/router'
+import Cookies from 'js-cookie'
 import store from '../index'
 
 const key = 'fetchError'
@@ -51,7 +52,7 @@ async function checkToken(response) {
         })
         if (window.location.pathname !== '/user/login') {
           sessionStorage.setItem('redirect', window.location.pathname)
-          sessionStorage.setItem('authority', localStorage.getItem('antd-pro-authority'))
+          sessionStorage.setItem('authority', Cookies.get('antd-pro-authority'))
         }
         store.dispatch(
           routerRedux.push(`/user/login`)

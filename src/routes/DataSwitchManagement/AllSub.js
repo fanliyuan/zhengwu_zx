@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-30 11:23:36
+ * @Last Modified time: 2018-10-08 11:51:53
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -11,6 +11,7 @@ import { Link, routerRedux } from 'dva/router'
 import { DatePicker, Input, Select, Button, Table, Tabs, message, Popconfirm, Modal, Tooltip, Tree, Icon, Badge } from 'antd'
 import moment from 'moment'
 import { isArray } from 'util'
+import Cookies from 'js-cookie'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import { getName, getAddress } from '../../utils/faker'
@@ -119,7 +120,7 @@ export default class AllSub extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
     })
     this.props.dispatch({
       type: 'catalogManagement/getCatalogList',

@@ -19,6 +19,7 @@ import {
 import moment from 'moment'
 import { connect } from 'dva'
 import { isArray } from 'util'
+import Cookies from 'js-cookie'
 
 import styles from './CatalogManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -64,7 +65,7 @@ export default class CatalogManagement extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
     })
     this.props.dispatch({
       type: 'nodeManagement/getParentNodes',

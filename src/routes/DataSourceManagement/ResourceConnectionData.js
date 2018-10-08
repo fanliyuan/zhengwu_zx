@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-27 14:49:28
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-29 11:20:00
+ * @Last Modified time: 2018-10-08 11:51:39
  * @Description: 这个页面值得研究
  */
 import React, { Component } from 'react'
@@ -23,6 +23,7 @@ import {
   Icon,
 } from 'antd'
 import moment from 'moment'
+import Cookies from 'js-cookie'
 
 import styles from './ResourceConnectionData.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -94,7 +95,7 @@ export default class ResourceConnectionData extends Component {
   componentDidMount() {
     const { state: { resourceInfo = {} } = {} } = this.props.history.location
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
       resourceInfo,
     })
     this.props.dispatch({

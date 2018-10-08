@@ -3,6 +3,7 @@ import { Link } from 'dva/router'
 import { Table, Button, Input, Select, DatePicker, Row, Col, Icon, Tooltip, Tree } from 'antd'
 import { isArray } from 'util'
 import moment from 'moment'
+import Cookies from 'js-cookie'
 
 import styles from './SourceSubscription.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -36,7 +37,7 @@ export default class SourceSubscription extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
     })
   }
 

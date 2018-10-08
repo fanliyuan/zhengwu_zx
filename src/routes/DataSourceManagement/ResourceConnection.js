@@ -15,6 +15,7 @@ import {
   message,
 } from 'antd'
 import moment from 'moment'
+import Cookies from 'js-cookie'
 
 import styles from './ResourceConnection.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -40,7 +41,7 @@ export default class ResourceConnection extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
     })
   }
 

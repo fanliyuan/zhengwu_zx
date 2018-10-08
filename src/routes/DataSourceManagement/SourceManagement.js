@@ -3,10 +3,11 @@ import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message, Ca
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
+import Cookies from 'js-cookie'
 
 import styles from './SourceManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-// import { format0, format24 } from '../../utils/utils'
+import { format0, format24 } from '../../utils/utils'
 
 const { Option } = Select
 const { RangePicker } = DatePicker
@@ -24,7 +25,7 @@ export default class SourceManagement extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage['antd-pro-authority'] === 'operator-n',
+      isNodeOperator: Cookies.get(['antd-pro-authority']) === 'operator-n',
     })
     this.props.dispatch({
       type: 'nodeManagement/getParentNodes',
@@ -48,7 +49,7 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        rsKey: val === '-1'?undefined:val,
+        dataType: val === ''?undefined:val,
       },
       isChanged: true,
     })
@@ -83,7 +84,7 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        rsKey: val === '-2' ? undefined:val,
+        checkStatus: val === '-2' ? undefined:val,
       },
       isChanged: true,
     })
@@ -94,8 +95,10 @@ export default class SourceManagement extends Component {
     this.setState({
       queryData: {
         ...queryData,
-        startTime: val[0] ? `${val[0].format().substr(0,10)} 0:00:00` :undefined,
-        endTime: val[1] ? `${val[1].format().substr(0,10)} 23:59:59` :undefined,
+        // startTime: val[0] ? `${val[0].format().substr(0,10)} 0:00:00` :undefined,
+        // endTime: val[1] ? `${val[1].format().substr(0,10)} 23:59:59` :undefined,
+        startTime: val[0]?format0(val[0].format('x')):undefined,
+        endTime: val[1]?format24(val[1].format('x')):undefined,
       },
       isChanged: true,
     })
@@ -104,14 +107,14 @@ export default class SourceManagement extends Component {
   searchHandle = ({pageSize, current}, flag) => {
     const { isChanged } = this.state
     if (!isChanged && flag) return null
-    const { queryData: { rsName, dataType, rsKey,startTime, endTime, nodeName } } = this.state
+    const { queryData: { rsName, dataType, checkStatus,startTime, endTime, nodeName } } = this.state
     this.props.dispatch({
       type: 'sourceManagement/getResources',
       payload: {
         body: {
           pageSize: pageSize || '10',
           pageNum: current || '1',
-          rsKey,
+          checkStatus,
           rsName,
           dataType,
           nodeName,
@@ -204,10 +207,10 @@ export default class SourceManagement extends Component {
     //   },
     // ]
     const data = [
-      { value: '-1', id: -1, label: '全部数据' },
-      { value: '0', id: 0, label: '数据库' },
-      { value: '1', id: 1, label: '文件' },
-      // { value: 'ftp', id: 2, label: 'FTP' },
+      { value: '', id: -1, label: '全部数据' },
+      { value: 'db', id: 0, label: '数据库' },
+      { value: 'file', id: 1, label: '文件' },
+      { value: 'ftp', id: 2, label: 'FTP' },
     ]
     const selectData = data.map(item => {
       return (
@@ -407,7 +410,7 @@ export default class SourceManagement extends Component {
             {/* <Input placeholder="应用系统名称" style={{ width: 150, marginRight: 20 }} /> */}
             <Select
               style={{ marginRight: 20, width: 120 }}
-              defaultValue='-1'
+              defaultValue=''
               onChange={this.dataTypeChange}
               >
               {selectData}

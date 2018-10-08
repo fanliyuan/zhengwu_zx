@@ -2,7 +2,7 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-30 11:10:22
+ * @Last Modified time: 2018-10-08 11:51:52
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react'
@@ -11,6 +11,7 @@ import moment from 'moment'
 import TextTruncate from 'react-text-truncate'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
+import Cookies from 'js-cookie'
 
 import styles from './DataBaseSource.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -29,7 +30,7 @@ export default class DataBaseSource extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
     })
     const { state: { mountResourceId } = {} } = this.props.history.location
     this.props.dispatch({

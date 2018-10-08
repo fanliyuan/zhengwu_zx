@@ -1,15 +1,16 @@
 import { message } from 'antd'
+import Cookies from 'js-cookie'
 
 import apis from '../api'
 
 const { getPermission } = apis 
 // use localStorage to store the authority info, which might be sent from server in actual project.
 export function getAuthority() {
-  return localStorage.getItem('antd-pro-authority') || 'guest'
+  return Cookies.get('antd-pro-authority') || 'guest'
 }
 
 export function setAuthority(authority = 'guest') {
-  return localStorage.setItem('antd-pro-authority', authority)
+  return Cookies.set('antd-pro-authority', authority)
 }
 
 // 从服务器获取权限

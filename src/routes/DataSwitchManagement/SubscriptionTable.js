@@ -2,12 +2,13 @@
  * @Author: ChouEric
  * @Date: 2018-07-18 13:36:45
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-30 11:06:43
+ * @Last Modified time: 2018-10-08 11:51:31
  * @描述: 数据资源管理 -- 资源集市 -- 订阅(表)
 */
 import React, { Component } from 'react'
 import { Form, Input, InputNumber, Select, Button, Table, Card, Divider, Icon } from 'antd' // eslint-disable-line
 import { Link, routerRedux } from 'dva/router'
+import Cookies from 'js-cookie'
 
 import { connect } from 'dva'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -53,7 +54,7 @@ export default class SubscriptionTable extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
     })
     const { state: {subInfo={}} = {} } = this.props.history.location
     this.setState({

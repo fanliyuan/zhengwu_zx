@@ -1,5 +1,6 @@
 import { routerRedux } from 'dva/router'
 import { message } from 'antd'
+import Cookies from 'js-cookie'
 import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
@@ -90,7 +91,7 @@ export default {
         response = yield call(getRoleName, {params: payload, path: 2})
         currentAuthority = response.result.datas[0].rolename
         if (response.code === 0) {
-          localStorage.setItem('antd-pro-authority', response.result.datas.rolename)
+          Cookies.set('antd-pro-authority', response.result.datas.rolename)
         }
       } catch (error) {
         message.error('登录失败')
@@ -121,7 +122,7 @@ export default {
         // urlParams.searchParams.set('redirect', pathname)
         // window.history.replaceState(null, 'login', urlParams.href)
         sessionStorage.setItem('redirect', pathname)
-        sessionStorage.setItem('authority', localStorage.getItem('antd-pro-authority'))
+        sessionStorage.setItem('authority', Cookies.get('antd-pro-authority'))
       } finally {
         yield put({
           type: 'changeLoginStatus',

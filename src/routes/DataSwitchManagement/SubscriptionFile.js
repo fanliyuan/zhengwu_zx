@@ -2,12 +2,13 @@
  * @Author: ChouEric
  * @Date: 2018-07-13 16:15:18
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-17 11:52:43
+ * @Last Modified time: 2018-10-08 11:51:32
  * @描述: 数据交换管理 -- 资源订阅 -- 资源集市 -- 订阅(文件)
 */
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
 import { Form, Input, Select, Radio, Button, InputNumber, Upload } from 'antd'
+import Cookies from 'js-cookie'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './SubscriptionFile.less'
@@ -72,7 +73,7 @@ export default class SubscriptionFile extends Component {
   componentDidMount() {
     this.setState(
       {
-        isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+        isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
       },
       () => {
         if (this.state.isNodeOperator) this.props.form.validateFields()

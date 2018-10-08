@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-26 14:52:09
+ * @Last Modified time: 2018-10-08 11:59:41
  * @Description: 删除底部蚂蚁金服相关信息
  * @important: 感觉权限应该从这里入手,在这里获取到登录后的路由信息,然后在这里生成routerData,来自memu和router两个数据
  *   不需要权限authority,直接根据后台的数据生成路由信息.要求在登录成功后就返回router和token等信息;
@@ -18,6 +18,7 @@ import { ContainerQuery } from 'react-container-query'
 import classNames from 'classnames'
 import pathToRegexp from 'path-to-regexp'
 import { enquireScreen, unenquireScreen } from 'enquire-js'
+import Cookies from 'js-cookie'
 import GlobalHeader from '../components/GlobalHeader'
 import GlobalFooter from '../components/GlobalFooter'
 import SiderMenu from '../components/SiderMenu'
@@ -38,7 +39,7 @@ const getRedirect = item => {
   if (item && item.children) {
     if (item.children[0] && item.children[0].path) {
       let overview
-      if (['admin', 'operator', 'security', 'auditor'].includes(localStorage.getItem('antd-pro-authority'))) {
+      if (['admin', 'operator', 'security', 'auditor'].includes(Cookies.set('antd-pro-authority'))) {
         overview = '/overview/platformOverview'
       } else {
         overview = '/overview/nodeOverview'
@@ -175,9 +176,9 @@ class BasicLayout extends React.PureComponent {
         item => check(routerData[item].authority, item) && item !== '/'
       )
       if (pathname === '/') {
-        if (platforms.indexOf(localStorage.getItem('antd-pro-authority')) > -1) {
+        if (platforms.indexOf(Cookies.set('antd-pro-authority')) > -1) {
           return '/overview/platformOverview'
-        } else if (nodes.indexOf(localStorage.getItem('antd-pro-authority')) > -1) {
+        } else if (nodes.indexOf(Cookies.set('antd-pro-authority')) > -1) {
           return '/overview/nodeOverview'
         }
       }
@@ -237,8 +238,8 @@ class BasicLayout extends React.PureComponent {
     } = this.props
     const { isMobile: mb } = this.state
     // console.log(sessionStorage.getItem('authority'))
-    // console.log(localStorage.getItem('antd-pro-authority'))
-    const redirect = sessionStorage.getItem('authority') === localStorage.getItem('antd-pro-authority') ? sessionStorage.getItem('redirect') : ''
+    // console.log(Cookies.set('antd-pro-authority'))
+    const redirect = sessionStorage.getItem('authority') === Cookies.get('antd-pro-authority') ? sessionStorage.getItem('redirect') : ''
     const bashRedirect = this.getBaseRedirect()
     const layout = (
       <Layout>

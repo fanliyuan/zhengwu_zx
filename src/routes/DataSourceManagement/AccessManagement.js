@@ -3,6 +3,7 @@ import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message, Ca
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
+import Cookies from 'js-cookie'
 
 import styles from './AccessManagement.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
@@ -24,7 +25,7 @@ export default class AccessManagement extends Component {
 
   componentDidMount() {
     this.setState({
-      isNodeOperator: localStorage.getItem('antd-pro-authority') === 'operator-n',
+      isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
     })
   }
 
