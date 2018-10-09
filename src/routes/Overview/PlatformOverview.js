@@ -10,99 +10,202 @@ import Relation from '../../components/ECharts/Relation'
 
 const option = {
   title: {
-    text: '流程图模拟',
-},
-  tooltip: {},
-  xAxis: {
-    type: 'value',
-    boundaryGap: false,
-    show: false,
+      text: '',
   },
-  yAxis: {
-    type: 'value',
-    show: false,
+  tooltip: {},
+  animationDurationUpdate: 1500,
+  animationEasingUpdate: 'quinticInOut',
+  label: {
+      normal: {
+          show: true,
+          textStyle: {
+              fontSize: 12,
+          },
+      },
+  },
+  legend: {
+      x: "center",
+      show: true,
+      data: ["朋友", "战友", '亲戚'],
   },
   series: [
-    {
-      type: 'graph',
-      layout: 'none',
-      coordinateSystem: 'cartesian2d',
-      symbolSize: 40,
-      roam: true,
-      label: {
-        normal: {
-          show: true,
-        },
+
+      {
+          type: 'graph',
+          layout: 'force',
+          symbolSize: 45,
+          focusNodeAdjacency: true,
+          roam: true,
+          edgeSymbol: ['arrow'],
+          categories: [{
+              name: '朋友',
+              itemStyle: {
+                  normal: {
+                      color: "#009800",
+                  },
+              },
+          }, {
+              name: '战友',
+              itemStyle: {
+                  normal: {
+                      color: "#4592FF",
+                  },
+              },
+          }, {
+              name: '亲戚',
+              itemStyle: {
+                  normal: {
+                      color: "#3592F",
+                  },
+              },
+          }],
+          label: {
+              normal: {
+                  show: true,
+                  textStyle: {
+                      fontSize: 12,
+                  },
+              },
+          },
+          force: {
+              repulsion: 1000,
+          },
+          edgeSymbolSize: [4, 50],
+          edgeLabel: {
+              normal: {
+                  show: true,
+                  textStyle: {
+                      fontSize: 10,
+                  },
+                  formatter: "{c}",
+              },
+          },
+          data: [{
+              name: '徐贱云',
+              draggable: true,
+          }, {
+              name: '冯可梁',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '邓志荣',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '李荣庆',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '郑志勇',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '赵英杰',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '王承军',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '陈卫东',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '邹劲松',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '赵成',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '陈现忠',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '陶泳',
+              category: 1,
+              draggable: true,
+          }, {
+              name: '王德福',
+              category: 1,
+              draggable: true,
+          }],
+          links: [{
+              source: 0,
+              target: 1,
+              category: 0,
+              value: '朋友',
+          }, {
+              source: 0,
+              target: 2,
+              value: '战友',
+          }, {
+              source: 0,
+              target: 3,
+              value: '房东',
+          }, {
+              source: 0,
+              target: 4,
+              value: '朋友',
+          }, {
+              source: 1,
+              target: 2,
+              value: '表亲',
+          }, {
+              source: 0,
+              target: 5,
+              value: '朋友',
+          }, {
+              source: 4,
+              target: 5,
+              value: '姑姑',
+          }, {
+              source: 2,
+              target: 8,
+              value: '叔叔',
+          }, {
+              source: 0,
+              target: 12,
+              value: '朋友',
+          }, {
+              source: 6,
+              target: 11,
+              value: '爱人',
+          }, {
+              source: 6,
+              target: 3,
+              value: '朋友',
+          }, {
+              source: 7,
+              target: 5,
+              value: '朋友',
+          }, {
+              source: 9,
+              target: 10,
+              value: '朋友',
+          }, {
+              source: 3,
+              target: 10,
+              value: '朋友',
+          }, {
+              source: 2,
+              target: 11,
+              value: '我是你的同学',
+          }, {
+              source: 11,
+              target: 2,
+              value: '你不是我的同学',
+          }],
+          lineStyle: {
+              normal: {
+                  opacity: 0.9,
+                  width: 1,
+                  curveness: 0.2,
+              },
+          },
       },
-      data: [{
-        name: '零售',
-        value: [10, 20],
-      }, {
-        name: '统一平台',
-        value: [10, 10],
-        tooltip: {
-          formatter: '1245元',
-        },
-      }, {
-        name: '家居',
-        value: [0, 0],
-      }, {
-        name: '旅游',
-        value: [20, 0],
-      }],
-    },
-    {
-      name: 'lineDemo',
-      type: 'lines',
-      symbol: ['none', 'none'],
-      symbolSize: 10,
-      roam: true,
-      coordinateSystem: 'cartesian2d',
-      effect: {
-        show: true,
-        period: 6,
-        trailLength: 0,
-        symbolSize: 15,
-        symbol: 'arrow',
-      },
-      label: {
-        show: true,
-        position: 'middle',
-      },
-      lineStyle: {
-        normal: {
-          color: 'green',
-          width: 2,
-          opacity: 1,
-          curveness: 0,
-        },
-      },
-      data: [{
-        name: '1350笔',
-        coords: [[10.5, 20], [10.5, 10]],
-      }, {
-        name: '1240笔',
-        coords: [[9.5, 10], [9.5, 20]],
-      }, {
-        name: '1545笔',
-        coords: [[0, 0.5], [9.5, 10]],
-      }, {
-        name: '1978笔',
-        coords: [[10, 9.5], [0.5, 0]],
-        label: {
-          padding: [0, 0, -20, 0],
-        },
-      }, {
-        name: '1989笔',
-        coords: [[10, 9.5], [19.5, 0]],
-        label: {
-          padding: [0, 0, -20, 0],
-        },
-      }, {
-        name: '1345笔',
-        coords: [[20, 0.5], [10.5, 10]],
-      }],
-    },
   ],
 }
 
@@ -233,7 +336,7 @@ export default class PlatformOverview extends Component {
               <div style={{ height: '300px', textAlign: 'center' }}>
                 <h3 style={{ textAlign: 'left' }}>交换任务</h3>
                 {/* <img src={img} alt="交换任务" /> */}
-                <Relation {...option} />
+                <Relation {...option} width='100%' />
               </div>
               <div style={{ padding: '0 24px' }}>
                 <h3>实施传输</h3>

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import echarts from 'echarts/lib/echarts'
-import 'echarts/lib/chart/lines'
 import 'echarts/lib/chart/graph' 
+import 'echarts/lib/chart/lines'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
 
@@ -23,6 +23,14 @@ export default class Relation extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      ...nextProps,
+    }, () => {
+      this.chartRender()
+    })
+  }
+  
   chartRender() {
     const { title, tooltip, xAxis, yAxis, series } = this.state
     const echartRelation = echarts.init(document.getElementById('echart-relation'))
