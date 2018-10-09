@@ -2,41 +2,190 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 10:59:50
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-09 15:25:50
+ * @Last Modified time: 2018-10-09 17:11:52
  * @Description: 节点监控的首页
  */
 import React, { Component } from 'react'
-// import { Link } from 'dva/router'
-import ReactEcharts from 'echarts-for-react'
+import { connect } from 'dva'
+import { routerRedux } from 'dva/router'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-// import Demo from '../../components/ECharts/Demo'
+import Tree from '../../components/ECharts/Tree'
 // import styles from './NodeMonitor.less'
 
-export default class NodeMonitor extends Component {
+const option = {
+	"tooltip": {
+		"trigger": "item",
+		"formatter": "{a} : {b}",
+	},
+	"legend": {
+		"x": "right",
+		"data": ["已对接", "未对接"],
+	},
+	"series": [{
+		"type": "graph",
+		"name": "节点名",
+		"layout": "force",
+		"ribbonType": false,
+		"roam": true,
+		"categories": [{
+			"name": "中心节点",
+			itemStyle: {
+				normal: {
+					color: "#fc9205",
+				},
+			},
+		}, {
+			"name": "已对接",
 
-  getOption() { // eslint-disable-line
-    return {
-      title: { text: 'ECharts 入门示例' },
-      tooltip: {},
-      xAxis: {
-          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-      },
-      yAxis: {},
-      series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20],
-      }],
-    }
-  }
+			itemStyle: {
+				normal: {
+					color: "#3c97f1",
+				},
+			},
+		}, {
+			"name": "未对接",
+			itemStyle: {
+				normal: {
+					color: "#c1c1c1",
+				},
+			},
+		}],
+		"force": {
+			"repulsion": 190,
+			"gravity": 0.0001,
+			"edgeLength": [160, 150],
+			"layoutAnimation": true,
+		},
+		"symbolSize": 75,
+		"itemStyle": {
+			"normal": {
+				"label": {
+					"show": true,
+					"textStyle": {
+						"color": "#E0FFFF",
+						"fontSize": 12,
+					},
+				},
+				"linkStyle": {
+					"type": "curve",
+				},
+			},
+		},
+		"emphasis": {
+			"label": {
+				"show": true,
+				"textStyle": {
+					"color": "#DDDDDD",
+					"fontSize": 12,
+				},
+			},
+			"linkStyle": {},
+		},
+		"useWorker": false,
+		"gravity": 1.1,
+		"scaling": 2.1,
+		"data": [{
+			"category": 0,
+			"name": "中心节点", "symbolSize": 95,
+		}, {
+			"category": 1,
+			"name": "市卫计委",
+		}, {
+			"category": 1,
+			"name": "市发改委",
+		}, {
+			"category": 1,
+			"name": "市司法厅",
+		}, {
+			"category": 1,
+			"name": "市地税局",
+		}, {
+			"category": 1,
+			"name": "市旅游局",
+		}, {
+			"category": 1,
+			"name": "市质监局",
+		}, {
+			"category": 1,
+			"name": "市高法",
+		}, {
+			"category": 2,
+			"name": "市人防办",
+		}, {
+			"category": 2,
+			"name": "市工商局",
+		}, {
+			"category": 2,
+			"name": "市食药监",
+		}, {
+			"category": 2,
+			"name": "市食药监1",
+		}],
+		"links": [{
+			"source": "市卫计委",
+			"target": "中心节点",
+			"value": 20,
+		}, {
+			"source": "市发改委",
+			"target": "中心节点",
+			"value": 20,
+		}, {
+			"source": "市司法厅",
+			"target": "中心节点",
+			"value": 20,
+		}, {
+			"source": "市地税局",
+			"target": "中心节点",
+			"value": 20,
+		}, {
+			"source": "市旅游局",
+			"target": "中心节点",
+			"value": 20,
+		}, {
+			"source": "市质监局",
+			"target": "中心节点",
+			"value": 20,
+		}, {
+			"source": "市高法",
+			"target": "中心节点",
+			"value": 20,
+		}, {
+			"source": "市人防办",
+			"target": "中心节点",
+			"value": 10,
+		}, {
+			"source": "市工商局",
+			"target": "中心节点",
+			"value": 10,
+		}, {
+			"source": "市食药监",
+			"target": "中心节点",
+			"value": 10,
+		}, {
+			"source": "市食药监1",
+			"target": "中心节点",
+			"value": 10,
+		}],
+	}],
+}
+
+@connect()
+export default class NodeMonitor extends Component {
+	
+	treeHandle = (e) => {
+		if (e && e.data && e.data.name === '中心节点') {
+			this.props.dispatch(
+				routerRedux.push('/monitor/node')
+			)
+		}
+	}
 
   render() {
     return (
       <PageHeaderLayout>
         <div className="common-layout">
-          {/* <Demo title={{ text: 'ECharts 入门示例' }} xAxis={{data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]}} series={{name: '销量', type: 'bar', data:[5, 20, 36, 10, 10, 20]}} /> */}
-          <ReactEcharts option={this.getOption()} />
+          <Tree {...option} width='100%' onClick={this.treeHandle} />
           {/* <div className={styles.box}>
             <Link to="/monitor/node" className={styles.center}>
               中心节点
