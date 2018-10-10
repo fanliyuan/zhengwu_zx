@@ -3,6 +3,7 @@ import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 import { Button, Table, Card, message, Badge } from 'antd'
 import moment from 'moment'
+import Cookies from 'js-cookie'
 
 import { getName } from '../../utils/faker'
 
@@ -26,11 +27,10 @@ function getFakeData() {
   return arr
 }
 
-// @connect(({ SystemNotification, loading }) => ({
-//   SystemNotification,
-//   loading: loading.models.SystemNotification,
-// }))
-@connect()
+@connect(({SystemNotification,loading}) => ({
+  SystemNotification,
+  loading: loading.models.SystemNotification,
+}))
 export default class SystemNotification extends PureComponent {
   state = {
     // selectedRowIds: [],
@@ -40,7 +40,15 @@ export default class SystemNotification extends PureComponent {
   }
 
   componentDidMount = () => {
+    const accountId = localStorage.getItem("accountId")
+    const accessToken = Cookies.get('accessToken') || ''
+    // console.log(accountId,accessToken)
     // this.handleInfo()
+    const { dispatch } = this.props
+    dispatch({
+      type:'SystemNotification/getNoticeList',
+      payload:{accountId,accessToken},
+    })
   }
 
   componentDidUpdate = () => {
