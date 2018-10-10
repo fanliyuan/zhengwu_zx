@@ -10,6 +10,16 @@ const module =  {
       url: 'insertGoveSysLog',
       method: 'post',
     },
+    {
+      name: 'notifyManagerList',
+      url: 'notifyManager/notifies',
+      // method: 'get',
+    },
+    {
+      name: 'deleteNotifyManager',
+      url: 'notifyManager/notifies',
+      method: 'delete',
+    },
   ],
 }
 module.apis.forEach(item => {
