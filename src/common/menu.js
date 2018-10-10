@@ -297,7 +297,7 @@ const menuData = [
         hideInMenu: true,
       },
       {
-        name: '订阅审核',
+        name: '订阅授权',
         path: 'subscriptionAudit',
         authority: ['assessor-n'],
       },
@@ -368,7 +368,7 @@ const menuData = [
       //   authority: ['operator', 'operator-n'],
       // },
       {
-        name: '订阅审核',
+        name: '订阅授权',
         path: 'subscriptionAudit',
         authority: 'assessor-n',
       },

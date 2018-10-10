@@ -31,6 +31,7 @@
     "d3-hexjson": "^1.0.1",
     "dva": "^2.2.3",
     "dva-loading": "^2.0.3",
+    "echarts": "^4.2.0-rc.1",
     "enquire-js": "^0.2.1",
     "js-cookie": "^2.2.0",
     "keymaster": "^1.6.2",
