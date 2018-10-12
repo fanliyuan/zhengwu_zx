@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-15 17:29:48
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-30 13:58:16
+ * @Last Modified time: 2018-10-12 15:23:48
 */
 import React, { Component } from 'react'
 import { Row, Col, Card } from 'antd'
@@ -60,83 +60,84 @@ export default class DataInsert extends Component {
     return (
       <PageHeaderLayout>
         <div className="common-layout">
-          <Row gutter={16}>
-            <Col {...colResponsiveProps}>
-              <Card
-                loading={loading}
-                title="接入数据量分布"
-                className={styles.card}
-                bordered={false}
-                >
-                <Pie
-                  data={data1}
-                  valueFormat={value => value}
-                  height={400}
-                  inner={0}
-                  lineWidth={0}
-                  hasLegend
-                  showPercent
-                  showValue={false}
-                  />
-              </Card>
-            </Col>
-            <Col {...colResponsiveProps}>
-              <Card loading={loading} title="接入数据概览" className={styles.card} bordered={false}>
-                {/* 以下两种展示,数据格式不一样 */}
-                {/* <Bars height={400} data={data2} color={['name', ['red', 'blue']]} isVertical /> */}
-                <BarDouble height={400} data={data3} titleMap={{ y1: '数据接入', y2: '表接入' }} />
-              </Card>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col {...colResponsiveProps}>
-              <Card loading={loading} title="接入源分布" className={styles.card} bordered={false}>
-                <Pie
-                  data={data4}
-                  height={400}
-                  inner={0}
-                  lineWidth={0}
-                  hasLegend
-                  showPercent
-                  showValue={false}
-                  />
-              </Card>
-            </Col>
-            <Col {...colResponsiveProps}>
-              <Card loading={loading} title="资源注册概览" className={styles.card} bordered={false}>
-                <BarDouble
-                  height={400}
-                  data={data3}
-                  titleMap={{ y1: '数据接入', y2: '表接入' }}
-                  adjustType="stack"
-                  />
-              </Card>
-            </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col {...colResponsiveProps}>
-              <Card loading={loading} title="任务概况" className={styles.card} bordered={false}>
-                <Pie
-                  data={data4}
-                  height={400}
-                  inner={0}
-                  lineWidth={0}
-                  offset={20}
-                  padding={[24, 0, 24, 0]}
-                  />
-              </Card>
-            </Col>
-            <Col {...colResponsiveProps}>
-              <Card loading={loading} title="资源注册概览" className={styles.card} bordered={false}>
-                <BarDouble
-                  height={400}
-                  data={data3}
-                  titleMap={{ y1: '数据接入', y2: '表接入' }}
-                  adjustType="stack"
-                  />
-              </Card>
-            </Col>
-          </Row>
+          <Card loading={loading}>
+            <Row gutter={16}>
+              <Col {...colResponsiveProps}>
+                <Card
+                  title="接入数据量分布"
+                  className={styles.card}
+                  bordered={false}
+                  >
+                  <Pie
+                    data={data1}
+                    valueFormat={value => value}
+                    height={400}
+                    inner={0}
+                    lineWidth={0}
+                    hasLegend
+                    showPercent
+                    showValue={false}
+                    />
+                </Card>
+              </Col>
+              <Col {...colResponsiveProps}>
+                <Card title="接入数据概览" className={styles.card} bordered={false}>
+                  {/* 以下两种展示,数据格式不一样 */}
+                  {/* <Bars height={400} data={data2} color={['name', ['red', 'blue']]} isVertical /> */}
+                  <BarDouble height={400} data={data3} titleMap={{ y1: '数据接入', y2: '表接入' }} />
+                </Card>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col {...colResponsiveProps}>
+                <Card title="接入源分布" className={styles.card} bordered={false}>
+                  <Pie
+                    data={data4}
+                    height={400}
+                    inner={0}
+                    lineWidth={0}
+                    hasLegend
+                    showPercent
+                    showValue={false}
+                    />
+                </Card>
+              </Col>
+              <Col {...colResponsiveProps}>
+                <Card title="资源注册概览" className={styles.card} bordered={false}>
+                  <BarDouble
+                    height={400}
+                    data={data3}
+                    titleMap={{ y1: '数据接入', y2: '表接入' }}
+                    adjustType="stack"
+                    />
+                </Card>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col {...colResponsiveProps}>
+                <Card title="任务概况" className={styles.card} bordered={false}>
+                  <Pie
+                    data={data4}
+                    height={400}
+                    inner={0}
+                    lineWidth={0}
+                    offset={20}
+                    padding={[24, 0, 24, 0]}
+                    />
+                </Card>
+              </Col>
+              <Col {...colResponsiveProps}>
+                <Card title="资源注册概览" className={styles.card} bordered={false}>
+                  <BarDouble
+                    height={400}
+                    data={data3}
+                    titleMap={{ y1: '数据接入', y2: '表接入' }}
+                    adjustType="stack"
+                    />
+                </Card>
+              </Col>
+            </Row>
+          </Card>
         </div>
       </PageHeaderLayout>
     )
