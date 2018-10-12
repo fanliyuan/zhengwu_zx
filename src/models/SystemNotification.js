@@ -1,9 +1,10 @@
-import moment from 'moment'
+// import moment from 'moment'
+import { message } from 'antd'
 
 import apis from '../api'
-import { getNotices, deleteTableRows, changeTableStates, selectInfos } from '../api/test' // 删
+// import { getNotices, deleteTableRows, changeTableStates, selectInfos } from '../api/test' // 删
 
-const { notifyManagerList } = apis // deleteNotifyManager
+const { notifyManagerList, deleteNotifyManager, nextNotifyManager, notifyManager, prevNotifyManager, readMarkNotifyManager } = apis // 
 
 export default {
   namespace: 'SystemNotification',
@@ -13,14 +14,56 @@ export default {
     backInfo: '',// 删
     changeBack: '',// 删
     infos: {},// 删
+    dataList: [],
+    itemDetail:{},
   },
   effects: {
     *getNoticeList({ payload }, { call, put }){
-      const response = yield call(notifyManagerList,payload)
+      const response = yield call(notifyManagerList,{params:payload})
+      try{
+        if(+response.code === 0){
+          const { datas, pageNumber, pageSize, total } = response.result
+          const pagination = total > 9 ? { current:pageNumber, total, pageSize } : false
+          yield put({
+            type:'initialList',
+            payload:{
+              datass:datas || [],
+              pagination,
+            },
+          })
+        }
+        else{
+          throw response.msg
+        }
+      }catch(error){
+        console.log(error) //eslint-disable-line
+      }
+    },
+    *deleteNoticeItem({ payload }, { call,put}){
+      const response = yield call(deleteNotifyManager,{params:payload})
+      try{
+        if(+response.code === 0){
+          message.success(response.msg)
+          const accountId = localStorage.getItem("accountId")
+          yield put({
+            type:'getNoticeList',
+            payload:{accountId},
+          })
+        }
+        else{
+          message.error(response.msg)
+          throw response.msg
+        }
+      }catch(error){
+        console.log(error) //eslint-disable-line
+      }
+    },
+    *getNextNoticeItem({ payload }, { call, put }){
+      const response = yield call(nextNotifyManager,payload)
       try{
         if(+response.code === 0){
           yield put({
-            type:'',
+            type:'noticeItemDetail',
             payload:response.data,
           })
         }
@@ -31,38 +74,83 @@ export default {
         console.log(error) //eslint-disable-line
       }
     },
-    *getIntros({ payload }, { call, put }) { // 删
-      const response = yield call(getNotices, payload)
-      response.data = response.data.map(item => {
-        return { ...item, noteTime: moment(item.noteTime).format('YYYY-MM-DD HH:mm:ss') }
-      })
-      yield put({
-        type: 'initial',
-        payload: response,
-      })
+    *getNoticeItem({ payload }, { call, put }){
+      const response = yield call(notifyManager,{path:payload.id})
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'noticeItemDetail',
+            payload:response.result,
+          })
+        }
+        else{
+          throw response.msg
+        }
+      }catch(error){
+        console.log(error) //eslint-disable-line
+      }
     },
-    *deleteRows({ payload }, { call, put }) { // 删
-      const response = yield call(deleteTableRows, payload)
-      yield put({
-        type: 'delete',
-        payload: response,
-      })
+    *getPreNoticeItem({ payload }, { call, put }){
+      const response = yield call(prevNotifyManager,payload)
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'noticeItemDetail',
+            payload:response.data,
+          })
+        }
+        else{
+          throw response.msg
+        }
+      }catch(error){
+        console.log(error) //eslint-disable-line
+      }
     },
-    *changeState({ payload }, { call, put }) { // 删
-      const response = yield call(changeTableStates, payload)
-      yield put({
-        type: 'change',
-        payload: response,
-      })
+    *MarkReadNoticeItem({ payload }, { call }){
+      const response = yield call(readMarkNotifyManager,{params:payload})
+      try{
+        if(+response.code === 0){
+          console.log(response.msg) //eslint-disable-line
+        }
+        else{
+          throw response.msg
+        }
+      }catch(error){
+        console.log(error) //eslint-disable-line
+      }
     },
-    *selectById({ payload }, { call, put }) { // 删
-      const response = yield call(selectInfos, payload)
-      response.noteTime = moment(response.noteTime).format('YYYY-MM-DD HH:mm:ss')
-      yield put({
-        type: 'select',
-        payload: response,
-      })
-    },
+  //   *getIntros({ payload }, { call, put }) { // 删
+  //     const response = yield call(getNotices, payload)
+  //     response.data = response.data.map(item => {
+  //       return { ...item, noteTime: moment(item.noteTime).format('YYYY-MM-DD HH:mm:ss') }
+  //     })
+  //     yield put({
+  //       type: 'initial',
+  //       payload: response,
+  //     })
+  //   },
+  //   *deleteRows({ payload }, { call, put }) { // 删
+  //     const response = yield call(deleteTableRows, payload)
+  //     yield put({
+  //       type: 'delete',
+  //       payload: response,
+  //     })
+  //   },
+  //   *changeState({ payload }, { call, put }) { // 删
+  //     const response = yield call(changeTableStates, payload)
+  //     yield put({
+  //       type: 'change',
+  //       payload: response,
+  //     })
+  //   },
+  //   *selectById({ payload }, { call, put }) { // 删
+  //     const response = yield call(selectInfos, payload)
+  //     response.noteTime = moment(response.noteTime).format('YYYY-MM-DD HH:mm:ss')
+  //     yield put({
+  //       type: 'select',
+  //       payload: response,
+  //     })
+  //   },
   },
   reducers: {
     initial(state, action) { // 删
@@ -87,6 +175,19 @@ export default {
       return {
         ...state,
         infos: action.payload,
+      }
+    },
+    initialList(state, {payload}) {
+      return {
+        ...state,
+        dataList:payload.datass,
+        pagination:payload.pagination,
+      }
+    },
+    noticeItemDetail(state, {payload}){
+      return {
+        ...state,
+        itemDetail:payload,
       }
     },
   },

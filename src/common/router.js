@@ -102,7 +102,7 @@ export const getRouterData = app => {
         import('../routes/Overview/SystemNotification')
       ),
     },
-    '/overview/noticeDetail/:params': {
+    '/overview/noticeDetail': {
       component: dynamicWrapper(app, ['SystemNotification'], () =>
         import('../routes/Overview/noticeDetail')
       ),
