@@ -1,9 +1,11 @@
 import React, { Component } from "react"
 import echarts from 'echarts/lib/echarts'
-import 'echarts/lib/chart/graph' 
-import 'echarts/lib/chart/lines'
+import 'echarts/lib/chart/graph'
+import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
+
+import styles from './index.less'
 
 export default class Relation extends Component {
   state = {
@@ -32,10 +34,11 @@ export default class Relation extends Component {
   }
   
   chartRender() {
-    const { title, tooltip, xAxis, yAxis, series } = this.state
+    const { title, tooltip, xAxis, yAxis, series, legend } = this.state
     const echartRelation = echarts.init(document.getElementById('echart-relation'))
     echartRelation.setOption({
       title,
+      legend,
       tooltip,
       xAxis,
       yAxis,
@@ -44,9 +47,9 @@ export default class Relation extends Component {
   }
 
   render() {
-    const { width=500, height=500 } = this.props
+    const { width, height } = this.props
     return (
-      <div id="echart-relation" style={{ width, height }} />
+      <div id="echart-relation" style={{ width, height }} className={styles.container} />
     )
   }
 }

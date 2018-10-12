@@ -180,7 +180,7 @@ export default class AddUser extends Component {
                     message: '用户名不能超过20个字,并且不能含有特殊字符',
                   },
                 ],
-              })(<Input placeholder="请输入用户名" autoComplete='fasle' />)}
+              })(<Input placeholder="请输入用户名" autoComplete='off' />)}
             </FormItem>
             <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('psw', {
@@ -201,7 +201,8 @@ export default class AddUser extends Component {
                     },
                   },
                 ],
-              })(<Input type='password' placeholder="请输入密码" autoComplete='fasle' />)}
+                // 这里解决浏览器自动填入已记住的密码,默认属性改为只读,聚焦后改为读写
+              })(<Input type='password' placeholder="请输入密码" autoComplete='fasle' readOnly onFocus={(e) => {e.target.readOnly = false}} />)}
               <div>
                 <a className="mr8" onClick={this.setPassword}>
                   随机生成

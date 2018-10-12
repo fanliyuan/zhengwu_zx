@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 // 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts'
-import 'echarts/lib/chart/graph'
+import 'echarts/lib/chart/tree'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/legend'
 
