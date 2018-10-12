@@ -14,15 +14,18 @@ const layMore = 0
 }))
 export default class noticeDetail extends Component {
   state = {
-    // layId: 0,
-    // state: false,
-    infos: {},
   }
 
   componentDidMount() {
-    // const { match } = this.props
-    this.setState({
-      infos: this.props.location.state,
+    const { ids } = this.props.location.state
+    const { dispatch } = this.props
+    dispatch({
+      type:'SystemNotification/getNoticeItem',
+      payload:{id:ids},
+    })
+    dispatch({
+      type:'SystemNotification/MarkReadNoticeItem',
+      payload:{notifyIds:ids},
     })
   }
 
@@ -66,21 +69,10 @@ export default class noticeDetail extends Component {
   }
 
   render() {
-    // const {
-    //   SystemNotification: { infos, data },
-    //   loading,
-    // } = this.props
-    const { infos } = this.state
-    // data.forEach((item, index) => {
-    //   if (+item.id === +layId) {
-    //     layLess = index >= 1 ? data[index - 1].id : item.id
-    //     layMore = index <= data.length ? data[index + 1].id : item.id
-    //   }
-    // })
+    const { SystemNotification: { itemDetail }} = this.props
     return (
       <PageHeaderLayout>
         <Card>
-          {/* <div>{state && backInfo && this.deleteSuccess('删除成功')}</div> */}
           <div className='clearfix'>
             <div className={styles.btns}>
               <a href={`/overview/noticeDetail/${layLess}`}>上一封</a>
@@ -92,9 +84,9 @@ export default class noticeDetail extends Component {
             </div>
           </div>
           <div className={styles.content}>
-            <h1>{infos.noteTitle}</h1>
-            <h5>{infos.noteTime}</h5>
-            <p>{infos.noteDetail}</p>
+            <h1>{itemDetail && itemDetail.title}</h1>
+            <h5>{itemDetail && itemDetail.notifyTimeTime}</h5>
+            <p>{itemDetail && itemDetail.content}</p>
           </div>
         </Card>
       </PageHeaderLayout>
