@@ -59,13 +59,19 @@ export default {
       }
     },
     *getNextNoticeItem({ payload }, { call, put }){
-      const response = yield call(nextNotifyManager,payload)
+      const response = yield call(nextNotifyManager,{path:payload.curNotifyId,params:{accountId:payload.accountId}})
       try{
         if(+response.code === 0){
-          yield put({
-            type:'noticeItemDetail',
-            payload:response.data,
-          })
+          if(response.result){
+            yield put({
+              type:'noticeItemDetail',
+              payload:response.result,
+            })
+          }
+          else {
+            message.info("没有数据")
+          }
+
         }
         else{
           throw response.msg
@@ -91,13 +97,18 @@ export default {
       }
     },
     *getPreNoticeItem({ payload }, { call, put }){
-      const response = yield call(prevNotifyManager,payload)
+      const response = yield call(prevNotifyManager,{path:payload.curNotifyId,params:{accountId:payload.accountId}})
       try{
         if(+response.code === 0){
-          yield put({
-            type:'noticeItemDetail',
-            payload:response.data,
-          })
+          if(response.result){
+            yield put({
+              type:'noticeItemDetail',
+              payload:response.result,
+            })
+          }
+          else {
+            message.info("没有数据")
+          }
         }
         else{
           throw response.msg
