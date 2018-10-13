@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { Card, Button } from 'antd'
 import { connect } from 'dva'
-import { Link } from 'dva/router'
+import { routerRedux, Link } from 'dva/router'
 
+import moment from 'moment'
 import styles from './noticeDetail.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-const layLess = 0
-const layMore = 0
 @connect(({ SystemNotification, loading }) => ({
   SystemNotification,
   loading: loading.models.SystemNotification,
@@ -17,55 +16,38 @@ export default class noticeDetail extends Component {
   }
 
   componentDidMount() {
+    const accountId = localStorage.getItem("accountId")
     const { ids } = this.props.location.state
     const { dispatch } = this.props
     dispatch({
       type:'SystemNotification/getNoticeItem',
-      payload:{id:ids},
+      payload:{id:ids,accountId},
     })
-    dispatch({
-      type:'SystemNotification/MarkReadNoticeItem',
-      payload:{notifyIds:ids},
-    })
+    // dispatch({
+    //   type:'SystemNotification/MarkReadNoticeItem',
+    //   payload:{notifyIds:ids},
+    // })
   }
-
-  componentDidUpdate() {
-    // const {
-    //   SystemNotification: { backInfo },
-    // } = this.props
-    // const { state } = this.state
-    // if (state && backInfo.backInfo) {
-    //   this.deleteSuccess('删除成功')
-    // }
-  }
-
-  // handleBack = () => {
-  //   // const {router} = this.props;
-  //   // router.push('/overview/SystemNotification')
-  //   routerRedux.push('/overview/SystemNotification');
-  // };
 
   handleDelete = () => {
-    // const { layId } = this.state
-    // const paramsIds = []
-    // paramsIds.push(layId)
-    // const { dispatch } = this.props
-    // this.setState({
-    //   state: true,
-    // })
-    // dispatch({
-    //   type: 'SystemNotification/deleteRows',
-    //   payload: { rows: paramsIds },
-    // })
+    const { dispatch } = this.props
+    const { ids } = this.props.location.state
+    const accountId = localStorage.getItem("accountId")
+    dispatch({
+      type:'SystemNotification/deleteNoticeItem',
+      payload:{notifyIds:ids,accountId},
+    })
+    dispatch(
+      routerRedux.push('/overview/systemNotification')
+    )
   }
 
-  deleteSuccess = () => {
-    // const { dispatch } = this.props
-    // this.setState({
-    //   state: false,
-    // })
-    // message.info(text)
-    // dispatch(routerRedux.push('/overview/SystemNotification'))
+  handlePreBtn = () => {
+
+  }
+
+  handleNextBtn = () => {
+
   }
 
   render() {
@@ -75,8 +57,8 @@ export default class noticeDetail extends Component {
         <Card>
           <div className='clearfix'>
             <div className={styles.btns}>
-              <a href={`/overview/noticeDetail/${layLess}`}>上一封</a>
-              <a href={`/overview/noticeDetail/${layMore}`}>下一封</a>
+              <span onClick={this.handlePreBtn} className={styles.preBtnBtn}>上一封</span>
+              <span onClick={this.handleNextBtn} className={styles.preBtnBtn}>下一封</span>
               <Button onClick={this.handleDelete}>删除</Button>
             </div>
             <div className={styles.back}>
@@ -85,7 +67,7 @@ export default class noticeDetail extends Component {
           </div>
           <div className={styles.content}>
             <h1>{itemDetail && itemDetail.title}</h1>
-            <h5>{itemDetail && itemDetail.notifyTimeTime}</h5>
+            <h5>{itemDetail && itemDetail.notifyTime && moment(itemDetail.notifyTime).format("lll")}</h5>
             <p>{itemDetail && itemDetail.content}</p>
           </div>
         </Card>

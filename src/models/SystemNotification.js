@@ -43,7 +43,7 @@ export default {
       const response = yield call(deleteNotifyManager,{params:payload})
       try{
         if(+response.code === 0){
-          message.success(response.msg)
+          message.success(`删除${response.msg}`)
           const accountId = localStorage.getItem("accountId")
           yield put({
             type:'getNoticeList',
@@ -75,7 +75,7 @@ export default {
       }
     },
     *getNoticeItem({ payload }, { call, put }){
-      const response = yield call(notifyManager,{path:payload.id})
+      const response = yield call(notifyManager,{path:payload.id,params:{accountId:payload.accountId}})
       try{
         if(+response.code === 0){
           yield put({
@@ -106,11 +106,16 @@ export default {
         console.log(error) //eslint-disable-line
       }
     },
-    *MarkReadNoticeItem({ payload }, { call }){
+    *MarkReadNoticeItem({ payload }, { call,put }){
       const response = yield call(readMarkNotifyManager,{params:payload})
       try{
         if(+response.code === 0){
-          console.log(response.msg) //eslint-disable-line
+          const accountId = localStorage.getItem("accountId")
+          message.success(`标记已读${response.msg}`)
+          yield put({
+            type:'getNoticeList',
+            payload:{accountId},
+          })
         }
         else{
           throw response.msg

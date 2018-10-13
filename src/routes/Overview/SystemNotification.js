@@ -12,6 +12,7 @@ import styles from './SystemNotification.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 let selectedRowIds = []
+let accountIdState
 @connect(({SystemNotification,loading}) => ({
   SystemNotification,
   loading: loading.models.SystemNotification,
@@ -23,15 +24,12 @@ export default class SystemNotification extends PureComponent {
 
   componentDidMount = () => {
     const accountId = localStorage.getItem("accountId")
+    accountIdState = accountId
     const { dispatch } = this.props
     dispatch({
       type:'SystemNotification/getNoticeList',
       payload:{accountId},
     })
-  }
-
-  componentDidUpdate = () => {
-
   }
 
   handleTableChange = () => {
@@ -65,22 +63,22 @@ export default class SystemNotification extends PureComponent {
       const { dispatch } = this.props
       dispatch({
         type:'SystemNotification/deleteNoticeItem',
-        payload:{notifyIds:selectedRowIds.toString()},
+        payload:{notifyIds:selectedRowIds.toString(),accountId:accountIdState},
       })
     }
   }
 
   handleChangeState = () => {
-
-  }
-
-  changeSuccess = text => {
-    message.warning(text)
-    this.handleInfo()
-    this.setState({
-      // changeState: false,
-      // selectedRowIds: [],
-    })
+    if(selectedRowIds.length <= 0){
+      message.error("选择不能为空")
+    }
+    else{
+      const { dispatch } = this.props
+      dispatch({
+        type:'SystemNotification/MarkReadNoticeItem',
+        payload:{notifyIds:selectedRowIds.toString(),accountId:accountIdState},
+      })
+    }
   }
 
   handleDetail = row => {
@@ -101,7 +99,7 @@ export default class SystemNotification extends PureComponent {
         align: 'center',
         render: (val, row) => (
           <a onClick={() => this.handleDetail(row)}>
-            {+row.notifyState === 1 && <Badge dot />}
+            {+row.state === 0 && <Badge dot />}
             {val}
           </a>
         ),
