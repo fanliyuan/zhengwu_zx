@@ -12,8 +12,14 @@ const module = {
     },
     {
       name: 'readNotification',
-      url: '/notifyManager/readMark',
+      url: 'notifyManager/readMark',
       method: 'put',
+    },
+    {
+      name: 'postNotification',
+      baseHost: 'http://testgoverinfrast.tpaas.youedata.com',
+      url: 'zwjh/api/v1/notify',
+      method: 'post',
     },
   ],
 }
