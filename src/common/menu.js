@@ -33,7 +33,7 @@ const menuData = [
         name: '通知详情',
         path: 'noticeDetail',
         hideInMenu: true,
-        authority: ['operator', 'operator-n'],
+        authority: ['operator', 'security', 'operator-n'],
       },
       // {
       //   name: '工作台',

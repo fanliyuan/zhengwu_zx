@@ -23,10 +23,6 @@ export default class noticeDetail extends Component {
       type:'SystemNotification/getNoticeItem',
       payload:{id:ids,accountId},
     })
-    // dispatch({
-    //   type:'SystemNotification/MarkReadNoticeItem',
-    //   payload:{notifyIds:ids},
-    // })
   }
 
   handleDelete = () => {
@@ -42,12 +38,22 @@ export default class noticeDetail extends Component {
     )
   }
 
-  handlePreBtn = () => {
-
+  handlePreBtn = (nid) => {
+    const { dispatch } = this.props
+    const accountId = localStorage.getItem("accountId")
+    dispatch({
+      type:'SystemNotification/getPreNoticeItem',
+      payload:{curNotifyId:nid,accountId},
+    })
   }
 
-  handleNextBtn = () => {
-
+  handleNextBtn = (nid) => {
+    const { dispatch } = this.props
+    const accountId = localStorage.getItem("accountId")
+    dispatch({
+      type:'SystemNotification/getNextNoticeItem',
+      payload:{curNotifyId:nid,accountId},
+    })
   }
 
   render() {
@@ -57,8 +63,8 @@ export default class noticeDetail extends Component {
         <Card>
           <div className='clearfix'>
             <div className={styles.btns}>
-              <span onClick={this.handlePreBtn} className={styles.preBtnBtn}>上一封</span>
-              <span onClick={this.handleNextBtn} className={styles.preBtnBtn}>下一封</span>
+              <span onClick={this.handlePreBtn.bind(null,itemDetail.id)} className={styles.preBtnBtn}>上一封</span>
+              <span onClick={this.handleNextBtn.bind(null,itemDetail.id)} className={styles.preBtnBtn}>下一封</span>
               <Button onClick={this.handleDelete}>删除</Button>
             </div>
             <div className={styles.back}>

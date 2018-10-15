@@ -28,12 +28,18 @@ export default class SystemNotification extends PureComponent {
     const { dispatch } = this.props
     dispatch({
       type:'SystemNotification/getNoticeList',
-      payload:{accountId},
+      payload:{accountId,pageSize:10,pageNumber:1},
     })
   }
 
-  handleTableChange = () => {
-    
+  handleTableChange = (pagination) => {
+    const accountId = localStorage.getItem("accountId")
+    accountIdState = accountId
+    const { dispatch } = this.props
+    dispatch({
+      type:'SystemNotification/getNoticeList',
+      payload:{accountId,pageSize:pagination.pageSize,pageNumber:pagination.current},
+    })
   }
 
   handleState = (res) => {
@@ -51,7 +57,7 @@ export default class SystemNotification extends PureComponent {
     }
     dispatch({
       type:'SystemNotification/getNoticeList',
-      payload:{accountId,status:states},
+      payload:{accountId,state:states},
     })
   }
 
