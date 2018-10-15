@@ -34,7 +34,7 @@ export default class Relation extends Component {
   }
   
   chartRender() {
-    const { title, tooltip, xAxis, yAxis, series, legend } = this.state
+    const { title, tooltip, xAxis, yAxis, series, legend, onClick = () => {}  } = this.state
     const echartRelation = echarts.init(document.getElementById('echart-relation'))
     echartRelation.setOption({
       title,
@@ -44,6 +44,7 @@ export default class Relation extends Component {
       yAxis,
       series,
     })
+    echartRelation.on('click', onClick)
   }
 
   render() {
