@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-
-// 引入 ECharts 主模块
 import echarts from 'echarts/lib/echarts'
-import 'echarts/lib/chart/tree'
+import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/legend'
 
-export default class Tree extends Component{
+import styles from './index.less'
+
+export default class Pie extends Component {
   state = {
-    tooltip: {},
-    legend: {},
-    series: [],
     id: Math.random().toString().substr(3,10),
   }
 
@@ -32,20 +29,19 @@ export default class Tree extends Component{
   }
 
   chartRender() {
-    const { tooltip, series, legend, onClick = () => {}, id } = this.state
-    const echartTree = echarts.init(document.getElementById(`echart-tree-${id}`))
-    echartTree.setOption({
+    const { title, legend, tooltip, series, onClick = () => {}, id } = this.state
+    const echartPie = echarts.init(document.getElementById(`echart-pie-${id}`))
+    echartPie.setOption({
+      title,
+      legend,
       tooltip,
       series,
-      legend,
     })
-    echartTree.on('click', onClick)
+    echartPie.on('click',onClick)
   }
 
   render() {
-    const { width=500, height=500, id } = this.props
-    return (
-      <div id={`echart-tree-${id}`} style={{ width, height }} />
-    )
+    const { width, height, id } = this.state
+    return <div id={`echart-pie-${id}`} style={{ width, height }} className={styles.container} />
   }
 }

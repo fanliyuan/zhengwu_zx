@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { Card, Row, Col, List } from 'antd'
-import { Pie, TimelineChart, Gauge } from 'components/Charts'
+// import { TimelineChart } from 'components/Charts'
 import numeral from 'numeral'
 
+import Pie from 'components/ECharts/Pie'
+import Gauge from 'components/ECharts/Gauge'
+import Line from 'components/ECharts/Line'
 import styles from './PlatformOverview.less'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import Graph from '../../components/ECharts/Graph'
@@ -194,15 +197,401 @@ const option = {
     links,
   }],
 }
+// 饼图数据
+const PieData = [ { name: '分类1', value: 116 }, { name: '分类2', value: 87 }, { name: '分类3', value: 23 }, { name: '分类4', value: 15 }, { name: '分类5', value: 14 }, { name: '分类6', value: 14 } ]
+// 饼状图配置
+const pieOption = {
+  legend: {
+    left: 'right',
+    top: 'center',
+    orient: 'vertical',
+    itemWidth: 40,
+    itemHeight: 30,
+    textStyle: {
+      fontSize: 16,
+    },
+  },
+  tooltip: {},
+  series: [
+    {
+      name: '中间显示',
+      type: 'pie',
+      center: ['35%', '50%'],
+      radius: '60%',
+      label: {
+        normal: {
+          formatter: '总数有',
+          position: 'center',
+          textStyle: {
+              fontSize: 24,
+              fontWeight: 600,
+          },
+        },
+      },
+      data:[
+        {itemStyle: {color: '#000',size: '32'}},
+      ],
+      tooltip: {
+          formatter: 'zongshu',
+      },
+    },{
+      name: '数据',
+      type: 'pie',
+      center: ['35%', '50%'],
+      radius: ['60%', '80%'],
+      data: PieData,
+      color: ['#4fa0ff', '#6a8dff', '#6a6eff', '#946aff', '#c96aff', '#e86aff'],
+    },
+  ],
+}
+// 仪表盘数据
+const gaugeData = 30
+// 仪表盘配置,带渐变色
+const gaugeOption = {
+  tooltip: {},
+  series: [
+    {
+      name: '仪表盘',
+      type: 'gauge',
+      radius: '90%',
+      center: ['40%','50%'],
+      startAngle: 210,
+      endAngle: -30,
+      splitLine: {
+        show: false,
+      },
+      axisLine: {
+        lineStyle: {
+          width:10,
+          opacity:0,
+        },
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLabel: {
+        distance: -18,
+      },
+      pointer: {width: 4},
+      title: {
+        show: false,
+      },
+      detail: {
+        formatter:'{value}%',
+        offsetCenter: [0, '60%'],
+        fontSize: 25,
+      },
+      data: [{value: gaugeData, name: '完成率'}],
+    },
+    {
+      name: '进度展示条底色',
+      type: 'pie',
+      tooltip: {
+        backgroundColor: 'transparent',
+        textStyle: {
+          color: 'transparent',
+        },
+        formatter: '1',
+      },
+      radius: ['80%', '90%'],
+      center: ['40%','50%'],
+      avoidLabelOverlap: false,
+      startAngle: 210,
+      endAngle: -30,
+      zlevel: 1,
+      label: {
+        normal: {
+          show: false,
+        },
+        emphasis: {
+          show: false,
+        },
+      },
+      labelLine: {
+        normal: {
+          show: false,
+        },
+      },
+      data: [{
+        // 展示数据
+        value: 240,
+        name: '显示进度条底色',
+        hoverAnimation: false,
+        itemStyle: {
+          normal: {
+            color: '#ccc',
+          },
+        },
+      }, {
+        // 占位数据(写死)
+        value: 120,
+        name: '空白部分',
+        itemStyle: {
+          normal: {
+            color: 'transparent',
+          },
+        },
+      }],
+    },
+    {
+      name: '进度展示条渐变',
+      type: 'pie',
+      tooltip: {
+        backgroundColor: 'transparent',
+        textStyle: {
+          color: 'transparent',
+        },
+        formatter: '1',
+      },
+      radius: ['80%', '90%'],
+      center: ['40%','50%'],
+      avoidLabelOverlap: false,
+      startAngle: 210,
+      endAngle: -30,
+      zlevel: 1,
+      label: {
+        normal: {
+          show: false,
+        },
+        emphasis: {
+          show: false,
+        },
+      },
+      labelLine: {
+        normal: {
+          show: false,
+        },
+      },
+      data: [{
+        // 展示数据
+        value: gaugeData / 1.5,
+        name: '显示进度条渐变',
+        hoverAnimation: false,
+        itemStyle: {
+          normal: {
+            color: {
+              type: 'linear',
+              x: 0,
+              y: 1,
+              x2: 1,
+              y2: 1,
+              colorStops: [{
+                offset: 0,
+                color: 'rgba(0,0,255,0.4)', // 0% 处的颜色
+              },{
+                offset: 1,
+                color: 'rgba(0,0,255, 1)', // 100% 处的颜色
+              }],
+              globalCoord: true, // 缺省为 false
+            },
+          },
+        },
+      }, {
+        // 占位数据(写死)
+        value: 100-gaugeData/1.5,
+        name: '空白部分',
+        itemStyle: {
+          normal: {
+            color: 'transparent',
+          },
+        },
+      }],
+    },
+  ],
+}
+
+const lineData = {
+  backgroundColor: '#424956',
+  title: {
+      text: '请求数',
+      textStyle: {
+          fontWeight: 'normal',
+          fontSize: 16,
+          color: '#F1F1F3',
+      },
+      left: '6%',
+  },
+  tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+          lineStyle: {
+              color: '#57617B',
+          },
+      },
+  },
+  legend: {
+      icon: 'rect',
+      itemWidth: 14,
+      itemHeight: 5,
+      itemGap: 13,
+      data: ['移动', '电信', '联通'],
+      right: '4%',
+      textStyle: {
+          fontSize: 12,
+          color: '#292f39',
+      },
+  },
+  grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true,
+  },
+  xAxis: [{
+      type: 'category',
+      boundaryGap: false,
+      axisLine: {
+          lineStyle: {
+              color: '#57617B',
+          },
+      },
+      data: ['13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35'],
+  }],
+  yAxis: [{
+      type: 'value',
+      name: '单位（%）',
+      axisTick: {
+          show: false,
+      },
+      axisLine: {
+          lineStyle: {
+              color: '#57617B',
+          },
+      },
+      axisLabel: {
+          margin: 10,
+          textStyle: {
+              fontSize: 14,
+          },
+      },
+      splitLine: {
+          lineStyle: {
+              color: '#57617B',
+          },
+      },
+  }],
+  series: [{
+      name: '移动',
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 5,
+      showSymbol: false,
+      lineStyle: {
+          normal: {
+              width: 3,
+          },
+      },
+      areaStyle: {
+          normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                    offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
+                }, {
+                    offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
+                }],
+                globalCoord: false, // 缺省为 false
+            },
+              shadowColor: 'rgba(0, 0, 0, 0.1)',
+              shadowBlur: 10,
+          },
+      },
+     itemStyle: {
+              normal: {
+                  
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [{
+                        offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
+                    }, {
+                        offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
+                    }],
+                    globalCoord: false, // 缺省为 false
+                },
+              },
+              emphasis: {
+              color: 'rgb(0,196,132)',
+              borderColor: 'rgba(0,196,132,0.2)',
+              extraCssText: 'box-shadow: 8px 8px 8px rgba(0, 0, 0, 1);',
+              borderWidth: 10,
+          },
+          },
+      data: [220, 182, 191, 134, 150, 120, 110, 125 ],
+  }, {
+      name: '电信',
+      type: 'line',
+      smooth: true,
+      symbol: 'circle',
+      symbolSize: 5,
+      showSymbol: false,
+      lineStyle: {
+          normal: {
+              width: 3,
+          },
+      },
+      areaStyle: {
+          normal: {
+              color: {
+                type: 'linear',
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [{
+                    offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
+                }, {
+                    offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
+                }],
+                globalCoord: false, // 缺省为 false
+            },
+              shadowColor: 'rgba(0, 0, 0, 0.1)',
+              shadowBlur: 10,
+          },
+      },
+     itemStyle: {
+              normal: {
+                   
+                  color: {
+                    type: 'linear',
+                    x: 0,
+                    y: 0,
+                    x2: 0,
+                    y2: 1,
+                    colorStops: [{
+                        offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
+                    }, {
+                        offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
+                    }],
+                    globalCoord: false, // 缺省为 false
+                },
+              },
+              emphasis: {
+              color: 'rgb(99,250,235)',
+              borderColor: 'rgba(99,250,235,0.2)',
+              extraCssText: 'box-shadow: 8px 8px 8px rgba(0, 0, 0, 1);',
+              borderWidth: 10,
+          },
+          },
+      data: [120, 110, 125, 145, 122, 165, 122, 220],
+  }  ],
+}
 
 
 export default class PlatformOverview extends Component {
   state = {}
 
   render() {
-    const offlineChartData = [ { x: 1531709122492, y1: 69, y2: 95 }, { x: 1531714522492, y1: 99, y2: 27 }, { x: 1531712722492, y1: 79, y2: 90 }, { x: 1531716322492, y1: 19, y2: 105 }, { x: 1531718122492, y1: 10, y2: 48 }, { x: 1531719922492, y1: 23, y2: 99 }, { x: 1531721722492, y1: 18, y2: 83 }, { x: 1531723522492, y1: 74, y2: 100 }, { x: 1531725322492, y1: 104, y2: 77 }, { x: 1531727122492, y1: 87, y2: 27 }, { x: 1531728922492, y1: 68, y2: 64 }, { x: 1531730722492, y1: 89, y2: 10 }, { x: 1531732522492, y1: 49, y2: 80 }, { x: 1531734322492, y1: 69, y2: 45 }, { x: 1531736122492, y1: 74, y2: 109 }, { x: 1531737922492, y1: 56, y2: 47 }, { x: 1531739722492, y1: 10, y2: 84 }, { x: 1531741522492, y1: 67, y2: 34 }, { x: 1531743322492, y1: 11, y2: 48 } ]
+    // const offlineChartData = [ { x: 1531709122492, y1: 69, y2: 95 }, { x: 1531714522492, y1: 99, y2: 27 }, { x: 1531712722492, y1: 79, y2: 90 }, { x: 1531716322492, y1: 19, y2: 105 }, { x: 1531718122492, y1: 10, y2: 48 }, { x: 1531719922492, y1: 23, y2: 99 }, { x: 1531721722492, y1: 18, y2: 83 }, { x: 1531723522492, y1: 74, y2: 100 }, { x: 1531725322492, y1: 104, y2: 77 }, { x: 1531727122492, y1: 87, y2: 27 }, { x: 1531728922492, y1: 68, y2: 64 }, { x: 1531730722492, y1: 89, y2: 10 }, { x: 1531732522492, y1: 49, y2: 80 }, { x: 1531734322492, y1: 69, y2: 45 }, { x: 1531736122492, y1: 74, y2: 109 }, { x: 1531737922492, y1: 56, y2: 47 }, { x: 1531739722492, y1: 10, y2: 84 }, { x: 1531741522492, y1: 67, y2: 34 }, { x: 1531743322492, y1: 11, y2: 48 } ]
     const fakeData = [ { title: '机构数量', content: 24 }, { title: '节点数量', content: 24 }, { title: '数据资源', content: 199 }, { title: '目录资源', content: 102 }, { title: '数据量', content: '24000条' }, { title: '文件量', content: '500.03PB' }, { title: '任务数', content: 102 }, { title: '总交换数', content: 1024 } ]
-    const salesPieData = [ { x: '分类1', y: 116 }, { x: '分类2', y: 87 }, { x: '分类3', y: 23 }, { x: '分类4', y: 15 }, { x: '分类5', y: 14 }, { x: '分类6', y: 14 } ]
     const rankingListData = []
     for (let i = 1; i < 7; i += 1) {
       rankingListData.push({
@@ -249,11 +638,9 @@ export default class PlatformOverview extends Component {
               </div>
               <div style={{ padding: '0 24px' }}>
                 <h3>实施传输</h3>
-                <TimelineChart
+                <Line
+                  {...lineData}
                   height={400}
-                  data={offlineChartData}
-                  titleMap={{ y1: '客流量', y2: '支付笔数' }}
-                  showArea
                   />
               </div>
             </Col>
@@ -309,21 +696,14 @@ export default class PlatformOverview extends Component {
                 <h3>目录分类占比</h3>
                 <Card bordered={false}>
                   <Pie
-                    hasLegend
-                    title="销售额"
-                    subTitle="目录资源"
-                    total={salesPieData.reduce((pre, now) => now.y + pre, 0)}
-                    data={salesPieData}
-                    // valueFormat={val => yuan(val)}
+                    {...pieOption}
                     height={294}
-                    showValue={false}
-                    listyle={{ marginLeft: 80 }}
                     />
                 </Card>
               </div>
               <div>
                 <h3>平均传输速率</h3>
-                <Gauge hasLegend title="传输速率" height={164} percent={87} />
+                <Gauge {...gaugeOption} height={164} />
               </div>
             </Col>
           </Row>
