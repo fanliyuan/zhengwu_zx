@@ -123,6 +123,9 @@ export default function request(url, options) {
         return
       }
       if (status <= 504 && status >= 500) {
+        if (window.location.pathname.match(/\/user\/login/)) {
+          return
+        }
         dispatch(routerRedux.push('/exception/500'))
         return
       }
