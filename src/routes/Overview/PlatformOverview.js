@@ -50,72 +50,7 @@ const data = [{
   name: '王德福',
   category: 1,
 }]
-const links = [{
-  source: 0,
-  target: 1,
-  category: 0,
-  value: '朋友',
-}, {
-  source: 0,
-  target: 2,
-  value: '战友',
-}, {
-  source: 0,
-  target: 3,
-  value: '房东',
-}, {
-  source: 0,
-  target: 4,
-  value: '朋友',
-}, {
-  source: 1,
-  target: 2,
-  value: '表亲',
-}, {
-  source: 0,
-  target: 5,
-  value: '朋友',
-}, {
-  source: 4,
-  target: 5,
-  value: '姑姑',
-}, {
-  source: 2,
-  target: 8,
-  value: '叔叔',
-}, {
-  source: 0,
-  target: 12,
-  value: '朋友',
-}, {
-  source: 6,
-  target: 11,
-  value: '爱人',
-}, {
-  source: 6,
-  target: 3,
-  value: '朋友',
-}, {
-  source: 7,
-  target: 5,
-  value: '朋友',
-}, {
-  source: 9,
-  target: 10,
-  value: '朋友',
-}, {
-  source: 3,
-  target: 10,
-  value: '朋友',
-}, {
-  source: 2,
-  target: 11,
-  value: '我是你的同学',
-}, {
-  source: 11,
-  target: 2,
-  value: '你不是我的同学',
-}]
+const links = [{ source: 0, target: 1, category: 0, value: '朋友' }, { source: 0, target: 2, value: '战友' }, { source: 0, target: 3, value: '房东' }, { source: 0, target: 4, value: '朋友' }, { source: 1, target: 2, value: '表亲' }, { source: 0, target: 5, value: '朋友' }, { source: 4, target: 5, value: '姑姑' }, { source: 2, target: 8, value: '叔叔' }, { source: 0, target: 12, value: '朋友' }, { source: 6, target: 11, value: '爱人' }, { source: 6, target: 3, value: '朋友' }, { source: 7, target: 5, value: '朋友' }, { source: 9, target: 10, value: '朋友' }, { source: 3, target: 10, value: '朋友' }, { source: 2, target: 11, value: '我是你的同学' }, { source: 11, target: 2, value: '你不是我的同学' }]
 // 根据数和关联组装配置
 const option = {
   title: {
@@ -197,6 +132,7 @@ const option = {
     links,
   }],
 }
+
 // 饼图数据
 const PieData = [ { name: '分类1', value: 116 }, { name: '分类2', value: 87 }, { name: '分类3', value: 23 }, { name: '分类4', value: 15 }, { name: '分类5', value: 14 }, { name: '分类6', value: 14 } ]
 // 饼状图配置
@@ -244,6 +180,7 @@ const pieOption = {
     },
   ],
 }
+
 // 仪表盘数据
 const gaugeData = 30
 // 仪表盘配置,带渐变色
@@ -400,189 +337,126 @@ const gaugeOption = {
   ],
 }
 
-const lineData = {
+// 折线图的数据结构
+const lineData = [
+  ['time', '13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35'],
+  ['移动', 220, 182, 191, 134, 150, 120, 110, 125],
+  ['电信', 120, 110, 125, 145, 122, 165, 122, 220],
+  ['联通', 123, 123, 123, 7, 342, 32, 34, 95],
+]
+/**
+ * 获取这折线图的系列
+ * @param {*} 必传参数传入color为折线和区域的颜色
+ */
+function getLineSerie({color = 'red', color1 = 'rgba(0,0,0,0)'}) {
+  return {
+    type: 'line',
+    symbol: 'circle',
+    symbolSize: 5,
+    lineStyle: {
+      normal: {
+        width: 2,
+      },
+    },
+    areaStyle: {
+      normal: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [{
+            offset: 0,
+            color, // 0% 处的颜色
+            opacity: 1,
+          }, {
+            offset: 1,
+            color: color1, // 100% 处的颜色
+          }],
+          globalCoord: false, // 缺省为 false
+        },
+      },
+    },
+    itemStyle: {
+      normal: {
+        color,
+        width: 2,
+      },
+    },
+    seriesLayoutBy: 'row',
+  }
+}
+// 组装折线图的配置
+const lineOption = {
   backgroundColor: '#424956',
-  title: {
-      text: '请求数',
-      textStyle: {
-          fontWeight: 'normal',
-          fontSize: 16,
-          color: '#F1F1F3',
-      },
-      left: '6%',
-  },
   tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-          lineStyle: {
-              color: '#57617B',
-          },
+    trigger: 'axis',
+    axisPointer: {
+      lineStyle: {
+        color: '#57617B',
       },
+    },
   },
   legend: {
-      icon: 'rect',
-      itemWidth: 14,
-      itemHeight: 5,
-      itemGap: 13,
-      data: ['移动', '电信', '联通'],
-      right: '4%',
-      textStyle: {
-          fontSize: 12,
-          color: '#292f39',
-      },
+    icon: 'rect',
+    itemWidth: 15,
+    itemHeight: 10,
+    itemGap: 13,
+    right: '4%',
+    textStyle: {
+      fontSize: 12,
+      color: '#292f39',
+    },
   },
   grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true,
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true,
+  },
+  dataset: {
+    source: lineData,
   },
   xAxis: [{
-      type: 'category',
-      boundaryGap: false,
-      axisLine: {
-          lineStyle: {
-              color: '#57617B',
-          },
+    type: 'category',
+    boundaryGap: false,
+    axisLine: {
+      lineStyle: {
+        color: '#57617B',
       },
-      data: ['13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35'],
+    },
   }],
   yAxis: [{
-      type: 'value',
-      name: '单位（%）',
-      axisTick: {
-          show: false,
+    type: 'value',
+    name: '单位（%）',
+    axisTick: {
+      show: false,
+    },
+    axisLine: {
+      lineStyle: {
+        color: '#57617B',
       },
-      axisLine: {
-          lineStyle: {
-              color: '#57617B',
-          },
+    },
+    axisLabel: {
+      margin: 10,
+      textStyle: {
+        fontSize: 14,
       },
-      axisLabel: {
-          margin: 10,
-          textStyle: {
-              fontSize: 14,
-          },
+    },
+    splitLine: {
+      lineStyle: {
+        color: '#57617B',
+        type: 'dashed',
+        opacity: 0.5,
       },
-      splitLine: {
-          lineStyle: {
-              color: '#57617B',
-          },
-      },
+    },
   }],
-  series: [{
-      name: '移动',
-      type: 'line',
-      smooth: true,
-      symbol: 'circle',
-      symbolSize: 5,
-      showSymbol: false,
-      lineStyle: {
-          normal: {
-              width: 3,
-          },
-      },
-      areaStyle: {
-          normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                    offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
-                }, {
-                    offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
-                }],
-                globalCoord: false, // 缺省为 false
-            },
-              shadowColor: 'rgba(0, 0, 0, 0.1)',
-              shadowBlur: 10,
-          },
-      },
-     itemStyle: {
-              normal: {
-                  
-                  color: {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    colorStops: [{
-                        offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
-                    }, {
-                        offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
-                    }],
-                    globalCoord: false, // 缺省为 false
-                },
-              },
-              emphasis: {
-              color: 'rgb(0,196,132)',
-              borderColor: 'rgba(0,196,132,0.2)',
-              extraCssText: 'box-shadow: 8px 8px 8px rgba(0, 0, 0, 1);',
-              borderWidth: 10,
-          },
-          },
-      data: [220, 182, 191, 134, 150, 120, 110, 125 ],
-  }, {
-      name: '电信',
-      type: 'line',
-      smooth: true,
-      symbol: 'circle',
-      symbolSize: 5,
-      showSymbol: false,
-      lineStyle: {
-          normal: {
-              width: 3,
-          },
-      },
-      areaStyle: {
-          normal: {
-              color: {
-                type: 'linear',
-                x: 0,
-                y: 0,
-                x2: 0,
-                y2: 1,
-                colorStops: [{
-                    offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
-                }, {
-                    offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
-                }],
-                globalCoord: false, // 缺省为 false
-            },
-              shadowColor: 'rgba(0, 0, 0, 0.1)',
-              shadowBlur: 10,
-          },
-      },
-     itemStyle: {
-              normal: {
-                   
-                  color: {
-                    type: 'linear',
-                    x: 0,
-                    y: 0,
-                    x2: 0,
-                    y2: 1,
-                    colorStops: [{
-                        offset: 0, color: 'rgba(255,0,0,0.5)', // 0% 处的颜色
-                    }, {
-                        offset: 1, color: 'rgba(0,0,255,0.5)', // 100% 处的颜色
-                    }],
-                    globalCoord: false, // 缺省为 false
-                },
-              },
-              emphasis: {
-              color: 'rgb(99,250,235)',
-              borderColor: 'rgba(99,250,235,0.2)',
-              extraCssText: 'box-shadow: 8px 8px 8px rgba(0, 0, 0, 1);',
-              borderWidth: 10,
-          },
-          },
-      data: [120, 110, 125, 145, 122, 165, 122, 220],
-  }  ],
+  series: [
+    getLineSerie({color: 'blue'}), 
+    getLineSerie({color: 'red'}),
+    getLineSerie({color: 'green'}),
+  ],
 }
 
 
@@ -639,7 +513,7 @@ export default class PlatformOverview extends Component {
               <div style={{ padding: '0 24px' }}>
                 <h3>实施传输</h3>
                 <Line
-                  {...lineData}
+                  {...lineOption}
                   height={400}
                   />
               </div>
