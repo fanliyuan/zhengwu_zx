@@ -9,8 +9,8 @@ export default {
   state: {
     list: [],
     currentUser: {
-      avatar: "https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png",
-      name: "Serati Ma",
+      avatar: "",
+      name: "",
       notifyCount: 0,
       userid: "00000001",
     },

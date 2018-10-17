@@ -1,17 +1,15 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 import echarts from 'echarts/lib/echarts'
-import 'echarts/lib/chart/graph'
-import 'echarts/lib/component/legend'
+import 'echarts/lib/chart/gauge'
+import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/legend'
 import 'echarts/lib/component/title'
 
 import styles from './index.less'
 
-export default class Relation extends Component {
+export default class Guage extends Component {
   state = {
-    title: {},
-    tooltip: {},
-    series: [],
     id: Math.random().toString().substr(3,10),
   }
 
@@ -19,7 +17,7 @@ export default class Relation extends Component {
     const { props } = this
     this.setState({
       ...props,
-    },() => {
+    }, () => {
       this.chartRender()
     })
   }
@@ -27,27 +25,27 @@ export default class Relation extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       ...nextProps,
-    }, () => {
+    },() => {
       this.chartRender()
     })
   }
-  
+
   chartRender() {
-    const { title, tooltip, series, legend, onClick = () => {}, id } = this.state
-    const echartRelation = echarts.init(document.getElementById(`echart-relation-${id}`))
-    echartRelation.setOption({
+    const { title, tooltip, legend, series, onClick = () => {}, id } = this.state
+    const echartGuage = echarts.init(document.getElementById(`echart-gauge-${id}`))
+    echartGuage.setOption({
       title,
-      legend,
       tooltip,
+      legend,
       series,
     })
-    echartRelation.on('click', onClick)
+    echartGuage.on('click', onClick)
   }
 
   render() {
     const { width, height, id } = this.state
     return (
-      <div id={`echart-relation-${id}`} style={{ width, height }} className={styles.container} />
+      <div id={`echart-gauge-${id}`} style={{ width, height }} className={styles.container} />
     )
   }
 }

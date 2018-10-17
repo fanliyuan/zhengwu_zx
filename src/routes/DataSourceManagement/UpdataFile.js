@@ -20,12 +20,9 @@ export default class UpdataFile extends Component {
       action: '//jsonplaceholder.typicode.com/posts/',
       onChange(info) {
         const statuss = info.file.status
-        if (statuss !== 'uploading') {
-          // console.log()
-        }
         if (statuss === 'done') {
           Message.success(`${info.file.name} file upload successfully`)
-        } else if (status === 'error') {
+        } else if (statuss === 'error') {
           Message.error(`${info.file.name} file upload failed`)
         }
       },
