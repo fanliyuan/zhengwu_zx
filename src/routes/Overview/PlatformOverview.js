@@ -12,7 +12,7 @@ import Graph from '../../components/ECharts/Graph'
 
 // 数据和相关联
 const data = [{
-  name: '徐贱云',
+  name: '徐云',
 }, {
   name: '冯可梁',
   category: 1,
