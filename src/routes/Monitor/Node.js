@@ -1,21 +1,130 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 16:54:02
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-24 18:12:04
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-18 13:30:28
  * @描述: 监控告警 -- 节点系统监控  -- 统称监控详情 ( 系统告警 和 -- 系统告警设置 ) 
 
 */
 import React, { Component } from 'react'
 import { Link } from 'dva/router'
+import Line from 'components/ECharts/Line'
 import { Tabs, Table, Input, Select, Cascader, Button, DatePicker, Form, message, Card } from 'antd'
 import moment from 'moment'
 
-import { TimelineChart } from 'components/Charts'
+// import { TimelineChart } from 'components/Charts'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import { getRandom } from '../../utils/faker'
 import styles from './Node.less'
 
+const lineData = [
+  ['time', '13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35'],
+  ['移动', 220, 182, 191, 134, 150, 120, 110, 125],
+  // ['电信', 120, 110, 125, 145, 122, 165, 122, 220],
+  // ['联通', 123, 123, 123, 7, 342, 32, 34, 95],
+]
+function getLineSerie({color = 'red', color1 = 'rgba(0,0,0,0)'}) {
+  return {
+    type: 'line',
+    symbol: 'circle',
+    symbolSize: 5,
+    lineStyle: {
+      normal: {
+        width: 2,
+      },
+    },
+    areaStyle: {
+      normal: {
+        color: {
+          type: 'linear',
+          x: 0,
+          y: 0,
+          x2: 0,
+          y2: 1,
+          colorStops: [{
+            offset: 0,
+            color, // 0% 处的颜色
+            opacity: 1,
+          }, {
+            offset: 1,
+            color: color1, // 100% 处的颜色
+          }],
+          globalCoord: false, // 缺省为 false
+        },
+      },
+    },
+    itemStyle: {
+      normal: {
+        color,
+        width: 2,
+      },
+    },
+    seriesLayoutBy: 'row',
+  }
+}
+   // 组装折线图的配置
+const lineOption = {
+backgroundColor: '#424956',
+tooltip: {
+  trigger: 'axis',
+  axisPointer: {
+    lineStyle: {
+      color: '#57617B',
+    },
+  },
+},
+grid: {
+  left: '3%',
+  right: '4%',
+  bottom: '3%',
+  containLabel: true,
+},
+dataset: {
+  source: lineData,
+},
+xAxis: [{
+  type: 'category',
+  splitLine:{
+    show:true,
+  },
+  boundaryGap: false,
+  axisLine: {
+    lineStyle: {
+      color: '#57617B',
+    },
+  },
+}],
+yAxis: [{
+  type: 'value',
+  name: '单位（%）',
+  axisTick: {
+    show: false,
+  },
+  axisLine: {
+    lineStyle: {
+      color: '#57617B',
+    },
+  },
+  axisLabel: {
+    margin: 10,
+    textStyle: {
+      fontSize: 14,
+    },
+  },
+  splitLine: {
+    lineStyle: {
+      color: '#57617B',
+      type: 'dashed',
+      opacity: 0.5,
+    },
+  },
+}],
+series: [
+  getLineSerie({color: 'blue'}), 
+  // getLineSerie({color: 'red'}),
+  // getLineSerie({color: 'green'}),
+],
+}
 const usageType = ['CPU利用率', '内存利用率', '硬盘利用率', '网络利用率']
 const dataOption = []
 for (let i = 0; i < 178; i++) {
@@ -292,11 +401,15 @@ export default class Node extends Component {
                 title="CPU利用率(当前值4%)"
                 style={{ width: 600, display: 'inline-block', marginRight: 100 }}
                 >
-                <TimelineChart
+                {/* <TimelineChart
                   data={CPUData}
                   titleMap={{ y1: 'CPU利用率' }}
                   height={300}
                   showArea
+                  /> */}
+                <Line
+                  {...lineOption}
+                  height={300}
                   />
               </Card>
               <Card
@@ -304,11 +417,15 @@ export default class Node extends Component {
                 title="内存使用(当前值0.5G，6.3%，峰值1G，12%)"
                 style={{ width: 600, display: 'inline-block' }}
                 >
-                <TimelineChart
+                {/* <TimelineChart
                   data={memoryData}
                   titleMap={{ y1: '内存使用' }}
                   height={300}
                   showArea
+                  /> */}
+                <Line
+                  {...lineOption}
+                  height={300}
                   />
               </Card>
             </div>
@@ -318,11 +435,15 @@ export default class Node extends Component {
                 title="硬盘使用(当前值30T，6%；峰值40T，8%)"
                 style={{ width: 600, display: 'inline-block', marginRight: 100 }}
                 >
-                <TimelineChart
+                {/* <TimelineChart
                   data={diskData}
                   titleMap={{ y1: '硬盘使用' }}
                   height={300}
                   showArea
+                  /> */}
+                <Line
+                  {...lineOption}
+                  height={300}
                   />
               </Card>
               <Card
@@ -330,11 +451,15 @@ export default class Node extends Component {
                 title="网络利用率(当前值8%)"
                 style={{ width: 600, display: 'inline-block' }}
                 >
-                <TimelineChart
+                {/* <TimelineChart
                   data={newworkData}
                   titleMap={{ y1: '网络利用率' }}
                   height={300}
                   showArea
+                  /> */}
+                <Line
+                  {...lineOption}
+                  height={300}
                   />
               </Card>
             </div>
