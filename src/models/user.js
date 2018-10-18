@@ -53,6 +53,10 @@ export default {
             type:'noticesList',
             payload:response.result.datas,
           })
+          yield put({
+            type:'changeNotifyCount',
+            payload:response.result.datas.length,
+          })
         }
         else{
           throw response.msg
