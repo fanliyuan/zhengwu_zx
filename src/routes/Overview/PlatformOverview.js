@@ -338,7 +338,7 @@ const gaugeOption = {
 }
 
 // 折线图的数据结构
-const lineData = [
+const initialLineData = [
   ['time', '13:00', '13:05', '13:10', '13:15', '13:20', '13:25', '13:30', '13:35'],
   ['移动', 220, 182, 191, 134, 150, 120, 110, 125],
   ['电信', 120, 110, 125, 145, 122, 165, 122, 220],
@@ -388,82 +388,110 @@ function getLineSerie({color = 'red', color1 = 'rgba(0,0,0,0)'}) {
   }
 }
 // 组装折线图的配置
-const lineOption = {
-  backgroundColor: '#424956',
-  tooltip: {
-    trigger: 'axis',
-    axisPointer: {
-      lineStyle: {
-        color: '#57617B',
+function getLineOption(lineData) {
+  return {
+    backgroundColor: '#424956',
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        lineStyle: {
+          color: '#57617B',
+        },
       },
     },
-  },
-  legend: {
-    icon: 'rect',
-    itemWidth: 15,
-    itemHeight: 10,
-    itemGap: 13,
-    right: '4%',
-    textStyle: {
-      fontSize: 12,
-      color: '#292f39',
-    },
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true,
-  },
-  dataset: {
-    source: lineData,
-  },
-  xAxis: [{
-    type: 'category',
-    boundaryGap: false,
-    axisLine: {
-      lineStyle: {
-        color: '#57617B',
-      },
-    },
-  }],
-  yAxis: [{
-    type: 'value',
-    name: '单位（%）',
-    axisTick: {
-      show: false,
-    },
-    axisLine: {
-      lineStyle: {
-        color: '#57617B',
-      },
-    },
-    axisLabel: {
-      margin: 10,
+    legend: {
+      icon: 'rect',
+      itemWidth: 15,
+      itemHeight: 10,
+      itemGap: 13,
+      right: '4%',
       textStyle: {
-        fontSize: 14,
+        fontSize: 12,
+        color: '#292f39',
       },
     },
-    splitLine: {
-      lineStyle: {
-        color: '#57617B',
-        type: 'dashed',
-        opacity: 0.5,
-      },
+    grid: {
+      left: '3%',
+      right: '4%',
+      bottom: '3%',
+      containLabel: true,
     },
-  }],
-  series: [
-    getLineSerie({color: 'blue'}), 
-    getLineSerie({color: 'red'}),
-    getLineSerie({color: 'green'}),
-  ],
+    dataset: {
+      source: lineData,
+    },
+    xAxis: [{
+      type: 'category',
+      boundaryGap: false,
+      axisLine: {
+        lineStyle: {
+          color: '#57617B',
+        },
+      },
+    }],
+    yAxis: [{
+      type: 'value',
+      name: '单位（%）',
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        lineStyle: {
+          color: '#57617B',
+        },
+      },
+      axisLabel: {
+        margin: 10,
+        textStyle: {
+          fontSize: 14,
+        },
+      },
+      splitLine: {
+        lineStyle: {
+          color: '#57617B',
+          type: 'dashed',
+          opacity: 0.5,
+        },
+      },
+    }],
+    series: [
+      getLineSerie({color: 'blue'}), 
+      getLineSerie({color: 'red'}),
+      getLineSerie({color: 'green'}),
+    ],
+  }
 }
 
 
 export default class PlatformOverview extends Component {
-  state = {}
+  state = {
+    lineOption: getLineOption(initialLineData),
+    index: 8,
+  }
+
+  componentDidMount() {
+    setInterval(() => {
+      this.getDynamicLineData()
+    }, 1000)
+  }
+  
+  getDynamicLineData() {
+    const { lineOption: { dataset:{source}}, index } = this.state
+    source.forEach(item => item=item.splice(1,1)) // eslint-disable-line
+    const lastData = source.map(item => [...item].pop())
+    const dynamicData = [
+      [...source[0], `13:${index*5}`],
+      [...source[1], lastData[1]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
+      [...source[2], lastData[2]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
+      [...source[3], lastData[3]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
+    ]
+    this.setState({
+      lineOption: getLineOption(dynamicData),
+      index: index+1,
+    })
+  }
 
   render() {
+    const { lineOption } = this.state
     // const offlineChartData = [ { x: 1531709122492, y1: 69, y2: 95 }, { x: 1531714522492, y1: 99, y2: 27 }, { x: 1531712722492, y1: 79, y2: 90 }, { x: 1531716322492, y1: 19, y2: 105 }, { x: 1531718122492, y1: 10, y2: 48 }, { x: 1531719922492, y1: 23, y2: 99 }, { x: 1531721722492, y1: 18, y2: 83 }, { x: 1531723522492, y1: 74, y2: 100 }, { x: 1531725322492, y1: 104, y2: 77 }, { x: 1531727122492, y1: 87, y2: 27 }, { x: 1531728922492, y1: 68, y2: 64 }, { x: 1531730722492, y1: 89, y2: 10 }, { x: 1531732522492, y1: 49, y2: 80 }, { x: 1531734322492, y1: 69, y2: 45 }, { x: 1531736122492, y1: 74, y2: 109 }, { x: 1531737922492, y1: 56, y2: 47 }, { x: 1531739722492, y1: 10, y2: 84 }, { x: 1531741522492, y1: 67, y2: 34 }, { x: 1531743322492, y1: 11, y2: 48 } ]
     const fakeData = [ { title: '机构数量', content: 24 }, { title: '节点数量', content: 24 }, { title: '数据资源', content: 199 }, { title: '目录资源', content: 102 }, { title: '数据量', content: '24000条' }, { title: '文件量', content: '500.03PB' }, { title: '任务数', content: 102 }, { title: '总交换数', content: 1024 } ]
     const rankingListData = []
