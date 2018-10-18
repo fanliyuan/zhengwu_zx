@@ -4,22 +4,29 @@ import moment from 'moment'
 import groupBy from 'lodash/groupBy'
 import Debounce from 'lodash-decorators/debounce'
 import { Link } from 'dva/router'
-// import { connect } from 'dva'
 import NoticeIcon from '../NoticeIcon'
 import HeaderSearch from '../HeaderSearch'
 import styles from './index.less'
 
-// @connect(({}) => ({
-
-// }))
 export default class GlobalHeader extends PureComponent {
   componentWillUnmount() {
     this.triggerResizeEvent.cancel()
   }
 
   getNoticeData() {
-    const { notices } = this.props
-    if (notices == null || notices.length === 0) {
+    const { noticeList } = this.props
+    // console.log(notices)
+    const notices = []
+    noticeList.forEach((item,index) => {
+      notices[index] = {}
+      notices[index].id = item.id
+      notices[index].title = item.title
+      notices[index].extra = '未读'
+      notices[index].status = 'processing'
+      notices[index].type = '通知'
+      notices[index].description = item.content
+    })
+    if (notices == null || notices && notices.length === 0) {
       return {}
     }
     const newNotices = notices.map(notice => {

@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-19 15:37:20
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-08 11:59:41
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-17 17:45:48
  * @Description: 删除底部蚂蚁金服相关信息
  * @important: 感觉权限应该从这里入手,在这里获取到登录后的路由信息,然后在这里生成routerData,来自memu和router两个数据
  *   不需要权限authority,直接根据后台的数据生成路由信息.要求在登录成功后就返回router和token等信息;
@@ -134,6 +134,11 @@ class BasicLayout extends React.PureComponent {
     dispatch({
       type: 'user/fetchCurrent',
     })
+    const accountId = localStorage.getItem("accountId")
+    dispatch({
+      type:'user/getNoticeList',
+      payload:{accountId,state:0},
+    })
   }
 
   componentWillUnmount() {
@@ -235,6 +240,7 @@ class BasicLayout extends React.PureComponent {
       routerData,
       match,
       location,
+      noticeList,
     } = this.props
     const { isMobile: mb } = this.state
     // console.log(sessionStorage.getItem('authority'))
@@ -262,6 +268,7 @@ class BasicLayout extends React.PureComponent {
               currentUser={currentUser}
               fetchingNotices={fetchingNotices}
               notices={notices}
+              noticeList={noticeList}
               collapsed={collapsed}
               isMobile={mb}
               onNoticeClear={this.handleNoticeClear}
@@ -337,6 +344,7 @@ class BasicLayout extends React.PureComponent {
 
 export default connect(({ user, global = {}, loading }) => ({
   currentUser: user.currentUser,
+  noticeList:user.noticeList,
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,

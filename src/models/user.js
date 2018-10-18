@@ -1,7 +1,7 @@
 import apis from '../api'
 import logo from '../assets/logo.svg'
 
-const { getAccountInfo } = apis 
+const { getAccountInfo, notifyManagerList } = apis 
 
 export default {
   namespace: 'user',
@@ -14,6 +14,7 @@ export default {
       notifyCount: 0,
       userid: "00000001",
     },
+    noticeList:[],
   },
 
 
@@ -44,6 +45,22 @@ export default {
        console.log(error)
       }
     },
+    *getNoticeList({ payload }, { call, put }){
+      const response = yield call(notifyManagerList,{params:payload})
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'noticesList',
+            payload:response.result.datas,
+          })
+        }
+        else{
+          throw response.msg
+        }
+      }catch(error){
+        console.log(error) //eslint-disable-line
+      }
+    },
   },
 
   reducers: {
@@ -60,6 +77,12 @@ export default {
           ...state.currentUser,
           notifyCount: action.payload,
         },
+      }
+    },
+    noticesList(state,action){
+      return {
+        ...state,
+        noticeList:action.payload,
       }
     },
   },
