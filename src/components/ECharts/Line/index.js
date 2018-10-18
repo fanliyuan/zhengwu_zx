@@ -32,7 +32,7 @@ export default class Line extends Component {
   }
 
   chartRender() {
-    const { title, tooltip, legend, series, grid, xAxis, yAxis, onClick = () => {}, id } = this.state
+    const { title, tooltip, legend, series, grid, xAxis, yAxis, dataset, onClick = () => {}, id } = this.state
     const echartLine = echarts.init(document.getElementById(`echart-line-${id}`))
     echartLine.setOption({
       title,
@@ -42,6 +42,7 @@ export default class Line extends Component {
       xAxis,
       yAxis,
       series,
+      dataset,
     })
     echartLine.on('click', onClick)
   }
