@@ -2,14 +2,74 @@
  * @Author: ChouEric
  * @Date: 2018-07-15 17:29:48
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-12 15:23:48
+ * @Last Modified time: 2018-10-18 11:29:48
 */
 import React, { Component } from 'react'
 import { Row, Col, Card } from 'antd'
 
 import { Pie, BarDouble } from 'components/Charts'
+import Bar from 'components/ECharts/Bar'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './DataInsert.less'
+
+const bar1Data = [
+  ['time', '2012', '2013', '2014', '2015', '2016'],
+  ['Forest', 320, 332, 301, 334, 390],
+  ['Steppe', 220, 182, 191, 234, 290],
+  ['Desert', 150, 232, 201, 154, 190],
+  ['Wetland', 98, 77, 101, 99, 40],
+]
+// 柱状图配置组装
+const bar1Option = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow',
+    },
+  },
+  legend: {},
+  calculable: true,
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true,
+  },
+  xAxis: [{
+    type: 'category',
+  }],
+  yAxis: [{
+    type: 'value',
+    splitLine: {
+      lineStyle: {
+        type: 'dashed',
+        color: '#ccc',
+      },
+    },
+  } ],
+  dataset: {
+    source: bar1Data,
+  },
+  series: [{
+      type: 'bar',
+      stack: '总量',
+      seriesLayoutBy: 'row',
+    },
+    {
+      type: 'bar',
+      stack: '总量',
+      seriesLayoutBy: 'row',
+    },
+    {
+      type: 'bar',
+      seriesLayoutBy: 'row',
+    },
+    {
+      type: 'bar',
+      seriesLayoutBy: 'row',
+    },
+  ],
+}
 
 export default class DataInsert extends Component {
   state = {
@@ -84,7 +144,8 @@ export default class DataInsert extends Component {
                 <Card title="接入数据概览" className={styles.card} bordered={false}>
                   {/* 以下两种展示,数据格式不一样 */}
                   {/* <Bars height={400} data={data2} color={['name', ['red', 'blue']]} isVertical /> */}
-                  <BarDouble height={400} data={data3} titleMap={{ y1: '数据接入', y2: '表接入' }} />
+                  {/* <BarDouble height={400} data={data3} titleMap={{ y1: '数据接入', y2: '表接入' }} /> */}
+                  <Bar {...bar1Option} height={400} />
                 </Card>
               </Col>
             </Row>
