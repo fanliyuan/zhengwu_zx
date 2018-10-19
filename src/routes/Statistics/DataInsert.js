@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-15 17:29:48
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-18 11:29:48
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-18 17:50:36
 */
 import React, { Component } from 'react'
 import { Row, Col, Card } from 'antd'
@@ -131,7 +131,7 @@ export default class DataInsert extends Component {
                   <Pie
                     data={data1}
                     valueFormat={value => value}
-                    height={400}
+                    height={300}
                     inner={0}
                     lineWidth={0}
                     hasLegend
@@ -145,7 +145,7 @@ export default class DataInsert extends Component {
                   {/* 以下两种展示,数据格式不一样 */}
                   {/* <Bars height={400} data={data2} color={['name', ['red', 'blue']]} isVertical /> */}
                   {/* <BarDouble height={400} data={data3} titleMap={{ y1: '数据接入', y2: '表接入' }} /> */}
-                  <Bar {...bar1Option} height={400} />
+                  <Bar {...bar1Option} height={300} />
                 </Card>
               </Col>
             </Row>
@@ -154,7 +154,7 @@ export default class DataInsert extends Component {
                 <Card title="接入源分布" className={styles.card} bordered={false}>
                   <Pie
                     data={data4}
-                    height={400}
+                    height={300}
                     inner={0}
                     lineWidth={0}
                     hasLegend
@@ -166,7 +166,7 @@ export default class DataInsert extends Component {
               <Col {...colResponsiveProps}>
                 <Card title="资源注册概览" className={styles.card} bordered={false}>
                   <BarDouble
-                    height={400}
+                    height={300}
                     data={data3}
                     titleMap={{ y1: '数据接入', y2: '表接入' }}
                     adjustType="stack"
@@ -179,7 +179,7 @@ export default class DataInsert extends Component {
                 <Card title="任务概况" className={styles.card} bordered={false}>
                   <Pie
                     data={data4}
-                    height={400}
+                    height={300}
                     inner={0}
                     lineWidth={0}
                     offset={20}
@@ -190,7 +190,17 @@ export default class DataInsert extends Component {
               <Col {...colResponsiveProps}>
                 <Card title="资源注册概览" className={styles.card} bordered={false}>
                   <BarDouble
-                    height={400}
+                    height={300}
+                    data={data3}
+                    titleMap={{ y1: '数据接入', y2: '表接入' }}
+                    adjustType="stack"
+                    />
+                </Card>
+              </Col>
+              <Col {...colResponsiveProps}>
+                <Card title="资源注册概览" className={styles.card} bordered={false}>
+                  <BarDouble
+                    height={300}
                     data={data3}
                     titleMap={{ y1: '数据接入', y2: '表接入' }}
                     adjustType="stack"
