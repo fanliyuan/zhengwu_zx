@@ -2,13 +2,14 @@
  * @Author: ChouEric
  * @Date: 2018-07-15 17:29:48
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-10-18 17:50:36
+ * @Last Modified time: 2018-10-19 16:47:37
 */
 import React, { Component } from 'react'
 import { Row, Col, Card } from 'antd'
 
 import { Pie, BarDouble } from 'components/Charts'
 import Bar from 'components/ECharts/Bar'
+import Line from 'components/ECharts/Line'
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import styles from './DataInsert.less'
 
@@ -19,6 +20,69 @@ const bar1Data = [
   ['Desert', 150, 232, 201, 154, 190],
   ['Wetland', 98, 77, 101, 99, 40],
 ]
+const barData = [
+  ['省市', '河北省', '北京', '武汉', '保定', '石家庄'],
+  ['Forest', 320, 332, 301, 334, 390],
+  ['Steppe', 220, 182, 191, 234, 290],
+  ['Desert', 150, 232, 201, 154, 190],
+  ['Wetland', 98, 77, 101, 99, 40],
+]
+// 柱状和线状同时的
+const barOption = {
+  tooltip:{
+    trigger:'axis',
+    axisPointer:{
+      type:'shadow',
+      label:{
+        backgroundColor:'blue',
+      },
+    },
+  },
+    xAxis:[{
+      type:'category',
+    }],
+    yAxis:[{
+      type:'value',
+    }],
+    dataset:{
+      source:barData,
+    },
+    series:[
+      {
+        type: 'bar',
+        stack: '总量',
+        seriesLayoutBy: 'row',
+        itemStyle:{
+          color:(params) => {
+            const colorList = [ 
+              '#C33531','#EFE42A','#64BD3D','#EE9201','#29AAE3', 
+              '#B74AE5','#0AAF9F','#E89589', 
+              ]
+              return colorList[params.dataIndex] 
+          },
+        },
+      },
+      {
+        type: 'bar',
+        // stack: '总量',
+        seriesLayoutBy: 'row',
+      },
+      {
+        type: 'line',
+        seriesLayoutBy: 'row',
+        itemStyle:{
+          color:'gray',
+        },
+      },
+      {
+        type: 'line',
+        seriesLayoutBy: 'row',
+        itemStyle:{
+          color:'red',
+        },
+      },
+    ],
+}
 // 柱状图配置组装
 const bar1Option = {
   tooltip: {
@@ -199,11 +263,9 @@ export default class DataInsert extends Component {
               </Col>
               <Col {...colResponsiveProps}>
                 <Card title="资源注册概览" className={styles.card} bordered={false}>
-                  <BarDouble
+                  <Line 
+                    {...barOption}
                     height={300}
-                    data={data3}
-                    titleMap={{ y1: '数据接入', y2: '表接入' }}
-                    adjustType="stack"
                     />
                 </Card>
               </Col>

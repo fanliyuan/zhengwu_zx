@@ -94,6 +94,7 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseHost) {
     item.baseHost = 'http://testgoverinfrast.tpaas.youedata.com' // http://testgoverinfrast.tpaas.youedata.com/ http://goverinfrast.tpaas.youedata.com
+    //  item.baseHost = 'http://192.168.100.16:8081'
   }
 })
 
