@@ -465,6 +465,9 @@ function getLineOption(lineData) {
 export default class PlatformOverview extends Component {
   state = {
     lineOption: getLineOption(initialLineData),
+    lineData: {
+      source: initialLineData,
+    },
     index: 8,
   }
 
@@ -475,7 +478,7 @@ export default class PlatformOverview extends Component {
   }
   
   getDynamicLineData() {
-    const { lineOption: { dataset:{source}}, index } = this.state
+    const { lineData: {source} , index } = this.state
     source.forEach(item => item=item.splice(1,1)) // eslint-disable-line
     const lastData = source.map(item => [...item].pop())
     const dynamicData = [
@@ -485,13 +488,15 @@ export default class PlatformOverview extends Component {
       [...source[3], lastData[3]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
     ]
     this.setState({
-      lineOption: getLineOption(dynamicData),
+      lineData: {
+        source: dynamicData,
+      },
       index: index+1,
     })
   }
 
   render() {
-    const { lineOption } = this.state
+    const { lineOption, lineData } = this.state
     // const offlineChartData = [ { x: 1531709122492, y1: 69, y2: 95 }, { x: 1531714522492, y1: 99, y2: 27 }, { x: 1531712722492, y1: 79, y2: 90 }, { x: 1531716322492, y1: 19, y2: 105 }, { x: 1531718122492, y1: 10, y2: 48 }, { x: 1531719922492, y1: 23, y2: 99 }, { x: 1531721722492, y1: 18, y2: 83 }, { x: 1531723522492, y1: 74, y2: 100 }, { x: 1531725322492, y1: 104, y2: 77 }, { x: 1531727122492, y1: 87, y2: 27 }, { x: 1531728922492, y1: 68, y2: 64 }, { x: 1531730722492, y1: 89, y2: 10 }, { x: 1531732522492, y1: 49, y2: 80 }, { x: 1531734322492, y1: 69, y2: 45 }, { x: 1531736122492, y1: 74, y2: 109 }, { x: 1531737922492, y1: 56, y2: 47 }, { x: 1531739722492, y1: 10, y2: 84 }, { x: 1531741522492, y1: 67, y2: 34 }, { x: 1531743322492, y1: 11, y2: 48 } ]
     const fakeData = [ { title: '机构数量', content: 24 }, { title: '节点数量', content: 24 }, { title: '数据资源', content: 199 }, { title: '目录资源', content: 102 }, { title: '数据量', content: '24000条' }, { title: '文件量', content: '500.03PB' }, { title: '任务数', content: 102 }, { title: '总交换数', content: 1024 } ]
     const rankingListData = []
@@ -542,6 +547,7 @@ export default class PlatformOverview extends Component {
                 <h3>实施传输</h3>
                 <Line
                   {...lineOption}
+                  dataset={lineData}
                   height={400}
                   />
               </div>
