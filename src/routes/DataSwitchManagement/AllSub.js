@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-24 16:24:13
+ * @Last Modified time: 2018-10-24 17:49:06
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -327,7 +327,7 @@ export default class AllSub extends Component {
       // },
       {
         title: '目录名称',
-        dataIndex: 'dsName',
+        dataIndex: 'dsDirName',
       },
       {
         title: '发布机构',
