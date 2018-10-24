@@ -1,5 +1,15 @@
 @import '~antd/lib/style/themes/default.less';
 @import '../../utils/utils.less';
+.select1{
+  width: 120px !important;
+  float: right;
+  margin: 16px 0;
+}
+.select2{
+  width: 150px !important;
+  float: right;
+  margin: 16px 0;
+}
 .itemBg {
   background: #f2f2f2;
   color: #666;
@@ -25,8 +35,10 @@
   padding: 0 10px 32px 5px;
   max-width: 500px;
 }
+
 .rankingTitle {
   margin-top: 16px;
+  display: inline-block;
 }
 .rankingList {
   margin: 25px 0 0;
@@ -55,10 +67,23 @@
     span:nth-child(2) {
       margin-right: 20px;
     }
-    span.active {
+    span.rank0{
       background-color: @primary-color;
       background-color: #314659;
       color: #fff;
+      opacity: 1;
+    }
+    span.rank1{
+      background-color: @primary-color;
+      background-color: #314659;
+      color: #fff;
+      opacity: 0.9;
+    }
+    span.rank2{
+      background-color: @primary-color;
+      background-color: #314659;
+      color: #fff;
+      opacity: 0.8;
     }
     span:last-child {
       float: right;

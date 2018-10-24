@@ -208,9 +208,9 @@ export default class SourceManagement extends Component {
     // ]
     const data = [
       { value: '', id: -1, label: '全部数据' },
-      { value: 'db', id: 0, label: '数据库' },
-      { value: 'file', id: 1, label: '文件' },
-      { value: 'ftp', id: 2, label: 'FTP' },
+      { value: '数据库', id: 0, label: '数据库' },
+      { value: '文件', id: 1, label: '文件' },
+      { value: 'FTP', id: 2, label: 'FTP' },
     ]
     const selectData = data.map(item => {
       return (
@@ -263,6 +263,9 @@ export default class SourceManagement extends Component {
       {
         title: '数据类型',
         dataIndex: 'dataType',
+        // render(text) {
+        //   return text === 'db' ? '数据库' : text
+        // },
       },
       // {
       //   title: '所属节点',

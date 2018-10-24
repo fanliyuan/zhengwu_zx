@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, Row, Col, List } from 'antd'
+import { Card, Row, Col, List, Select } from 'antd'
 // import { TimelineChart } from 'components/Charts'
 import numeral from 'numeral'
 
@@ -535,20 +535,22 @@ export default class PlatformOverview extends Component {
                 <div className={styles.salesRank}>
                   <h3 className={styles.rankingTitle}>
                     最活跃的节点
-                    {/* <Select>
-                      {nodeSelect}
-                    </Select> */}
                   </h3>
+                  <Select className={styles.select1} defaultValue="amount">
+                    <Select.Option value="publication">按发布数</Select.Option>
+                    <Select.Option value="subscription">按订阅数</Select.Option>
+                    <Select.Option value="amount">按订阅数</Select.Option>
+                  </Select>
                   <ul className={styles.rankingList}>
                     <li className={styles.titles}>
-                      <span>1</span>
+                      <span />
                       <span>节点名称</span>
                       <span>所属机构</span>
                       <span>订阅数</span>
                     </li>
                     {rankingListData.map((item, i) => (
                       <li key={item.id}>
-                        <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
+                        <span className={i < 3 ? styles[`rank${i}`] : ''}>{i + 1}</span>
                         <span>{item.title}</span>
                         <span>{item.jg}</span>
                         <span>{numeral(item.total).format('0,0')}</span>
@@ -560,16 +562,20 @@ export default class PlatformOverview extends Component {
               <div>
                 <div className={styles.salesRank}>
                   <h3 className={styles.rankingTitle}>最受欢迎的资源</h3>
+                  <Select className={styles.select2} defaultValue="innerSub">
+                    <Select.Option value="innerSub">按内部订阅数</Select.Option>
+                    <Select.Option value="outerDowload">按外部下载量</Select.Option>
+                  </Select>
                   <ul className={styles.rankingList}>
                     <li className={styles.titles}>
-                      <span>1</span>
+                      <span />
                       <span>节点名称</span>
                       <span>所属机构</span>
                       <span>订阅数</span>
                     </li>
                     {rankingListData1.map((item, i) => (
                       <li key={item.id}>
-                        <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
+                        <span className={i < 3 ? styles[`rank${i}`] : ''}>{i + 1}</span>
                         <span>{item.title}</span>
                         <span>{item.jg}</span>
                         <span>{numeral(item.total).format('0,0')}</span>

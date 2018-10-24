@@ -415,7 +415,7 @@ export default class CatalogManagement extends Component {
     if(!isNodeOperator){
       columns.splice(2,0,{
           title: '目录节点',
-          dataIndex: 'typeName',
+          dataIndex: 'nodeName',
         })
     }
     columns.forEach(item => {
