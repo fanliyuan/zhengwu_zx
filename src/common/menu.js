@@ -211,6 +211,11 @@ const menuData = [
         authority: ['operator', 'operator-n'],
       },
       {
+        name: '资源属性分类',
+        path: 'sourceClassfiy',
+        authority: ['operator', 'operator-n'],
+      },
+      {
         name: '文件资源',
         path: 'fileSource',
         hideInMenu: true,

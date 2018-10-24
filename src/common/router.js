@@ -211,6 +211,11 @@ export const getRouterData = app => {
         import('../routes/DataSourceManagement/InputDataInfo')
       ),
     },
+    '/dataSourceManagement/sourceClassfiy': {
+      component: dynamicWrapper(app, ['sourceClassfiy'], () =>
+        import('../routes/DataSourceManagement/SourceClassfiy')
+      ),
+    },
     // '/dataSourceManagement/editData': {
     //   component: dynamicWrapper(app, [], () =>
     //     import('../routes/DataSourceManagement/EditData')

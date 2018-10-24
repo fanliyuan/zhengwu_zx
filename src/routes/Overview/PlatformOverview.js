@@ -59,8 +59,12 @@ const option = {
   tooltip: {
     formatter: "{c}",
   },
-  animationDurationUpdate: 1500,
+  animation:true,
   animationEasingUpdate: 'quinticInOut',
+  animationDelayUpdate:  (idx) => {
+    // 越往后的数据延迟越大
+    return idx + 10000000000
+},
   label: {
     normal: {
       show: true,
@@ -75,7 +79,7 @@ const option = {
     layout: 'force',
     symbolSize: 45,
     focusNodeAdjacency: true,
-    roam: true,
+    // roam: true,
     draggable: true,
     categories: [{
       name: '主机',
@@ -483,9 +487,9 @@ export default class PlatformOverview extends Component {
     const lastData = source.map(item => [...item].pop())
     const dynamicData = [
       [...source[0], `13:${index*5}`],
-      [...source[1], lastData[1]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
-      [...source[2], lastData[2]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
-      [...source[3], lastData[3]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
+      [...source[1], lastData[1]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.4)],
+      [...source[2], lastData[2]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.4)],
+      [...source[3], lastData[3]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.4)],
     ]
     this.setState({
       lineData: {
