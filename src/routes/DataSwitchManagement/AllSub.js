@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-08 11:51:53
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-24 15:49:29
  * @描述: 所有订阅
 */
 import React, { Component, Fragment } from 'react'
@@ -405,7 +405,7 @@ export default class AllSub extends Component {
       },
       {
         title: '订阅名称',
-        dataIndex: 'name',
+        dataIndex: 'dsName',
       },
       {
         title: '订阅申请人',
