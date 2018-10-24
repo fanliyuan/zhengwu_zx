@@ -11,12 +11,12 @@ const menuData = [
       //   path: 'analysis',
       // },
       {
-        name: '平台概览',
+        name: '概览',
         path: 'platformOverview',
         authority: ['operator', 'admin', 'security', 'auditor'],
       },
       {
-        name: '节点概览',
+        name: '概览',
         path: 'nodeOverview',
         authority: ['operator-n', 'admin-n', 'security-n', 'auditor-n', 'assessor-n'],
       },
@@ -153,18 +153,18 @@ const menuData = [
       //   path: 'roleLimit',
       //   authority: ['security', 'security-n'],
       // },
-      {
-        name: '新建角色',
-        path: 'addRole',
-        hideInMenu: true,
-        authority: ['security', 'security-n'],
-      },
-      {
-        name: '权限设置',
-        path: 'limitSet',
-        hideInMenu: true,
-        authority: ['security', 'security-n'],
-      },
+      // {
+      //   name: '新建角色',
+      //   path: 'addRole',
+      //   hideInMenu: true,
+      //   authority: ['security', 'security-n'],
+      // },
+      // {
+      //   name: '权限设置',
+      //   path: 'limitSet',
+      //   hideInMenu: true,
+      //   authority: ['security', 'security-n'],
+      // },
       {
         name: '分配角色',
         path: 'assignRole',
@@ -174,63 +174,42 @@ const menuData = [
     authority: ['admin', 'security', 'admin-n', 'security-n', 'operator'],
   },
   {
-    name: '数据资源管理',
+    name: '政务信息资源目录',
     icon: 'database',
-    path: 'dataSourceManagement',
+    path: '',
     children: [
-      // {
-      //   name: '接入管理',
-      //   path: 'accessManagement',
-      //   authority: ['operator', 'operator-n'],
-      // },
       {
-        name: '新建接入',
-        path: 'addAccess',
-        hideInMenu: true,
-        authority: 'operator-n',
+        name: '资源属性分类',
+        path: '',
+        authority: 'operator',
       },
       {
-        name: '修改接入',
+        name: '新建分类',
         path: 'editAccess',
         hideInMenu: true,
-        authority: 'operator-n',
+        authority: 'operator',
       },
       {
-        name: '导出',
+        name: '修改分类',
         path: 'exports',
         hideInMenu: true,
-        authority: 'operator-n',
+        authority: 'operator',
       },
-      // {
-      //   name: '接入审核',
-      //   path: 'accessAudit', //这个原型里边删除了
-      // },
       {
-        name: '资源管理',
+        name: '删除分类',
         path: 'sourceManagement',
-        authority: ['operator', 'operator-n'],
-      },
-      {
-        name: '文件资源',
-        path: 'fileSource',
         hideInMenu: true,
+        authority: 'operator',
+      },
+      {
+        name: '信息资源管理',
+        path: 'fileSource',
         authority: ['operator', 'operator-n'],
       },
       {
-        name: '资源审核',
+        name: '查看信息资源',
         path: 'sourceAudit',
         authority: 'assessor-n',
-      },
-      {
-        name: '数据库资源',
-        path: 'dataBaseSource',
-        hideInMenu: true,
-        authority: ['operator', 'operator-n'],
-      },
-      {
-        name: '目录管理',
-        path: 'catalogManagement',
-        authority: ['operator', 'operator-n'],
       },
       {
         name: '新建目录',
@@ -307,6 +286,64 @@ const menuData = [
         hideInMenu: true,
         authority: ['assessor-n', 'operator-n'],
       },
+    ],
+    authority: ['operator', 'operator-n', 'assessor-n'],
+  },
+  {
+    name: '数据发布管理',
+    icon: 'database',
+    path: 'dataSourceManagement',
+    children: [
+      {
+        name: '数据源',
+        path: 'accessManagement',
+        authority: 'operator-n',
+      },
+      {
+        name: '新建数据源',
+        path: 'addAccess',
+        hideInMenu: true,
+        authority: 'operator-n',
+      },
+      {
+        name: '修改数据源',
+        path: 'editAccess',
+        hideInMenu: true,
+        authority: 'operator-n',
+      },
+      // {
+      //   name: '导出',
+      //   path: 'exports',
+      //   hideInMenu: true,
+      //   authority: 'operator-n',
+      // },
+      // {
+      //   name: '接入审核',
+      //   path: 'accessAudit', //这个原型里边删除了
+      // },
+      {
+        name: '数据管理',
+        path: 'sourceManagement',
+        authority: ['operator', 'operator-n'],
+      },
+      {
+        name: '文件资源',
+        path: 'fileSource',
+        hideInMenu: true,
+        authority: ['operator', 'operator-n'],
+      },
+      {
+        name: '数据审核',
+        path: 'sourceAudit',
+        authority: 'assessor-n',
+      },
+      {
+        name: '数据库资源',
+        path: 'dataBaseSource',
+        hideInMenu: true,
+        authority: ['operator', 'operator-n'],
+      },
+
       {
         name: '录入数据库信息',
         path: 'inputDataInfo',
@@ -358,7 +395,7 @@ const menuData = [
     authority: ['operator', 'operator-n', 'assessor-n'],
   },
   {
-    name: '数据交换管理',
+    name: '数据订阅管理',
     icon: 'sync',
     path: 'dataSwitchManagement',
     children: [
@@ -373,7 +410,7 @@ const menuData = [
         authority: 'assessor-n',
       },
       {
-        name: '所有订阅',
+        name: '订阅管理',
         path: 'allSub',
         authority: ['operator', 'operator-n'],
       },

@@ -164,13 +164,6 @@ export default class PassManagement extends React.Component {
         dataIndex: 'targetNode',
       },
       {
-        title: '是否双向',
-        dataIndex: 'isDoubleSide',
-        // render(text) {
-        //   return +text === 0 ? '否' : '是'
-        // },
-      },
-      {
         title: '是否压缩',
         dataIndex: 'isCompress',
         // render(text) {
@@ -185,7 +178,7 @@ export default class PassManagement extends React.Component {
         // },
       },
       {
-        title: '管道状态',
+        title: '通道状态',
         dataIndex: 'channelState',
       },
       {

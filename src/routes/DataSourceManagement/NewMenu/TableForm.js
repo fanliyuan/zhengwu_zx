@@ -128,7 +128,7 @@ export default class TableForm extends PureComponent {
 
     const columns = [
       {
-        title: '信息项编码',
+        title: '信息资源代码',
         dataIndex: 'infoCode',
         key: 'infoCode',
         render: (text, row) => {

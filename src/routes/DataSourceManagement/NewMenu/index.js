@@ -45,7 +45,7 @@ export default class NewMenu extends PureComponent {
         <Card bordered={false}>
           <Fragment>
             <Steps current={this.getCurrentStep()} className={styles.steps}>
-              <Step title="填写目录资源内容" />
+              <Step title="填写信息资源内容" />
               <Step title="编辑信息项" />
               <Step title="完成" />
             </Steps>

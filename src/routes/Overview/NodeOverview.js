@@ -45,27 +45,27 @@ export default class NodeOverview extends Component {
     const { loading } = this.state
     const dataList = [
       {
-        name: '数据资源',
+        name: '信息资源',
         value: 199,
       },
       {
-        name: '目录资源',
+        name: '接入数据',
         value: 102,
       },
       {
-        name: '订阅量',
+        name: '订阅数',
         value: 123,
       },
       {
-        name: '被订阅量',
+        name: '被订阅数',
         value: 102,
       },
       {
-        name: '注册数据量',
+        name: '数据量',
         value: '2314134条',
       },
       {
-        name: '注册文件量',
+        name: '文件量',
         value: '1512.12 PB',
       },
       {

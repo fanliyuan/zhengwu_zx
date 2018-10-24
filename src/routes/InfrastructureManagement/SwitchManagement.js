@@ -184,7 +184,7 @@ export default class SwitchManagement extends Component {
       //   dataIndex: 'description',
       // },
       {
-        title: '交换范围节点',
+        title: '节点成员',
         dataIndex: 'nodeInfos',
         className: 'column',
         render: (cell) => {
@@ -230,7 +230,7 @@ export default class SwitchManagement extends Component {
                 <span className={styles.editBtn} onClick={() => this.handleEdit(row)}>
                   修改
                 </span>
-                <Popconfirm title="删除后,该域内用户无法实现数据共享,您确认是否删除?" onConfirm={() => this.handleDelete(row)}>
+                <Popconfirm title="该交换域被删除后，域内节点成员无法进行数据交换，是否删除？" onConfirm={() => this.handleDelete(row)}>
                   <a style={{ marginRight: 10 }}>删除</a>
                 </Popconfirm>
               </div>
@@ -273,7 +273,7 @@ export default class SwitchManagement extends Component {
         <Card>
           <div className={styles.form}>
             <Input value={regionName} onChange={this.regionNameChange} placeholder="域名称" style={{ marginRight: 20, width: 150 }} />
-            <Cascader value={nodeId} onChange={this.nodeChange} options={nodeList} placeholder="交换范围节点" style={{ marginRight: 20 }} changeOnSelect />
+            <Cascader value={nodeId} onChange={this.nodeChange} options={nodeList} placeholder="节点成员" style={{ marginRight: 20 }} changeOnSelect />
             <Select value={status} style={{ marginRight: 20, width: 120 }} onChange={this.statusChange}>
               {selectData3}
             </Select>

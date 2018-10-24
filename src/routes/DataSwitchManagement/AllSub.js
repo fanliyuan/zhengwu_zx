@@ -3,7 +3,7 @@
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
  * @Last Modified time: 2018-10-08 11:51:53
- * @描述: 所有订阅
+ * @描述: 订阅管理
 */
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'

@@ -174,7 +174,7 @@ export default class Operation extends Component {
         align: 'center',
       },
       {
-        title: '操作IP',
+        title: 'IP 地址',
         dataIndex: 'ip',
         align: 'center',
       },
@@ -220,7 +220,7 @@ export default class Operation extends Component {
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
-              placeholder="IP地址"
+              placeholder="IP 地址"
               />
             <RangePicker onChange={this.handleDateChange} className={styles.date} />
             <Button type="primary" icon="search" onClick={this.handleSearch}>
