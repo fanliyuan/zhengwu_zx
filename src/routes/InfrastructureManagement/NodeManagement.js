@@ -223,7 +223,7 @@ export default class NodeManagement extends Component {
         dataIndex: 'parentNodeName',
       },
       {
-        title: '网卡 MAC 地址',
+        title: 'MAC地址',
         dataIndex: 'mac',
       },
       {
@@ -344,13 +344,13 @@ export default class NodeManagement extends Component {
               onChange={this.handleNodeChange}
               onPressEnter={this.handleSearch}
               className={styles.node}
-              placeholder="节点名名称"
+              placeholder="节点名"
               />
             <Input
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
-              placeholder="网卡 MAC 地址"
+              placeholder="MAC地址"
               />
             <Cascader
               options={parentNodeList}

@@ -49,9 +49,9 @@ export default class Step2 extends Component {
             <Option value={1} key={1}>
               实时
             </Option>
-            {/* <Option value={2} key={2}>
+            <Option value={2} key={2}>
               手动
-            </Option> */}
+            </Option>
           </Select>
         </div>
         {rate === 0 ? (

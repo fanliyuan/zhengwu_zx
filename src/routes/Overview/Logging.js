@@ -143,7 +143,7 @@ export default class Log extends Component {
         align: 'center',
       },
       {
-        title: 'IP 地址',
+        title: '登录IP',
         dataIndex: 'logIpAddress',
         align: 'center',
         render: (text) => {
@@ -179,7 +179,7 @@ export default class Log extends Component {
               />
             <Input
               className={styles.IPInput}
-              placeholder="IP 地址"
+              placeholder="IP地址"
               onPressEnter={this.handleSearch}
               onChange={this.handleIPChange}
               style={{ marginRight: 20 }}

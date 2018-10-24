@@ -97,7 +97,7 @@ export default class LoginPage extends Component {
             {/* <UserName name="userName" placeholder="admin/user" />
             <Password name="password" placeholder="888888/123456" /> */}
             {isEmpty && this.renderMessage('账号或密码不能为空')}
-            <UserName name="userName" placeholder="请输入用户名" />
+            <UserName name="userName" placeholder="请输入用户名称" />
             <Password name="password" placeholder="请输入登录密码" />
           </div>
           {/* </Tab> */}

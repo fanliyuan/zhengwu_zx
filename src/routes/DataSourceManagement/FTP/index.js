@@ -44,7 +44,7 @@ export default function FTP(props) {
           </Link>
         </div>
         <Steps current={getCurrentStep()} className={styles.steps}>
-          <Step title="选择文件或文件夹" />
+          <Step title="选择文件或者文件夹" />
           <Step title="设置同步计划" />
           <Step title="完成" />
         </Steps>

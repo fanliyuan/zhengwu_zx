@@ -134,7 +134,7 @@ const option = {
 }
 
 // 饼图数据
-const PieData = [ { name: '分类1', value: 116 }, { name: '分类2', value: 87 }, { name: '分类3', value: 23 }, { name: '分类4', value: 15 }, { name: '分类5', value: 14 }]
+const PieData = [ { name: '分类1', value: 116 }, { name: '分类2', value: 87 }, { name: '分类3', value: 23 }, { name: '分类4', value: 15 }, { name: '分类5', value: 14 }, { name: '分类6', value: 14 } ]
 // 饼状图配置
 const pieOption = {
   legend: {
@@ -498,7 +498,7 @@ export default class PlatformOverview extends Component {
   render() {
     const { lineOption, lineData } = this.state
     // const offlineChartData = [ { x: 1531709122492, y1: 69, y2: 95 }, { x: 1531714522492, y1: 99, y2: 27 }, { x: 1531712722492, y1: 79, y2: 90 }, { x: 1531716322492, y1: 19, y2: 105 }, { x: 1531718122492, y1: 10, y2: 48 }, { x: 1531719922492, y1: 23, y2: 99 }, { x: 1531721722492, y1: 18, y2: 83 }, { x: 1531723522492, y1: 74, y2: 100 }, { x: 1531725322492, y1: 104, y2: 77 }, { x: 1531727122492, y1: 87, y2: 27 }, { x: 1531728922492, y1: 68, y2: 64 }, { x: 1531730722492, y1: 89, y2: 10 }, { x: 1531732522492, y1: 49, y2: 80 }, { x: 1531734322492, y1: 69, y2: 45 }, { x: 1531736122492, y1: 74, y2: 109 }, { x: 1531737922492, y1: 56, y2: 47 }, { x: 1531739722492, y1: 10, y2: 84 }, { x: 1531741522492, y1: 67, y2: 34 }, { x: 1531743322492, y1: 11, y2: 48 } ]
-    const fakeData = [ { title: '机构数量', content: 24 }, { title: '节点数量', content: 24 }, { title: '信息资源', content: 199 }, { title: '接入数据', content: 102 }, { title: '数据量', content: '24K 条' }, { title: '文件量', content: '500.03 PB' }, { title: '交换数', content: 102 }, { title: '总交换数', content: 1024 } ]
+    const fakeData = [ { title: '机构数量', content: 24 }, { title: '节点数量', content: 24 }, { title: '数据资源', content: 199 }, { title: '目录资源', content: 102 }, { title: '数据量', content: '24000条' }, { title: '文件量', content: '500.03PB' }, { title: '任务数', content: 102 }, { title: '总交换数', content: 1024 } ]
     const rankingListData = []
     for (let i = 1; i < 7; i += 1) {
       rankingListData.push({
@@ -544,7 +544,7 @@ export default class PlatformOverview extends Component {
                 <Graph {...option} width='100%' height='450px' />
               </div>
               <div style={{ padding: '0 24px' }}>
-                <h3>实时传输</h3>
+                <h3>实施传输</h3>
                 <Line
                   {...lineOption}
                   dataset={lineData}
@@ -581,12 +581,12 @@ export default class PlatformOverview extends Component {
               </div>
               <div>
                 <div className={styles.salesRank}>
-                  <h3 className={styles.rankingTitle}>热门信息资源</h3>
+                  <h3 className={styles.rankingTitle}>最受欢迎的资源</h3>
                   <ul className={styles.rankingList}>
                     <li className={styles.titles}>
                       <span>1</span>
-                      <span>信息资源名称</span>
                       <span>节点名称</span>
+                      <span>所属机构</span>
                       <span>订阅数</span>
                     </li>
                     {rankingListData1.map((item, i) => (
@@ -601,7 +601,7 @@ export default class PlatformOverview extends Component {
                 </div>
               </div>
               <div>
-                <h3>信息资源分类占比</h3>
+                <h3>目录分类占比</h3>
                 <Card bordered={false}>
                   <Pie
                     {...pieOption}
