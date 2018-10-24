@@ -11,45 +11,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import Graph from '../../components/ECharts/Graph'
 
 // 数据和相关联
-const data = [{
-  name: '徐云',
-}, {
-  name: '冯可梁',
-  category: 1,
-}, {
-  name: '邓志荣',
-  category: 1,
-}, {
-  name: '李荣庆',
-  category: 1,
-}, {
-  name: '郑志勇',
-  category: 1,
-}, {
-  name: '赵英杰',
-  category: 1,
-}, {
-  name: '王承军',
-  category: 1,
-}, {
-  name: '陈卫东',
-  category: 1,
-}, {
-  name: '邹劲松',
-  category: 1,
-}, {
-  name: '赵成',
-  category: 1,
-}, {
-  name: '陈现忠',
-  category: 1,
-}, {
-  name: '陶泳',
-  category: 1,
-}, {
-  name: '王德福',
-  category: 1,
-}]
+const data = [{ name: '徐云' }, { name: '冯可梁', category: 1 }, { name: '邓志荣', category: 1 }, { name: '李荣庆', category: 1 }, { name: '郑志勇', category: 1 }, { name: '赵英杰', category: 1 }, { name: '王承军', category: 1 }, { name: '陈卫东', category: 1 }, { name: '邹劲松', category: 1 }, { name: '赵成', category: 1 }, { name: '陈现忠', category: 1 }, { name: '陶泳', category: 1 }, { name: '王德福', category: 1 }]
 const links = [{ source: 0, target: 1, category: 0, value: '朋友' }, { source: 0, target: 2, value: '战友' }, { source: 0, target: 3, value: '房东' }, { source: 0, target: 4, value: '朋友' }, { source: 1, target: 2, value: '表亲' }, { source: 0, target: 5, value: '朋友' }, { source: 4, target: 5, value: '姑姑' }, { source: 2, target: 8, value: '叔叔' }, { source: 0, target: 12, value: '朋友' }, { source: 6, target: 11, value: '爱人' }, { source: 6, target: 3, value: '朋友' }, { source: 7, target: 5, value: '朋友' }, { source: 9, target: 10, value: '朋友' }, { source: 3, target: 10, value: '朋友' }, { source: 2, target: 11, value: '我是你的同学' }, { source: 11, target: 2, value: '你不是我的同学' }]
 // 根据数和关联组装配置
 const option = {
@@ -59,8 +21,13 @@ const option = {
   tooltip: {
     formatter: "{c}",
   },
-  animationDurationUpdate: 1500,
-  animationEasingUpdate: 'quinticInOut',
+  // animationDuration: 1500,
+  // animationDurationUpdate: 1500,
+  // animationEasingUpdate: 'quinticInOut',
+  // animation: false,
+  // animationThreshold: 1,
+  // animationDelay: 10000,
+  // animationDelayUpdate: 10000,
   label: {
     normal: {
       show: true,
@@ -75,6 +42,7 @@ const option = {
     layout: 'force',
     symbolSize: 45,
     focusNodeAdjacency: true,
+    animation: false,
     roam: true,
     draggable: true,
     categories: [{
@@ -86,6 +54,7 @@ const option = {
       },
     }, {
       name: '其他1',
+      animation: false,
       itemStyle: {
         normal: {
           color: "#4592FF",
@@ -93,6 +62,7 @@ const option = {
       },
     }, {
       name: '其他2',
+      animation: false,
       itemStyle: {
         normal: {
           color: "#3592F",
@@ -108,6 +78,7 @@ const option = {
       },
     },
     force: {
+      initLayout: 'circular',
       repulsion: 1000,
     },
     edgeSymbol: ['none','arrow'],
@@ -461,6 +432,8 @@ function getLineOption(lineData) {
   }
 }
 
+let interval = 0
+
 
 export default class PlatformOverview extends Component {
   state = {
@@ -472,9 +445,13 @@ export default class PlatformOverview extends Component {
   }
 
   componentDidMount() {
-    setInterval(() => {
+    interval = setInterval(() => {
       this.getDynamicLineData()
     }, 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(interval)
   }
   
   getDynamicLineData() {
@@ -483,9 +460,9 @@ export default class PlatformOverview extends Component {
     const lastData = source.map(item => [...item].pop())
     const dynamicData = [
       [...source[0], `13:${index*5}`],
-      [...source[1], lastData[1]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
-      [...source[2], lastData[2]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
-      [...source[3], lastData[3]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.5)],
+      [...source[1], lastData[1]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.4)],
+      [...source[2], lastData[2]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.4)],
+      [...source[3], lastData[3]+(Math.random()*100).toFixed(0)*(Math.round(Math.random())-0.4)],
     ]
     this.setState({
       lineData: {
@@ -538,17 +515,18 @@ export default class PlatformOverview extends Component {
                   </List.Item>
                 )}
                 />
-              <div style={{ height: '500px', textAlign: 'center' }}>
+              <div style={{ height: '500px', textAlign: 'center', overflow: 'hidden' }}>
                 <h3 style={{ textAlign: 'left' }}>交换任务</h3>
                 {/* <img src={img} alt="交换任务" /> */}
-                <Graph {...option} width='100%' height='450px' />
+                <Graph {...option} height='450px' />
               </div>
-              <div style={{ padding: '0 24px' }}>
+              <div style={{ padding: '0 24px', height: 433, width: '100%' }}>
                 <h3>实施传输</h3>
                 <Line
                   {...lineOption}
                   dataset={lineData}
-                  height={400}
+                  height='400px'
+                  // width='100%'
                   />
               </div>
             </Col>
