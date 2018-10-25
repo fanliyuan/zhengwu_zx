@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Button, Input, Card, DatePicker, Popconfirm, Select, message } from 'antd'
 import moment from 'moment'
+import { Throttle, Bind } from 'lodash-decorators'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 import { format0, format24 } from '../../utils/utils'
@@ -134,7 +135,21 @@ export default class InstitutionalManage extends Component {
     })
   }
 
-  handleSearchBtn = () => {
+  handleTimeChange = val => {
+    this.setState({
+      times:val,
+    })
+  }
+
+  handleInstitutionChange = e => {
+    this.setState({
+      institutionName:e.target.value,
+    })
+  }
+
+  @Bind()
+  @Throttle(1000)
+  handleSearchBtn(){
     const { institutionName, times, provice, city, area } = this.state // provice, city, area,
     // const proCityAreaInfo = provice
     const timeValue = times.map(item => {
@@ -164,21 +179,10 @@ export default class InstitutionalManage extends Component {
     }
     const info = provices ? (`${provices}|${  citys}|${  areas}`) : undefined 
     const { dispatch } = this.props
+    
     dispatch({
       type:'Institution/querys',
       payload:{pageNum:1,pageSize:10, proCityAreaInfo: info, deptName:institutionName || undefined,startTime:timeValue[0] ? format0(+timeValue[0]) : undefined,endTime:+timeValue[1] ? format24(+timeValue[1]) : undefined},
-    })
-  }
-
-  handleTimeChange = val => {
-    this.setState({
-      times:val,
-    })
-  }
-
-  handleInstitutionChange = e => {
-    this.setState({
-      institutionName:e.target.value,
     })
   }
 

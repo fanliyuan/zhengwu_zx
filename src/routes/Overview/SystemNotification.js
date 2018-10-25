@@ -144,10 +144,14 @@ export default class SystemNotification extends PureComponent {
               loading={loading}
               />
           </div>
-          <div className={styles.tableBtnsPro} style={{marginTop:(!pagination || pagination.total < 10 )? '15px' : '-48px'}}>
-            <Button onClick={this.handleDelete}>删除</Button>
-            <Button onClick={this.handleChangeState}>标记已读</Button>
-          </div>
+          {
+            dataList.length ? (
+              <div className={styles.tableBtnsPro}>
+                <Button onClick={this.handleDelete}>删除</Button>
+                <Button onClick={this.handleChangeState}>标记已读</Button>
+              </div>
+            ):''
+          }
         </Card>
       </PageHeaderLayout>
     )
