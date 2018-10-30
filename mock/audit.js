@@ -1,4 +1,42 @@
-import { format0, format24 } from '../src/utils/utils'
+
+
+/**
+ * 根据当前时间戳可以获取到当前时间戳的0点0分的时间戳
+ * @param {number} time 时间戳,毫秒
+ * @return {number} 返回时间戳
+ */
+export function format0(time) {
+  if (isNaN(+time)) {
+    return undefined
+  }
+  if (typeof +time === 'number') {
+    const date = new Date(+time)
+    date.setHours(0)
+    date.setMinutes(0)
+    date.setSeconds(0)
+    date.setMilliseconds(0)
+    return +date
+  }
+}
+
+/**
+ * 根据当前时间戳可以获取到当前时间戳的23点59分的时间戳
+ * @param {number} time 时间戳,毫秒
+ * @return {number} 返回时间戳
+ */
+export function format24(time) {
+  if (isNaN(+time)) {
+    return undefined
+  }
+  if (typeof +time === 'number') {
+    const date = new Date(+time)
+    date.setHours(23)
+    date.setMinutes(59)
+    date.setSeconds(59)
+    date.setMilliseconds(999)
+    return +date
+  }
+}
 
 const organizationData = [
   {
@@ -140,7 +178,31 @@ const getAuditOperation = (req, res) => {
 }
 
 export default {
-  organizationData,
-  getAuditLog,
-  getAuditOperation,
+  'POST /api/logging': getAuditLog,
+  'POST /api/operation': getAuditOperation,
+  'GET /api/operation-list': (res, req) => {
+    req.send({
+      status: 200,
+      data: [
+        {
+          id: 1,
+          label: '新增',
+        },
+        {
+          id: 2,
+          label: '修改',
+        },
+        {
+          id: 3,
+          label: '删除',
+        },
+      ],
+    })
+  },
+  'GET /api/organization': (req, res) => {
+    res.send({
+      status: 200,
+      data: organizationData,
+    })
+  },
 }

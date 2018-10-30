@@ -29,6 +29,14 @@ const checkPermissions = (authority, currentAuthority, target, Exception) => {
     if (authority.indexOf(currentAuthority) >= 0) {
       return target
     }
+    if (Array.isArray(currentAuthority)) {
+      for (let i = 0; i < currentAuthority.length; i += 1) {
+        const element = currentAuthority[i]
+        if (authority.indexOf(element) >= 0) {
+          return target
+        }
+      }
+    }
     return Exception
   }
 
@@ -36,6 +44,14 @@ const checkPermissions = (authority, currentAuthority, target, Exception) => {
   if (typeof authority === 'string') {
     if (authority === currentAuthority) {
       return target
+    }
+    if (Array.isArray(currentAuthority)) {
+      for (let i = 0; i < currentAuthority.length; i += 1) {
+        const element = currentAuthority[i]
+        if (authority === element) {
+          return target
+        }
+      }
     }
     return Exception
   }
@@ -66,8 +82,7 @@ const checkPermissions = (authority, currentAuthority, target, Exception) => {
 
 export { checkPermissions }
 
-const check = (authority, target, Exception) => {
-  return checkPermissions(authority, CURRENT, target, Exception)
-}
+const check = (authority, target, Exception) =>
+  checkPermissions(authority, CURRENT, target, Exception)
 
 export default check

@@ -15,7 +15,8 @@ export default class HeaderSearch extends PureComponent {
     defaultActiveFirstOption: PropTypes.bool,
     dataSource: PropTypes.array,
     defaultOpen: PropTypes.bool,
-  }
+    onVisibleChange: PropTypes.func,
+  };
 
   static defaultProps = {
     defaultActiveFirstOption: false,
@@ -25,6 +26,16 @@ export default class HeaderSearch extends PureComponent {
     placeholder: '',
     dataSource: [],
     defaultOpen: false,
+    onVisibleChange: () => {},
+  };
+
+  static getDerivedStateFromProps(props) {
+    if ('open' in props) {
+      return {
+        searchMode: props.open,
+      }
+    }
+    return null
   }
 
   constructor(props) {
@@ -35,41 +46,45 @@ export default class HeaderSearch extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.timeout)
+  }
+
   onKeyDown = e => {
     if (e.key === 'Enter') {
-      this.debouncePressEnter()
+      const { onPressEnter } = this.props
+      const { value } = this.state
+      this.timeout = setTimeout(() => {
+        onPressEnter(value) // Fix duplicate onPressEnter
+      }, 0)
     }
-  }
+  };
 
   onChange = value => {
-    this.setState({ value })
     const { onChange } = this.props
+    this.setState({ value })
     if (onChange) {
-      onChange()
+      onChange(value)
     }
-  }
+  };
 
   enterSearchMode = () => {
+    const { onVisibleChange } = this.props
+    onVisibleChange(true)
     this.setState({ searchMode: true }, () => {
       const { searchMode } = this.state
       if (searchMode) {
         this.input.focus()
       }
     })
-  }
+  };
 
   leaveSearchMode = () => {
     this.setState({
       searchMode: false,
       value: '',
     })
-  }
-
-  debouncePressEnter() {
-    const { onPressEnter } = this.props
-    const { value } = this.state
-    onPressEnter(value)
-  }
+  };
 
   // NOTE: 不能小于500，如果长按某键，第一次触发auto repeat的间隔是500ms，小于500会导致触发2次
   @Bind()
@@ -77,15 +92,30 @@ export default class HeaderSearch extends PureComponent {
     leading: true,
     trailing: false,
   })
+  debouncePressEnter() {
+    const { onPressEnter } = this.props
+    const { value } = this.state
+    onPressEnter(value)
+  }
+
   render() {
-    const { className, placeholder, ...restProps } = this.props
+    const { className, placeholder, open, ...restProps } = this.props
     const { searchMode, value } = this.state
     delete restProps.defaultOpen // for rc-select not affected
     const inputClass = classNames(styles.input, {
       [styles.show]: searchMode,
     })
     return (
-      <span className={classNames(className, styles.headerSearch)} onClick={this.enterSearchMode}>
+      <span
+        className={classNames(className, styles.headerSearch)}
+        onClick={this.enterSearchMode}
+        onTransitionEnd={({ propertyName }) => {
+          if (propertyName === 'width' && !searchMode) {
+            const { onVisibleChange } = this.props
+            onVisibleChange(searchMode)
+          }
+        }}
+        >
         <Icon type="search" key="Icon" />
         <AutoComplete
           key="AutoComplete"
@@ -95,10 +125,11 @@ export default class HeaderSearch extends PureComponent {
           onChange={this.onChange}
           >
           <Input
-            placeholder={placeholder}
             ref={node => {
               this.input = node
             }}
+            aria-label={placeholder}
+            placeholder={placeholder}
             onKeyDown={this.onKeyDown}
             onBlur={this.leaveSearchMode}
             />

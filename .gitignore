@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+**/node_modules
 # roadhog-api-doc ignore
 /src/utils/request-temp.js
 _roadhog-api-doc
@@ -9,6 +9,7 @@ _roadhog-api-doc
 # production
 /dist
 /.vscode
+/.temp
 
 # misc
 .DS_Store
@@ -20,12 +21,19 @@ yarn-error.log
 yarn.lock
 package-lock.json
 *bak
-*.cmd
-/origin
+.vscode
 
-# visual studio code 
+# visual studio code
 .history
-/public/script1.js
-/public/script2.js
-/public/script3.js
-/debug.log
+*.log
+
+functions/mock
+.temp/**
+
+# umi
+.umi
+.umi-production
+
+# screenshot
+screenshot
+.firebase

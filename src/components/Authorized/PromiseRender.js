@@ -4,13 +4,13 @@ import { Spin } from 'antd'
 export default class PromiseRender extends React.PureComponent {
   state = {
     component: null,
-  }
+  };
 
   componentDidMount() {
     this.setRenderComponent(this.props)
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     // new Props enter
     this.setRenderComponent(nextProps)
   }
@@ -41,12 +41,13 @@ export default class PromiseRender extends React.PureComponent {
       return target
     }
     return () => target
-  }
+  };
 
   render() {
     const { component: Component } = this.state
+    const { ok, error, promise, ...rest } = this.props
     return Component ? (
-      <Component {...this.props} />
+      <Component {...rest} />
     ) : (
       <div
         style={{

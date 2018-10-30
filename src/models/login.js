@@ -1,9 +1,11 @@
 import { routerRedux } from 'dva/router'
+import { stringify } from 'qs'
 import { message } from 'antd'
 import Cookies from 'js-cookie'
 import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
+import { getPageQuery } from '@/utils/utils'
 
 const { accountLogin, getRoleName, accountLogout, insertLogging, getAccountDetailByAccountName } = apis
 
@@ -104,12 +106,22 @@ export default {
         })
         reloadAuthorized()
         if (response && response.code === 0) {
-          if (sessionStorage.getItem('rootRedirect')) {
-            yield put(routerRedux.push(sessionStorage.getItem('rootRedirect')))
-            yield sessionStorage.clear()
-          } else {
-            yield put(routerRedux.push('/'))
+          // 重定向代码
+          const urlParams = new URL(window.location.href)
+          const params = getPageQuery()
+          let { redirect } = params
+          if (redirect) {
+            const redirectUrlParams = new URL(redirect)
+            if (redirectUrlParams.origin === urlParams.origin) {
+              redirect = redirect.substr(urlParams.origin.length)
+              if (redirect.startsWith('/#')) {
+                redirect = redirect.substr(2)
+              }
+            } else {
+              window.location.href = redirect
+            }
           }
+          yield put(routerRedux.replace(redirect || '/'))
         }
       }
     },
@@ -136,7 +148,14 @@ export default {
         localStorage.removeItem('accountId')
         localStorage.removeItem('accountName')
         reloadAuthorized()
-        yield put(routerRedux.push('/user/login'))
+        yield put(
+          routerRedux.push({
+            pathname: '/user/login',
+            search: stringify({
+              redirect: window.location.href,
+            }),
+          })
+        )
         yield call(accountLogout)
       }
     },

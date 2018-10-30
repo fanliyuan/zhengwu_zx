@@ -9,10 +9,10 @@ import styles from '../index.less'
 class Bar extends Component {
   state = {
     autoHideXLabels: false,
-  }
+  };
 
   componentDidMount() {
-    window.addEventListener('resize', this.resize)
+    window.addEventListener('resize', this.resize, { passive: true })
   }
 
   componentWillUnmount() {
@@ -21,11 +21,11 @@ class Bar extends Component {
 
   handleRoot = n => {
     this.root = n
-  }
+  };
 
   handleRef = n => {
     this.node = n
-  }
+  };
 
   @Bind()
   @Debounce(400)

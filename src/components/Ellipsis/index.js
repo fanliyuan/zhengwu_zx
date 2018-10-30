@@ -8,16 +8,19 @@ import styles from './index.less'
 
 const isSupportLineClamp = document.body.style.webkitLineClamp !== undefined
 
-export const getStrFullLength = (str = '') => {
-  return str.split('').reduce((pre, cur) => {
+const TooltipOverlayStyle = {
+  overflowWrap: 'break-word',
+  wordWrap: 'break-word',
+}
+
+export const getStrFullLength = (str = '') =>
+  str.split('').reduce((pre, cur) => {
     const charCode = cur.charCodeAt(0)
     if (charCode >= 0 && charCode <= 128) {
       return pre + 1
-    } else {
-      return pre + 2
     }
+    return pre + 2
   }, 0)
-}
 
 export const cutStrByFullLength = (str = '', maxLength) => {
   let showLength = 0
@@ -30,9 +33,8 @@ export const cutStrByFullLength = (str = '', maxLength) => {
     }
     if (showLength <= maxLength) {
       return pre + cur
-    } else {
-      return pre
     }
+    return pre
   }, '')
 }
 
@@ -54,7 +56,7 @@ const EllipsisText = ({ text, length, tooltip, fullWidthRecognition, ...other })
 
   if (tooltip) {
     return (
-      <Tooltip overlayStyle={{ wordBreak: 'break-all' }} title={text}>
+      <Tooltip overlayStyle={TooltipOverlayStyle} title={text}>
         <span>
           {displayText}
           {tail}
@@ -75,7 +77,7 @@ export default class Ellipsis extends Component {
   state = {
     text: '',
     targetCount: 0,
-  }
+  };
 
   componentDidMount() {
     if (this.node) {
@@ -83,9 +85,9 @@ export default class Ellipsis extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(perProps) {
     const { lines } = this.props
-    if (lines !== nextProps.lines) {
+    if (lines !== perProps.lines) {
       this.computeLine()
     }
   }
@@ -93,7 +95,7 @@ export default class Ellipsis extends Component {
   computeLine = () => {
     const { lines } = this.props
     if (lines && !isSupportLineClamp) {
-      const text = this.shadowChildren.innerText
+      const text = this.shadowChildren.innerText || this.shadowChildren.textContent
       const lineHeight = parseInt(getComputedStyle(this.root).lineHeight, 10)
       const targetHeight = lines * lineHeight
       this.content.style.height = `${targetHeight}px`
@@ -119,7 +121,7 @@ export default class Ellipsis extends Component {
         targetCount: count,
       })
     }
-  }
+  };
 
   bisection = (th, m, b, e, text, shadowNode) => {
     const suffix = '...'
@@ -132,48 +134,49 @@ export default class Ellipsis extends Component {
     if (sh <= th) {
       shadowNode.innerHTML = text.substring(0, mid + 1) + suffix
       sh = shadowNode.offsetHeight
-      if (sh > th) {
-        return mid
-      } else {
-        begin = mid
-        mid = Math.floor((end - begin) / 2) + begin
-        return this.bisection(th, mid, begin, end, text, shadowNode)
-      }
-    } else {
-      if (mid - 1 < 0) {
+      if (sh > th || mid === begin) {
         return mid
       }
-      shadowNode.innerHTML = text.substring(0, mid - 1) + suffix
-      sh = shadowNode.offsetHeight
-      if (sh <= th) {
-        return mid - 1
+      begin = mid
+      if (end - begin === 1) {
+        mid = 1 + begin
       } else {
-        end = mid
         mid = Math.floor((end - begin) / 2) + begin
-        return this.bisection(th, mid, begin, end, text, shadowNode)
       }
+      return this.bisection(th, mid, begin, end, text, shadowNode)
     }
-  }
+    if (mid - 1 < 0) {
+      return mid
+    }
+    shadowNode.innerHTML = text.substring(0, mid - 1) + suffix
+    sh = shadowNode.offsetHeight
+    if (sh <= th) {
+      return mid - 1
+    }
+    end = mid
+    mid = Math.floor((end - begin) / 2) + begin
+    return this.bisection(th, mid, begin, end, text, shadowNode)
+  };
 
   handleRoot = n => {
     this.root = n
-  }
+  };
 
   handleContent = n => {
     this.content = n
-  }
+  };
 
   handleNode = n => {
     this.node = n
-  }
+  };
 
   handleShadow = n => {
     this.shadow = n
-  }
+  };
 
   handleShadowChildren = n => {
     this.shadowChildren = n
-  }
+  };
 
   render() {
     const { text, targetCount } = this.state
@@ -219,17 +222,20 @@ export default class Ellipsis extends Component {
     // support document.body.style.webkitLineClamp
     if (isSupportLineClamp) {
       const style = `#${id}{-webkit-line-clamp:${lines};-webkit-box-orient: vertical;}`
-      return (
+
+      const node = (
         <div id={id} className={cls} {...restProps}>
           <style>{style}</style>
-          {tooltip ? (
-            <Tooltip overlayStyle={{ wordBreak: 'break-all' }} title={children}>
-              {children}
-            </Tooltip>
-          ) : (
-            children
-          )}
+          {children}
         </div>
+      )
+
+      return tooltip ? (
+        <Tooltip overlayStyle={TooltipOverlayStyle} title={children}>
+          {node}
+        </Tooltip>
+      ) : (
+        node
       )
     }
 
@@ -244,7 +250,7 @@ export default class Ellipsis extends Component {
       <div {...restProps} ref={this.handleRoot} className={cls}>
         <div ref={this.handleContent}>
           {tooltip ? (
-            <Tooltip overlayStyle={{ wordBreak: 'break-all' }} title={text}>
+            <Tooltip overlayStyle={TooltipOverlayStyle} title={text}>
               {childNode}
             </Tooltip>
           ) : (

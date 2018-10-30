@@ -1,6 +1,6 @@
 module.exports = {
   parser: 'babel-eslint',
-  extends: ['airbnb', 'prettier'],
+  extends: ['airbnb', 'prettier', 'plugin:compat/recommended'],
   env: {
     browser: true,
     node: true,
@@ -9,6 +9,10 @@ module.exports = {
     jest: true,
     jasmine: true,
   },
+  globals: {
+    APP_TYPE: true,
+  },
+  parserOptions: { ecmaVersion: 2015, ecmaFeatures: { legacyDecorators: true } },
   rules: {
     'generator-star-spacing': [0],
     'consistent-return': [0],
@@ -70,12 +74,7 @@ module.exports = {
     'react/no-multi-comp': [0],
     semi: ['error', 'never'],
   },
-  parserOptions: {
-    ecmaFeatures: {
-      experimentalObjectRestSpread: true,
-    },
-  },
   settings: {
-    polyfills: ['fetch', 'promises'],
+    polyfills: ['fetch', 'promises', 'url'],
   },
-}
+};

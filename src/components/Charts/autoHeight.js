@@ -30,24 +30,24 @@ function getAutoHeight(n) {
   return height
 }
 
-const autoHeight = () => WrappedComponent => {
-  return class extends React.Component {
+const autoHeight = () => WrappedComponent =>
+  class extends React.Component {
     state = {
       computedHeight: 0,
-    }
+    };
 
     componentDidMount() {
       const { height } = this.props
       if (!height) {
         const h = getAutoHeight(this.root)
         // eslint-disable-next-line
-        this.setState({ computedHeight: h })
+        this.setState({ computedHeight: h });
       }
     }
 
     handleRoot = node => {
       this.root = node
-    }
+    };
 
     render() {
       const { height } = this.props
@@ -58,6 +58,5 @@ const autoHeight = () => WrappedComponent => {
       )
     }
   }
-}
 
 export default autoHeight

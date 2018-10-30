@@ -6,35 +6,36 @@ import styles from './index.less'
 
 /* eslint react/no-danger:0 */
 @autoHeight()
-export default class Radar extends Component {
+class Radar extends Component {
   state = {
     legendData: [],
-  }
+  };
 
   componentDidMount() {
-    this.getLengendData()
+    this.getLegendData()
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(preProps) {
     const { data } = this.props
-    if (data !== nextProps.data) {
-      this.getLengendData()
+    if (data !== preProps.data) {
+      this.getLegendData()
     }
   }
 
   getG2Instance = chart => {
     this.chart = chart
-  }
+  };
 
   // for custom lengend view
-  getLengendData = () => {
+  getLegendData = () => {
     if (!this.chart) return
     const geom = this.chart.getAllGeoms()[0] // 获取所有的图形
+    if (!geom) return
     const items = geom.get('dataArray') || [] // 获取图形对应的
 
     const legendData = items.map(item => {
       // eslint-disable-next-line
-      const origins = item.map(t => t._origin)
+      const origins = item.map(t => t._origin);
       const result = {
         name: origins[0].name,
         color: item[0].color,
@@ -48,11 +49,11 @@ export default class Radar extends Component {
     this.setState({
       legendData,
     })
-  }
+  };
 
   handleRef = n => {
     this.node = n
-  }
+  };
 
   handleLegendClick = (item, i) => {
     const newItem = item
@@ -71,7 +72,7 @@ export default class Radar extends Component {
     this.setState({
       legendData,
     })
-  }
+  };
 
   render() {
     const defaultColors = [
@@ -179,3 +180,5 @@ export default class Radar extends Component {
     )
   }
 }
+
+export default Radar

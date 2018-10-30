@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-
 import { MiniArea } from '../Charts'
 import NumberInfo from '../NumberInfo'
 
@@ -23,19 +22,31 @@ function getActiveData() {
 export default class ActiveChart extends Component {
   state = {
     activeData: getActiveData(),
-  }
+  };
 
   componentDidMount() {
-    this.timer = setInterval(() => {
-      this.setState({
-        activeData: getActiveData(),
-      })
-    }, 1000)
+    this.loopData()
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer)
+    clearTimeout(this.timer)
+    cancelAnimationFrame(this.requestRef)
   }
+
+  loopData = () => {
+    this.requestRef = requestAnimationFrame(() => {
+      this.timer = setTimeout(() => {
+        this.setState(
+          {
+            activeData: getActiveData(),
+          },
+          () => {
+            this.loopData()
+          }
+        )
+      }, 1000)
+    })
+  };
 
   render() {
     const { activeData = [] } = this.state

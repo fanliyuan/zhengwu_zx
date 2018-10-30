@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-08-02 18:21:46
- * @Last Modified by:   ChouEric
- * @Last Modified time: 2018-08-02 18:21:46
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-10-28 17:27:24
  * @Description: 测试的数据
  */
 import { stringify } from 'qs'
@@ -129,21 +129,21 @@ export async function getOrganization() {
 }
 
 export async function getAuditLog(params) {
-  return request('/api/audit/logging', {
+  return request('/api/logging', {
     method: 'POST',
     body: params,
   })
 }
 
 export async function getAuditOperation(params) {
-  return request('/api/audit/operation', {
+  return request('/api/operation', {
     method: 'POST',
     body: params,
   })
 }
 
 export async function getOperationList() {
-  return request('/api/audit/operation-list')
+  return request('/api/operation-list')
 }
 
 export async function getNodeList() {

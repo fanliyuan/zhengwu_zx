@@ -10,13 +10,13 @@ class EditableLinkGroup extends PureComponent {
     links: PropTypes.array,
     onAdd: PropTypes.func,
     linkElement: PropTypes.oneOfType([PropTypes.func, PropTypes.string]),
-  }
+  };
 
   static defaultProps = {
     links: [],
     onAdd: () => {},
     linkElement: 'a',
-  }
+  };
 
   render() {
     const { links, linkElement, onAdd } = this.props

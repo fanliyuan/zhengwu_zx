@@ -7,7 +7,5 @@
       "files": ".prettierrc",
       "options": { "parser": "json" }
     }
-  ],
-  "semi": false,
-  "jsxBracketSameLine": true
+  ]
 }

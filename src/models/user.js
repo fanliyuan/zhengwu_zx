@@ -1,3 +1,4 @@
+import { query as queryUsers, queryCurrent } from '@/services/user'
 import apis from '../api'
 import logo from '../assets/logo.svg'
 
@@ -8,17 +9,18 @@ export default {
 
   state: {
     list: [],
-    currentUser: {
-      avatar: "",
-      name: "",
-      notifyCount: 0,
-      userid: "00000001",
-    },
+    currentUser: {},
     noticeList:[],
   },
 
-
   effects: {
+    *fetch(_, { call, put }) {
+      const response = yield call(queryUsers)
+      yield put({
+        type: 'save',
+        payload: response,
+      })
+    },
     *fetchCurrent(_, { call, put }) {
       let response
       try {
@@ -68,6 +70,12 @@ export default {
   },
 
   reducers: {
+    save(state, action) {
+      return {
+        ...state,
+        list: action.payload,
+      }
+    },
     saveCurrentUser(state, action) {
       return {
         ...state,
@@ -81,12 +89,6 @@ export default {
           ...state.currentUser,
           notifyCount: action.payload,
         },
-      }
-    },
-    noticesList(state,action){
-      return {
-        ...state,
-        noticeList:action.payload,
       }
     },
   },
