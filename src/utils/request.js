@@ -2,8 +2,11 @@ import fetch from 'dva/fetch'
 import { notification } from 'antd'
 import router from 'umi/router'
 import hash from 'hash.js'
+import Cookies from 'js-cookie'
 import { isAntdPro } from './utils'
 
+const tokenErrorList = [11030110, 11030111, 11030112, 11030113]
+const key = 'fetchError'
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -35,6 +38,27 @@ const checkStatus = response => {
   error.name = response.status
   error.response = response
   throw error
+}
+// 全局验证token,是否失效
+async function checkToken(response) {
+  try {
+    // 需要克隆response,否则会报错,提示response只能读取一次.
+    response.clone().json()
+    .then(data => {
+      if (tokenErrorList.indexOf(data.code) > -1) {
+        notification.error({
+          key,
+          message: '登录已失效,请重新登录',
+        })
+        sessionStorage.setItem('antd-pro-authority', Cookies.get('antd-pro-authority'))
+        router.push(`/user/login?redirect=${window.location.href.split('?')[0]}`)
+      }
+    })
+    .catch(err => {
+      console.log(err) // eslint-disable-line
+    })
+  } catch (error) {console.log(error)} // eslint-disable-line
+  return response
 }
 
 const cachedSave = (response, hashcode) => {
@@ -119,7 +143,10 @@ export default function request(url, option) {
     }
   }
   return fetch(url, newOptions)
+    // 检查状态码,跳转页面
     .then(checkStatus)
+    // 检查token失效,跳转页面
+    .then(checkToken)
     .then(response => cachedSave(response, hashcode))
     .then(response => {
       // DELETE and 204 do not return data by default
@@ -137,6 +164,9 @@ export default function request(url, option) {
         window.g_app._store.dispatch({
           type: 'login/logout',
         })
+        return
+      }
+      if (window.location.pathname.match(/\/user\/login/)) {
         return
       }
       // environment should not be used

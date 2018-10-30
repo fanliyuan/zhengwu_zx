@@ -121,20 +121,19 @@ export default {
               window.location.href = redirect
             }
           }
+          if (sessionStorage.getItem('antd-pro-authority') && sessionStorage.getItem('antd-pro-authority') !== Cookies.get('antd-pro-authority')) {
+            redirect = ''
+          }
+          if (redirect.includes('exception/500')) {
+            redirect = ''
+          }
           yield put(routerRedux.replace(redirect || '/'))
         }
       }
     },
-    *logout(_, { put, select, call }) {
+    *logout(_, { put, call }) {
       try {
-        // get location pathname
-        // const urlParams = new URL(window.location.href)
-        const pathname = yield select(state => state.routing.location.pathname)
-        // add the parameters in the url
-        // urlParams.searchParams.set('redirect', pathname)
-        // window.history.replaceState(null, 'login', urlParams.href)
-        sessionStorage.setItem('redirect', pathname)
-        sessionStorage.setItem('authority', Cookies.get('antd-pro-authority'))
+        sessionStorage.setItem('antd-pro-authority', Cookies.get('antd-pro-authority'))
       } finally {
         yield put({
           type: 'changeLoginStatus',
