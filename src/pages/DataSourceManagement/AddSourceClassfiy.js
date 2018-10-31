@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, Button } from 'antd'
+import { Input, Card, Form, Button, Radio, Row, Col } from 'antd'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -7,7 +7,7 @@ import PageHeaderLayout from '@/components/PageHeaderWrapper'
 // import styles from './AddSourceClassfiy.less'
 
 const FormItem = Form.Item
-const { TextArea } = Input
+const RadioGroup = Radio.Group
 @Form.create()
 
 @connect(({sourceClassfiy,loading}) => ({
@@ -42,7 +42,7 @@ export default class AddSourceClassfiy extends Component {
 
   handleCancel = () => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/institutionalUserManage/institutionalManage'))
+    dispatch(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
   }
 
   handleNameCheck = () => {
@@ -70,6 +70,28 @@ export default class AddSourceClassfiy extends Component {
         md: { span: 10 },
       },
     }
+    const formThreeItemLayout1 = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 5,offset:0 },
+        md: { span: 4 },
+        lg: { span: 5,offset:0 },
+        xl:{ span: 5,offset:0 },
+      },
+      wrapperCol: {
+        xs: { span: 17 },
+        sm: { span: 17 },
+        md: { span: 19 },
+        lg: { span: 17 },
+        xl:{ span: 17 },
+      },
+    }
+    const formThreeItemLayout = {
+      wrapperCol: {
+        xs: { span: 22 },
+        sm: { span: 22 },
+      },
+    }
     const submitLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
@@ -80,8 +102,26 @@ export default class AddSourceClassfiy extends Component {
       <PageHeaderLayout>
         <Card>
           <Form onSubmit={this.handleSubmit}>
-            <FormItem label="机构名称" {...formItemLayout}>
-              {getFieldDecorator('deptName', {
+            <FormItem label="类别" {...formItemLayout}>
+              {getFieldDecorator('classify', {
+                initialValue:1,
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择类别',
+                  },
+                ],
+              })(
+                <RadioGroup onChange={this.onChange}>
+                  <Radio value={1}>项</Radio>
+                  <Radio value={2}>目</Radio>
+                  <Radio value={3}>细目</Radio>
+                </RadioGroup>)}
+            </FormItem>
+            <Row>
+              <Col sm={{span:4,offset:4}} md={{span:4,offset:5}} lg={{span:4,offset:5}} xl={{span:4,offset:6}}>
+                <FormItem label="父级" {...formThreeItemLayout1}>
+                  {getFieldDecorator('parentName', {
                 initialValue:'',
                 rules: [
                   {
@@ -90,36 +130,48 @@ export default class AddSourceClassfiy extends Component {
                   },
                 ],
               })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
-            </FormItem>
-            {/* <FormItem label="排序" {...formItemLayout}>
-              {getFieldDecorator('deptOrder', {
-                initialValue:getItemByIdInfo.deptOrder !== undefined && !addAction ? +getItemByIdInfo.deptOrder :99,
+                </FormItem>
+              </Col>
+              <Col span={3}>
+                <FormItem label="" {...formThreeItemLayout}>
+                  {getFieldDecorator('deptName', {
+                initialValue:'',
                 rules: [
                   {
                     required: true,
-                    message: '请输入排序',
+                    message: '请输入机构名称',
                   },
                 ],
-              })(<InputNumber />)}
-            </FormItem> */}
-            <FormItem label="联系人" {...formItemLayout}>
+              })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+                </FormItem>
+              </Col>
+              <Col span={3}>
+                <FormItem label="" {...formThreeItemLayout}>
+                  {getFieldDecorator('deptName', {
+                initialValue:'',
+                rules: [
+                  {
+                    required: true,
+                    message: '请输入机构名称',
+                  },
+                ],
+              })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+                </FormItem>
+              </Col>
+            </Row>
+            <FormItem label="编号" {...formItemLayout}>
               {getFieldDecorator('chargeUser',{
                 initialValue:'',
-              })(<Input placeholder="姓名" onKeyUp={this.handleNamePCheck} />)}
+              })(<Input placeholder="请输入编号" onKeyUp={this.handleNamePCheck} />)}
             </FormItem>
-            <FormItem label="联系人手机" {...formItemLayout}>
+            <FormItem label="名称" {...formItemLayout}>
               {getFieldDecorator('chargePhone',{
                 initialValue:'',
                 rules:[{
                   pattern:/^1[345789]\d{9}$/,
                   message:'请输入正确手机号码格式',
                 }],
-              })(<Input placeholder="11位数字" />)}
-            </FormItem>
-            <FormItem label="详细地址" {...formItemLayout}>
-              {getFieldDecorator('detailAddress',{
-                initialValue:'',
-              })(<TextArea row={4} />)}
+              })(<Input placeholder="请输入名称" />)}
             </FormItem>
             <FormItem {...submitLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: 20 }}>
