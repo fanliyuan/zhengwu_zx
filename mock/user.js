@@ -134,4 +134,14 @@ export default {
       path: '/base/category/list',
     })
   },
+  'GET /api/routes': (req, res) => {
+    res.send({
+      status: 'ok',
+      routes: [
+        '/overview',
+        '/overview/platformoverview',
+        '/overview/logging',
+      ],
+    })
+  },
 }

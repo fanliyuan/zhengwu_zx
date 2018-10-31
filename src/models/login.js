@@ -6,6 +6,7 @@ import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
 import { getPageQuery } from '@/utils/utils'
+import { getRoutes } from '@/api/test'
 
 const { accountLogin, getRoleName, accountLogout, insertLogging, getAccountDetailByAccountName } = apis
 
@@ -52,6 +53,8 @@ export default {
           localStorage.setItem('accountName', accountName)
           localStorage.setItem('tenantId', tenantId)
         }
+        const {routes} = yield call(getRoutes)
+        sessionStorage.setItem('routes', routes)
         // Login successfully
         yield put({
           type: 'token',

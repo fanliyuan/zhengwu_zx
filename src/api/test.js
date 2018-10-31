@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 18:21:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-28 17:27:24
+ * @Last Modified time: 2018-10-31 15:25:15
  * @Description: 测试的数据
  */
 import { stringify } from 'qs'
@@ -171,5 +171,11 @@ export async function deleteInfrastructureManagementNodeSome(params) {
   return request('/api/infrastructure/delnodes', {
     method: 'POST',
     body: params,
+  })
+}
+
+export async function getRoutes() {
+  return request('/api/routes', {
+    method: 'GET',
   })
 }

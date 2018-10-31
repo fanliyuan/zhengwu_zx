@@ -15,7 +15,7 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'operator', 'security', 'audit'],
+    authority: ['admin', 'operator', 'security', 'audit', 'forbidButChouEric'],
     routes: [
       // dashboard
       { path: '/', redirect: '/overview/platformoverview' },
@@ -24,7 +24,7 @@ export default [
         path: 'overview',
         icon: 'dashboard',
         name: 'overview',
-        authority: ['admin', 'operator', 'security', 'audit', 'admin-n', 'operator-n', 'security-n', 'audit-n', 'assessor-n'],
+        authority: ['admin', 'operator', 'security', 'audit', 'admin-n', 'operator-n', 'security-n', 'audit-n', 'assessor-n', 'forbidButChouEric'],
         routes: [
           {
             path: 'platformoverview',

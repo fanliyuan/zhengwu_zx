@@ -8,7 +8,17 @@ const Authorized = RenderAuthorized(Authority)
 
 export default ({ children }) => {
   // 从后端获取动态权限
-  // console.log(children) // eslint-disable-line
+  // const routesData = sessionStorage.getItem('routes').split(',')
+  // const { props: {location: {pathname}} } = children
+  // if (routesData.indexOf(pathname) < 0 && (pathname !== '/exception/403' && pathname !== '/exception/404' && pathname !== '/exception/500' )) {
+  //   // console.log(pathname) // eslint-disable-line
+  //   // console.log(routesData) // eslint-disable-line
+  //   return (
+  //     <Authorized authority='forbidButChouEric' noMatch={<Redirect to='/exception/403' />}>
+  //       {children}
+  //     </Authorized>
+  //     )
+  // }
   return (
     <Authorized authority={children.props.route.authority} noMatch={<Redirect to={`/user/login?redirect=${window.location.href}`} />}>
       {children}

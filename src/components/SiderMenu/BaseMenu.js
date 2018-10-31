@@ -62,8 +62,11 @@ export default class BaseMenu extends PureComponent {
     if (!menusData) {
       return []
     }
+    // 根据后台动态路由,然后过滤菜单生成
+    // const routesData = sessionStorage.getItem('routes').split(',')
     return menusData
       .filter(item => item.name && !item.hideInMenu)
+      // .filter(item => item.name && !item.hideInMenu && routesData.indexOf(item.path) >= 0)
       .map(item => {
         // make dom
         const ItemDom = this.getSubMenuOrItem(item, parent)
