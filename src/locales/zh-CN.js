@@ -303,6 +303,7 @@ export default {
   'menu.infrastructure.editswitch': '修改交换域',
   'menu.dataSourceManagement': '数据资源管理',
   'menu.dataSourceManagement.sourceManagement': '资源管理',
+  'menu.dataSourceManagement.sourceClassfiy': '资源属性分类',
   'menu.dataSourceManagement.dataBaseSource': '数据库管理',
   'menu.dataSourceManagement.catalogManagement': '目录管理',
   'menu.dataSourceManagement.viewDirectory': '信息项',
