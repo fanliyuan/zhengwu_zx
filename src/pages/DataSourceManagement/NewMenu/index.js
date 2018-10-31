@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-05 14:01:01
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-29 21:36:09
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-31 10:49:40
 */
 import React, { PureComponent, Fragment } from 'react'
 import { Route, Redirect, Switch, Link } from 'dva/router'
@@ -45,7 +45,7 @@ export default class NewMenu extends PureComponent {
         <Card bordered={false}>
           <Fragment>
             <Steps current={this.getCurrentStep()} className={styles.steps}>
-              <Step title="填写目录资源内容" />
+              <Step title="填写信息资源内容" />
               <Step title="编辑信息项" />
               <Step title="完成" />
             </Steps>

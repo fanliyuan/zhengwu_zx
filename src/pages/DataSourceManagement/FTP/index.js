@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-24 20:36:13
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-29 21:35:55
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-31 10:51:08
  * @Description: 资源注册FTP
  */
 import React from 'react'
@@ -44,7 +44,7 @@ export default function FTP(props) {
           </Link>
         </div>
         <Steps current={getCurrentStep()} className={styles.steps}>
-          <Step title="选择文件或者文件夹" />
+          <Step title="选择文件或文件夹" />
           <Step title="设置同步计划" />
           <Step title="完成" />
         </Steps>

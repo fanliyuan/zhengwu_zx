@@ -162,7 +162,7 @@ export default class Logging extends Component {
         },
       },
       {
-        title: '登录IP',
+        title: 'IP·地址',
         dataIndex: 'logIpAddress',
         align: 'center',
         render: (text) => {
@@ -194,7 +194,7 @@ export default class Logging extends Component {
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
-              placeholder="IP地址"
+              placeholder="IP·地址"
               />
             <RangePicker onChange={this.handleDatePickerChange} className={styles.date} />
             <Select

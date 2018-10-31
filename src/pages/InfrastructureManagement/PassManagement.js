@@ -1,8 +1,8 @@
 /*
  * @Author: fly
  * @Date: 2018-07-03 11:14:19
- * @Last Modified by: fly
- * @Last Modified time: 2018-07-03 
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-31 10:44:34
 */
 import React from 'react'
 import { Select, Button, Table, Card } from 'antd'
@@ -163,13 +163,13 @@ export default class PassManagement extends React.Component {
         title: '目标节点',
         dataIndex: 'targetNode',
       },
-      {
-        title: '是否双向',
-        dataIndex: 'isDoubleSide',
-        // render(text) {
-        //   return +text === 0 ? '否' : '是'
-        // },
-      },
+      // {
+      //   title: '是否双向',
+      //   dataIndex: 'isDoubleSide',
+      //   // render(text) {
+      //   //   return +text === 0 ? '否' : '是'
+      //   // },
+      // },
       {
         title: '是否压缩',
         dataIndex: 'isCompress',
@@ -185,7 +185,7 @@ export default class PassManagement extends React.Component {
         // },
       },
       {
-        title: '管道状态',
+        title: '通道状态',
         dataIndex: 'channelState',
       },
       {

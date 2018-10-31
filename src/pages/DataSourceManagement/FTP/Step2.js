@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-25 10:32:46
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-25 10:38:00
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-31 10:51:32
  * @Description: FTP步骤2
  */
 import React, { Component, Fragment } from 'react'
@@ -49,9 +49,9 @@ export default class Step2 extends Component {
             <Option value={1} key={1}>
               实时
             </Option>
-            <Option value={2} key={2}>
+            {/* <Option value={2} key={2}>
               手动
-            </Option>
+            </Option> */}
           </Select>
         </div>
         {rate === 0 ? (

@@ -124,17 +124,17 @@ export default class AddNode extends Component {
                 ],
               })(<Input placeholder="节点名称" />)}
             </FormItem>
-            <FormItem label="MAC地址" {...formItemLayout}>
+            <FormItem label="网卡·MAC·地址" {...formItemLayout}>
               {getFieldDecorator('mac', {
                 initialValue: mac,
                 rules: [
                   {
                     required: true,
-                    message: '请输入正确的MAC地址',
+                    message: '请输入正确的网卡·MAC·地址',
                     pattern: /^[A-F0-9]{2}(-[A-F0-9]{2}){5}$/,
                   },
                 ],
-              })(<Input placeholder="MAC地址" />)}
+              })(<Input placeholder="网卡·MAC·地址" />)}
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('pid',{

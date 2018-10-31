@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { Card, Button, Input, Tabs, Table, DatePicker, Select, Popconfirm } from 'antd'
+import { Card, Button, Input, Tabs, Table, DatePicker, Popconfirm } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import Cookie from 'js-cookie'
+import { routerRedux } from 'dva/router'
 
 import styles from './SourceClassfiy.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
 
 const {TabPane} = Tabs
-const { Option } = Select
 const { RangePicker } = DatePicker
 const userName = Cookie.get('antd-pro-authority')
 @connect(({sourceClassfiy,loading}) => ({
@@ -20,17 +20,15 @@ export default class SourceClassfiy extends Component {
     classfiyName:'',
     paginations:{current:1,pageSize:10,totol:false},
     times:[],
-    provice:1,
     ztClassfiyName:'',
     ztTimes:[],
-    ztProvice:1,
     bmClassfiyName:'',
     bmTimes:[],
-    bmProvice:1,
   }
 
   handleAdd = () => {
-    
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy'))
   }
 
   handleTableChange = () => {
@@ -60,12 +58,6 @@ export default class SourceClassfiy extends Component {
       classfiyName:e.target.value,
     })
   }
-
-  handleProChange = (value) => {
-    this.setState({
-      provice:value,
-    })
-  }
   
   handleTimeChange1 = (val) => {
     this.setState({
@@ -76,12 +68,6 @@ export default class SourceClassfiy extends Component {
   handleInstitutionChange1 = (e) => {
     this.setState({
       ztClassfiyName:e.target.value,
-    })
-  }
-
-  handleProChange1 = (value) => {
-    this.setState({
-      ztProvice:value,
     })
   }
 
@@ -97,18 +83,8 @@ export default class SourceClassfiy extends Component {
     })
   }
 
-  handleProChange2 = (value) => {
-    this.setState({
-      bmProvice:value,
-    })
-  }
-
   render() {
-    const { classfiyName, paginations, times, provice, ztClassfiyName, ztTimes, ztProvice, bmClassfiyName, bmTimes, bmProvice } = this.state
-    const selectData = [{id:1,name:'王五'},{id:2,name:'张三'},{id:3,name:'李四'}]
-    const ProData = selectData.map((item) => {
-      return (<Option value={item.id} key={item.id}>{item.name}</Option>)
-    })
+    const { classfiyName, paginations, times, ztClassfiyName, ztTimes, bmClassfiyName, bmTimes } = this.state
     const { sourceClassfiy:{loadings} } = this.props
     const columns = [
       {
@@ -122,10 +98,6 @@ export default class SourceClassfiy extends Component {
       {
         title: '细目',
         dataIndex: 'subject',
-      },
-      {
-        title: '操作员',
-        dataIndex: 'operator',
       },
       {
         title: '更新时间',
@@ -214,9 +186,6 @@ export default class SourceClassfiy extends Component {
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={classfiyName} onChange={this.handleInstitutionChange} />
                 {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
-                <Select value={provice} onChange={this.handleProChange} style={{width:120,marginRight:20}} placeholder="所属省">
-                  {ProData}
-                </Select>
                 <RangePicker style={{ marginRight: 20, width:200 }} value={times} onChange={this.handleTimeChange} />
                 <Button type="primary" onClick={this.handleSearchBtn}>搜索</Button>
               </div>
@@ -232,10 +201,6 @@ export default class SourceClassfiy extends Component {
             <TabPane tab="主题信息资源类" key="2">
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={ztClassfiyName} onChange={this.handleInstitutionChange1} />
-                {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
-                <Select value={ztProvice} onChange={this.handleProChange1} style={{width:120,marginRight:20}} placeholder="所属省">
-                  {ProData}
-                </Select>
                 <RangePicker style={{ marginRight: 20, width:200 }} value={ztTimes} onChange={this.handleTimeChange1} />
                 <Button type="primary" onClick={this.handleSearchBtn1}>搜索</Button>
               </div>
@@ -251,10 +216,6 @@ export default class SourceClassfiy extends Component {
             <TabPane tab="部门信息资源类" key="3">
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={bmClassfiyName} onChange={this.handleInstitutionChange2} />
-                {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
-                <Select value={bmProvice} onChange={this.handleProChange2} style={{width:120,marginRight:20}} placeholder="所属省">
-                  {ProData}
-                </Select>
                 <RangePicker style={{ marginRight: 20, width:200 }} value={bmTimes} onChange={this.handleTimeChange2} />
                 <Button type="primary" onClick={this.handleSearchBtn2}>搜索</Button>
               </div>
