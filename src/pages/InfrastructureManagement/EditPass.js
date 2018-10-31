@@ -113,12 +113,12 @@ class EditPass extends Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem label="双向传输" {...formItemLayout}>
+            {/* <FormItem label="双向传输" {...formItemLayout}>
               {getFieldDecorator('isDoubleSide', {
                 valuePropName: 'checked',
                 initialValue: true, // !!+data.isTwoWay
               })(<Checkbox disabled>启用</Checkbox>)}
-            </FormItem>
+            </FormItem> */}
             <FormItem label="压缩传输" {...formItemLayout}>
               {getFieldDecorator('isCompress', {
                 valuePropName: 'checked',

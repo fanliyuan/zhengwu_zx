@@ -130,7 +130,7 @@ export default class AddSwitch extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '交换域名称未必填',
+                    message: '交换域名称为必填',
                   },
                   {
                     pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
@@ -154,14 +154,14 @@ export default class AddSwitch extends Component {
             {
               getFieldValue('deptIds') && getFieldValue('deptIds').length > 0 && (
               <FormItem
-                label="业务范围节点"
+                label="节点成员"
                 {...FormItemLayout}
                 >
                 {getFieldDecorator('nodeIds', {
                   rules: [
                     {
                       required: true,
-                      message: '业务范围节点必选',
+                      message: '节点成员必选',
                     },
                   ],
                   initialValue: nodeIds,

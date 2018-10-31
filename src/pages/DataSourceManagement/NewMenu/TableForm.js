@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-05 17:20:24
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-07-27 11:01:45
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-31 10:50:24
 */
 import React, { PureComponent, Fragment } from 'react'
 import { Table, Button, Input, message, Popconfirm, Divider, Tooltip } from 'antd'
@@ -86,7 +86,7 @@ export default class TableForm extends PureComponent {
       }
       const row = this.getRowByKey(key) || {}
       if (!row.infoCode) {
-        message.error('信息项编码必填')
+        message.error('信息项代码必填')
         e.target.focus()
         this.setState({
           loading: false,
@@ -128,7 +128,7 @@ export default class TableForm extends PureComponent {
 
     const columns = [
       {
-        title: '信息项编码',
+        title: '信息项代码',
         dataIndex: 'infoCode',
         key: 'infoCode',
         render: (text, row) => {

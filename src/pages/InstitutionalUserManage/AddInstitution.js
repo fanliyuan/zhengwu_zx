@@ -134,14 +134,14 @@ export default class AddInstitution extends Component {
       this.props.form.setFieldsValue({
         deptName:"",
       })
-      message.error("机构名称已存在,请重填!")
+      message.error("机构名称已存在,请重新输入")
     }
     else if(!addAction && !checkMsg){
       if(e.target.value !== jgName){
         this.props.form.setFieldsValue({
           deptName:"",
         })
-        message.error("机构名称已存在,请重填!")
+        message.error("机构名称已存在,请重新输入")
       }
     }
   }
@@ -151,7 +151,7 @@ export default class AddInstitution extends Component {
       this.props.form.setFieldsValue({
         chargeUser:e.target.value.slice(0,20),
       })
-      message.error("负责人姓名不能超过20个字符")
+      message.error("联系人姓名不能超过20个字符")
     }
   }
 
@@ -255,12 +255,12 @@ export default class AddInstitution extends Component {
                 ],
               })(<InputNumber />)}
             </FormItem> */}
-            <FormItem label="负责人" {...formItemLayout}>
+            <FormItem label="联系人" {...formItemLayout}>
               {getFieldDecorator('chargeUser',{
                 initialValue:getItemByIdInfo.chargeUser && !addAction ? getItemByIdInfo.chargeUser : '',
               })(<Input placeholder="姓名" onKeyUp={this.handleNamePCheck} />)}
             </FormItem>
-            <FormItem label="负责人手机" {...formItemLayout}>
+            <FormItem label="联系人手机" {...formItemLayout}>
               {getFieldDecorator('chargePhone',{
                 initialValue:getItemByIdInfo.chargePhone && !addAction ? getItemByIdInfo.chargePhone :'',
                 rules:[{

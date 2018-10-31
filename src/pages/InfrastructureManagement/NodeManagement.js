@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-02 14:27:19
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-03 11:01:27
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-31 10:46:06
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
@@ -223,7 +223,7 @@ export default class NodeManagement extends Component {
         dataIndex: 'parentNodeName',
       },
       {
-        title: 'MAC地址',
+        title: '网卡·MAC·地址',
         dataIndex: 'mac',
       },
       {
@@ -344,13 +344,13 @@ export default class NodeManagement extends Component {
               onChange={this.handleNodeChange}
               onPressEnter={this.handleSearch}
               className={styles.node}
-              placeholder="节点名"
+              placeholder="节点名名称"
               />
             <Input
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
-              placeholder="MAC地址"
+              placeholder="网卡·MAC·地址"
               />
             <Cascader
               options={parentNodeList}

@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-08-21 16:55:35
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-30 11:40:12
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-10-31 10:31:25
  * @Description: 这里需要个优化,就是密码错误等登录错误需要清除错误密码,后期可能还有验证码的功能
  */
 import React, { Component } from 'react'
@@ -97,7 +97,7 @@ export default class LoginPage extends Component {
             {/* <UserName name="userName" placeholder="admin/user" />
             <Password name="password" placeholder="888888/123456" /> */}
             {isEmpty && this.renderMessage('账号或密码不能为空')}
-            <UserName name="userName" placeholder="请输入用户名称" />
+            <UserName name="userName" placeholder="请输入用户名" />
             <Password name="password" placeholder="请输入登录密码" />
           </div>
           {/* </Tab> */}
