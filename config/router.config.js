@@ -24,7 +24,7 @@ export default [
         path: 'overview',
         icon: 'dashboard',
         name: 'overview',
-        // authority: ['admin', 'user'],
+        authority: ['admin', 'operator', 'security', 'audit', 'admin-n', 'operator-n', 'security-n', 'audit-n', 'assessor-n'],
         routes: [
           {
             path: 'platformoverview',
@@ -68,7 +68,7 @@ export default [
             component: './Audit/Operation',
           },
         ],
-        // authority: ['auditor', 'auditor-n'],
+        authority: ['auditor', 'auditor-n'],
       },
       // 基础设施管理 infrastructure
       {
@@ -122,7 +122,7 @@ export default [
             component: './InfrastructureManagement/AddSwitch',
           },
         ],
-        // authority: ['operator'],
+        authority: ['operator'],
       },
       // 机构用户管理 institutionalUserManage
       {
@@ -134,39 +134,39 @@ export default [
             name: 'institutionalManage',
             path: 'institutionalManage',
             component: './InstitutionalUserManage/InstitutionalManage',
-            // authority: ['operator'],
+            authority: ['operator'],
           },
           {
             name: 'addInstitution',
             path: 'addInstitution',
             component: './InstitutionalUserManage/AddInstitution',
             hideInMenu: true,
-            // authority: ['operator'],
+            authority: ['operator'],
           },
           {
             name: 'userManage',
             path: 'userManage',
             component: './InstitutionalUserManage/UserManage',
-            // authority: ['admin', 'admin-n'],
+            authority: ['admin', 'admin-n'],
           },
           {
             name: 'addUser',
             path: 'addUser',
             component: './InstitutionalUserManage/AddUser',
             hideInMenu: true,
-            // authority: ['admin', 'admin-n'],
+            authority: ['admin', 'admin-n'],
           },
           {
             name: 'editUser',
             path: 'editUser',
             component: './InstitutionalUserManage/AddUser',
             hideInMenu: true,
-            // authority: ['admin', 'admin-n'],
+            authority: ['admin', 'admin-n'],
           },
           // {
           //   name: 'roleLimit',
           //   path: 'roleLimit',
-            // component: './InstitutionalUserManage/RoleLimit',
+          //   component: './InstitutionalUserManage/RoleLimit',
           //   authority: ['security', 'security-n'],
           // },
           {
@@ -174,23 +174,23 @@ export default [
             path: 'addRole',
             component: './InstitutionalUserManage/AddRole',
             hideInMenu: true,
-            // authority: ['security', 'security-n'],
+            authority: ['security', 'security-n'],
           },
           {
             name: 'limitSet',
             path: 'limitSet',
             component: './InstitutionalUserManage/LimitSet',
             hideInMenu: true,
-            // authority: ['security', 'security-n'],
+            authority: ['security', 'security-n'],
           },
           {
             name: 'assignRole',
             path: 'assignRole',
             component: './InstitutionalUserManage/AssignRole',
-            // authority: ['security', 'security-n'],
+            authority: ['security', 'security-n'],
           },
         ],
-        // authority: ['admin', 'security', 'admin-n', 'security-n', 'operator'],
+        authority: ['admin', 'security', 'admin-n', 'security-n', 'operator'],
       },
       // 数据资源管理 dataSourceManagement
       {
@@ -236,7 +236,7 @@ export default [
             name: 'sourceManagement',
             path: 'sourceManagement',
             component: './DataSourceManagement/SourceManagement',
-            // authority: ['operator', 'operator-n'],
+            authority: ['operator', 'operator-n'],
           },
           // {
           //   name: '文件资源',
@@ -254,13 +254,13 @@ export default [
             path: 'dataBaseSource',
             hideInMenu: true,
             component: './DataSourceManagement/DataBaseSource',
-            // authority: ['operator', 'operator-n'],
+            authority: ['operator', 'operator-n'],
           },
           {
             name: 'catalogManagement',
             path: 'catalogManagement',
             component: './DataSourceManagement/CatalogManagement',
-            // authority: ['operator', 'operator-n'],
+            authority: ['operator', 'operator-n'],
           },
           // {
           //   name: '新建目录',
@@ -314,7 +314,7 @@ export default [
             path: 'resourceConnectionData',
             hideInMenu: true,
             component: './DataSourceManagement/ResourceConnectionData',
-            // authority: ['operator', 'operator-n'],
+            authority: ['operator', 'operator-n'],
           },
           // {
           //   name: '新建目录',
@@ -379,7 +379,7 @@ export default [
             path: 'task',
             hideInMenu: true,
             component: './DataSourceManagement/Task',
-            // authority: ['operator', 'operator-n'],
+            authority: ['operator', 'operator-n'],
           },
           {
             name: 'viewDirectory',
@@ -388,7 +388,7 @@ export default [
             hideInMenu: true,
           },
         ],
-        // authority: ['operator', 'operator-n', 'assessor-n'],
+        authority: ['operator', 'operator-n', 'assessor-n'],
       },
       // 数据交换管理 dataSwitchManagement
       {
@@ -410,7 +410,7 @@ export default [
             name: 'allSub',
             path: 'allSub',
             component: './DataSwitchManagement/AllSub',
-            // authority: ['operator', 'operator-n'],
+            authority: ['operator', 'operator-n'],
           },
           // {
           //   name: '审核日志',
@@ -444,7 +444,7 @@ export default [
           //   hideInMenu: true,
           // },
         ],
-        // authority: ['operator', 'operator-n', 'assessor-n'],
+        authority: ['operator', 'operator-n', 'assessor-n'],
       },
       // 开放门户 portalManagement
       {
@@ -518,7 +518,7 @@ export default [
             component: './PortalManagement/ColumnPosition',
           },
         ],
-        // authority: ['operator'],
+        authority: ['operator'],
       },
       // 监控告警 monitor
       {
@@ -565,7 +565,7 @@ export default [
             name: 'warningQuery',
             path: 'warningQuery',
             component: './Monitor/WarningQuery',
-            // hideInMenu: true,
+            hideInMenu: true,
           },
           {
             name: 'editOption',
@@ -598,7 +598,7 @@ export default [
             hideInMenu: true,
           },
         ],
-        // authority: ['operator', 'operator-n'],
+        authority: ['operator', 'operator-n'],
       },
       // 统计分析 statistics
       {
@@ -612,7 +612,7 @@ export default [
             component: './Statistics/DataInsert',
           },
         ],
-        // authority: ['operator', 'operator-n'],
+        authority: ['operator', 'operator-n'],
       },
       //  >>>>>>预置内容<<<<<<<
       // {
