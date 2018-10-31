@@ -1,4 +1,7 @@
-import { queryNotices } from '@/services/api'
+// import { queryNotices } from '@/services/api'
+import apis from '../api'
+
+const { notifyManagerList } = apis 
 
 export default {
   namespace: 'global',
@@ -9,26 +12,52 @@ export default {
   },
 
   effects: {
-    *fetchNotices(_, { call, put }) {
-      const data = yield call(queryNotices)
-      yield put({
-        type: 'saveNotices',
-        payload: data,
-      })
-      yield put({
-        type: 'user/changeNotifyCount',
-        payload: data.length,
-      })
+    *fetchNotices({payload}, { call, put }) {
+      let noticeList = []
+      let noticeCount = 0
+      try {
+        const response = yield call(notifyManagerList, {params:payload})
+        if (+response.code === 0) {
+          noticeList = response.result.datas
+          noticeCount = response.result.datas.length
+        } else {
+          throw response.msg
+        }
+      } catch (error) {
+       // eslint-disable-next-line 
+       console.log(error)
+       noticeList = []
+       noticeCount = 0
+      }finally{
+        yield put({
+          type:'user/noticesList',
+          payload:noticeList,
+        })
+        yield put({
+          type:'user/changeNotifyCount',
+          payload:noticeCount,
+        })
+      }
+      // const data = yield call(notifyManagerList)
+      // yield put({
+      //   type: 'saveNotices',
+      //   payload: data,
+      // })
+      // yield put({
+      //   type: 'user/changeNotifyCount',
+      //   payload: data.length,
+      // })
     },
-    *clearNotices({ payload }, { put, select }) {
-      yield put({
-        type: 'saveClearedNotices',
-        payload,
-      })
+    // 清除消息,不知是否需要全部调用全部清空接口
+    *clearNotices({ payload }, { put, select }) {// eslint-disable-line
       const count = yield select(state => state.global.notices.length)
       yield put({
         type: 'user/changeNotifyCount',
         payload: count,
+      })
+      yield put({
+        type:'user/noticesList',
+        payload:[],
       })
     },
   },
@@ -44,12 +73,6 @@ export default {
       return {
         ...state,
         notices: payload,
-      }
-    },
-    saveClearedNotices(state, { payload }) {
-      return {
-        ...state,
-        notices: state.notices.filter(item => item.type !== payload),
       }
     },
   },

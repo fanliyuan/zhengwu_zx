@@ -1,4 +1,4 @@
-import { query as queryUsers, queryCurrent } from '@/services/user'
+import { query as queryUsers } from '@/services/user'
 import apis from '../api'
 import logo from '../assets/logo.svg'
 
@@ -48,23 +48,30 @@ export default {
       }
     },
     *getNoticeList({ payload }, { call, put }){
-      const response = yield call(notifyManagerList,{params:payload})
+      let noticeList = []
+      let noticeCount = 0
       try{
+        const response = yield call(notifyManagerList,{params:payload})
         if(+response.code === 0){
-          yield put({
-            type:'noticesList',
-            payload:response.result.datas,
-          })
-          yield put({
-            type:'changeNotifyCount',
-            payload:response.result.datas.length,
-          })
+          noticeList = response.result.datas
+          noticeCount = response.result.datas.length
         }
         else{
           throw response.msg
         }
       }catch(error){
         console.log(error) //eslint-disable-line
+        noticeList = []
+        noticeCount = 0
+      }finally{
+        yield put({
+          type:'noticesList',
+          payload:noticeList,
+        })
+        yield put({
+          type:'changeNotifyCount',
+          payload:noticeCount,
+        })
       }
     },
   },
@@ -89,6 +96,12 @@ export default {
           ...state.currentUser,
           notifyCount: action.payload,
         },
+      }
+    },
+    noticesList(state,action){
+      return {
+        ...state,
+        noticeList:action.payload,
       }
     },
   },

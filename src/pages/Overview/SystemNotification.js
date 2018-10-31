@@ -105,8 +105,13 @@ export default class SystemNotification extends PureComponent {
         align: 'center',
         render: (val, row) => (
           <a onClick={() => this.handleDetail(row)}>
-            {+row.state === 0 && <Badge dot />}
-            {val}
+            {/* {+row.state === 0 && <Badge dot />}
+            <span>{val}</span> */}
+            {
+              +row.state === 0 ? (
+                <Badge status="error" text={val} className={styles.badge} />
+              ):(<span>{val}</span>)
+            }
           </a>
         ),
       },

@@ -77,10 +77,14 @@ class HeaderView extends PureComponent {
   };
 
   handleNoticeVisibleChange = visible => {
+    const accountId = localStorage.getItem("accountId")
     if (visible) {
       const { dispatch } = this.props
       dispatch({
         type: 'global/fetchNotices',
+        payload: {
+          accountId,state:0,
+        },
       })
     }
   };
@@ -153,11 +157,11 @@ class HeaderView extends PureComponent {
     )
   }
 }
-
+// 消息,通知数据接入
 export default connect(({ user, global, setting, loading }) => ({
   currentUser: user.currentUser,
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
-  notices: global.notices,
+  notices: user.noticeList,
   setting,
 }))(HeaderView)

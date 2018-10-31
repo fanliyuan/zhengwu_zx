@@ -133,6 +133,7 @@ export default {
     },
     *logout(_, { put, call }) {
       try {
+        yield call(accountLogout)
         sessionStorage.setItem('antd-pro-authority', Cookies.get('antd-pro-authority'))
       } finally {
         yield put({
@@ -155,7 +156,6 @@ export default {
             }),
           })
         )
-        yield call(accountLogout)
       }
     },
   },

@@ -7,6 +7,7 @@ import NoticeIcon from '../NoticeIcon'
 import HeaderSearch from '../HeaderSearch'
 // import SelectLang from '../SelectLang'
 import styles from './index.less'
+import emptyNotice from '@/assets/emptyNotite.svg'
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {
@@ -16,6 +17,10 @@ export default class GlobalHeaderRight extends PureComponent {
     }
     const newNotices = notices.map(notice => {
       const newNotice = { ...notice }
+      newNotice.type = 'notification'
+      newNotice.extra = '操作'
+      newNotice.status = 'doing'
+      newNotice.description = notice.content
       if (newNotice.datetime) {
         newNotice.datetime = moment(notice.datetime).fromNow()
       }
@@ -123,9 +128,9 @@ export default class GlobalHeaderRight extends PureComponent {
             title={formatMessage({ id: 'component.globalHeader.notification' })}
             name="notification"
             emptyText={formatMessage({ id: 'component.globalHeader.notification.empty' })}
-            emptyImage="https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg"
+            emptyImage={emptyNotice}
             />
-          <NoticeIcon.Tab
+          {/* <NoticeIcon.Tab
             list={noticeData.message}
             title={formatMessage({ id: 'component.globalHeader.message' })}
             name="message"
@@ -138,7 +143,7 @@ export default class GlobalHeaderRight extends PureComponent {
             name="event"
             emptyText={formatMessage({ id: 'component.globalHeader.event.empty' })}
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
-            />
+            /> */}
         </NoticeIcon>
         {currentUser.name ? (
           <Dropdown overlay={menu}>

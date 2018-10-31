@@ -3,6 +3,7 @@ import { Popover, Icon, Tabs, Badge, Spin } from 'antd'
 import classNames from 'classnames'
 import List from './NoticeList'
 import styles from './index.less'
+import emptyNotice from '@/assets/emptyNotite.svg'
 
 const { TabPane } = Tabs
 
@@ -19,7 +20,9 @@ export default class NoticeIcon extends PureComponent {
       emptyText: 'No notifications',
       clear: 'Clear',
     },
-    emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
+    // 使用本地文件
+    // emptyImage: 'https://gw.alipayobjects.com/zos/rmsportal/wAhyIChODzsoKIOBHcBk.svg',
+    emptyImage: emptyNotice,
   };
 
   onItemClick = (item, tabProps) => {
