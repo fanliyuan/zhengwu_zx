@@ -227,6 +227,12 @@ export default [
           //   path: 'accessAudit', //这个原型里边删除了
           // },
           {
+            name: 'sourceClassfiy',
+            path: 'sourceClassfiy',
+            component: './DataSourceManagement/SourceClassfiy',
+            // authority: ['operator', 'operator-n'],
+          },
+          {
             name: 'sourceManagement',
             path: 'sourceManagement',
             component: './DataSourceManagement/SourceManagement',
