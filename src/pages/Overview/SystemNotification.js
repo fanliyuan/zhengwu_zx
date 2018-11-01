@@ -19,7 +19,7 @@ let accountIdState
 }))
 export default class SystemNotification extends PureComponent {
   state = {
-
+    flag:1,
   }
 
   componentDidMount = () => {
@@ -28,7 +28,7 @@ export default class SystemNotification extends PureComponent {
     const { dispatch } = this.props
     dispatch({
       type:'systemNotification/getNoticeList',
-      payload:{accountId,pageSize:10,pageNumber:1},
+      payload:{accountId,pageSize:10,pageNumber:1,state: 0},
     })
   }
 
@@ -42,7 +42,7 @@ export default class SystemNotification extends PureComponent {
     })
   }
 
-  handleState = (res) => {
+  handleState = (res, flag) => {
     const accountId = localStorage.getItem("accountId")
     const { dispatch } = this.props
     let states
@@ -55,6 +55,9 @@ export default class SystemNotification extends PureComponent {
     else if(res === ''){
       states = undefined
     }
+    this.setState({
+      flag,
+    })
     dispatch({
       type:'systemNotification/getNoticeList',
       payload:{accountId,state:states},
@@ -98,6 +101,7 @@ export default class SystemNotification extends PureComponent {
 
   render() {
     const { systemNotification: { dataList, pagination },loading } = this.props
+    const { flag } = this.state
     const columns = [
       {
         title: '通知标题',
@@ -133,9 +137,9 @@ export default class SystemNotification extends PureComponent {
       <PageHeaderLayout>
         <Card>
           <div className={styles.tableBtns}>
-            <Button onClick={this.handleState.bind(null, '')}>全部通知</Button>
-            <Button onClick={this.handleState.bind(null, 'noR')}>未读</Button>
-            <Button onClick={this.handleState.bind(null, 'isR')}>已读</Button>
+            <Button className={flag===0?styles.active:''} onClick={this.handleState.bind(null, '', 0)}>全部通知</Button>
+            <Button className={flag===1?styles.active:''} onClick={this.handleState.bind(null, 'noR', 1)}>未读</Button>
+            <Button className={flag===2?styles.active:''} onClick={this.handleState.bind(null, 'isR', 2)}>已读</Button>
           </div>
           <div>
             <Table
