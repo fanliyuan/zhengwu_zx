@@ -165,7 +165,7 @@ export default class AddSourceClassfiy extends Component {
               })(<Input placeholder="请输入编号" onKeyUp={this.handleNamePCheck} />)}
             </FormItem>
             <FormItem label="名称" {...formItemLayout}>
-              {getFieldDecorator('name',{
+              {getFieldDecorator('names',{
                 initialValue:'',
                 rules:[{
                   required: true,
