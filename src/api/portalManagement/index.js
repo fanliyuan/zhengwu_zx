@@ -154,7 +154,7 @@ const module = {
 }
 module.apis.forEach(item => {
   if(!item.baseHost){
-    // item.baseHost = 'http://192.168.100.16:8804'
+    // item.baseHost = 'http://192.168.100.16:8804/zwjh/api/v1'
     item.baseHost = 'http://testgoveportalback.tpaas.youedata.com' // http://testgoveportalback.tpaas.youedata.com  http://testgoveportalback.tpaas.youedata.com
   }
 })

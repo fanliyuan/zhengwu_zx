@@ -494,7 +494,7 @@ export default [
           {
             name: 'newsLibrary',
             path: 'newsLibrary',
-            hideInMenu: true,
+            // hideInMenu: true,
             component: './PortalManagement/NewsLibrary',
           },
           {

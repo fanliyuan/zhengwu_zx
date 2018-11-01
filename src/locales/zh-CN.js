@@ -317,7 +317,7 @@ export default {
   'menu.portalManagement.newsManagement': '文章分类',
   'menu.portalManagement.publicationManagement': '文章发布',
   'menu.portalManagement.publication': '未发布',
-  'menu.portalManagement.newsLibrary': '文文章库',
+  'menu.portalManagement.newsLibrary': '文章库',
   'menu.portalManagement.addArticle': '新增文章',
   'menu.portalManagement.editArticle': '修改文章',
   'menu.portalManagement.menuManagement': '目录分类管理',
