@@ -40,7 +40,8 @@ export default class SourceClassfiy extends Component {
   }
 
   handleEdit = () => {
-
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy'))
   }
 
   handleDelete = () => {

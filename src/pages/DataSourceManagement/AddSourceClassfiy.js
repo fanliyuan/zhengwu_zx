@@ -58,7 +58,7 @@ export default class AddSourceClassfiy extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form
+    const { getFieldDecorator, getFieldValue } = this.props.form
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -126,50 +126,50 @@ export default class AddSourceClassfiy extends Component {
                 rules: [
                   {
                     required: true,
-                    message: '请输入机构名称',
+                    message: '请选择分类名称',
                   },
                 ],
-              })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+              })(<Input placeholder="资源属性分类" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
                 </FormItem>
               </Col>
-              <Col span={3}>
+              <Col span={3} style={{display:+getFieldValue('classify') === 1 ? 'none' : 'block' }}>
                 <FormItem label="" {...formThreeItemLayout}>
-                  {getFieldDecorator('deptName', {
+                  {getFieldDecorator('item', {
                 initialValue:'',
                 rules: [
                   {
                     required: true,
-                    message: '请输入机构名称',
+                    message: '请选择项',
                   },
                 ],
-              })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+              })(<Input placeholder="项" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
                 </FormItem>
               </Col>
-              <Col span={3}>
+              <Col span={3} style={{display:+getFieldValue('classify') === 3 ? 'block' : 'none' }}>
                 <FormItem label="" {...formThreeItemLayout}>
-                  {getFieldDecorator('deptName', {
+                  {getFieldDecorator('classfiyItem', {
                 initialValue:'',
                 rules: [
                   {
                     required: true,
-                    message: '请输入机构名称',
+                    message: '请选择目',
                   },
                 ],
-              })(<Input placeholder="机构名称" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+              })(<Input placeholder="目" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
                 </FormItem>
               </Col>
             </Row>
             <FormItem label="编号" {...formItemLayout}>
-              {getFieldDecorator('chargeUser',{
+              {getFieldDecorator('number',{
                 initialValue:'',
               })(<Input placeholder="请输入编号" onKeyUp={this.handleNamePCheck} />)}
             </FormItem>
             <FormItem label="名称" {...formItemLayout}>
-              {getFieldDecorator('chargePhone',{
+              {getFieldDecorator('name',{
                 initialValue:'',
                 rules:[{
-                  pattern:/^1[345789]\d{9}$/,
-                  message:'请输入正确手机号码格式',
+                  required: true,
+                  message:'请输入名称',
                 }],
               })(<Input placeholder="请输入名称" />)}
             </FormItem>
