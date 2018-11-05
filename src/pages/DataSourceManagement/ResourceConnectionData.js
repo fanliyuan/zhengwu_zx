@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-27 14:49:28
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-08 11:51:39
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-11-05 16:59:23
  * @Description: 这个页面值得研究
  */
 import React, { Component } from 'react'
@@ -98,15 +98,15 @@ export default class ResourceConnectionData extends Component {
       isNodeOperator: Cookies.get('antd-pro-authority') === 'operator-n',
       resourceInfo,
     })
-    this.props.dispatch({
-      type: 'sourceManagement/getDBInfo',
-      payload: {
-        params: {
-          id: resourceInfo.mountResourceId,
-          // id: 'db28',
-        },
-      },
-    })
+    // this.props.dispatch({
+    //   type: 'sourceManagement/getDBInfo',
+    //   payload: {
+    //     params: {
+    //       id: resourceInfo.mountResourceId,
+    //       // id: 'db28',
+    //     },
+    //   },
+    // })
   }
 
   isEditing = record => {

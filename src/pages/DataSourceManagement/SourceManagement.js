@@ -136,13 +136,14 @@ export default class SourceManagement extends Component {
     })
   }
 
-  handleSource = row => {
+  handleSource = () => {
     const { dispatch } = this.props
-    if (row.dataType === 'file') {
-      dispatch(routerRedux.push('/dataSourceManagement/fileSource', { mountResourceId: row.id }))
-    } else {
-      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.id }))
-    }
+    // if (row.dataType === 'file') {
+    //   dispatch(routerRedux.push('/dataSourceManagement/fileSource', { mountResourceId: row.id }))
+    // } else {
+    //   dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.id }))
+    // }
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
   }
 
   // handleSource1 = () => {
@@ -156,7 +157,8 @@ export default class SourceManagement extends Component {
   // }
 
   handleEdit = () => {
-
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/addDirectory'))
   }
 
   handleCatalog = row => {
@@ -170,7 +172,24 @@ export default class SourceManagement extends Component {
   }
 
   handlerelatedData = () => {
-    
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData'))
+  }
+
+  handleAdd = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/addDirectory'))
+  }
+
+  handleOpen = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/openShare'))
+    // dispatch(routerRedux.push('/dataSourceManagement/openShareFile'))
+  }
+
+  handleInput = () => {
+    const { dispatch } = this.props
+    dispatch(routerRedux.push('/dataSourceManagement/inputDirectory')) 
   }
 
   render() {
@@ -208,7 +227,7 @@ export default class SourceManagement extends Component {
     //   },
     // ]
     const data = [
-      { value: '', id: -1, label: '全部数据' },
+      { value: '', id: -1, label: '资源属性分类' },
       { value: '数据库', id: 0, label: '数据库' },
       { value: '文件', id: 1, label: '文件' },
       { value: 'FTP', id: 2, label: 'FTP' },
@@ -424,13 +443,6 @@ export default class SourceManagement extends Component {
             <Input placeholder="信息资源代码" style={{ width: 150, marginRight: 20 }} onChange={this.codeChange} />
             <Input placeholder="信息资源名称" style={{ width: 150, marginRight: 20 }} onChange={this.nameChange} />
             {/* <Input placeholder="应用系统名称" style={{ width: 150, marginRight: 20 }} /> */}
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              defaultValue=''
-              onChange={this.dataTypeChange}
-              >
-              {selectData}
-            </Select>
             {/* <Select
               style={{ marginRight: 20, width: 120 }}
               value={nodeName}
@@ -439,6 +451,13 @@ export default class SourceManagement extends Component {
               {selectData1}
             </Select> */}
             {!isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={label => [...label].pop()} onChange={this.nodeChange} placeholder="节点名称" style={{ marginRight: 16, width: 120 }} />}
+            <Select
+              style={{ marginRight: 20, width: 120 }}
+              defaultValue=''
+              onChange={this.dataTypeChange}
+              >
+              {selectData}
+            </Select>
             {/* <Select
               style={{ marginRight: 20, width: 120 }}
               value={owingJg}
@@ -461,7 +480,7 @@ export default class SourceManagement extends Component {
             <Button icon="plus" type="primary" onClick={this.handleAdd} style={{marginRight:'20px'}}>
                 新建
             </Button>
-            <Button type="primary" onClick={this.handleAdd}>
+            <Button type="primary" onClick={this.handleInput}>
                 导入
             </Button>
           </div>

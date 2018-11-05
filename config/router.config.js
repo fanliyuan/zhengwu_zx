@@ -294,18 +294,20 @@ export default [
           //   path: 'catalogAudit',
           //   authority: 'assessor-n',
           // },
-          // {
-          //   name: '开放共享',
-          //   path: 'openShare',
-          //   hideInMenu: true,
-          //   authority: 'operator-n',
-          // },
-          // {
-          //   name: '开放共享文件',
-          //   path: 'openShareFile',
-          //   hideInMenu: true,
-          //   authority: 'operator-n',
-          // },
+          {
+            name: '开放共享',
+            path: 'openShare',
+            hideInMenu: true,
+            component: './DataSourceManagement/OpenShare',
+            authority: 'operator',
+          },
+          {
+            name: '开放共享文件',
+            path: 'openShareFile',
+            component: './DataSourceManagement/OpenShareFile',
+            hideInMenu: true,
+            authority: 'operator',
+          },
           // // 这个是否多余?
           // {
           //   name: '资源',
@@ -325,17 +327,19 @@ export default [
             component: './DataSourceManagement/ResourceConnectionData',
             authority: ['operator', 'operator-n'],
           },
-          // {
-          //   name: '新建目录',
-          //   path: 'addDirectory',
-          //   hideInMenu:true,  //这个页面及路由是重复的,不用了
-          // },
-          // {
-          //   name: '导入目录',
-          //   path: 'inputDirectory',
-          //   authority: 'operator-n',
-          //   hideInMenu: true,
-          // },
+          {
+            name: '新建资源',
+            path: 'addDirectory',
+            component: './DataSourceManagement/AddDirectory',
+            hideInMenu:true,
+          },
+          {
+            name: '导入资源',
+            path: 'inputDirectory',
+            authority: 'operator',
+            component: './DataSourceManagement/InputDirectory',
+            hideInMenu: true,
+          },
           // {
           //   name: '订阅授权',
           //   path: 'subscriptionAudit',

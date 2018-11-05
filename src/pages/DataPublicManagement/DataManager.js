@@ -252,10 +252,10 @@ export default class SourceManagement extends Component {
       )
     })
     const columns = [
-      // {
-      //   title: 'ID',
-      //   dataIndex: 'id',
-      // },
+      {
+        title: 'ID',
+        dataIndex: 'rsId',
+      },
       {
         title: '数据名称',
         dataIndex: 'rsName',
@@ -319,12 +319,21 @@ export default class SourceManagement extends Component {
               {/* <span className={styles.clickBtn} onClick={() => that.handleCatalog(row)}>
                 目录
               </span> */}
-              <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
+              {/* <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
                 查看
-              </span>
+              </span> */}
               {/* <span className={styles.clickBtn} onClick={that.handleTask}>
                 任务
               </span> */}
+              <span className={styles.clickBtn}>
+                信息资源
+              </span>
+              <span className={styles.clickBtn}>
+                资源
+              </span>
+              <span className={styles.clickBtn}>
+                任务
+              </span>
               {isNodeOperator && (
                 <span className={styles.clickBtn} onClick={that.handleEdit}>
                   修改
@@ -399,7 +408,7 @@ export default class SourceManagement extends Component {
     }
     if (!isNodeOperator) {
       rowSelection = null
-      columns.splice(2,0,{
+      columns.splice(3,0,{
         title: '所属节点',
         dataIndex: 'nodeName',
         align: 'center',
