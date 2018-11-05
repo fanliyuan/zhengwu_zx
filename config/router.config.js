@@ -267,6 +267,8 @@ export default [
             name: 'catalogManagement',
             path: 'catalogManagement',
             component: './DataSourceManagement/CatalogManagement',
+            hideInMenu:true,
+            // component: './DataSourceManagement/SourceManagement.2',
             authority: ['operator', 'operator-n'],
           },
           // {
@@ -393,6 +395,21 @@ export default [
             path: 'viewDirectory',
             component: './DataSourceManagement/ViewDirectory',
             hideInMenu: true,
+          },
+        ],
+        authority: ['operator', 'operator-n', 'assessor-n'],
+      },
+      {
+        name: 'dataPublicManagement',
+        icon: 'database',
+        path: 'dataPublicManagement',
+        routes: [
+          {
+            name: 'dataManager',
+            path: 'dataManager',
+            // hideInMenu: true,
+            component: './DataPublicManagement/DataManager',
+            authority: ['operator', 'operator-n'],
           },
         ],
         authority: ['operator', 'operator-n', 'assessor-n'],

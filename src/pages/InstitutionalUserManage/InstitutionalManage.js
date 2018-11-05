@@ -206,11 +206,11 @@ export default class InstitutionalManage extends Component {
         align: 'left',
       },
       {
-        title: '负责人',
+        title: '联系人',
         dataIndex: 'chargeUser',
       },
       {
-        title: '负责人手机号',
+        title: '联系人手机号',
         dataIndex: 'chargePhone',
       },
       // {
@@ -222,7 +222,7 @@ export default class InstitutionalManage extends Component {
         dataIndex: 'proCityAreaInfo',
       },
       {
-        title: '操作时间',
+        title: '更新时间',
         dataIndex: 'updateTime',
         render(text) {
           return text ? moment(+text).format('lll') : ''
