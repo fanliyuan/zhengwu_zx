@@ -34,6 +34,12 @@ const module = {
       url: 'queryResourceList',
       method: 'post',
     },
+    {
+      name: 'list',
+      url: 'zwjh/api/v1/list',
+      // method: '',
+      baseHost:'http://dmanager.tpaas.youedata.com',
+    },
   ],
 }
 module.apis.forEach(item => {

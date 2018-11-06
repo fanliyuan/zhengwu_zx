@@ -4,6 +4,7 @@ import moment from 'moment'
 import { connect } from 'dva'
 import Cookie from 'js-cookie'
 import { routerRedux } from 'dva/router'
+import { format0, format24 } from '../../utils/utils'
 
 import styles from './SourceClassfiy.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
@@ -26,6 +27,14 @@ export default class SourceClassfiy extends Component {
     bmTimes:[],
   }
 
+  componentDidMount() {
+    // const { dispatch } = this.props
+    // dispatch({
+    //   type:'sourceClassfiy/getLists',
+    //   payload:{type:1,index:1,pageSize:10},
+    // })
+  }
+
   handleAdd = () => {
     const { dispatch } = this.props
     dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy'))
@@ -36,7 +45,20 @@ export default class SourceClassfiy extends Component {
   }
 
   handleSearchBtn = () => {
-
+    const{ classfiyName, times  } = this.state
+    const { dispatch } = this.props
+    const vl = times.map(item => {
+      if(moment.isMoment(item)){
+        return item.format('x')
+      }
+      else {
+        return ''
+      }
+    })
+    dispatch({
+      type:'sourceClassfiy/getLists',
+      payload:{type:1,index:1,pageSize:10,name:classfiyName || undefined,beginDate:format0(+vl[0]),endDate:format24(vl[1])},
+    })
   }
 
   handleEdit = () => {
@@ -81,6 +103,14 @@ export default class SourceClassfiy extends Component {
   handleInstitutionChange2 = (e) => {
     this.setState({
       bmClassfiyName:e.target.value,
+    })
+  }
+
+  handleChangeTab = (key) => {
+    const { dispatch } = this.props
+    dispatch({
+      type:'sourceClassfiy/getLists',
+      payload:{type:key,index:1,pageSize:10},
     })
   }
 
@@ -182,8 +212,8 @@ export default class SourceClassfiy extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="基础信息资源类" key="1">
+          <Tabs defaultActiveKey="1" onChange={this.handleChangeTab}>
+            <TabPane tab="1 基础信息资源类" key="1">
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={classfiyName} onChange={this.handleInstitutionChange} />
                 {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
@@ -199,7 +229,7 @@ export default class SourceClassfiy extends Component {
                 <Table loading={loadings} columns={columns} dataSource={list} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange} bordered />
               </div>
             </TabPane>
-            <TabPane tab="主题信息资源类" key="2">
+            <TabPane tab="2 主题信息资源类" key="2">
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={ztClassfiyName} onChange={this.handleInstitutionChange1} />
                 <RangePicker style={{ marginRight: 20, width:200 }} value={ztTimes} onChange={this.handleTimeChange1} />
@@ -214,7 +244,7 @@ export default class SourceClassfiy extends Component {
                 <Table loading={loadings} columns={columns} dataSource={list} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange} bordered />
               </div>
             </TabPane>
-            <TabPane tab="部门信息资源类" key="3">
+            <TabPane tab="3 部门信息资源类" key="3">
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={bmClassfiyName} onChange={this.handleInstitutionChange2} />
                 <RangePicker style={{ marginRight: 20, width:200 }} value={bmTimes} onChange={this.handleTimeChange2} />

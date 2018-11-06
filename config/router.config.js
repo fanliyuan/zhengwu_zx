@@ -295,14 +295,14 @@ export default [
           //   authority: 'assessor-n',
           // },
           {
-            name: '开放共享',
+            name: 'openShare',
             path: 'openShare',
             hideInMenu: true,
             component: './DataSourceManagement/OpenShare',
             authority: 'operator',
           },
           {
-            name: '开放共享文件',
+            name: 'openShareFile',
             path: 'openShareFile',
             component: './DataSourceManagement/OpenShareFile',
             hideInMenu: true,
@@ -328,13 +328,13 @@ export default [
             authority: ['operator', 'operator-n'],
           },
           {
-            name: '新建资源',
+            name: 'addDirectory',
             path: 'addDirectory',
             component: './DataSourceManagement/AddDirectory',
             hideInMenu:true,
           },
           {
-            name: '导入资源',
+            name: 'inputDirectory',
             path: 'inputDirectory',
             authority: 'operator',
             component: './DataSourceManagement/InputDirectory',
