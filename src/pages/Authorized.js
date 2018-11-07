@@ -8,7 +8,7 @@ const Authorized = RenderAuthorized(Authority)
 
 export default ({ children }) => {
   // 从后端获取动态权限
-  // const routesData = sessionStorage.getItem('routes').split(',')
+  // const routesData = (sessionStorage.getItem('routes') || '').split(',')
   // const { props: {location: {pathname}} } = children
   // if (routesData.indexOf(pathname) < 0 && (pathname !== '/exception/403' && pathname !== '/exception/404' && pathname !== '/exception/500' )) {
   //   // console.log(pathname) // eslint-disable-line

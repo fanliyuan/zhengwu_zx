@@ -62,35 +62,45 @@
 }
 
 :global {
-  // 以下是侧边栏颜色 自定义颜色
-  .ant-layout-sider {
-    background: #2b63ab;
-  }
-  .ant-menu-dark{
-    // color: black;
-    color: hsla(0,0%,100%,1);
-    background: #2b63ab;
-    .ant-menu-inline.ant-menu-sub{
-      background: #2b63ab;
-      color: hsla(0,0%,100%,1);
-    }
-    .ant-menu-submenu-open{
-      color: hsla(0,0%,100%,1);
-    }
-    .ant-menu-submenu-title:hover{
-      color: #ccc;
-    }
+  // 主题暗色,亮色 字体大小调整
+  .ant-menu-light,
+  .ant-menu-dark,{
     .ant-menu-submenu-title{
       font-size: 16px;
     }
     .ant-menu-item > a{
-      color: hsla(0,0%,100%,1);
       font-size: 16px;
     }
-    .ant-menu-item-active:hover >a{
-      color: #ccc;
-    }
   }
+  // 以下是侧边栏颜色 自定义颜色
+  // .ant-layout-sider {
+  //   background: #2b63ab;
+  // }
+  // .ant-menu-dark{
+  //   // color: black;
+  //   color: hsla(0,0%,100%,1);
+  //   background: #2b63ab;
+  //   .ant-menu-inline.ant-menu-sub{
+  //     background: #2b63ab;
+  //     color: hsla(0,0%,100%,1);
+  //   }
+  //   .ant-menu-submenu-open{
+  //     color: hsla(0,0%,100%,1);
+  //   }
+  //   .ant-menu-submenu-title:hover{
+  //     color: #ccc;
+  //   }
+  //   .ant-menu-submenu-title{
+  //     font-size: 16px;
+  //   }
+  //   .ant-menu-item > a{
+  //     color: hsla(0,0%,100%,1);
+  //     font-size: 16px;
+  //   }
+  //   .ant-menu-item-active:hover >a{
+  //     color: #ccc;
+  //   }
+  // }
   .top-nav-menu li.ant-menu-item {
     height: @nav-header-height;
     line-height: @nav-header-height;
