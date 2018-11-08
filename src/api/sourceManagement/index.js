@@ -36,9 +36,15 @@ const module = {
     },
     {
       name: 'list',
-      url: 'zwjh/api/v1/list',
+      url: 'gove/resourceProperty/list',
       // method: '',
-      baseHost:'http://dmanager.tpaas.youedata.com',
+      baseHost:'http://192.168.100.16:2181',
+    },
+    {
+      name: 'deletes',
+      url: 'gove/resourceProperty/delete',
+      method: 'post',
+      baseHost:'http://192.168.100.16:2181',
     },
   ],
 }

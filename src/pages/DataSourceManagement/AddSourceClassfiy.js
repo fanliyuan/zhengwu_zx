@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, Button, Radio, Row, Col } from 'antd'
+import { Input, Card, Form, Button, Radio, Row, Col, Select } from 'antd'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -8,6 +8,7 @@ import PageHeaderLayout from '@/components/PageHeaderWrapper'
 
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
+const { Option } = Select
 @Form.create()
 
 @connect(({sourceClassfiy,loading}) => ({
@@ -16,7 +17,9 @@ const RadioGroup = Radio.Group
 }))
 export default class AddSourceClassfiy extends Component {
   state = {
-
+    classifyName:'1',
+    itemName:'1',
+    detailName:'1',
   }
 
   componentDidMount = async() => {
@@ -58,6 +61,19 @@ export default class AddSourceClassfiy extends Component {
   }
 
   render() {
+    const classify = [{value:'1',label:'基础信息资源类'},{value:'2',label:'主题信息资源类'},{value:'3',label:'部门信息资源类'}]
+    const classifyList = classify.map(item => {
+      return <Option value={item.value} key={item.value}>{item.label}</Option>
+    })
+    const items = [{value:'1',label:'项1'},{value:'2',label:'项2'},{value:'3',label:'项3'}]
+    const itemsList = items.map(item => {
+      return <Option value={item.value} key={item.value}>{item.label}</Option>
+    })
+    const detail = [{value:'1',label:'项1'},{value:'2',label:'目2'},{value:'3',label:'目3'}]
+    const detailList = detail.map(item => {
+      return <Option value={item.value} key={item.value}>{item.label}</Option>
+    })
+    const { classifyName, itemName, detailName } = this.state
     const { getFieldDecorator, getFieldValue } = this.props.form
     const formItemLayout = {
       labelCol: {
@@ -122,40 +138,52 @@ export default class AddSourceClassfiy extends Component {
               <Col sm={{span:4,offset:4}} md={{span:4,offset:5}} lg={{span:4,offset:5}} xl={{span:4,offset:6}}>
                 <FormItem label="父级" {...formThreeItemLayout1}>
                   {getFieldDecorator('parentName', {
-                initialValue:'',
+                initialValue:classifyName,
                 rules: [
                   {
                     required: true,
                     message: '请选择分类名称',
                   },
                 ],
-              })(<Input placeholder="资源属性分类" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+              })(
+                <Select onChange={this.handleChangeClassify}>
+                  {classifyList}
+                </Select>
+              )}
                 </FormItem>
               </Col>
               <Col span={3} style={{display:+getFieldValue('classify') === 1 ? 'none' : 'block' }}>
                 <FormItem label="" {...formThreeItemLayout}>
                   {getFieldDecorator('item', {
-                initialValue:'',
+                initialValue:itemName,
                 rules: [
                   {
                     required: true,
                     message: '请选择项',
                   },
                 ],
-              })(<Input placeholder="项" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+              })(
+                <Select onChange={this.handleChangeClassify}>
+                  {itemsList}
+                </Select>
+              )}
                 </FormItem>
               </Col>
               <Col span={3} style={{display:+getFieldValue('classify') === 3 ? 'block' : 'none' }}>
                 <FormItem label="" {...formThreeItemLayout}>
                   {getFieldDecorator('classfiyItem', {
-                initialValue:'',
+                initialValue:detailName,
                 rules: [
                   {
                     required: true,
                     message: '请选择目',
                   },
                 ],
-              })(<Input placeholder="目" onKeyUp={this.handleNameCheck} onBlur={this.handleNameSameCheck} />)}
+              })(
+                <Select onChange={this.handleChangeClassify}>
+                  {detailList}
+                </Select>
+              )}
                 </FormItem>
               </Col>
             </Row>
