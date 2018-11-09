@@ -38,13 +38,13 @@ const module = {
       name: 'list',
       url: 'gove/resourceProperty/list',
       // method: '',
-      baseHost:'http://192.168.100.16:8803',
+      baseHost:'http://192.168.100.16:8083',
     },
     {
       name: 'deletes',
       url: 'gove/resourceProperty/delete',
       method: 'post',
-      baseHost:'http://192.168.100.16:8803',
+      baseHost:'http://192.168.100.16:8083',
     },
   ],
 }

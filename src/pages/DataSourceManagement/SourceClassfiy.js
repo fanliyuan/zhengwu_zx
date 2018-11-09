@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Card, Button, Input, Tabs, Table, DatePicker, Popconfirm } from 'antd'
+import { Card, Button, Input, Tabs, Table, DatePicker, Popconfirm, message } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import Cookie from 'js-cookie'
 import { routerRedux } from 'dva/router'
 
+// import { log } from 'util'
 import styles from './SourceClassfiy.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
 
@@ -40,11 +41,22 @@ export default class SourceClassfiy extends Component {
     dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy'))
   }
 
-  handleTableChange = () => {
-
+  handleTableChange = (pagination) => {
+    const{ classfiyName, times  } = this.state
+    this.searchBtn(1, classfiyName, times, { index:pagination.current, limit:pagination.pageSize })
   }
 
-  searchBtn = (type, name, time) => {
+  handleTableChange1 = (pagination) => {
+    const{ztClassfiyName, ztTimes} = this.state
+    this.searchBtn(2, ztClassfiyName, ztTimes, { index:pagination.current, limit:pagination.pageSize })
+  }
+
+  handleTableChange2 = (pagination) => {
+    const{ bmClassfiyName, bmTimes  } = this.state
+    this.searchBtn(3, bmClassfiyName, bmTimes, { index:pagination.current, limit:pagination.pageSize })
+  }
+
+  searchBtn = (type, name, time, pagination) => {
     const { dispatch } = this.props
     const vl = time.map(item => {
       if(moment.isMoment(item)){
@@ -56,7 +68,7 @@ export default class SourceClassfiy extends Component {
     })
     dispatch({
       type:'sourceClassfiy/getLists',
-      payload:{type,index:1,limit:10,name:name || undefined,beginDate:vl[0] ? `${vl[0]} 00:00:00` : undefined,endDate:vl[1] ? `${vl[1]} 23:59:59` : undefined},
+      payload:{type,index:1,limit:10,name:name || '',beginDate:vl[0] ? `${vl[0]} 00:00:00` : undefined,endDate:vl[1] ? `${vl[1]} 23:59:59` : undefined, ...pagination },
     })
   }
 
@@ -133,11 +145,42 @@ export default class SourceClassfiy extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'sourceClassfiy/getLists',
-      payload:{type:key,index:1,limit:10},
+      payload:{type:key,index:1,limit:10,name:undefined},
     })
     this.setState({
       currentTab:key,
+      classfiyName:'',
+      // paginations:{current:1,pageSize:10,totol:false},
+      times:[],
+      ztClassfiyName:'',
+      ztTimes:[],
+      bmClassfiyName:'',
+      bmTimes:[],
     })
+  }
+
+  checkLength = (value,name) => {
+    if(value.length > 50){
+      this.setState({
+        [name]:value.slice(0,49),
+      })
+      message.info("输入长度不能超过50个字符")
+    }
+  }
+
+  handleCheck = () => {
+    const { classfiyName } = this.state
+    this.checkLength(classfiyName, 'classfiyName')
+  }
+
+  handleCheck = () => {
+    const { ztClassfiyName } = this.state
+    this.checkLength(ztClassfiyName, 'ztClassfiyName')
+  }
+
+  handleCheck = () => {
+    const { bmClassfiyName } = this.state
+    this.checkLength(bmClassfiyName, 'bmClassfiyName')
   }
 
   render() {
@@ -265,7 +308,7 @@ export default class SourceClassfiy extends Component {
           <Tabs defaultActiveKey="1" onChange={this.handleChangeTab}>
             <TabPane tab="1 基础信息资源类" key="1">
               <div className={styles.form}>
-                <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={classfiyName} onChange={this.handleInstitutionChange} />
+                <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={classfiyName} onChange={this.handleInstitutionChange} onBlur={this.handleCheck} />
                 {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
                 <RangePicker style={{ marginRight: 20, width:200 }} value={times} onChange={this.handleTimeChange} />
                 <Button type="primary" onClick={this.handleSearchBtn}>搜索</Button>
@@ -281,7 +324,7 @@ export default class SourceClassfiy extends Component {
             </TabPane>
             <TabPane tab="2 主题信息资源类" key="2">
               <div className={styles.form}>
-                <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={ztClassfiyName} onChange={this.handleInstitutionChange1} />
+                <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={ztClassfiyName} onChange={this.handleInstitutionChange1} onBlur={this.handleCheck1} />
                 <RangePicker style={{ marginRight: 20, width:200 }} value={ztTimes} onChange={this.handleTimeChange1} />
                 <Button type="primary" onClick={this.handleSearchBtn1}>搜索</Button>
               </div>
@@ -291,12 +334,12 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="" onChange={this.handleTableChange} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="" onChange={this.handleTableChange1} bordered />
               </div>
             </TabPane>
             <TabPane tab="3 部门信息资源类" key="3">
               <div className={styles.form}>
-                <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={bmClassfiyName} onChange={this.handleInstitutionChange2} />
+                <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={bmClassfiyName} onChange={this.handleInstitutionChange2} onBlur={this.handleCheck2} />
                 <RangePicker style={{ marginRight: 20, width:200 }} value={bmTimes} onChange={this.handleTimeChange2} />
                 <Button type="primary" onClick={this.handleSearchBtn2}>搜索</Button>
               </div>
@@ -306,7 +349,7 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="" onChange={this.handleTableChange} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="" onChange={this.handleTableChange2} bordered />
               </div>
             </TabPane>
           </Tabs>

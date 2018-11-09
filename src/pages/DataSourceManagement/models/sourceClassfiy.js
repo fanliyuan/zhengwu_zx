@@ -18,12 +18,15 @@ export default {
             type:'list',
             payload:{lists:response.data,paginations},
           })
+          if(payload.name === '' && response.data.length === 0){
+            message.error("很遗憾,没有搜索到匹配的分类信息")
+          }
         }else {
-          message.error("查询失败")
           yield put({
             type:'list',
             payload:{lists:[],paginations:false},
           })
+          message.error("搜索结果异样,请重新搜索")
         }
       }catch(err){
         if(err){
