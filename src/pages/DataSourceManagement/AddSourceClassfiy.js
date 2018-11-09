@@ -190,6 +190,10 @@ export default class AddSourceClassfiy extends Component {
             <FormItem label="编号" {...formItemLayout}>
               {getFieldDecorator('number',{
                 initialValue:'',
+                rules:[{
+                  required: true,
+                  message:'请输入编号',
+                }],
               })(<Input placeholder="请输入编号" onKeyUp={this.handleNamePCheck} />)}
             </FormItem>
             <FormItem label="名称" {...formItemLayout}>

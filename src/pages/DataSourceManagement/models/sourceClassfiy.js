@@ -34,7 +34,7 @@ export default {
     *deleteItem({ payload} ,{ call }){
       const response = yield call(deletes,{body:payload})
       try{
-        if(response.code === 0){
+        if(+response.code === 0){
           message.success('删除成功')
         }else {
           message.error('删除失败')
