@@ -7,7 +7,7 @@ import copy from 'copy-to-clipboard'
 // import styles from './AddUser.less';
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
 
-const sha = require('sha.js')
+// const sha = require('sha.js')
 
 const FormItem = Form.Item
 const { Option } = Select
@@ -66,7 +66,7 @@ export default class AddUser extends Component {
 
   setPassword = () => {
     this.props.form.setFieldsValue({
-      psw: getPassword(),
+      accountPasswd: getPassword(),
     })
     // this.setState({
     //   password: getPassword(),
@@ -81,7 +81,7 @@ export default class AddUser extends Component {
   // }
 
   handleCopy = () => {
-    copy(this.props.form.getFieldValue('psw'))
+    copy(this.props.form.getFieldValue('accountPasswd'))
     // copy(this.state.password)
     message.success('成功复制')
   }
@@ -96,38 +96,31 @@ export default class AddUser extends Component {
             type: 'accounts/addAccount',
             payload: {
               accountName: value.accountName,
-              accountPasswd: sha('sha1').update(value.psw).digest('hex'),
-              telephone: value.tel,
-              status: value.status ? 0: 1,
-              // JSON转换
-              extendedProperties: JSON.stringify({ 
-                projectId: '8aced467f44a4a458e763814912c3d47',
-                scope: '8aced467f44a4a458e763814912c3d47',
-                name: value.name,
-               }),
+              accountNickName: value.accountNickName,
+              // accountPasswd: sha('sha1').update(value.psw).digest('hex'),
+              accountPasswd: value.accountPasswd,
+              accountTel: value.accountTel,
+              accountEmail: value.accountEmail,
+              accountStatus: value.accountStatus ? '1': '0',
             },
           })
         } else {
-          const { userInfo: { extendedProperties } } = this.state
-          const roleInfo = JSON.parse(extendedProperties)
           const body = {
             accountName: value.accountName,
-            accountPasswd: value.psw ? sha('sha1').update(value.psw).digest('hex') : undefined,
-            status: value.status ? 0: 1,
-            telephone: value.tel,
-            extendedProperties: JSON.stringify({ 
-              projectId: '8aced467f44a4a458e763814912c3d47',
-              scope: '8aced467f44a4a458e763814912c3d47',
-              name: value.name,
-              roleId: roleInfo && roleInfo.roleId || '',
-              systemRole: roleInfo && roleInfo.systemRole || '',
-            }),
+            accountNickName: value.accountNickName,
+            // accountPasswd: value.psw ? sha('sha1').update(value.psw).digest('hex') : undefined,
+            accountPasswd: value.accountPasswd || undefined,
+            accountStatus: value.accountStatus ? '1': '0',
+            accountTel: value.accountTel,
+            accountEmail: value.accountEmail,
           }
           this.props.dispatch({
             type: 'accounts/updateAccount',
             payload: {
-              body: {...body},
-              path: this.props.location.state.userInfo && this.props.location.state.userInfo.accountId,
+              body: {
+                ...body,
+                accountId: this.props.location.state.userInfo && this.props.location.state.userInfo.accountId,
+              },
             },
           })
         }
@@ -183,7 +176,7 @@ export default class AddUser extends Component {
               })(<Input placeholder="请输入用户名" autoComplete='off' />)}
             </FormItem>
             <FormItem label="密码" {...formItemLayout}>
-              {getFieldDecorator('psw', {
+              {getFieldDecorator('accountPasswd', {
                 rules: [
                   {
                     required: this.props.location.pathname !== '/institutionalUserManage/editUser',
@@ -211,8 +204,8 @@ export default class AddUser extends Component {
               </div>
             </FormItem>
             <FormItem label="姓名" {...formItemLayout}>
-              {getFieldDecorator('name', {
-                initialValue: accountDetail.extendedProperties && JSON.parse(accountDetail.extendedProperties.replace(/'/g, '"')).name,
+              {getFieldDecorator('accountNickName', {
+                initialValue: accountDetail.accountNickName,
                 rules: [
                   {
                     required: true,
@@ -227,8 +220,8 @@ export default class AddUser extends Component {
               })(<Input placeholder="姓名" />)}
             </FormItem>
             <FormItem label="手机号" {...formItemLayout}>
-              {getFieldDecorator('tel', {
-                initialValue: accountDetail.telephone,
+              {getFieldDecorator('accountTel', {
+                initialValue: accountDetail.accountTel,
                 rules: [
                   {
                     required: true,
@@ -237,6 +230,20 @@ export default class AddUser extends Component {
                   },
                 ],
               })(<Input placeholder="手机号" />)}
+            </FormItem>
+            <FormItem label='邮箱' {...formItemLayout}>
+              {
+                getFieldDecorator('accountEmail', {
+                  initialValue: accountDetail.accountEmail,
+                  rules: [
+                    {
+                      required: true,
+                      type: 'email',
+                      message: '请输入正确的邮箱',
+                    },
+                  ],
+                })(<Input placeholder='邮箱' />)
+              }  
             </FormItem>
             <FormItem label="角色" {...formItemLayout}>
               {getFieldDecorator('role', {
@@ -248,9 +255,9 @@ export default class AddUser extends Component {
               )}
             </FormItem>
             <FormItem label="状态" {...formItemLayout}>
-              {getFieldDecorator('status', {
+              {getFieldDecorator('accountStatus', {
                 valuePropName: 'checked',
-                initialValue: !accountDetail.status,
+                initialValue: accountDetail.accountStatus === '1',
               })(<Checkbox>停用</Checkbox>)}
             </FormItem>
             <div className="btnclsb">

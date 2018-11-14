@@ -68,6 +68,13 @@ class Login extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    // 接收父组件传过来的 resetFlag 清除密码的标识符, 判断状态,然后执行操作
+    if (this.props.resetFlag && !nextProps.resetFlag) {
+      this.handleReset()
+    }
+  }
+
   onSwitch = type => {
     const { onTabChange } = this.props
     this.setState({
@@ -84,6 +91,11 @@ class Login extends Component {
     form.validateFields(activeFileds, { force: true }, (err, values) => {
       onSubmit(err, values)
     })
+  }
+
+  handleReset = () => {
+    const { props:{form: {resetFields}} } = this
+    resetFields(['password'])
   }
 
   render() {
@@ -104,7 +116,7 @@ class Login extends Component {
     })
     return (
       <div className={classNames(className, styles.login)}>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} onReset={this.resetPassWord}>
           {tabs.length ? (
             <div>
               <Tabs

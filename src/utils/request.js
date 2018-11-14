@@ -5,7 +5,7 @@ import hash from 'hash.js'
 import Cookies from 'js-cookie'
 import { isAntdPro } from './utils'
 
-const tokenErrorList = [11030110, 11030111, 11030112, 11030113]
+const tokenErrorList = [3001, 3002, 3000]
 const key = 'fetchError'
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -45,13 +45,18 @@ async function checkToken(response) {
     // 需要克隆response,否则会报错,提示response只能读取一次.
     response.clone().json()
     .then(data => {
-      if (tokenErrorList.indexOf(data.code) > -1) {
+      if (tokenErrorList.indexOf(+data.code) > -1) {
         notification.error({
           key,
           message: '登录已失效,请重新登录',
         })
         sessionStorage.setItem('antd-pro-authority', Cookies.get('antd-pro-authority'))
-        router.push(`/user/login?redirect=${window.location.href.split('?')[0]}`)
+        Cookies.set('accessToken', '')
+        Cookies.set('antd-pro-authority', 'guest')
+        //  当 targetRedirect 为 登录页 /user/login 时不再设置 redirect = targetRedirect , 而是保留原始的重定向 originRedirect
+        const originRedirect = window.location.search.substr(10)
+        const targetRedirect = window.location.href.split('?')[0]
+        router.push(`/user/login${window.location.pathname==='/'?'':`?redirect=${targetRedirect==='/user/login'?originRedirect:targetRedirect}`}`)
       }
     })
     .catch(err => {

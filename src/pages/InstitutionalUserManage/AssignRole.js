@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio, message } from 'antd'
+import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio, message, Form } from 'antd'
+import { Bind, Throttle } from 'lodash-decorators'
 import moment from 'moment'
 
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
@@ -10,14 +11,9 @@ import styles from './AssignRole.less'
 const { Option } = Select
 const { RangePicker } = DatePicker
 const RadioGroup = Radio.Group
-const roleObject = {
-  admin: '管理员',
-  security: '安全员',
-  auditor: '审计员',
-  operator: '操作员',
-  'operator-n': '节点操作员',
-}
+const FormItem = Form.Item
 
+@Form.create()
 @connect(({ roles, accounts, loading }) => ({
   roles,
   accounts,
@@ -25,126 +21,68 @@ const roleObject = {
 }))
 export default class AssignRole extends Component {
   state = {
-    // owingJg: '角色',
-    status: '-1',
     visible: false,
-    createTime: [],
-    isChanged: false,
-    queryData: {},
-    queryParams: {},
+    // queryData: {},
+    pagination: {
+      pageNum: 1,
+      pageSize: 10,
+    },
     roleId: null,
     userId: '',
+    roleObject: {},
   }
 
   componentDidMount() {
     this.props.dispatch({
       type: 'accounts/getAccounts',
       payload: {
-        filter: '(status = 0 OR status = 1)',
+        pageSize: 10,
+        pageNum: 1,
       },
     })
-    if (this.props.roles.roleList.length < 1) {
-      this.props.dispatch({
-        type: 'roles/getRoleList',
-        payload: {},
+    this.props.dispatch({
+      type: 'roles/getRoleList',
+      payload: {},
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.roles.roleList && nextProps.roles.roleList !== this.props.roles.roleList) {
+      const roleObject = nextProps.roles.roleList.reduce((pre, cur) => {
+        pre[cur.roleName] = cur.roleDesc
+        return pre
+      },{})
+      this.setState({
+        roleObject,
       })
     }
   }
 
-  nameChange = (e) => {
-    const { queryData } = this.state
+  handleReset = () => {
+    const { form: { resetFields } } = this.props
+    resetFields()
     this.setState({
-      queryData: {
-        ...queryData,
-        accountNames: e.target.value.trim(),
+      pagination: {
+        pageSize: 10,
+        pageNum: 1,
       },
-      isChanged: true,
-    })
-  }
-
-  telephoneChange = (e) => {
-    const { queryData } = this.state
-    if (e.target.value.trim().length > 11) return false
-    this.setState({
-      queryData: {
-        ...queryData,
-        telephone: e.target.value.trim(),
-      },
-      isChanged: true,
-    })
-  }
-
-  selectRoleChange = val => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        accurate: val !== '-2' ? JSON.stringify({roleId: val}) : '',
-      },
-      isChanged: true,
-    })
-  }
-
-  selectStatusChange = val => {
-    this.setState({
-      status: val,
-      isChanged: true,
-    })
-  }
-
-  dateChange = val => {
-    let createTime
-    if (val.length > 1) {
-      createTime = [moment(val[0]), moment(val[1])]
-    } else {
-      createTime = val
-    }
-    this.setState({
-      createTime,
-      isChanged: true,
-    })
-  }
-
-  handleSearch = () => {
-    if (!this.state.isChanged) {
-      return null
-    }
-    const { queryData, status, createTime } = this.state
-    const queryParams = {
-      ...queryData,
-      filter: `${status !== '0' && status !== '1' ? '(status = 0 OR status = 1)':`status=${status}`}${createTime.length > 1 ? ' and ':''}${createTime.length > 1 ? `create_time>${format0(+createTime[0].format('x'))} and create_time<${format24(+createTime[1].format('x'))}`:''}
-      `,
-    }
-    this.props.dispatch({
-      type: 'accounts/getAccounts',
-      payload: {
-        ...queryParams,
-        // filter: [`${status !== '0' || '1' || '2'}`, `${!createTime[0] ? '' : `create_time=${format0((+createTime[0]).format('x'))}`}`, `${!createTime[1] ? '' : `create_time<${format24(+createTime[1].format('x'))}`}`].filter(item => item).join(' and '),
-      },
-    })
-    this.setState({
-      isChanged: false,
-      queryParams,
-    })
+    }, this.handleSearch)
   }
 
   tableChange = (pagination) =>{
-    const { queryParams } = this.state
-    this.props.dispatch({
-      type: 'accounts/getAccounts',
-      payload: {
-        ...queryParams,
+    this.setState({
+      pagination: {
+        pageNum: pagination.current,
         pageSize: pagination.pageSize,
-        pageNumber: pagination.current,
       },
-    })
+    }, this.handleSearch)
   }
 
   showModal = (row) => {
     this.setState({
       visible: true,
       userId: row.accountId,
-      roleId: JSON.parse(row.extendedProperties) ? JSON.parse(row.extendedProperties).roleId : undefined,
+      roleId: row.roleId || -1,
     })
   }
 
@@ -154,28 +92,17 @@ export default class AssignRole extends Component {
     })
   }
 
-  handleOk = roleListObject => {
+  handleOk = () => {
     if (!this.state.roleId) {
       message.error('请选择角色!')
       return null
     }
     this.props.dispatch({
-      type: 'roles/setPermissions',
-      // payload: {
-      //   body: [{
-      //     roleidList: [this.state.roleId],
-      //     userid: this.state.userId,
-      //   }],
-      // },
+      type: 'roles/saveRoleByAccount',
       payload: {
-        path: this.state.userId,
         body: {
-          extendedProperties: JSON.stringify({
-            projectId: '8aced467f44a4a458e763814912c3d47',
-            scope: '8aced467f44a4a458e763814912c3d47',
-            systemRole: roleListObject[this.state.roleId],
-            roleId: `${this.state.roleId}`,
-          }),
+          accountId: this.state.userId,
+          roleId: this.state.roleId,
         },
       },
     })
@@ -191,49 +118,50 @@ export default class AssignRole extends Component {
     })
   }
 
+  @Bind
+  @Throttle(1000)
+  handleSearch() {
+    const { pagination } = this.state
+    const { form: { getFieldsValue } } = this.props
+    const queryData = getFieldsValue()
+    // 这里用户储存搜索数据
+    // this.setState({
+    //   queryData: {
+    //     ...queryData,
+    //   },
+    // })
+    if (queryData.createTime && queryData.createTime.length > 1) {
+      queryData.startTime = format0(queryData.createTime[0].format('x'))
+      queryData.endTime = format24(queryData.createTime[1].format('x'))
+    }
+    delete queryData.createTime
+    this.props.dispatch({
+      type: 'accounts/getAccounts',
+      payload: {
+        ...queryData,
+        ...pagination,
+      },
+    })
+  }
+
   render() {
     const that = this
-    const { status, visible } = this.state
-    const { accounts: { accountList, roleNameList, pagination }, roles: { roleList }, loading } = this.props
-    // const data = [
-    //   { value: '0', id: 0, label: '所属机构' },
-    //   { value: '1', id: 1, label: 'XXX机构' },
-    // ]
-    // const selectData = data.map(item => {
-    //   return (
-    //     <Option value={item.value} key={item.id} title={item.label}>
-    //       {item.label}
-    //     </Option>
-    //   )
-    // })
-    const roleNameObject = roleNameList.reduce((pre, cur) => {
-      pre[cur.userid] = cur.rolename
-      return pre
-    },{})
-    accountList.forEach(item => item.role = roleObject[roleNameObject[item.accountId]]) // eslint-disable-line
-    const data1 = roleList.reduce((pre, cur) => {
-      if (Object.keys(roleObject).indexOf(cur.rolename) < 0) {
-        return pre
-      }
-      pre.push({
-        id: `${cur.id}`,
-        value: `${cur.id}`,
-        label: roleObject[cur.rolename],
-      })
-     return pre 
-    }, [])
-    const roleListObject = roleList.reduce((pre, cur) => {
-      pre[cur.id] = cur.rolename
-      return pre
-    },{})
-    const selectData1 = [...data1, {id: -2, value: '-2', label: '所有角色'}, {id: -1, value: '0', label: '未分配角色'}].map(item => {
+    const { visible, roleObject } = this.state
+    const { accounts: { accountList, pagination }, roles: { roleList: data1 }, loading, form: { getFieldDecorator } } = this.props
+    
+    accountList.forEach(item => item.role = roleObject[item.roleName]) // eslint-disable-line
+    // const roleListObject = data1.reduce((pre, cur) => {
+    //   pre[cur.id] = cur.rolename
+    //   return pre
+    // },{})
+    const selectData1 = data1.map(item => {
       return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
+        <Option value={item.roleName} key={item.roleId} title={item.roleDesc}>
+          {item.roleDesc}
         </Option>
       )
     })
-    const data2 = [{ value: '-1', id: 3, label: '全部状态' }, { value: '1', id: 1, label: '启用' }, { value: '0', id: 0, label: '停用' }]
+    const data2 = [{ value: '0', id: 0, label: '启用' }, { value: '1', id: 1, label: '停用' }]
     const selectData2 = data2.map(item => {
       return (
         <Option value={item.value} key={item.id} title={item.label}>
@@ -252,11 +180,11 @@ export default class AssignRole extends Component {
       },
       {
         title: '姓名',
-        dataIndex: 'name',
+        dataIndex: 'accountNickName',
       },
       {
         title: '电话',
-        dataIndex: 'telephone',
+        dataIndex: 'accountTel',
       },
       // {
       //   title: '所属机构',
@@ -272,16 +200,16 @@ export default class AssignRole extends Component {
       },
       {
         title: '建立时间',
-        dataIndex: 'createTime',
+        dataIndex: 'accountCreateTime',
         render(text) {
           return moment(text).format('YYYY-MM-DD HH:mm:ss')
         },
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'accountStatus',
         render(text) {
-          return +text === 0 ? '停用' : '启用'
+          return +text === 0 ? <span className='orange'>启用</span> : <span className='silver'>停用</span>
         },
       },
       {
@@ -289,7 +217,7 @@ export default class AssignRole extends Component {
         render: (_, row) => {
           return (
             <div>
-              {row.role === '管理员' ? (<span style={{color: 'silver', cursor: 'no-drop'}}>不可修改</span>) : (
+              {row.role === '111管理员1111' ? (<span style={{color: 'silver', cursor: 'no-drop'}}>不可修改</span>) : (
                 <span className={styles.editBtn} onClick={() => that.showModal(row)}>
                 分配角色
                 </span>
@@ -305,29 +233,40 @@ export default class AssignRole extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <div className={styles.form}>
-            <Input placeholder="用户名/姓名" style={{ width: 120, marginRight: 20 }} onChange={this.nameChange} />
-            <Input placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} />
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              defaultValue='-2'
-              onChange={this.selectRoleChange}
-              >
-              {selectData1}
-            </Select>
-            <Select
-              style={{ marginRight: 20, width: 100 }}
-              value={status}
-              onChange={this.selectStatusChange}
-              >
-              {selectData2}
-            </Select>
-            <RangePicker style={{ marginRight: 20, width: 250 }} onChange={this.dateChange} />
-            <Button type="primary" onClick={this.handleSearch}>搜索</Button>
-          </div>
-          {/* <div className={styles.createBtn}>
-            <Button icon="plus" type="primary">新建</Button>
-          </div> */}
+          <Form className='cf'>
+            <FormItem className='w120 fl mr16'>
+              {getFieldDecorator('accountName')(<Input maxLength={50} placeholder='用户名' />)}
+            </FormItem>
+            <FormItem className='w120 fl mr16'>
+              {getFieldDecorator('accountNickName')(<Input maxLength={50} placeholder='姓名' />)}
+            </FormItem>
+            <FormItem className='w120 fl mr16'>
+              {getFieldDecorator('accountTel')(<Input maxLength={50} placeholder='电话' />)}
+            </FormItem>
+            <FormItem className='w120 fl mr16'>
+              {getFieldDecorator('roleName')(
+                <Select allowClear placeholder='请选择角色'>
+                  {selectData1}
+                </Select>)}
+            </FormItem>
+            <FormItem className='w120 fl mr16'>
+              {getFieldDecorator('accountStatus')(
+                <Select allowClear placeholder='状态'>
+                  {selectData2}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem className='w220 fl mr16'>
+              {getFieldDecorator('createTime')(<RangePicker />)}
+            </FormItem>
+            {/* <RangePicker style={{ marginRight: 20, width: 250 }} onChange={this.dateChange} /> */}
+            <FormItem className='w82 fl mr16'>
+              <Button type="primary" icon='search' onClick={this.handleSearch}>搜索</Button>
+            </FormItem>
+            <FormItem className='w64 fl mr16'>
+              <Button onClick={this.handleReset}>重置</Button>
+            </FormItem>
+          </Form>
           <div>
             <Table
               columns={columns}
@@ -342,13 +281,13 @@ export default class AssignRole extends Component {
           <Modal
             title="分配角色"
             visible={visible}
-            onOk={() => this.handleOk(roleListObject)}
+            onOk={this.handleOk}
             onCancel={this.handleCancel}
             >
             <RadioGroup value={this.state.roleId} onChange={(e) => this.roleChange(e)}>
               {
                 data1.map(item => (
-                  <Radio value={item.id} key={item.id}>{item.label}</Radio>
+                  <Radio value={item.roleId} key={item.roleId}>{item.roleDesc}</Radio>
                 ))
               }
               {/* <Radio value={1}>安全员</Radio> */}

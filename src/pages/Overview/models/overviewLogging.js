@@ -18,15 +18,15 @@ export default {
       // const response = yield call(getLogState)
       const response = [
         {
-          value: '1',
+          value: '0',
           label: '登录成功',
         },
         {
-          value: '0',
+          value: '1',
           label: '登录失败',
         },
       ]
-      response.unshift({ value: '全部结果', label: '全部结果' })
+      // response.unshift({ value: '全部结果', label: '全部结果' })
       yield put({
         type: 'savestate',
         payload: response,
@@ -43,7 +43,7 @@ export default {
       } else {
         payload = yield select(state => state.overviewLogging.queryData)
       }
-      const response = yield call(getLoginLogging, { params: payload.params })
+      const response = yield call(getLoginLogging, { body: payload.body })
       // 获取状态表
       if (!stateList.length) {
         yield put({ type: 'state' })

@@ -236,3 +236,20 @@ export function number2String(params) {
     }
   })
 }
+
+export function throttle(fn, ms = 1000, _this = this) {
+  const { state: { throttleFlag = true } = {} } = _this
+  setTimeout(() => {
+    _this.setState({
+      throttleFlag: true,
+    })
+  }, ms)
+  _this.setState({
+    throttleFlag: false,
+  })
+  if (throttleFlag) {
+    return fn
+  } else {
+    return () => {}
+  }
+}

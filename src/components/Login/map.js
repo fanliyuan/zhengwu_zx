@@ -15,6 +15,10 @@ const map = {
         required: false,
         message: 'Please enter username!',
       },
+      {
+        max: 50,
+        message: '不能超过五十个字符!',
+      },
     ],
   },
   Password: {
@@ -29,6 +33,10 @@ const map = {
       {
         required: false,
         message: 'Please enter password!',
+      },
+      {
+        max: 50,
+        message: '不能超过五十个字符!',
       },
     ],
   },

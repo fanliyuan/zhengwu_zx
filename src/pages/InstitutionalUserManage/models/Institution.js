@@ -80,7 +80,7 @@ export default {
     *addItem ({ payload }, { call, put}){
       const response = yield call(insertGoveDept,{body:payload})
       try{
-        if(response.code === '200'){
+        if(+response.code === 0){
           message.success(response.msg)
           yield put({
             type:'querys',

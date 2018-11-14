@@ -446,8 +446,9 @@ export default class PlatformOverview extends Component {
 
   componentDidMount() {
     interval = setInterval(() => {
+      // console.log(interval)
       this.getDynamicLineData()
-    }, 1000)
+    }, 5000)
   }
 
   componentWillUnmount() {

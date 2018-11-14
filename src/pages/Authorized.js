@@ -20,7 +20,7 @@ export default ({ children }) => {
   //     )
   // }
   return (
-    <Authorized authority={children.props.route.authority} noMatch={<Redirect to={`/user/login?redirect=${window.location.href}`} />}>
+    <Authorized authority={children.props.route.authority} noMatch={<Redirect to={`/user/login${window.location.pathname==='/'?'':`?redirect=${window.location.href.split('?')[0]}`}`} />}>
       {children}
     </Authorized>
   )

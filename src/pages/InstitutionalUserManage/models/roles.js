@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../../../api'
 
-const { setPermissions, getRoleList } = apis
+const { saveRoleByAccount, getRoleList } = apis
  export default {
   namespace:'roles',
 
@@ -13,12 +13,12 @@ const { setPermissions, getRoleList } = apis
     *getRoleList(_, { call, put }) {
       let response
       try {
-        response = yield call(getRoleList, {path: 5})
-        if (+response.code === 0) {
+        response = yield call(getRoleList, {body: { pageNum:0, pageSize: 0 }})
+        if (+response.code === 604) {
           yield put({
             type: 'changeRoleList',
             payload: {
-              roleList: response.result.datas,
+              roleList: response.data.data,
             },
           })
         }
@@ -33,11 +33,11 @@ const { setPermissions, getRoleList } = apis
         })
       }
     },
-    *setPermissions({ payload }, { call, put }) {
+    *saveRoleByAccount({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(setPermissions, {body: payload.body, path: payload.path})
-        if (+response.code === 0) {
+        response = yield call(saveRoleByAccount, {body: payload.body})
+        if (+response.code === 200) {
           message.success('修改成功!')
           yield put({
             type: 'accounts/getAccounts',

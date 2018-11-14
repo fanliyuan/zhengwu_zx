@@ -321,6 +321,10 @@ function getFakeCaptcha(req, res) {
   return res.json('captcha-xxx')
 }
 
+function tempRequest(req, res) {
+  return res.json(req)
+}
+
 export default {
   'GET /api/project/notice': getNotice,
   'GET /api/activities': getActivities,
@@ -333,4 +337,5 @@ export default {
   'GET /api/fake_list': getFakeList,
   'POST /api/fake_list': postFakeList,
   'GET /api/captcha': getFakeCaptcha,
+  'POST /zwjh/api/v1/queryGoveAccountInfoList': tempRequest,
 }
