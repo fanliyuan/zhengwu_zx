@@ -32,7 +32,7 @@ export default class SourceClassfiy extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'sourceClassfiy/getLists',
-      payload:{type:1,index:1,limit:10},
+      payload:{type:1,index:1,pageSize:10},
     })
   }
 
@@ -43,17 +43,17 @@ export default class SourceClassfiy extends Component {
 
   handleTableChange = (pagination) => {
     const{ classfiyName, times  } = this.state
-    this.searchBtn(1, classfiyName, times, { index:pagination.current, limit:pagination.pageSize })
+    this.searchBtn(1, classfiyName, times, { index:pagination.current, pageSize:pagination.pageSize })
   }
 
   handleTableChange1 = (pagination) => {
     const{ztClassfiyName, ztTimes} = this.state
-    this.searchBtn(2, ztClassfiyName, ztTimes, { index:pagination.current, limit:pagination.pageSize })
+    this.searchBtn(2, ztClassfiyName, ztTimes, { index:pagination.current, pageSize:pagination.pageSize })
   }
 
   handleTableChange2 = (pagination) => {
     const{ bmClassfiyName, bmTimes  } = this.state
-    this.searchBtn(3, bmClassfiyName, bmTimes, { index:pagination.current, limit:pagination.pageSize })
+    this.searchBtn(3, bmClassfiyName, bmTimes, { index:pagination.current, pageSize:pagination.pageSize })
   }
 
   searchBtn = (type, name, time, pagination) => {
@@ -68,7 +68,7 @@ export default class SourceClassfiy extends Component {
     })
     dispatch({
       type:'sourceClassfiy/getLists',
-      payload:{type,index:1,limit:10,name:name || '',beginDate:vl[0] ? `${vl[0]} 00:00:00` : undefined,endDate:vl[1] ? `${vl[1]} 23:59:59` : undefined, ...pagination },
+      payload:{type,index:1,pageSize:10,name:name || '',beginDate:vl[0] ? `${vl[0]} 00:00:00` : undefined,endDate:vl[1] ? `${vl[1]} 23:59:59` : undefined, ...pagination },
     })
   }
 
@@ -101,7 +101,7 @@ export default class SourceClassfiy extends Component {
     })
     dispatch({
       type:'sourceClassfiy/getLists',
-      payload:{type:currentTab,index:1,limit:10},
+      payload:{type:currentTab,index:1,pageSize:10},
     })
   }
 
@@ -145,7 +145,7 @@ export default class SourceClassfiy extends Component {
     const { dispatch } = this.props
     dispatch({
       type:'sourceClassfiy/getLists',
-      payload:{type:key,index:1,limit:10,name:undefined},
+      payload:{type:key,index:1,pageSize:10,name:undefined},
     })
     this.setState({
       currentTab:key,
