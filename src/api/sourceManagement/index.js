@@ -36,15 +36,15 @@ const module = {
     },
     {
       name: 'list',
-      url: 'gove/resourceProperty/list',
-      // method: '',
-      baseHost:'http://192.168.100.16:8803',
+      url: 'zwjh/api/v1/list',
+      // method: 'get',
+      baseHost:'http://cdyoue.com.cn:19006',
     },
     {
       name: 'deletes',
-      url: 'gove/resourceProperty/delete',
-      method: 'post',
-      baseHost:'http://192.168.100.16:8803',
+      url: 'zwjh/api/v1/delete',
+      method: 'delete',
+      baseHost:'http://cdyoue.com.cn:19006',
     },
   ],
 }
