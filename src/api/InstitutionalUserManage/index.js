@@ -1,5 +1,5 @@
 const module = {
-  moduleName:'InstitutionalUserManage',
+  moduleName:'institutionalUserManage',
   apis: [
     {
       name:'queryGoveDeptInfoList',
