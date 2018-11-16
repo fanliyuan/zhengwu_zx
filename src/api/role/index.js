@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:00
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-25 17:32:13
+ * @Last Modified time: 2018-11-14 15:46:30
  * @Description: 角色模块请求
  */
 const module = {
@@ -14,13 +14,28 @@ const module = {
     },
     {
       name: 'getRoleList',
-      url: 'roles',
+      url: 'queryGoveRoleInfoList',
+      method: 'post',
+    },
+    {
+      name: 'saveRoleByAccount',
+      url: 'saveRoleByAccount',
+      method: 'post',
     },
   ],
 }
 module.apis.forEach(item => {
   if (!item.baseHost) {
-    item.baseHost = 'http://api.tpaas.youedata.com/yyqxzx/api/v1'
+    if (process.env.NODE_ENV === 'development') {
+      item.baseHost = 'http://192.168.100.15:8807' // 局域网接口(开发接口)
+    } else {
+      item.baseHost = 'http://govecore.tpaas.youedata.com' // 公网接口(生成接口)
+    }
+    // item.baseHost = 'http://govecore.tpaas.youedata.com' // 公网接口(生成接口)
+    // item.baseHost = 'http://192.168.100.15:8807' // 局域网接口(开发接口)
+  }
+  if (!item.baseUrl) {
+    item.baseUrl = 'zwjh/api/v1'
   }
 })
 

@@ -12,15 +12,11 @@ export default {
     queryData: {},
     stateList: [
       {
-        value: '全部结果',
-        label: '全部结果',
-      },
-      {
-        value: '1',
+        value: '0',
         label: '登录成功',
       },
       {
-        value: '0',
+        value: '1',
         label: '登录失败',
       },
     ],
@@ -30,7 +26,7 @@ export default {
     *getLoginAudit({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(getLoginAudit, {params: payload.params})
+        response = yield call(getLoginAudit, {body: payload.body})
         const { list, total = 0, pageSize = 10, pageNum = 1 } = response.data
         const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
         list.forEach(item => {moment(item.createTime).format('lll')})

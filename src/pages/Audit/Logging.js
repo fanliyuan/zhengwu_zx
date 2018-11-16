@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Form, Input, DatePicker, Select, Button, Table, Tooltip } from 'antd'
+import { Bind, Throttle } from 'lodash-decorators'
 import moment from 'moment'
 
 import { format0, format24 } from '../../utils/utils'
@@ -13,123 +14,71 @@ function getRandomIp() {
 }
 
 const { RangePicker } = DatePicker
+const FormItem = Form.Item
 
+@Form.create()
 @connect(({ loginAudit, loading }) => ({ loginAudit, loading: loading.models.loginAudit }))
 export default class Logging extends Component {
   state = {
-    queryData: {
-      time: [],
+    pagination: {
+      pageNum: 1,
+      pageSize: 10,
     },
-    queryParams: {
-      logType: 3,
-    },
-    isChanged: false,
   }
 
   componentDidMount() {
-    const { dispatch } = this.props
+    this.handleSearch()
+  }
+
+  handleReset = () => {
+    const { form: { resetFields } } = this.props
+    resetFields()
+    this.setState({
+      pagination: {
+        pageNum: 1,
+        pageSize: 10,
+      },
+    }, this.handleSearch)
+  }
+
+  handleTableChange = pagination => {
+    this.setState({
+      pagination: {
+        pageNum: pagination.current,
+        pageSize: pagination.pageSize,
+      },
+    },this.handleSearch)
+  }
+
+  @Bind()
+  @Throttle(1000)
+  handleSearch() {
+    const { pagination } = this.state
+    const { dispatch, form: { getFieldsValue } } = this.props
+    const queryData = getFieldsValue()
+    // this.setState({
+    //   queryData: {
+    //     ...queryData,
+    //   },
+    // })
+    if (queryData.createTime && queryData.createTime.length > 1) {
+      queryData.startTime = format0(queryData.createTime[0].format('x'))
+      queryData.endTime = format24(queryData.createTime[1].format('x'))
+    }
+    delete queryData.createTime
     dispatch({
       type: 'loginAudit/getLoginAudit',
       payload: {
-        params: {
-          logType: 3,
-          pageSize: 10,
-          pageNum: 1,
-        },
-      },
-    },)
-  }
-
-  handleUserNameChange = e => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: { ...queryData, createUser: e.target.value.trim() },
-      isChanged: true,
-    })
-  }
-
-  handleIPChange = e => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {...queryData, logIpAddress: e.target.value.trim()},
-      isChanged: true,
-    })
-  }
-
-  handleDatePickerChange = value => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: { 
-        ...queryData,
-        time: value,
-      },
-      isChanged: true,
-    })
-  }
-
-  handleResultChange = value => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: { ...queryData, logState: value === '全部结果' ? undefined : value },
-      isChanged: true,
-    })
-  }
-
-  handleSearch = () => {
-    if (!isChanged) return null
-    const { isChanged, queryData } = this.state
-    const { dispatch } = this.props
-    const pagination = {
-      pageSize: 10,
-      pageNum: 1,
-    }
-    const queryParams = {
-      logType: 3,
-      createUser: queryData.createUser || undefined,
-      logIpAddress: queryData.logIpAddress || undefined,
-      logState: queryData.logState || undefined,
-      startTime: queryData.time[0] && format0(queryData.time[0].format('x')),
-      endTime: queryData.time[1] && format24(queryData.time[1].format('x')),
-    }
-    this.setState({
-      isChanged: false,
-      queryParams,
-    })
-    dispatch({
-      type: 'loginAudit/getLoginAudit',
-      payload: {
-        params: {
-          ...queryParams,
+        body: {
+          ...queryData,
           ...pagination,
         },
       },
     })
   }
 
-  handleTableChange = pagination => {
-    const { queryParams } = this.state
-    const { dispatch } = this.props
-    dispatch({
-      type: 'loginAudit/getLoginAudit',
-      payload: {
-        params: {
-          ...queryParams,
-          pageNum: pagination.current,
-          pageSize: pagination.pageSize,
-        },
-      },
-    })
-  }
-
   render() {
-    const {
-      loginAudit: {
-        loginList,
-        pagination,
-        stateList,
-      },
-      loading,
-    } = this.props
+    const { loginAudit: { loginList, pagination, stateList }, loading, form: { getFieldDecorator } } = this.props
 
     const selectOptionList = stateList.map(item => {
       return (
@@ -174,7 +123,7 @@ export default class Logging extends Component {
         dataIndex: 'logState',
         align: 'center',
         render: (text) => {
-          return <span>{text ? '登录成功' : '登录失败'}</span>
+          return +text === 0 ? <span className='orange'>登录成功</span> : <span className='silver'>登录失败</span>
         },
       },
     ]
@@ -182,31 +131,47 @@ export default class Logging extends Component {
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
-          <Form style={{ marginBottom: 20 }}>
-            <Input
+          <Form className='cf mb16'>
+            <FormItem className='w120 fl mr16'>
+              {getFieldDecorator('createUser')(<Input placeholder='用户名' />)}
+            </FormItem>
+            {/* <Input
               onChange={this.handleUserNameChange}
               onPressEnter={this.handleSearch}
               className={styles.username}
               placeholder="用户名"
-              />
-            {/* <Cascader options={organizationList} onChange={this.handleOrganizationChange} style={{width: 112, marginRight: 10}} placeholder="请选择机构" /> */}
-            <Input
+              /> */}
+            <FormItem className='w150 fl mr16'>
+              {getFieldDecorator('logIpAddress')(<Input placeholder='IP·地址' />)}
+            </FormItem>            
+            {/* <Input
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
               placeholder="IP·地址"
-              />
-            <RangePicker onChange={this.handleDatePickerChange} className={styles.date} />
-            <Select
+              /> */}
+            <FormItem className='w220 fl mr16'>
+              {getFieldDecorator('createTime')(<RangePicker />)}
+            </FormItem>
+            {/* <RangePicker onChange={this.handleDatePickerChange} className={styles.date} /> */}
+            <FormItem className='w120 fl mr16'>
+              {getFieldDecorator('logState')(<Select placeholder='全部结果'>{selectOptionList}</Select>)}
+            </FormItem>
+            {/* <Select
               defaultValue='全部结果'
               onChange={this.handleResultChange}
               style={{ width: 112, marginRight: 10 }}
               >
               {selectOptionList}
-            </Select>
-            <Button type="primary" onClick={this.handleSearch} icon="search">
-              搜索
-            </Button>
+            </Select> */}
+            <FormItem className='w82 fl mr16'>
+              <Button type="primary" onClick={this.handleSearch} icon="search">
+                搜索
+              </Button>
+            </FormItem>
+            <FormItem className='w64 fl'>
+              <Button onClick={this.handleReset}>重置</Button>
+            </FormItem>
           </Form>
           <div>
             <Table

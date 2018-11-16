@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-13 15:46:37
+ * @Last Modified time: 2018-11-13 14:54:04
  * @Description: 用户管理
  */
 import { routerRedux } from 'dva/router'
@@ -33,34 +33,12 @@ export default {
         payload = yield select(state => state.accounts.queryData)
       }
       try {
-        response = yield call(getAccounts, {params: payload})
-        const { datas = [], total = 0, pageSize = 10, pageNumber = 1 } = response.result
-        const pagination = total > 10 ? {total, pageSize, current: pageNumber} : false
-        const accountIdList = datas.reduce((pre, cur) => {
-          pre.push(cur.accountId)
-         return pre 
-        }, [])
-        datas.forEach((item) => {
-          if (!item.extendedProperties) {
-            return false
-          }
-          const object = JSON.parse(item.extendedProperties)
-          for (const key in object) {
-            // eslint-disable-next-line
-            if (object.hasOwnProperty(key)) {
-              item[key] = object[key]
-            }
-          }
-        })
+        response = yield call(getAccounts, {body: payload})
+        const { data = [], total = 0, pageSize = 10, pageNum = 1 } = response.data
+        const pagination = total > 10 ? {total, pageSize, current: pageNum} : false
         yield put({
           type: 'changeAccountList',
-          payload: { datas, pagination },
-        })
-        yield put({
-          type: 'getRoleName',
-          payload: {
-            filter: accountIdList.join(','),
-          },
+          payload: { data, pagination },
         })
       } catch (error) {console.log(error)} // eslint-disable-line
     },
@@ -80,7 +58,7 @@ export default {
       try {
         response = yield call(addAccount, {body: payload})
         const { code } = response
-        if (code === 0) {
+        if (+code === 200) {
           yield call(postNotification, {body: { 
             content: `您有一条新的用户待分配角色：${payload.accountName}!`,
             notifier: 'security',
@@ -100,14 +78,16 @@ export default {
     *deleteAccount({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(deleteAccount, {path: payload.path})
-        if (response.code === 0) {
+        // 原来是 路径参数, 现在改为query参数
+        response = yield call(deleteAccount, {params: payload})
+        response = JSON.parse(response)
+        if (+response.code === 200) {
           message.success('删除成功')
           yield put({
             type: 'getAccounts',
           })
         } else {
-          message.error('删除失败')
+          message.error(response.msg)
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -132,9 +112,9 @@ export default {
     *updateAccount({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(updateAccount, {path: payload.path, body: payload.body})
+        response = yield call(updateAccount, {body: payload.body})
         const { code } = response
-        if (code === 0) {
+        if (+code === 200) {
           if (payload.flag === 'status') {
             message.success('修改成功')
             yield put({
@@ -156,7 +136,7 @@ export default {
     changeAccountList(state, { payload }) {
       return {
         ...state,
-        accountList: payload.datas,
+        accountList: payload.data,
         pagination: payload.pagination,
       }
     },

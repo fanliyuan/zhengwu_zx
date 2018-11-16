@@ -1,4 +1,5 @@
 import { query as queryUsers } from '@/services/user'
+import Cookies from 'js-cookie'
 import apis from '../api'
 import logo from '../assets/logo.svg'
 
@@ -24,16 +25,17 @@ export default {
     *fetchCurrent(_, { call, put }) {
       let response
       try {
-        response = yield call(getAccountInfo, {path: localStorage.getItem('accountId')})
-        if (+response.code === 0) {
-          localStorage.setItem('accountRealName', JSON.parse(response.result.datas.extendedProperties).name || response.result.datas.accountName)
+        response = yield call(getAccountInfo, {params: {token: Cookies.get('accessToken')},headers: {token: undefined, projectId: undefined}})
+        if (+response.code === 200) {
           yield put({
             type: 'saveCurrentUser',
             payload: {
-              name: JSON.parse(response.result.datas.extendedProperties).name || response.result.datas.accountName,
-              avatar: JSON.parse(response.result.datas.extendedProperties).avatar || logo,
+              name: response.data.accountNickName || response.data.accountName,
+              avatar: response.data.avatar || logo,
             },
           })
+        }else{
+          throw response.msg
         }
       } catch (error) {
         yield put({

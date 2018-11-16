@@ -6,9 +6,9 @@ import apis from '../api'
 import { setAuthority } from '../utils/authority'
 import { reloadAuthorized } from '../utils/Authorized'
 import { getPageQuery } from '@/utils/utils'
-import { getRoutes } from '@/api/test'
+// import { getRoutes } from '@/api/test'
 
-const { accountLogin, getRoleName, accountLogout, insertLogging, getAccountDetailByAccountName } = apis
+const { accountLogin, accountLogout } = apis
 
 export default {
   namespace: 'login',
@@ -23,92 +23,30 @@ export default {
       let response
       try {
         response = yield call(accountLogin, {body: payload})
-        if (response.code >=11030104 && response.code <=11030105) {
-          message.error('用户名或密码错误!')
-          yield call(insertLogging, {body: {
-            createUser: payload.accountName,
-            createTime: Date.now(),
-            realUser: '佚名',
-            logState: 0,
-            logType: 3,
-          }})
+        // 登录状态码判断
+        if (+response.code !== 200) {
+          message.error(response.msg)
           return null
         }
-        if (response.code === 11030201) {
-          message.error('账号已停用')
-          yield call(insertLogging, {body: {
-            createUser: payload.accountName,
-            createTime: Date.now(),
-            realUser: '佚名',
-            logState: 0,
-            logType: 3,
-          }})
-          return null
-        }
-        const { accountId, accessToken, accountName, tenantId } = response.result.datas
-        if (response.code === 0) {
+        // accountToken 重新赋值为 accessToken
+        const { accountId, accountToken: accessToken, accountName, roleName } = response.data
+        if (+response.code === 200 && roleName) {
           // localStorage.setItem('accessToken', accessToken)
           document.cookie = `accessToken=${accessToken};path=/`
           localStorage.setItem('accountId', accountId)
           localStorage.setItem('accountName', accountName)
-          localStorage.setItem('tenantId', tenantId)
-        }
-        const {routes} = yield call(getRoutes)
-        sessionStorage.setItem('routes', routes)
-        // Login successfully
-        yield put({
-          type: 'token',
-          payload: {
-            filter: accountId,
-          },
-        })
-        let realUser
-        try {
-          const res = yield call(getAccountDetailByAccountName, {params: { accountName: payload.accountName }})
-          realUser = JSON.parse(res.result.datas[0].extendedProperties).name
-        } catch (error) {
-         // eslint-disable-next-line 
-         console.log(error)
-         realUser = '佚名'
-        }
-        yield call(insertLogging, {body: {
-          createUser: payload.accountName,
-          createTime: Date.now(),
-          realUser,
-          logState: 1,
-          logType: 3,
-        }})
-      } catch (error) {
-        message.error('登录失败')
-        yield call(insertLogging, {body: {
-          createUser: payload.accountName,
-          createTime: Date.now(),
-          realUser: '佚名',
-          logState: 0,
-          logType: 3,
-        }})
-      } // eslint-disable-line
-    },
-    *token({ payload }, { call, put }) {
-      let currentAuthority = 'guest'
-      let response
-      try {
-        response = yield call(getRoleName, {params: payload, path: 2})
-        currentAuthority = response.result.datas[0].rolename
-        if (response.code === 0) {
-          Cookies.set('antd-pro-authority', response.result.datas.rolename)
-        }
-      } catch (error) {
-        message.error('登录失败')
-        console.log('验证token出错')// eslint-disable-line
-        currentAuthority = 'guest'
-      } finally {
-        yield put({
-          type: 'changeLoginStatus',
-          payload: { currentAuthority },
-        })
-        reloadAuthorized()
-        if (response && response.code === 0) {
+          // 设置
+          Cookies.set('antd-pro-authority', roleName)
+          yield put({
+            type: 'changeLoginStatus',
+            payload: { 
+              currentAuthority: roleName,
+            },
+          })
+          reloadAuthorized()
+          // 从后端获取路由信息
+          // const {routes} = yield call(getRoutes)
+          // sessionStorage.setItem('routes', routes)
           // 重定向代码
           const urlParams = new URL(window.location.href)
           const params = getPageQuery()
@@ -127,16 +65,20 @@ export default {
           if (sessionStorage.getItem('antd-pro-authority') && sessionStorage.getItem('antd-pro-authority') !== Cookies.get('antd-pro-authority')) {
             redirect = ''
           }
-          if (redirect.includes('exception/500')) {
+          if (redirect && redirect.includes('exception/500')) {
             redirect = ''
           }
           yield put(routerRedux.replace(redirect || '/'))
+        } else if (!roleName) {
+          message.error('暂无权限登录系统!')
         }
-      }
+      } catch (error) {
+        console.log(error) // eslint-disable-line
+      } // eslint-disable-line
     },
     *logout(_, { put, call }) {
       try {
-        yield call(accountLogout)
+        yield call(accountLogout, {body: { accountId: localStorage.getItem('accountId'), token: Cookies.get('accessToken')}})
         sessionStorage.setItem('antd-pro-authority', Cookies.get('antd-pro-authority'))
       } finally {
         yield put({

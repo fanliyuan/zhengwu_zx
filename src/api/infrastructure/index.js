@@ -51,10 +51,11 @@ const module = {
       name: 'getParentNodes',
       url: 'nodeManager/parentnodestree',
     },
-    {
-      name: 'getDepartments',
-      url: 'nodeManager/deptlist',
-    },
+    // 同名,应该被替换了
+    // {
+    //   name: 'getDepartments',
+    //   url: 'nodeManager/deptlist',
+    // },
     {
       name: 'deleteNode',
       url: 'nodeManager/node',
@@ -81,11 +82,6 @@ const module = {
       method: 'put',
     },
     {
-      name: 'getDepartments',
-      url: 'getGoveDeptInfos',
-      baseHost: 'http://testcommons.tpaas.youedata.com',
-    },
-    {
       name: 'getNodesByDepartment',
       url: 'nodeManager/deptnodes',
     },
@@ -93,7 +89,7 @@ const module = {
 }
 module.apis.forEach(item => {
   if (!item.baseHost) {
-    item.baseHost = 'http://testgoverinfrast.tpaas.youedata.com' // http://testgoverinfrast.tpaas.youedata.com/ http://goverinfrast.tpaas.youedata.com
+    item.baseHost = 'http://testgoverinfrast.tpaas.youedata.com' 
     //  item.baseHost = 'http://192.168.100.16:8081'
   }
 })

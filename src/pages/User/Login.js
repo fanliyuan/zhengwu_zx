@@ -1,25 +1,26 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-08-21 16:55:35
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-10-31 10:31:25
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-11-12 09:41:33
  * @Description: 这里需要个优化,就是密码错误等登录错误需要清除错误密码,后期可能还有验证码的功能
  */
 import React, { Component } from 'react'
 import { connect } from 'dva'
-// import { Link } from 'dva/router';
 import { Alert } from 'antd'
+import { Throttle, Bind } from 'lodash-decorators'
+
 import Login from '@/components/Login'
 import styles from './Login.less'
 
-const sha = require('sha.js')
+// const sha = require('sha.js')
 // sha('sha1').update('1993520').digest('hex')  用法,update()参数是需要加密的字符串
 
 const { UserName, Password, Submit } = Login
 
 @connect(({ login, loading }) => ({
   login,
-  submitting: loading.effects['login/login'] || loading.effects['login/token'],
+  submitting: loading.effects['login/login'],
 }))
 export default class LoginPage extends Component {
   state = {
@@ -42,25 +43,14 @@ export default class LoginPage extends Component {
         isEmpty: true,
         isError: false,
       })
-      return
+      return null
     }
-    this.setState({
-      isEmpty: false,
-      isError: true,
-    })
-    const { expireTime, refreshTime } = this.state
-    const { dispatch } = this.props
     if (!err) {
-      const sha1Password = sha('sha1').update(values.password).digest('hex')
-      dispatch({
-        type: 'login/login',
-        payload: {
-          accountName: values.userName,
-          accountPasswd: sha1Password,
-          expireTime,
-          refreshTime,
-        },
+      this.setState({
+        isEmpty: false,
+        isError: true,
       })
+      this.handleLogin(values)
     }
   }
 
@@ -77,6 +67,21 @@ export default class LoginPage extends Component {
     })
   }
 
+  // 登录节流
+  @Bind()
+  @Throttle(1000)
+  handleLogin(values) {
+    const { dispatch } = this.props
+      // const sha1Password = sha('sha1').update(values.password).digest('hex')
+    dispatch({
+      type: 'login/login',
+      payload: {
+        accountName: values.userName,
+        accountPasswd: values.password,
+      },
+    })
+  }
+
   renderMessage = content => {
     return <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   }
@@ -86,7 +91,8 @@ export default class LoginPage extends Component {
     const { type, isEmpty, isError } = this.state
     return (
       <div className={styles.main}>
-        <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
+        {/* 使用了 resetFlag标识符,来代表父组件中通知子组件是否需要清空密码的标记,典型的数据驱动,而不是自定义事件驱动 */}
+        <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit} resetFlag={submitting}>
           {/* <Tab key="account" tab="账户密码登录"> */}
           <div className={styles.form_content}>
             {login.status === 'error' &&

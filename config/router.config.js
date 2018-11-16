@@ -15,7 +15,7 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'operator', 'security', 'audit', 'forbidButChouEric'],
+    authority: ['admin', 'operator', 'security', 'auditor', 'forbidButChouEric', 'assessor'],
     routes: [
       // dashboard
       { path: '/', redirect: '/overview/platformoverview' },
@@ -24,7 +24,7 @@ export default [
         path: 'overview',
         icon: 'dashboard',
         name: 'overview',
-        authority: ['admin', 'operator', 'security', 'audit', 'admin-n', 'operator-n', 'security-n', 'audit-n', 'assessor-n', 'forbidButChouEric'],
+        authority: ['admin', 'operator', 'security', 'auditor', 'admin-n', 'operator-n', 'security-n', 'audit-n', 'assessor-n', 'forbidButChouEric'],
         routes: [
           {
             path: 'platformoverview',
@@ -483,7 +483,7 @@ export default [
           {
             name: 'newsManagement',
             path: 'newsManagement',
-            component: './PortalManagement/newsManagement',
+            component: './PortalManagement/NewsManagement',
           },
           {
             name: 'publicationManagement',
