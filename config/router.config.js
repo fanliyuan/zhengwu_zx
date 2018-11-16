@@ -483,7 +483,7 @@ export default [
           {
             name: 'newsManagement',
             path: 'newsManagement',
-            component: './PortalManagement/newsManagement',
+            component: './PortalManagement/NewsManagement',
           },
           {
             name: 'publicationManagement',
