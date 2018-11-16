@@ -9,16 +9,17 @@ const map = {
       size: 'large',
       prefix: <Icon type="user" className={styles.prefixIcon} />,
       placeholder: 'admin',
+      maxLength: 50,
     },
     rules: [
       {
         required: false,
         message: 'Please enter username!',
       },
-      {
-        max: 50,
-        message: '不能超过五十个字符!',
-      },
+      // {
+      //   max: 50,
+      //   message: '不能超过五十个字符!',
+      // },
     ],
   },
   Password: {
@@ -28,16 +29,17 @@ const map = {
       prefix: <Icon type="lock" className={styles.prefixIcon} />,
       type: 'password',
       placeholder: '888888',
+      maxLength: 50,
     },
     rules: [
       {
         required: false,
         message: 'Please enter password!',
       },
-      {
-        max: 50,
-        message: '不能超过五十个字符!',
-      },
+      // {
+      //   max: 50,
+      //   message: '不能超过五十个字符!',
+      // },
     ],
   },
   Mobile: {
