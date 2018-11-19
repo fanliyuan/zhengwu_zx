@@ -130,7 +130,7 @@ export default class Log extends Component {
               {getFieldDecorator('createTime')(<RangePicker />)}
             </FormItem>
             <FormItem className='w150 fl mr16'>
-              {getFieldDecorator('logIpAddress')(<Input placeholder='IP·地址' />)}
+              {getFieldDecorator('logIpAddress')(<Input placeholder='IP·地址' maxLength={50} />)}
             </FormItem>
             <FormItem className='w120 fl mr16'>
               {getFieldDecorator('logState')(<Select placeholder='登录结果'>{optionList}</Select>)}
