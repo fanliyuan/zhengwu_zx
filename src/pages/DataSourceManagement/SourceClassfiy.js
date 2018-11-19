@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Card, Button, Input, Tabs, Table, DatePicker, Popconfirm, message } from 'antd'
-import moment from 'moment'
+import { Card, Button, Input, Tabs, Table, Popconfirm, message } from 'antd'
+// import moment from 'moment'
 import { connect } from 'dva'
 import Cookie from 'js-cookie'
 import { routerRedux } from 'dva/router'
@@ -10,7 +10,7 @@ import styles from './SourceClassfiy.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
 
 const {TabPane} = Tabs
-const { RangePicker } = DatePicker
+// const { RangePicker } = DatePicker
 const userName = Cookie.get('antd-pro-authority')
 @connect(({sourceClassfiy,loading}) => ({
   sourceClassfiy,
@@ -19,12 +19,8 @@ const userName = Cookie.get('antd-pro-authority')
 export default class SourceClassfiy extends Component {
   state = {
     classfiyName:'',
-    // paginations:{current:1,pageSize:10,totol:false},
-    times:[],
     ztClassfiyName:'',
-    ztTimes:[],
     bmClassfiyName:'',
-    bmTimes:[],
     currentTab:1,
   }
 
@@ -42,54 +38,51 @@ export default class SourceClassfiy extends Component {
   }
 
   handleTableChange = (pagination) => {
-    const{ classfiyName, times  } = this.state
-    this.searchBtn(1, classfiyName, times, { index:pagination.current, pageSize:pagination.pageSize })
+    const{ classfiyName  } = this.state
+    this.searchBtn(1, classfiyName, { index:pagination.current, pageSize:pagination.pageSize })
   }
 
   handleTableChange1 = (pagination) => {
-    const{ztClassfiyName, ztTimes} = this.state
-    this.searchBtn(2, ztClassfiyName, ztTimes, { index:pagination.current, pageSize:pagination.pageSize })
+    const{ztClassfiyName} = this.state
+    this.searchBtn(2, ztClassfiyName, { index:pagination.current, pageSize:pagination.pageSize })
   }
 
   handleTableChange2 = (pagination) => {
-    const{ bmClassfiyName, bmTimes  } = this.state
-    this.searchBtn(3, bmClassfiyName, bmTimes, { index:pagination.current, pageSize:pagination.pageSize })
+    const{ bmClassfiyName  } = this.state
+    this.searchBtn(3, bmClassfiyName, { index:pagination.current, pageSize:pagination.pageSize })
   }
 
-  searchBtn = (type, name, time, pagination) => {
+  searchBtn = (type, name, pagination) => {
     const { dispatch } = this.props
-    const vl = time.map(item => {
-      if(moment.isMoment(item)){
-        return item.format('YYYY-MM-DD')
-      }
-      else {
-        return ''
-      }
-    })
     dispatch({
       type:'sourceClassfiy/getLists',
-      payload:{type,index:1,pageSize:10,name:name || '',beginDate:vl[0] ? `${vl[0]} 00:00:00` : undefined,endDate:vl[1] ? `${vl[1]} 23:59:59` : undefined, ...pagination },
+      payload:{type,index:1,pageSize:10,name:name || '', ...pagination },
     })
   }
 
   handleSearchBtn = () => {
-    const{ classfiyName, times  } = this.state
-    this.searchBtn(1, classfiyName, times)
+    const{ classfiyName } = this.state
+    this.searchBtn(1, classfiyName)
   }
 
   handleSearchBtn1 = () => {
-    const{ztClassfiyName, ztTimes} = this.state
-    this.searchBtn(2, ztClassfiyName, ztTimes)
+    const{ztClassfiyName} = this.state
+    this.searchBtn(2, ztClassfiyName)
   }
 
   handleSearchBtn2 = () => {
-    const{ bmClassfiyName, bmTimes  } = this.state
-    this.searchBtn(3, bmClassfiyName, bmTimes)
+    const{ bmClassfiyName  } = this.state
+    this.searchBtn(3, bmClassfiyName)
   }
 
-  handleEdit = () => {
+  handleEdit = (row) => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy'))
+    const { currentTab } = this.state
+    dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy',{
+      id:row.id,
+      level:row.level,
+      currentTab,
+    }))
   }
 
   handleDelete = (row) => {
@@ -105,11 +98,11 @@ export default class SourceClassfiy extends Component {
     })
   }
 
-  handleTimeChange = (val) => {
-    this.setState({
-      times:val,
-    })
-  }
+  // handleTimeChange = (val) => {
+  //   this.setState({
+  //     times:val,
+  //   })
+  // }
 
   handleInstitutionChange = (e) => {
     this.setState({
@@ -117,11 +110,11 @@ export default class SourceClassfiy extends Component {
     })
   }
   
-  handleTimeChange1 = (val) => {
-    this.setState({
-      ztTimes:val,
-    })
-  }
+  // handleTimeChange1 = (val) => {
+  //   this.setState({
+  //     ztTimes:val,
+  //   })
+  // }
 
   handleInstitutionChange1 = (e) => {
     this.setState({
@@ -129,11 +122,11 @@ export default class SourceClassfiy extends Component {
     })
   }
 
-  handleTimeChange2 = (val) => {
-    this.setState({
-      bmTimes:val,
-    })
-  }
+  // handleTimeChange2 = (val) => {
+  //   this.setState({
+  //     bmTimes:val,
+  //   })
+  // }
 
   handleInstitutionChange2 = (e) => {
     this.setState({
@@ -151,11 +144,11 @@ export default class SourceClassfiy extends Component {
       currentTab:key,
       classfiyName:'',
       // paginations:{current:1,pageSize:10,totol:false},
-      times:[],
+      // times:[],
       ztClassfiyName:'',
-      ztTimes:[],
+      // ztTimes:[],
       bmClassfiyName:'',
-      bmTimes:[],
+      // bmTimes:[],
     })
   }
 
@@ -173,18 +166,40 @@ export default class SourceClassfiy extends Component {
     this.checkLength(classfiyName, 'classfiyName')
   }
 
-  handleCheck = () => {
+  handleCheck1 = () => {
     const { ztClassfiyName } = this.state
     this.checkLength(ztClassfiyName, 'ztClassfiyName')
   }
 
-  handleCheck = () => {
+  handleCheck2 = () => {
     const { bmClassfiyName } = this.state
     this.checkLength(bmClassfiyName, 'bmClassfiyName')
   }
 
+  handleResetBtn = (val) => {
+    switch (+val){
+      case 1:
+        this.setState({
+          classfiyName:'',
+        })
+      break
+      case 2:
+        this.setState({
+          ztClassfiyName:'',
+        })
+      break
+      case 3:
+        this.setState({
+          bmClassfiyName:'',
+        })
+      break
+      default:
+      break
+    }
+  }
+
   render() {
-    const { classfiyName, times, ztClassfiyName, ztTimes, bmClassfiyName, bmTimes } = this.state
+    const { classfiyName, ztClassfiyName, bmClassfiyName } = this.state
     const { sourceClassfiy:{loadings, dataList, paginations} } = this.props
     const columns = [
       {
@@ -208,19 +223,19 @@ export default class SourceClassfiy extends Component {
           return row.detailname ? `${row.detailcode}  ${row.detailname}` : ''
         },
       },
-      {
-        title: '更新时间',
-        dataIndex: 'time',
-        // render(text) {
-        //   return text ? moment(+text).format('lll') : ''
-        // },
-      },
+      // {
+      //   title: '更新时间',
+      //   dataIndex: 'time',
+      //   // render(text) {
+      //   //   return text ? moment(+text).format('lll') : ''
+      //   // },
+      // },
       {
         title: '操作',
         render:(text,row) => {
           return (
             <div>
-              <span className={styles.editBtn} onClick={this.handleEdit}>
+              <span className={styles.editBtn} onClick={this.handleEdit.bind(null,row)}>
                 修改
               </span>
               <Popconfirm title="是否删除当前行" onConfirm={() => this.handleDelete(row)}>
@@ -310,8 +325,9 @@ export default class SourceClassfiy extends Component {
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={classfiyName} onChange={this.handleInstitutionChange} onBlur={this.handleCheck} />
                 {/* <Cascader options={data2} placeholder="所在省市区" style={{ marginRight: 20 }} />, */}
-                <RangePicker style={{ marginRight: 20, width:200 }} value={times} onChange={this.handleTimeChange} />
+                {/* <RangePicker style={{ marginRight: 20, width:200 }} value={times} onChange={this.handleTimeChange} /> */}
                 <Button type="primary" onClick={this.handleSearchBtn}>搜索</Button>
+                <Button type="primary" onClick={this.handleResetBtn.bind(null,1)} style={{marginLeft:20}}>重置</Button>
               </div>
               <div className={styles.createBtn} style={{display:userName === 'operator' ? 'none' : 'block'}}>
                 <Button icon="plus" type="primary" onClick={this.handleAdd}>
@@ -325,8 +341,9 @@ export default class SourceClassfiy extends Component {
             <TabPane tab="2 主题信息资源类" key="2">
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={ztClassfiyName} onChange={this.handleInstitutionChange1} onBlur={this.handleCheck1} />
-                <RangePicker style={{ marginRight: 20, width:200 }} value={ztTimes} onChange={this.handleTimeChange1} />
+                {/* <RangePicker style={{ marginRight: 20, width:200 }} value={ztTimes} onChange={this.handleTimeChange1} /> */}
                 <Button type="primary" onClick={this.handleSearchBtn1}>搜索</Button>
+                <Button type="primary" onClick={this.handleResetBtn.bind(null,2)} style={{marginLeft:20}}>重置</Button>
               </div>
               <div className={styles.createBtn} style={{display:userName === 'operator' ? 'none' : 'block'}}>
                 <Button icon="plus" type="primary" onClick={this.handleAdd}>
@@ -340,8 +357,9 @@ export default class SourceClassfiy extends Component {
             <TabPane tab="3 部门信息资源类" key="3">
               <div className={styles.form}>
                 <Input placeholder="分类名称" style={{ width: 150, marginRight: 20 }} value={bmClassfiyName} onChange={this.handleInstitutionChange2} onBlur={this.handleCheck2} />
-                <RangePicker style={{ marginRight: 20, width:200 }} value={bmTimes} onChange={this.handleTimeChange2} />
+                {/* <RangePicker style={{ marginRight: 20, width:200 }} value={bmTimes} onChange={this.handleTimeChange2} /> */}
                 <Button type="primary" onClick={this.handleSearchBtn2}>搜索</Button>
+                <Button type="primary" onClick={this.handleResetBtn.bind(null,3)} style={{marginLeft:20}}>重置</Button>
               </div>
               <div className={styles.createBtn} style={{display:userName === 'operator' ? 'none' : 'block'}}>
                 <Button icon="plus" type="primary" onClick={this.handleAdd}>
