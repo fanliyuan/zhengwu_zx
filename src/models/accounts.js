@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-13 14:54:04
+ * @Last Modified time: 2018-11-19 15:06:44
  * @Description: 用户管理
  */
 import { routerRedux } from 'dva/router'
@@ -40,7 +40,19 @@ export default {
           type: 'changeAccountList',
           payload: { data, pagination },
         })
-      } catch (error) {console.log(error)} // eslint-disable-line
+      } catch (error) {
+        console.log(error) // eslint-disable-line
+        message.error('网络错误')
+        yield put({
+          type: 'changeAccountList',
+          payload: {
+            data: [],
+            pagination: {
+              total: 0,
+            },
+          },
+        })
+      }
     },
     *getRoleName({ payload }, { call, put }) {
       let response
@@ -124,6 +136,8 @@ export default {
             message.success('修改成功')
             yield put(routerRedux.push('/institutionalUserManage/userManage'))
           }
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
         // eslint-disable-next-line

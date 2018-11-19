@@ -154,6 +154,7 @@ export default class AddUser extends Component {
         md: { span: 10 },
       },
     }
+    const passwordRequired = this.props.location.pathname !== '/institutionalUserManage/editUser'
     return (
       <PageHeaderLayout>
         <Card loading={loading}>
@@ -177,16 +178,16 @@ export default class AddUser extends Component {
             </FormItem>
             <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('accountPasswd', {
+                initialValue: '',
                 rules: [
                   {
-                    required: this.props.location.pathname !== '/institutionalUserManage/editUser',
                     message: '请输入合法密码',
-                    min: 6,
-                    max: 24,
                     whitespace: true,
                     validator: (rule, value, cb) => {
                       const state = checkedPassword(value)
-                      if (state || value && value.length < 6 || value && value.length > 24) {
+                      if (value === '' && !passwordRequired) {
+                        cb()
+                      } else if (state || value && value.length < 6 || value && value.length > 24) {
                         cb('error')
                       } else {
                         cb()
