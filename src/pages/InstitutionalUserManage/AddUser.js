@@ -169,8 +169,8 @@ export default class AddUser extends Component {
                     whitespace: true,
                   },
                   {
-                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
-                    message: '用户名不能超过20个字,并且不能含有特殊字符',
+                    pattern: /^[\u4e00-\u9fa50-9A-z0-9]{1,50}$/,
+                    message: '用户名不能超过50个字,并且不能含有特殊字符',
                   },
                 ],
               })(<Input placeholder="请输入用户名" autoComplete='off' />)}
@@ -213,8 +213,8 @@ export default class AddUser extends Component {
                     whitespace: true,
                   },
                   {
-                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
-                    message: '用户名不能超过20个字,并且不能含有特殊字符',
+                    pattern: /^[\u4e00-\u9fa50-9A-z0-9]{1,50}$/,
+                    message: '用户名不能超过50个字,并且不能含有特殊字符',
                   },
                 ],
               })(<Input placeholder="姓名" />)}
