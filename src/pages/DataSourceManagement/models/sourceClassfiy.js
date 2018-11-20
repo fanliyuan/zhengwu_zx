@@ -15,7 +15,7 @@ export default {
   },
   effects:{
     *getLists({ payload} ,{ call, put }){
-      const response = yield call(list,{params:payload})
+      const response = yield call(list,{params:payload, headers: {token: undefined}})
       try{
         if(+response.code === 0){
           const paginations = response.total > 9 ? {current:response.page,pageSize:response.size,total:response.total} : false
@@ -40,12 +40,12 @@ export default {
       }
     },
     *deleteItem({ payload} ,{ call,put }){
-      let response = yield call(deletes,{params:payload})
+      let response = yield call(deletes,{params:payload, headers: {token: undefined}})
       response = JSON.parse(response)
       try{
         if(+response.code === 0){
           message.success('删除成功')
-          yield put(routerRedux.push('/DataSourceManagement/AddSourceClassfiy'))
+          yield put(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
         }else {
           message.error('删除失败')
         }
@@ -56,7 +56,7 @@ export default {
       }
     },
     *getTargetItem({ payload} ,{ call,put }){
-      const response = yield call(getItemByIdLevel,{params:payload})
+      const response = yield call(getItemByIdLevel,{params:payload, headers: {token: undefined}})
       // response = JSON.parse(response)
       try{
         if(+response.code === 0){
@@ -74,7 +74,7 @@ export default {
       }
     },
     *getCode({ payload} ,{ call, put }){
-      const response = yield call(autoGetCode,{params:payload})
+      const response = yield call(autoGetCode,{params:payload, headers: {token: undefined}})
       try{
         if(+response.code === 0){
           yield put({
@@ -91,7 +91,7 @@ export default {
       }
     },
     *addItem({ payload} ,{ call, put }){
-      const response = yield call(addResourceProperty,{body:payload})
+      const response = yield call(addResourceProperty,{body:payload, headers: {token: undefined}})
       try{
         if(+response.code === 0){
           message.success('新增成功')
@@ -99,6 +99,7 @@ export default {
             type:'getLists',
             payload:{type:1,index:1,pageSize:10},
           })
+          yield put(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
         }else {
           message.error(response.msg)
         }
@@ -109,7 +110,7 @@ export default {
       }
     },
     *editItem({ payload} ,{ call, put }){
-      const response = yield call(editResourceProperty,{body:payload})
+      const response = yield call(editResourceProperty,{body:payload, headers: {token: undefined}})
       try{
         if(+response.code === 0){
           message.success('修改成功')
@@ -117,6 +118,7 @@ export default {
             type:'getLists',
             payload:{type:1,index:1,pageSize:10},
           })
+          yield put(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
         }else {
           message.error(response.msg)
         }
@@ -127,7 +129,7 @@ export default {
       }
     },
     *getResourceList({ payload} ,{ call, put }){
-      const response = yield call(getResourceProperty,{params:payload})
+      const response = yield call(getResourceProperty,{params:payload, headers: {token: undefined}})
       try{
         if(+response.code === 0){
           if(+payload.level === 1){

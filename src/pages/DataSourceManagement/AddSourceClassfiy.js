@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, Button, Radio, Row, Col, Select } from 'antd'
+import { Input, Card, Form, Button, Radio, Row, Col, Select, message } from 'antd'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -100,6 +100,49 @@ export default class AddSourceClassfiy extends Component {
     this.setState({
       classNum:e.target.value,
     })
+  }
+
+  handleNamePCheck =() => {
+    const { form:{getFieldValue, setFieldsValue} } = this.props
+    if(getFieldValue('names').length > 50){
+      message.info("输入长度不能超过50个字符")
+      setFieldsValue({
+        'names':getFieldValue('names').slice(0,49),
+      })
+    }
+  }
+
+  checkNum = (i) => {
+    const { form:{getFieldValue, setFieldsValue} } = this.props
+    if(getFieldValue('number').length > i){
+      message.info(`输入长度不能超过${i}个字符`)
+      setFieldsValue({
+        'number':getFieldValue('number').slice(0,i),
+      })
+    }else if(getFieldValue('number').length < i && getFieldValue('number').length >0){
+      setFieldsValue({
+        'number':(Array(i).join(0) + getFieldValue('number')).slice(-i),
+      })
+    }
+  }
+
+  handleNumPCheck = () => {
+    const { classNum } = this.state
+    if(+classNum === 2){
+      this.checkNum(2)
+    }
+    else if(+classNum === 3){
+      this.checkNum(3)
+    }
+    else if(+classNum === 4){
+      const { form:{getFieldValue, setFieldsValue} } = this.props
+      if(getFieldValue('number').length > 50){
+        message.info("输入长度不能超过50个字符")
+        setFieldsValue({
+          'number':getFieldValue('number').slice(0,49),
+        })
+      }
+    }
   }
 
   handleSubmit = (e) => {
@@ -328,7 +371,7 @@ export default class AddSourceClassfiy extends Component {
                   required: true,
                   message:'请输入编号',
                 }],
-              })(<Input placeholder="请输入编号" onKeyUp={this.handleNamePCheck} type="number" />)}
+              })(<Input placeholder="请输入编号" onKeyUp={this.handleNumPCheck} type="number" />)}
             </FormItem>
             <FormItem label="名称" {...formItemLayout}>
               {getFieldDecorator('names',{
@@ -337,7 +380,7 @@ export default class AddSourceClassfiy extends Component {
                   required: true,
                   message:'请输入名称',
                 }],
-              })(<Input placeholder="请输入名称" />)}
+              })(<Input placeholder="请输入名称" onKeyUp={this.handleNamePCheck} />)}
             </FormItem>
             <FormItem {...submitLayout}>
               <Button type="primary" htmlType="submit" style={{ marginRight: 20 }}>

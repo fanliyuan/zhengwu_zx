@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:00
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-14 15:46:30
+ * @Last Modified by: mikey.zhaopeng
+ * @Last Modified time: 2018-11-16 17:39:12
  * @Description: 角色模块请求
  */
 const module = {
@@ -31,7 +31,7 @@ module.apis.forEach(item => {
     } else {
       item.baseHost = 'http://govecore.tpaas.youedata.com' // 公网接口(生成接口)
     }
-    // item.baseHost = 'http://govecore.tpaas.youedata.com' // 公网接口(生成接口)
+    item.baseHost = 'http://govecore.tpaas.youedata.com' // 公网接口(生成接口)
     // item.baseHost = 'http://192.168.100.15:8807' // 局域网接口(开发接口)
   }
   if (!item.baseUrl) {
