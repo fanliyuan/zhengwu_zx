@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, Form } from 'antd'
+import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, Form, Tooltip } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -165,7 +165,7 @@ export default class UserManage extends Component {
       const { queryData } = this.state
       const { form: {setFieldsValue} } = this.props
       setFieldsValue(queryData)
-      this.handleSearch()
+      this.handleSearch(1,1)
     })
   }
 
@@ -191,8 +191,8 @@ export default class UserManage extends Component {
 
   @Bind()
   @Throttle(1000)
-  handleSearch() {
-    const { pagination } = this.state
+  handleSearch(e, isPagination = false) {
+    const pagination = isPagination?this.state.pagination:{pageNum:1,pageSize:10}
     const { form:{ getFieldsValue } } = this.props
     let queryData = getFieldsValue()
     this.setState({
@@ -282,40 +282,36 @@ export default class UserManage extends Component {
       {
         title: '操作',
         render: (text, row) => {
-          // if (row.accountStatus === '0') {
-          //   return (
-          //     <div>
-          //       <span className={styles.editBtn} onClick={() => this.handleStatus(text, row)}>
-          //         {row.accountStatus ? '停用' : '启用'}
-          //       </span>
-          //       <span className={styles.editBtn} onClick={() => that.handleEdit(row)}>
-          //         修改
-          //       </span>
-          //       <Popconfirm
-          //         title="您是否确认删除当前用户?"
-          //         onConfirm={() => this.handleDelete(row)}
-          //         >
-          //         <a style={{ marginRight: 20 }}>删除</a>
-          //       </Popconfirm>
-          //     </div>
-          //   )
-          // } else {
             return (
               <div>
-                <Popconfirm onConfirm={() => this.handleStatus(text, row)} title={`${row.accountStatus === '1'?'启用后当前用户可登录系统,您是否确认启用当前用户?':'停用后当前用户不可登录,您是否确认停用当前用户'}`}>
-                  <span className={styles.editBtn}>
-                    {row.accountStatus === '0' ? '停用' : '启用'}
-                  </span>
-                </Popconfirm>
+                {row.isTrue !== 'true'? (
+                  <Popconfirm onConfirm={() => this.handleStatus(text, row)} title={`${row.accountStatus === '1'?'启用后当前用户可登录系统,您是否确认启用当前用户?':'停用后当前用户不可登录,您是否确认停用当前用户'}`}>
+                    <span className={`${styles.editBtn} ${row.isTrue === 'true'?'disabled':''}`}>
+                      {row.accountStatus === '0' ? '停用' : '启用'}
+                    </span>
+                  </Popconfirm>): (
+                    <Tooltip title='默认用户,不可操作'>
+                      <span className={`${styles.editBtn} ${row.isTrue === 'true'?'disabled':''}`}>
+                        {row.accountStatus === '0' ? '停用' : '启用'}
+                      </span>
+                    </Tooltip>
+                  )}
                 <span className={styles.editBtn} onClick={() => that.handleEdit(row)}>
                   修改
                 </span>
-                <Popconfirm
-                  title="您是否确认删除当前用户?"
-                  onConfirm={() => this.handleDelete(row)}
-                  >
-                  <a style={{ marginRight: 20 }}>删除</a>
-                </Popconfirm>
+                {
+                  row.isTrue!=='true'?(
+                    <Popconfirm
+                      title="您是否确认删除当前用户?"
+                      onConfirm={() => this.handleDelete(row)}
+                      >
+                      <a style={{ marginRight: 20 }}>删除</a>
+                    </Popconfirm>):(
+                      <Tooltip title='默认用户,不可删除'>
+                        <a style={{ marginRight: 20 }} className='disabled'>删除</a>
+                      </Tooltip>
+                    )
+                }
               </div>
             )
         //   }

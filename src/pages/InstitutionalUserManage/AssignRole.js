@@ -33,13 +33,7 @@ export default class AssignRole extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch({
-      type: 'accounts/getAccounts',
-      payload: {
-        pageSize: 10,
-        pageNum: 1,
-      },
-    })
+    this.handleSearch()
     this.props.dispatch({
       type: 'roles/getRoleList',
       payload: {},
@@ -79,7 +73,7 @@ export default class AssignRole extends Component {
       const { queryData } = this.state
       const { form: { setFieldsValue } } = this.props
       setFieldsValue(queryData)
-      this.handleSearch()
+      this.handleSearch(1,1)
     })
   }
 
@@ -123,10 +117,10 @@ export default class AssignRole extends Component {
     })
   }
 
-  @Bind
+  @Bind()
   @Throttle(1000)
-  handleSearch() {
-    const { pagination } = this.state
+  handleSearch(e, isPagination = false) {
+    const pagination = isPagination?this.state.pagination:{pageNum:1,pageSize:10}
     const { form: { getFieldsValue } } = this.props
     const queryData = getFieldsValue()
     // 这里用户储存搜索数据
@@ -222,7 +216,7 @@ export default class AssignRole extends Component {
         render: (_, row) => {
           return (
             <div>
-              {row.role === '111管理员1111' ? (<span style={{color: 'silver', cursor: 'no-drop'}}>不可修改</span>) : (
+              {row.isTrue === 'true' ? (<span style={{color: 'silver', cursor: 'no-drop'}}>不可修改</span>) : (
                 <span className={styles.editBtn} onClick={() => that.showModal(row)}>
                 分配角色
                 </span>

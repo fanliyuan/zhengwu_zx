@@ -23,7 +23,7 @@ const FormItem = Form.Item
 }))
 export default class Log extends Component {
   state = {
-    // queryData: {},
+    queryData: {},
     pagination: {
       pageNum: 1,
       pageSize: 10,
@@ -51,20 +51,25 @@ export default class Log extends Component {
         pageNum: pagination.current,
         pageSize:pagination.pageSize,
       },
-    },this.handleSearch)
+    },() => {
+      const { queryData } = this.state
+      const { form: {setFieldsValue} } = this.props
+      setFieldsValue(queryData)
+      this.handleSearch(1,1)
+    })
   }
 
   @Bind()
   @Throttle(1000)
-  handleSearch() {
-    const { pagination } = this.state
+  handleSearch(e, isPaginaiton=false) {
+    const pagination = isPaginaiton?this.state.pagination:{pageNum:1,pageSize:10}
     const { dispatch, form: { getFieldsValue } } = this.props
     const queryData = getFieldsValue()
-    // this.setState({
-    //   queryData: {
-    //     ...queryData,
-    //   },
-    // })
+    this.setState({
+      queryData: {
+        ...queryData,
+      },
+    })
     if (queryData.createTime && queryData.createTime.length > 1) {
       queryData.startTime = format0(queryData.createTime[0].format('x'))
       queryData.endTime = format24(queryData.createTime[1].format('x'))
