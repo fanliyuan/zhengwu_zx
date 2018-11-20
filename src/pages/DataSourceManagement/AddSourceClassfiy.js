@@ -177,7 +177,7 @@ export default class AddSourceClassfiy extends Component {
     const { setFieldsValue } = this.props.form
     dispatch({
       type:'sourceClassfiy/getResourceList',
-      payload:{code:val,level:1},
+      payload:{code:val,level:1,id:val},
     })
     if(+classNum === 2){
       dispatch({
