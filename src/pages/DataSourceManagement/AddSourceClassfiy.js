@@ -97,8 +97,12 @@ export default class AddSourceClassfiy extends Component {
   }
 
   handleClassChange = (e) => {
+    const { form:{ setFieldsValue} } = this.props
     this.setState({
       classNum:e.target.value,
+    })
+    setFieldsValue({
+      'number':'',
     })
   }
 
