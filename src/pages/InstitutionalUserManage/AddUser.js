@@ -154,6 +154,7 @@ export default class AddUser extends Component {
         md: { span: 10 },
       },
     }
+    const passwordRequired = this.props.location.pathname !== '/institutionalUserManage/editUser'
     return (
       <PageHeaderLayout>
         <Card loading={loading}>
@@ -169,24 +170,24 @@ export default class AddUser extends Component {
                     whitespace: true,
                   },
                   {
-                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
-                    message: '用户名不能超过20个字,并且不能含有特殊字符',
+                    pattern: /^[\u4e00-\u9fa50-9A-z0-9]{1,50}$/,
+                    message: '用户名不能超过50个字,并且不能含有特殊字符',
                   },
                 ],
               })(<Input placeholder="请输入用户名" autoComplete='off' />)}
             </FormItem>
             <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('accountPasswd', {
+                initialValue: '',
                 rules: [
                   {
-                    required: this.props.location.pathname !== '/institutionalUserManage/editUser',
                     message: '请输入合法密码',
-                    min: 6,
-                    max: 24,
                     whitespace: true,
                     validator: (rule, value, cb) => {
                       const state = checkedPassword(value)
-                      if (state || value && value.length < 6 || value && value.length > 24) {
+                      if (value === '' && !passwordRequired) {
+                        cb()
+                      } else if (state || value && value.length < 6 || value && value.length > 24) {
                         cb('error')
                       } else {
                         cb()
@@ -213,8 +214,8 @@ export default class AddUser extends Component {
                     whitespace: true,
                   },
                   {
-                    pattern: /^[\u4e00-\u9fa50-9A-z]{1,20}$/,
-                    message: '用户名不能超过20个字,并且不能含有特殊字符',
+                    pattern: /^[\u4e00-\u9fa50-9A-z0-9]{1,50}$/,
+                    message: '用户名不能超过50个字,并且不能含有特殊字符',
                   },
                 ],
               })(<Input placeholder="姓名" />)}

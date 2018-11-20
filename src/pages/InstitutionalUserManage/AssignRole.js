@@ -22,7 +22,7 @@ const FormItem = Form.Item
 export default class AssignRole extends Component {
   state = {
     visible: false,
-    // queryData: {},
+    queryData: {},
     pagination: {
       pageNum: 1,
       pageSize: 10,
@@ -75,7 +75,12 @@ export default class AssignRole extends Component {
         pageNum: pagination.current,
         pageSize: pagination.pageSize,
       },
-    }, this.handleSearch)
+    }, () => {
+      const { queryData } = this.state
+      const { form: { setFieldsValue } } = this.props
+      setFieldsValue(queryData)
+      this.handleSearch()
+    })
   }
 
   showModal = (row) => {
@@ -125,11 +130,11 @@ export default class AssignRole extends Component {
     const { form: { getFieldsValue } } = this.props
     const queryData = getFieldsValue()
     // 这里用户储存搜索数据
-    // this.setState({
-    //   queryData: {
-    //     ...queryData,
-    //   },
-    // })
+    this.setState({
+      queryData: {
+        ...queryData,
+      },
+    })
     if (queryData.createTime && queryData.createTime.length > 1) {
       queryData.startTime = format0(queryData.createTime[0].format('x'))
       queryData.endTime = format24(queryData.createTime[1].format('x'))
@@ -235,13 +240,13 @@ export default class AssignRole extends Component {
         <Card>
           <Form className='cf'>
             <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountName')(<Input maxLength={50} placeholder='用户名' />)}
+              {getFieldDecorator('accountName')(<Input maxLength={50} placeholder='用户名' onPressEnter={this.handleSearch} />)}
             </FormItem>
             <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountNickName')(<Input maxLength={50} placeholder='姓名' />)}
+              {getFieldDecorator('accountNickName')(<Input maxLength={50} placeholder='姓名' onPressEnter={this.handleSearch} />)}
             </FormItem>
             <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountTel')(<Input maxLength={50} placeholder='电话' />)}
+              {getFieldDecorator('accountTel')(<Input maxLength={50} placeholder='电话' onPressEnter={this.handleSearch} />)}
             </FormItem>
             <FormItem className='w120 fl mr16'>
               {getFieldDecorator('roleName')(

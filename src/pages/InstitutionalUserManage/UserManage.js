@@ -29,7 +29,7 @@ const { Item: FormItem } = Form
 
 export default class UserManage extends Component {
   state = {
-    // queryData: {},
+    queryData: {},
     pagination: {
       pageSize: 10,
       pageNum: 1,
@@ -161,7 +161,12 @@ export default class UserManage extends Component {
         pageNum: pagination.current,
         pageSize: pagination.pageSize,
       },
-    }, this.handleSearch)
+    }, () => {
+      const { queryData } = this.state
+      const { form: {setFieldsValue} } = this.props
+      setFieldsValue(queryData)
+      this.handleSearch()
+    })
   }
 
   handleDelete = (row) => {
@@ -190,17 +195,18 @@ export default class UserManage extends Component {
     const { pagination } = this.state
     const { form:{ getFieldsValue } } = this.props
     let queryData = getFieldsValue()
-    // this.setState({
-    //   queryData: {
-    //     ...queryData,
-    //   },
-    // })
+    this.setState({
+      queryData: {
+        ...queryData,
+      },
+    })
     queryData.startTime = queryData.createTime&&queryData.createTime[0]?format0(queryData.createTime[0].format('x')):undefined
     queryData.endTime = queryData.createTime&&queryData.createTime[1]?format24(queryData.createTime[1].format('x')):undefined
     delete queryData.createTime
     queryData = _.omitBy(queryData, item => !item)
     // Object.defineProperty(queryParams, 'startTime', {value: format0(queryData.createTime[0].format('x'))})
     // Object.defineProperty(queryParams, 'endTime', {value: format24(queryData.createTime[1].format('x'))})
+    
     this.props.dispatch({
       type: 'accounts/getAccounts',
       payload: {
@@ -324,16 +330,16 @@ export default class UserManage extends Component {
         <Card>
           <Form className='cf'>
             <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountName')(<Input maxLength={50} placeholder='用户名' />)}
+              {getFieldDecorator('accountName')(<Input maxLength={50} placeholder='用户名' onPressEnter={this.handleSearch} />)}
             </FormItem>
             {/* <Input placeholder="用户名" maxLength={50} style={{ width: 100, marginRight: 20 }} onChange={this.nameChange} /> */}
             <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountNickName')(<Input placeholder='姓名' maxLength={50} />)}
+              {getFieldDecorator('accountNickName')(<Input placeholder='姓名' maxLength={50} onPressEnter={this.handleSearch} />)}
             </FormItem>
             {/* <Input placeholder="姓名" maxLength={50} style={{ width: 100, marginRight: 20 }} onChange={this.nickNameChange} /> */}
             {/* <Input placeholder="姓名" style={{width:100,marginRight:20}}/> */}
             <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountTel')(<Input placeholder='电话' maxLength={11} />)}
+              {getFieldDecorator('accountTel')(<Input placeholder='电话' maxLength={11} onPressEnter={this.handleSearch} />)}
             </FormItem>
             {/* <Input placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} /> */}
             <FormItem className='w120 fl mr16'>
