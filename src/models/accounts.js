@@ -2,14 +2,14 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-19 15:06:44
+ * @Last Modified time: 2018-11-20 15:22:17
  * @Description: 用户管理
  */
 import { routerRedux } from 'dva/router'
 import { message } from 'antd'
 import apis from '../api'
 
-const { getAccounts, getRoleName, addAccount, deleteAccount, updateAccount, postNotification } = apis
+const { getAccounts, addAccount, deleteAccount, updateAccount, postNotification } = apis
 export default {
   namespace: 'accounts',
 
@@ -42,7 +42,6 @@ export default {
         })
       } catch (error) {
         console.log(error) // eslint-disable-line
-        message.error('网络错误')
         yield put({
           type: 'changeAccountList',
           payload: {
@@ -53,17 +52,6 @@ export default {
           },
         })
       }
-    },
-    *getRoleName({ payload }, { call, put }) {
-      let response
-      try {
-        response = yield call(getRoleName, {params: payload, path: 2})
-        const { datas = [] } = response.result
-        yield put({
-          type: 'changeRoleNameList',
-          payload: { datas },
-        })
-      } catch (error) {console.log(error)} // eslint-disable-line
     },
     *addAccount({ payload }, { call, put }) {
       let response
@@ -115,10 +103,19 @@ export default {
             type: 'changeAccountDetail',
             payload: { accountDetail: response.result.datas },
           })
+        } else {
+          message.error(response.msg)
+          throw response.msg
         }
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
+        yield put({
+          type: 'changeAccountDetail',
+          payload: {
+            accountDetail: {},
+          },
+        })
       }
     },
     *updateAccount({ payload }, { call, put }) {

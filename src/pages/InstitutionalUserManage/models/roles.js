@@ -21,6 +21,8 @@ const { saveRoleByAccount, getRoleList } = apis
               roleList: response.data.data,
             },
           })
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
         // eslint-disable-next-line
@@ -42,6 +44,8 @@ const { saveRoleByAccount, getRoleList } = apis
           yield put({
             type: 'accounts/getAccounts',
           })
+        } else {
+          message.error(response.msg)
         }
       } catch (error) {
         // eslint-disable-next-line
