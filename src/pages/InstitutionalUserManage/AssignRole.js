@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Table, Button, Input, Select, Card, DatePicker, Modal, Radio, message, Form } from 'antd'
+import { Table, Select, Card, Modal, Radio, message, Form } from 'antd'
 import { Bind, Throttle } from 'lodash-decorators'
 import moment from 'moment'
 
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
+import SearchForm from '@/components/SearchForm'
 import { format0, format24 } from '../../utils/utils'
 import styles from './AssignRole.less'
 
 const { Option } = Select
-const { RangePicker } = DatePicker
 const RadioGroup = Radio.Group
-const FormItem = Form.Item
 
 @Form.create()
 @connect(({ roles, accounts, loading }) => ({
@@ -30,6 +29,7 @@ export default class AssignRole extends Component {
     roleId: null,
     userId: '',
     roleObject: {},
+    isChanged: false,
   }
 
   componentDidMount() {
@@ -52,28 +52,16 @@ export default class AssignRole extends Component {
     }
   }
 
-  handleReset = () => {
-    const { form: { resetFields } } = this.props
-    resetFields()
-    this.setState({
-      pagination: {
-        pageSize: 10,
-        pageNum: 1,
-      },
-    }, this.handleSearch)
-  }
-
-  tableChange = (pagination) =>{
+  tableChange = pagination =>{
     this.setState({
       pagination: {
         pageNum: pagination.current,
         pageSize: pagination.pageSize,
       },
+      isChanged: true,
     }, () => {
       const { queryData } = this.state
-      const { form: { setFieldsValue } } = this.props
-      setFieldsValue(queryData)
-      this.handleSearch(1,1)
+      this.handleSearch(queryData)
     })
   }
 
@@ -117,12 +105,16 @@ export default class AssignRole extends Component {
     })
   }
 
+  handleChange = () => {
+    this.setState({
+      isChanged: false,
+    })
+  }
+
   @Bind()
   @Throttle(1000)
-  handleSearch(e, isPagination = false) {
-    const pagination = isPagination?this.state.pagination:{pageNum:1,pageSize:10}
-    const { form: { getFieldsValue } } = this.props
-    const queryData = getFieldsValue()
+  handleSearch(queryData = {}, pageReset = false) {
+    const pagination = pageReset?{pageNum:1,pageSize:10}:this.state.pagination
     // 这里用户储存搜索数据
     this.setState({
       queryData: {
@@ -145,14 +137,47 @@ export default class AssignRole extends Component {
 
   render() {
     const that = this
-    const { visible, roleObject } = this.state
-    const { accounts: { accountList, pagination }, roles: { roleList: data1 }, loading, form: { getFieldDecorator } } = this.props
+    const { visible, roleObject, isChanged } = this.state
+    const { accounts: { accountList, pagination }, roles: { roleList: data1 }, loading } = this.props
     
     accountList.forEach(item => item.role = roleObject[item.roleName]) // eslint-disable-line
-    // const roleListObject = data1.reduce((pre, cur) => {
-    //   pre[cur.id] = cur.rolename
-    //   return pre
-    // },{})
+    const searchHandler = this.handleSearch
+    const formOptions = {
+      formData: [
+        {
+          name: 'accountName',
+          maxLength: 50,
+          placeholder: '用户名',
+        },
+        {
+          name: 'accountNickName',
+          maxLength: 50,
+          placeholder: '姓名',
+        },
+        {
+          name: 'accountTel',
+          maxLength: 50,
+          placeholder: '电话',
+        },
+        {
+          name: 'roleName',
+          type: 'Select',
+          placeholder: '角色名',
+          children: selectData1,
+        },
+        {
+          name: 'accountStatus',
+          type: 'Select',
+          placeholder: '状态',
+          children: selectData2,
+        },
+        {
+          name: 'createTime',
+          type: 'RangePicker',
+        },
+      ],
+      searchHandler,
+    }
     const selectData1 = data1.map(item => {
       return (
         <Option value={item.roleName} key={item.roleId} title={item.roleDesc}>
@@ -232,40 +257,7 @@ export default class AssignRole extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <Form className='cf'>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountName')(<Input maxLength={50} placeholder='用户名' onPressEnter={this.handleSearch} />)}
-            </FormItem>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountNickName')(<Input maxLength={50} placeholder='姓名' onPressEnter={this.handleSearch} />)}
-            </FormItem>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountTel')(<Input maxLength={50} placeholder='电话' onPressEnter={this.handleSearch} />)}
-            </FormItem>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('roleName')(
-                <Select allowClear placeholder='请选择角色'>
-                  {selectData1}
-                </Select>)}
-            </FormItem>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountStatus')(
-                <Select allowClear placeholder='状态'>
-                  {selectData2}
-                </Select>
-              )}
-            </FormItem>
-            <FormItem className='w220 fl mr16'>
-              {getFieldDecorator('createTime')(<RangePicker />)}
-            </FormItem>
-            {/* <RangePicker style={{ marginRight: 20, width: 250 }} onChange={this.dateChange} /> */}
-            <FormItem className='w82 fl mr16'>
-              <Button type="primary" icon='search' onClick={this.handleSearch}>搜索</Button>
-            </FormItem>
-            <FormItem className='w64 fl mr16'>
-              <Button onClick={this.handleReset}>重置</Button>
-            </FormItem>
-          </Form>
+          <SearchForm formOptions={formOptions} isChanged={isChanged} onChange={this.handleChange} />
           <div>
             <Table
               columns={columns}
@@ -289,11 +281,6 @@ export default class AssignRole extends Component {
                   <Radio value={item.roleId} key={item.roleId}>{item.roleDesc}</Radio>
                 ))
               }
-              {/* <Radio value={1}>安全员</Radio> */}
-              {/* <Radio value={2}>管理员</Radio> */}
-              {/* <Radio value={3}>审计员</Radio>
-              <Radio value={4}>操作员</Radio>
-              <Radio value={5}>审核员</Radio> */}
             </RadioGroup>
           </Modal>
         </Card>

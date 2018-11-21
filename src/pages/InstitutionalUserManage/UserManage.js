@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, Form, Tooltip } from 'antd'
+import { Table, Button, Select, Card, Popconfirm, Form, Tooltip } from 'antd'
 import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -9,32 +9,25 @@ import _ from 'lodash'
 import { format0, format24 } from '../../utils/utils'
 import styles from './UserManage.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
+import SearchForm from '@/components/SearchForm'
 
 const { Option } = Select
-const { RangePicker } = DatePicker
-const { Item: FormItem } = Form
 
-// const roleObject = {
-//   admin: '管理员',
-//   security: '安全员',
-//   auditor: '审计员',
-//   operator: '操作员',
-// }
 @Form.create()
 @connect(({ accounts, roles, loading }) => ({
   accounts,
   roles,
   loading: loading.models.accounts,
 }))
-
 export default class UserManage extends Component {
   state = {
     queryData: {},
-    pagination: {
-      pageSize: 10,
-      pageNum: 1,
-    },
     roleObject: {},
+    pagination: {
+      pageNum: 1,
+      pageSize: 10,
+    },
+    isChanged: false,
   }
 
   componentDidMount() {
@@ -56,80 +49,6 @@ export default class UserManage extends Component {
       })
     }
   }
-
-  // nameChange = (e) => {
-  //   const { queryData } = this.state
-  //   this.setState({
-  //     queryData: {
-  //       ...queryData,
-  //       accountName: e.target.value.trim() || undefined,
-  //     },
-  //   })
-  // }
-
-  // nickNameChange = e => {
-  //   const { queryData } = this.state
-  //   this.setState({
-  //     queryData: {
-  //       ...queryData,
-  //       accountNickName: e.target.value.trim() || undefined,
-  //     },
-  //   })
-  // }
-
-  // telephoneChange = (e) => {
-  //   const { queryData } = this.state
-  //   if (e.target.value.trim().length > 11) return false
-  //   this.setState({
-  //     queryData: {
-  //       ...queryData,
-  //       accountTel: e.target.value.trim() || undefined,
-  //     },
-  //   })
-  // }
-
-  // roleChange = val => {
-  //   const { queryData } = this.state
-  //   this.setState({
-  //     queryData: {
-  //       ...queryData,
-  //       roleName: val === '-1' ? undefined : val,
-  //     },
-  //   })
-  // }
-
-  // selectIsEnable = val => {
-  //   const { queryData } = this.state
-  //   this.setState({
-  //     queryData: {
-  //       ...queryData,
-  //       accountStatus: val === '-1'?undefined:val,
-  //     },
-  //   })
-  // }
-
-  // dateChange = val => {
-  //   // let createTime
-  //   // if (val.length > 1) {
-  //   //   createTime = [val[0].format().substr(0,10), val[1].format().substr(0,10)]
-  //   // } else {
-  //   //   createTime = val
-  //   // }
-  //   let startTime
-  //   let endTime
-  //   if (val.length > 1) {
-  //     startTime = format0(val[0].format('x'))
-  //     endTime = format24(val[1].format('x'))
-  //   }
-  //   const { queryData } = this.state
-  //   this.setState({
-  //     queryData: {
-  //       ...queryData,
-  //       startTime,
-  //       endTime,
-  //     },
-  //   })
-  // }
 
   handleAdd = () => {
     const { dispatch } = this.props
@@ -161,11 +80,10 @@ export default class UserManage extends Component {
         pageNum: pagination.current,
         pageSize: pagination.pageSize,
       },
+      isChanged: true,
     }, () => {
       const { queryData } = this.state
-      const { form: {setFieldsValue} } = this.props
-      setFieldsValue(queryData)
-      this.handleSearch(1,1)
+      this.handleSearch(queryData)
     })
   }
 
@@ -178,23 +96,16 @@ export default class UserManage extends Component {
     })
   }
 
-  handleReset = () => {
-    const { form: { resetFields } } = this.props
-    resetFields()
+  handleChange = () =>{
     this.setState({
-      pagination: {
-        pageNum: 1,
-        pageSize: 10,
-      },
-    }, this.handleSearch)
+      isChanged: false,
+    })
   }
 
   @Bind()
   @Throttle(1000)
-  handleSearch(e, isPagination = false) {
-    const pagination = isPagination?this.state.pagination:{pageNum:1,pageSize:10}
-    const { form:{ getFieldsValue } } = this.props
-    let queryData = getFieldsValue()
+  handleSearch(queryData = {}, pageReset = false) {
+    const pagination = pageReset?{pageNum:1,pageSize:10}:this.state.pagination
     this.setState({
       queryData: {
         ...queryData,
@@ -204,8 +115,6 @@ export default class UserManage extends Component {
     queryData.endTime = queryData.createTime&&queryData.createTime[1]?format24(queryData.createTime[1].format('x')):undefined
     delete queryData.createTime
     queryData = _.omitBy(queryData, item => !item)
-    // Object.defineProperty(queryParams, 'startTime', {value: format0(queryData.createTime[0].format('x'))})
-    // Object.defineProperty(queryParams, 'endTime', {value: format24(queryData.createTime[1].format('x'))})
     
     this.props.dispatch({
       type: 'accounts/getAccounts',
@@ -218,8 +127,8 @@ export default class UserManage extends Component {
 
   render() {
     const that = this
-    const { accounts: { accountList, pagination = false }, roles: { roleList = [] }, loading, form: { getFieldDecorator } } = this.props
-    const { roleObject } = this.state
+    const { accounts: { accountList, pagination = false }, roles: { roleList = [] }, loading } = this.props
+    const { roleObject, isChanged } = this.state
     accountList.forEach(item => item.role = roleObject[item.roleName]) // eslint-disable-line
     const selectData1 = roleList.map(item => {
       return (
@@ -291,7 +200,7 @@ export default class UserManage extends Component {
                     </span>
                   </Popconfirm>): (
                     <Tooltip title='默认用户,不可操作'>
-                      <span className={`${styles.editBtn} ${row.isTrue === 'true'?'disabled':''}`}>
+                      <span className={`${styles.editBtn} disabled`}>
                         {row.accountStatus === '0' ? '停用' : '启用'}
                       </span>
                     </Tooltip>
@@ -321,41 +230,48 @@ export default class UserManage extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
+    const searchHandler = this.handleSearch
+    const formOptions = {
+      formData: [
+        {
+          name: 'accountName',
+          type: 'Input',
+          placeholder: '用户名',
+          maxLength: 50,
+        },
+        {
+          name: 'accountNickName',
+          placeholder: '姓名',
+          maxLength: 50,
+        },
+        {
+          name: 'accountTel',
+          placeholder: '电话',
+          maxLength: 50,
+        },
+        {
+          name: 'roleName',
+          type: 'Select',
+          placeholder: '角色',
+          children: selectData1,
+        },
+        {
+          name: 'accountStatus',
+          type: 'Select',
+          placeholder: '状态',
+          children: selectData2,
+        },
+        {
+          name: 'createTime',
+          type: 'RangePicker',
+        },
+      ],
+      searchHandler,
+    }
     return (
       <PageHeaderLayout>
         <Card>
-          <Form className='cf'>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountName')(<Input maxLength={50} placeholder='用户名' onPressEnter={this.handleSearch} />)}
-            </FormItem>
-            {/* <Input placeholder="用户名" maxLength={50} style={{ width: 100, marginRight: 20 }} onChange={this.nameChange} /> */}
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountNickName')(<Input placeholder='姓名' maxLength={50} onPressEnter={this.handleSearch} />)}
-            </FormItem>
-            {/* <Input placeholder="姓名" maxLength={50} style={{ width: 100, marginRight: 20 }} onChange={this.nickNameChange} /> */}
-            {/* <Input placeholder="姓名" style={{width:100,marginRight:20}}/> */}
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountTel')(<Input placeholder='电话' maxLength={11} onPressEnter={this.handleSearch} />)}
-            </FormItem>
-            {/* <Input placeholder="电话" style={{ width: 120, marginRight: 20 }} onChange={this.telephoneChange} /> */}
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('roleName')(
-                <Select placeholder="角色" allowClear>{selectData1}</Select>)}
-            </FormItem>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('accountStatus')(
-                <Select placeholder='状态' allowClear>{selectData2}</Select>)}
-            </FormItem>
-            <FormItem className='w220 fl mr16'>
-              {getFieldDecorator('createTime')(<RangePicker />)}
-            </FormItem>
-            <FormItem className='w82 fl mr16'>
-              <Button type="primary" onClick={this.handleSearch} icon='search'>搜索</Button>
-            </FormItem>
-            <FormItem className='w64 fl'>
-              <Button onClick={this.handleReset}>重置</Button>
-            </FormItem>
-          </Form>
+          <SearchForm isChanged={isChanged} formOptions={formOptions} onChange={this.handleChange} />
           <div className={styles.createBtn}>
             <Button icon="plus" type="primary" onClick={this.handleAdd}>
               新建

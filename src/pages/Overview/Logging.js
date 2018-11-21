@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { DatePicker, Input, Select, Button, Table, Form } from 'antd'
+import { Select, Table, Form } from 'antd'
 import { Bind, Throttle } from 'lodash-decorators'
 
 import { format0, format24 } from '../../utils/utils'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
+import SearchForm from '@/components/SearchForm'
 import styles from './Logging.less'
 
 // 随机IP地址
@@ -12,9 +13,7 @@ function getRandomIp() {
   return `210.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`
 }
 
-const { RangePicker } = DatePicker
 const { Option } = Select
-const FormItem = Form.Item
 
 @Form.create()
 @connect(({ overviewLogging, loading }) => ({
@@ -28,6 +27,7 @@ export default class Log extends Component {
       pageNum: 1,
       pageSize: 10,
     },
+    isChanged: false,
   }
 
   componentDidMount() {
@@ -51,20 +51,24 @@ export default class Log extends Component {
         pageNum: pagination.current,
         pageSize:pagination.pageSize,
       },
+      isChanged: true,
     },() => {
       const { queryData } = this.state
-      const { form: {setFieldsValue} } = this.props
-      setFieldsValue(queryData)
-      this.handleSearch(1,1)
+      this.handleSearch(queryData)
+    })
+  }
+
+  handleChange = () => {
+    this.setState({
+      isChanged: false,
     })
   }
 
   @Bind()
   @Throttle(1000)
-  handleSearch(e, isPaginaiton=false) {
-    const pagination = isPaginaiton?this.state.pagination:{pageNum:1,pageSize:10}
-    const { dispatch, form: { getFieldsValue } } = this.props
-    const queryData = getFieldsValue()
+  handleSearch(queryData = {}, pageReset=false) {
+    const pagination = pageReset?{pageNum:1,pageSize:10}:this.state.pagination
+    const { dispatch } = this.props
     this.setState({
       queryData: {
         ...queryData,
@@ -89,7 +93,8 @@ export default class Log extends Component {
   }
 
   render() {
-    const { overviewLogging: { loggingList, pagination, stateList }, loading, form: { getFieldDecorator } } = this.props
+    const { isChanged } = this.state
+    const { overviewLogging: { loggingList, pagination, stateList }, loading} = this.props
     const columns = [
       {
         title: 'ID',
@@ -118,7 +123,7 @@ export default class Log extends Component {
         },
       },
     ]
-
+    
     const optionList = stateList.map(item => {
       return (
         <Option value={item.value} key={item.value}>
@@ -126,27 +131,32 @@ export default class Log extends Component {
         </Option>
       )
     })
+    const searchHandler = this.handleSearch
+    const formOptions = {
+      formData: [
+        {
+          name: 'createTime',
+          type: 'RangePicker',
+        },
+        {
+          name: 'logIpAddress',
+          placeholder: 'IP·地址',
+          maxLength: 50,
+        },
+        {
+          name: 'logState',
+          type: 'Select',
+          placeholder: '登录结果',
+          children: optionList,
+        },
+      ],
+      searchHandler,
+    }
 
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
-          <Form className='cf'>
-            <FormItem className='w220 fl mr16'>
-              {getFieldDecorator('createTime')(<RangePicker />)}
-            </FormItem>
-            <FormItem className='w150 fl mr16'>
-              {getFieldDecorator('logIpAddress')(<Input placeholder='IP·地址' maxLength={50} />)}
-            </FormItem>
-            <FormItem className='w120 fl mr16'>
-              {getFieldDecorator('logState')(<Select placeholder='登录结果'>{optionList}</Select>)}
-            </FormItem>
-            <FormItem className='w82 fl mr16'>
-              <Button type="primary" onClick={this.handleSearch} icon="search"> 搜索 </Button>
-            </FormItem>
-            <FormItem className='w64 fl mr16'>
-              <Button onClick={this.handleReset}>重置</Button>
-            </FormItem>
-          </Form>
+          <SearchForm isChanged={isChanged} formOptions={formOptions} onChange={this.handleChange} />
           <div>
             <Table
               bordered

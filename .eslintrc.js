@@ -73,6 +73,7 @@ module.exports = {
     'no-param-reassign': [0],
     'react/no-multi-comp': [0],
     semi: ['error', 'never'],
+    'react/no-this-in-sfc': [0],
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],
