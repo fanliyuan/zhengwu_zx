@@ -82,6 +82,7 @@ export default class SourceClassfiy extends Component {
       id:row.id,
       level:row.level,
       currentTab,
+      pid:row.pid,
     }))
   }
 

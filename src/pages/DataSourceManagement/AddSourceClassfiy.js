@@ -10,6 +10,7 @@ const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const { Option } = Select
 let currentClassify
+let num
 @Form.create()
 
 @connect(({sourceClassfiy,loading}) => ({
@@ -21,8 +22,9 @@ export default class AddSourceClassfiy extends Component {
     classifyName:'请选择类',
     itemName:'请选择项',
     detailName:'请选择目',
-    selectCode:'1',
-    level:'1',
+    selectCode:'',
+    level:'',
+    pid:'',
     classNum:2,
     routeid:-1,
   }
@@ -31,6 +33,10 @@ export default class AddSourceClassfiy extends Component {
     const { dispatch } = this.props
     const { setFieldsValue } = this.props.form
     const { location:{ state } } = this.props.history
+    console.log("state",state)
+    setFieldsValue({
+      'number':'',
+    })
     if(state){
       await dispatch({
         type:'sourceClassfiy/getTargetItem',
@@ -52,12 +58,13 @@ export default class AddSourceClassfiy extends Component {
           this.setState({
             selectCode:+state.currentTab,
             level:2,
+            pid:currentClassify.pid,
           })
           return
         }
         await dispatch({
           type:'sourceClassfiy/getResourceList',
-          payload:{code:+state.currentTab,level:1},
+          payload:{code:+state.currentTab,level:1,id:+state.currentTab},
         })
         setFieldsValue({
           'item':currentClassify.projectcode,
@@ -70,12 +77,13 @@ export default class AddSourceClassfiy extends Component {
           this.setState({
             selectCode:currentClassify.projectcode,
             level:3,
+            pid:currentClassify.pid,
           })
           return
         }
         await dispatch({
           type:'sourceClassfiy/getResourceList',
-          payload:{code:currentClassify.projectcode,level:2},
+          payload:{code:currentClassify.projectcode,level:2,id:state.projectid},
         })
         setFieldsValue({
           'classfiyItem':currentClassify.catalogcode,
@@ -85,6 +93,7 @@ export default class AddSourceClassfiy extends Component {
         this.setState({
           selectCode:currentClassify.catalogcode,
           level:4,
+          pid:currentClassify.pid,
         })
       }  
     }
@@ -94,7 +103,14 @@ export default class AddSourceClassfiy extends Component {
       //   payload:{code:1,level:1},
       // })
     }
+    currentClassify = ''
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({
+  //     codes:nextProps.sourceClassfiy.autoCodes,
+  //   })
+  // }
 
   handleClassChange = (e) => {
     const { form:{ setFieldsValue} } = this.props
@@ -153,25 +169,25 @@ export default class AddSourceClassfiy extends Component {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err){
-        const { selectCode, level, routeid } = this.state
+        const { selectCode, level, routeid, pid } = this.state
         const { dispatch } = this.props
         if(routeid && routeid !== -1){
           dispatch({
             type:'sourceClassfiy/editItem',
-            payload:{name:values.names,code:values.number,parentCode:selectCode,level,id:routeid,force:1},
+            payload:{name:values.names,code:values.number,parentCode:selectCode,level,id:routeid,force:1,pid},
           }) 
         }
         else {
           dispatch({
             type:'sourceClassfiy/addItem',
-            payload:{name:values.names,code:values.number,parentCode:selectCode,level},
+            payload:{name:values.names,code:values.number,parentCode:selectCode,level,pid},
           })
         }
       }
     })
   }
 
-  handleChangeClassify = (val) => {
+  handleChangeClassify = async(val) => {
     const { dispatch } = this.props
     const { classNum } = this.state
     const { setFieldsValue } = this.props.form
@@ -180,14 +196,18 @@ export default class AddSourceClassfiy extends Component {
       payload:{code:val,level:1,id:val},
     })
     if(+classNum === 2){
-      dispatch({
+      await dispatch({
         type:'sourceClassfiy/getCode',
-        payload:{parentCode:val,level:2},
+        payload:{parentCode:val,level:2,pid:val},
+      })
+      setFieldsValue({
+        'number':num,
       })
     }
     this.setState({
       selectCode:val,
       level:2,
+      pid:val,
     })
     setFieldsValue({
       'item':'请选择项',
@@ -195,18 +215,22 @@ export default class AddSourceClassfiy extends Component {
     })
   }
 
-  handleChangeClassify1 = (val) => {
+  handleChangeClassify1 = async(val,options) => {
+    // console.log("list",options.key)
     const { dispatch } = this.props
     const { setFieldsValue } = this.props.form
     const { classNum } = this.state
     dispatch({
       type:'sourceClassfiy/getResourceList',
-      payload:{code:val,level:2},
+      payload:{code:val,level:2,id:options.key},
     })
     if(+classNum === 3){
-      dispatch({
+      await dispatch({
         type:'sourceClassfiy/getCode',
-        payload:{parentCode:val,level:3},
+        payload:{parentCode:val,level:3,pid:options.key},
+      })
+      setFieldsValue({
+        'number':num,
       })
     }
     setFieldsValue({
@@ -215,10 +239,11 @@ export default class AddSourceClassfiy extends Component {
     this.setState({
       selectCode:val,
       level:3,
+      pid:options.key,
     })
   }
 
-  handleChangeClassify2 = (val) => {
+  handleChangeClassify2 = (val,options) => {
     // const{ dispatch } = this.props
     // const { classNum } = this.state
     // if(+classNum === 3){
@@ -230,6 +255,7 @@ export default class AddSourceClassfiy extends Component {
     this.setState({
       selectCode:val,
       level:4,
+      pid:options.key,
     })
   }
 
@@ -240,8 +266,8 @@ export default class AddSourceClassfiy extends Component {
 
   render() {
     const { sourceClassfiy:{resourceLists, itemList, autoCodes, targetData } } = this.props
-    // console.log(targetData)
     currentClassify = targetData
+    num = autoCodes
     // console.log(targetData)
     const classify = [{value:'1',label:'基础信息资源类'},{value:'2',label:'主题信息资源类'},{value:'3',label:'部门信息资源类'}]
     const classifyList = classify.map(item => {
