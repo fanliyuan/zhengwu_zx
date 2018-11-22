@@ -33,7 +33,6 @@ export default class AddSourceClassfiy extends Component {
     const { dispatch } = this.props
     const { setFieldsValue } = this.props.form
     const { location:{ state } } = this.props.history
-    console.log("state",state)
     setFieldsValue({
       'number':'',
     })
@@ -59,6 +58,7 @@ export default class AddSourceClassfiy extends Component {
             selectCode:+state.currentTab,
             level:2,
             pid:currentClassify.pid,
+            classNum:2,
           })
           return
         }
@@ -78,6 +78,7 @@ export default class AddSourceClassfiy extends Component {
             selectCode:currentClassify.projectcode,
             level:3,
             pid:currentClassify.pid,
+            classNum:3,
           })
           return
         }
@@ -94,6 +95,7 @@ export default class AddSourceClassfiy extends Component {
           selectCode:currentClassify.catalogcode,
           level:4,
           pid:currentClassify.pid,
+          classNum:4,
         })
       }  
     }
@@ -139,7 +141,12 @@ export default class AddSourceClassfiy extends Component {
       setFieldsValue({
         'number':getFieldValue('number').slice(0,i),
       })
-    }else if(getFieldValue('number').length < i && getFieldValue('number').length >0){
+    }
+  }
+
+  addCode = (i) => {
+    const { form:{getFieldValue, setFieldsValue} } = this.props
+    if(getFieldValue('number').length < i && getFieldValue('number').length >0){
       setFieldsValue({
         'number':(Array(i).join(0) + getFieldValue('number')).slice(-i),
       })
@@ -162,6 +169,16 @@ export default class AddSourceClassfiy extends Component {
           'number':getFieldValue('number').slice(0,49),
         })
       }
+    }
+  }
+
+  handleAddCode = () => {
+    const { classNum } = this.state
+    if(+classNum === 2){
+      this.addCode(2)
+    }
+    else if(+classNum === 3){
+      this.addCode(3)
     }
   }
 
@@ -401,7 +418,7 @@ export default class AddSourceClassfiy extends Component {
                   required: true,
                   message:'请输入编号',
                 }],
-              })(<Input placeholder="请输入编号" onKeyUp={this.handleNumPCheck} type="number" />)}
+              })(<Input placeholder="请输入编号" onKeyUp={this.handleNumPCheck} type="number" onBlur={this.handleAddCode} />)}
             </FormItem>
             <FormItem label="名称" {...formItemLayout}>
               {getFieldDecorator('names',{
