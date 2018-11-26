@@ -4,12 +4,12 @@ import apis from '../../../api'
 
 const { getNodes, getParentNodes, getDepartments, deleteNode, addNode, editNode } = apis
 
-function number2String(params) {
-  return params.map((item) => {
+function number2String(array, field) {
+  return array.map((item) => {
     if ((!Array.isArray(item.children)) || item.children.length === 0) {
-      return {...item, value: `${item.value}`}
+      return {...item, [field]: `${item[field]}`}
     } else {
-      return {...item, value: `${item.value}`, children: number2String(item.children)}
+      return {...item, [field]: `${item[field]}`, children: number2String(item.children)}
     }
   })
 }
@@ -65,7 +65,7 @@ function number2String(params) {
             type: 'changeParentNodeList',
             payload: {
               parentNodeList: JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children')),
-              parentNodeListT: number2String(JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children'))),
+              parentNodeListT: number2String(JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children')), 'value'),
             },
           })
         }
@@ -90,8 +90,8 @@ function number2String(params) {
           yield put({
             type: 'changeDepartmentList',
             payload: {
-              departmentList: number2String(JSON.parse(JSON.stringify(response.data.list).replace(/title/g, 'label'))),
-              departmentListT: number2String(response.data.list),
+              departmentList: number2String(JSON.parse(JSON.stringify(response.data.list).replace(/title/g, 'label')), 'value'),
+              departmentListT: number2String(response.data.list, 'value'),
             },
           }) 
         } else {

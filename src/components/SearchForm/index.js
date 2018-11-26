@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { Form, Button, Input, Select, Cascader, DatePicker } from 'antd'
+import { Form, Button, Input, Select, Cascader, DatePicker, Checkbox } from 'antd'
 
 const { Item: FormItem } = Form
 
@@ -31,13 +31,14 @@ export default class SearchForm extends Component {
   }
 
   handleReset = () => {
-    const { form: { resetFields, getFieldsValue }, formOptions: { searchHandler = () => {} } } = this.props
+    const { form: { resetFields, getFieldsValue }, formOptions: { searchHandler = () => {}, resetHandler = () => {} } } = this.props
     resetFields()
     const data = getFieldsValue()
     this.setState({
       data,
     })
     searchHandler({}, true)
+    resetHandler()
   }
 
   handleSearch = () => {
@@ -55,14 +56,13 @@ export default class SearchForm extends Component {
     const { form: { getFieldDecorator }, formOptions: {formData = [], hasReset = true} = {} } = this.props
     const FormItems = []
     formData.forEach(item => {
-      const {allowClear = false} = item
       switch (item.type) {
         case 'Select':
           FormItems.push(
             <FormItem className='w120 fl mr16' {...item.itemOptions} key={item.name+item.type}>
               {
                 getFieldDecorator(item.name)(
-                  <Select placeholder={item.placeholder} allowClear={allowClear}>{item.children}</Select>
+                  <Select {...item.typeOptions}>{item.children}</Select>
                 )
               }
             </FormItem>
@@ -73,7 +73,7 @@ export default class SearchForm extends Component {
             <FormItem className='w150 fl mr16' {...item.itemOptions} key={item.name+item.type}>
               {
                 getFieldDecorator(item.name)(
-                  <Cascader className='' options={item.options} placeholder={item.placeholder} {...item.cascaderOptions} />
+                  <Cascader {...item.typeOptions} />
                 )
               }
             </FormItem>
@@ -90,18 +90,19 @@ export default class SearchForm extends Component {
             </FormItem>
           )
           break
-        // case 'Input':
-        //   FormItems.push(
-        //     <FormItem className='w150 fl mr16' {...item.itemOptions} key={item.name+item.type}>
-        //       {getFieldDecorator(item.name)(
-        //         <Input maxLength={item.maxLength} placeholder={item.placeholder} className={item.className}>{item.children}</Input>)}
-        //     </FormItem>)
-        //   break
+        case 'Checkbox':
+          FormItems.push(
+            <FormItem className='fl mr16' {...item.itemOptions} key={item.name+item.type}>
+              {getFieldDecorator(item.name)(
+                <Checkbox {...item.typeOptions}>{item.children || '复选'}</Checkbox>
+              )}
+            </FormItem>)
+          break
         default:
           FormItems.push(
             <FormItem className='w150 fl mr16' {...item.itemOptions} key={item.name+item.type}>
               {getFieldDecorator(item.name)(
-                <Input maxLength={item.maxLength} placeholder={item.placeholder} onPressEnter={this.handleSearch} className={item.className} />)}
+                <Input {...item.typeOptions} onPressEnter={this.handleSearch} />)}
             </FormItem>)
           break
       }

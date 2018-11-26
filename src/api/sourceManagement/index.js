@@ -5,10 +5,10 @@ const module = {
       name: 'getCatalogList',
       url: 'resourceSearchList',
     },
-    {
-      name: 'getCatalog',
-      url: 'listResourceBasicByType',
-    },
+    // {
+    //   name: 'getCatalog',
+    //   url: 'listResourceBasicByType',
+    // },
     {
       name: 'getResourceItemList',
       url: 'getResourceItemList',

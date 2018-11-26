@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../../../api'
 
-const { getCatalogList, getCatalog, getResourceItemList, getResourceTaskInfo, getResourceTitle } = apis
+const { getCatalogList, getCatalog, getResourceItemList, getResourceTaskInfo, getResourceTitle, directoryListAll } = apis
 
 // 用来过滤树形数据的
 function filter(params, data) {
@@ -46,6 +46,7 @@ function filterTreeList(params, data) {
     pagination1: false,
     resourceTaskInfo: {},
     catalogQueryData: '',
+    srcProsTree: [],
   },
 
   effects:{
@@ -85,7 +86,7 @@ function filterTreeList(params, data) {
     },
     *getCatalog({ payload }, { call, put, select }) {
       let response
-      if (payload && payload.params) {
+      if (payload && payload.body) {
         yield put({
           type: 'saveQueryData',
           payload: {
@@ -95,19 +96,19 @@ function filterTreeList(params, data) {
       } else {
         payload = yield select(state => state.catalogManagement.queryData)
       }
-      if (!payload || !payload.params) {
+      if (!payload || !payload.body) {
         // console.log('无查询信息') // eslint-disable-line
         return null
       }
       try {
-        response = yield call(getCatalog, {params: payload.params})
-        const { rows, total = 0, limit = 10, index = 1 } = response.data
-        const pagination = total > limit ? {total, pageSize: limit, current: index} : false
+        response = yield call(getCatalog, {body: payload.body})
+        const { data, total = 0} = response
+        const pagination = {total}
         if (+response.code === 0) {
           yield put({
             type: 'saveCatalogData',
             payload: {
-              catalogData: rows,
+              catalogData: data,
               pagination,
             },
           })
@@ -173,7 +174,7 @@ function filterTreeList(params, data) {
       try {
         if (+response.code === 0) {
           yield put({
-            type: 'savaResourceTitle',
+            type: 'saveResourceTitle',
             payload: {
               resourceTitle: response.data,
             },
@@ -212,6 +213,25 @@ function filterTreeList(params, data) {
           },
         })
       }
+      }
+    },
+    *directoryListAll(_, { call, put }) {
+      let srcProsTree = []
+      try {
+        const res = yield call(directoryListAll)
+        if (+res.code === 0) {
+          srcProsTree = res.data
+        }
+      } catch (error) {
+       // eslint-disable-next-line 
+       console.log(error)
+      } finally {
+        yield put({
+          type: 'saveSrcProsTree',
+          payload: {
+            srcProsTree,
+          },
+        })
       }
     },
   },
@@ -255,7 +275,7 @@ function filterTreeList(params, data) {
         queryData,
       }
     },
-    savaResourceTitle(state, {payload: {resourceTitle}}) {
+    saveResourceTitle(state, {payload: {resourceTitle}}) {
       return {
         ...state,
         resourceTitle,
@@ -265,6 +285,12 @@ function filterTreeList(params, data) {
       return {
         ...state,
         catalogQueryData,
+      }
+    },
+    saveSrcProsTree(state, {payload:{srcProsTree}}) {
+      return {
+        ...state,
+        srcProsTree,
       }
     },
   },

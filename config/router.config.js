@@ -263,14 +263,15 @@ export default [
             component: './DataSourceManagement/DataBaseSource',
             authority: ['operator', 'operator-n'],
           },
-          {
-            name: 'catalogManagement',
-            path: 'catalogManagement',
-            component: './DataSourceManagement/CatalogManagement',
-            hideInMenu:true,
-            // component: './DataSourceManagement/SourceManagement.2',
-            authority: ['operator', 'operator-n'],
-          },
+          // 原来的目录管理, 现在换成了 sourceManagement
+          // {
+          //   name: 'catalogManagement',
+          //   path: 'catalogManagement',
+          //   component: './DataSourceManagement/CatalogManagement',
+          //   hideInMenu:true,
+          //   // component: './DataSourceManagement/SourceManagement.2',
+          //   authority: ['operator', 'operator-n'],
+          // },
           // {
           //   name: '新建目录',
           //   path: 'newMenu',

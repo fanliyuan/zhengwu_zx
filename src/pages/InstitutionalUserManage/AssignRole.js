@@ -146,29 +146,41 @@ export default class AssignRole extends Component {
       formData: [
         {
           name: 'accountName',
-          maxLength: 50,
-          placeholder: '用户名',
+          typeOptions: {
+            maxLength: 50,
+            placeholder: '用户名',
+          },
         },
         {
           name: 'accountNickName',
-          maxLength: 50,
-          placeholder: '姓名',
+          typeOptions: {
+            maxLength: 50,
+            placeholder: '姓名',
+          },
         },
         {
           name: 'accountTel',
-          maxLength: 50,
-          placeholder: '电话',
+          typeOptions: {
+            maxLength: 50,
+            placeholder: '电话',
+          },
         },
         {
           name: 'roleName',
           type: 'Select',
-          placeholder: '角色名',
+          typeOptions: {
+            placeholder: '角色名',
+            allowClear: true,
+          },
           children: selectData1,
         },
         {
           name: 'accountStatus',
           type: 'Select',
-          placeholder: '状态',
+          typeOptions: {
+            placeholder: '状态',
+            allowClear: true,
+          },
           children: selectData2,
         },
         {

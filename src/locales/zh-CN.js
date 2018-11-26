@@ -311,7 +311,7 @@ export default {
   'menu.dataSourceManagement.addSourceClassfiy': '新建资源属性分类',
   'menu.dataSourceManagement.dataBaseSource': '数据库管理',
   'menu.dataSourceManagement.catalogManagement': '目录管理',
-  'menu.dataSourceManagement.viewDirectory': '信息项',
+  'menu.dataSourceManagement.viewDirectory': '查看资源',
   'menu.dataSourceManagement.resourceConnectionData': '资源挂接数据',
   'menu.dataSourceManagement.task': '任务',
   'menu.dataPublicManagement': '数据发布管理',

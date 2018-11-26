@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-02 11:20:49
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-13 13:35:00
+ * @Last Modified time: 2018-11-26 09:43:23
  * @Description: 请求工厂函数, 根据传入的接口模块,生成api请求
  *               加入lodash过滤对象中的空属性{a:undefined, v: 1, c: false, d: 0} => {v:1}
  */
@@ -38,7 +38,7 @@ export default (module) => {
       let headers = {
         projectId,
         // accessToken: localStorage.getItem('accessToken') || 0,
-        token: Cookies.get('accessToken') || '000000',
+        accessToken: Cookies.get('accessToken') || '0x0x0x0x0x0x0x',
         ...params.headers,
       }
       headers = _.omitBy(headers, value => !value)

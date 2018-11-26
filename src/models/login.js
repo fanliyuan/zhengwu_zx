@@ -78,7 +78,7 @@ export default {
     },
     *logout(_, { put, call }) {
       try {
-        yield call(accountLogout, {body: { accountId: localStorage.getItem('accountId'), token: Cookies.get('accessToken')}})
+        yield call(accountLogout, {body: { accountId: localStorage.getItem('accountId'), accessToken: Cookies.get('accessToken')}})
         sessionStorage.setItem('antd-pro-authority', Cookies.get('antd-pro-authority'))
       } finally {
         yield put({

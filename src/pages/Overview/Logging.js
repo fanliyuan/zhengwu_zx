@@ -140,13 +140,18 @@ export default class Log extends Component {
         },
         {
           name: 'logIpAddress',
-          placeholder: 'IP·地址',
-          maxLength: 50,
+          typeOptions: {
+            placeholder: 'IP·地址',
+            maxLength: 50,
+          },
         },
         {
           name: 'logState',
           type: 'Select',
-          placeholder: '登录结果',
+          typeOptions: {
+            placeholder: '登录结果',
+            allowClear: true,
+          },
           children: optionList,
         },
       ],

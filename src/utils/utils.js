@@ -253,3 +253,24 @@ export function throttle(fn, ms = 1000, _this = this) {
     return () => {}
   }
 }
+
+
+// export function replaceTreeKey(array, oldkeys, newKeys) {
+//   if (!(array instanceof Array) || oldkeys.length !== newKeys.length) {
+//     throw new Error('函数调用错误') 
+//   }
+//   return array.map(object => {
+//     if (typeof object !== 'object') {
+//       throw new Error('需要替换的树形数据类型不正确!')
+//     }
+//     if (object.children && object.children.length > 0) {
+//       object.children = replaceTreeKey(object.children, oldkeys, newKeys)
+//     }
+//     const values = 
+//     delete object[oldkey]
+//     return {
+//       ...object,
+//       [newKey]: value,
+//     }
+//   })
+// }

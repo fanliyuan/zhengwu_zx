@@ -25,7 +25,7 @@ export default {
     *fetchCurrent(_, { call, put }) {
       let response
       try {
-        response = yield call(getAccountInfo, {params: {token: Cookies.get('accessToken')},headers: {token: undefined, projectId: undefined}})
+        response = yield call(getAccountInfo, {params: {accessToken: Cookies.get('accessToken')},headers: {accessToken: undefined, projectId: undefined}})
         if (+response.code === 200) {
           yield put({
             type: 'saveCurrentUser',

@@ -1,26 +1,31 @@
 import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, Checkbox, DatePicker, Popconfirm, message, Cascader } from 'antd'
-import moment from 'moment'
+import { Table, Button, Select, Card, message } from 'antd'
+// import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 import Cookies from 'js-cookie'
+import { Bind, Throttle } from 'lodash-decorators'
 
-import styles from './SourceManagement.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
+import SearchForm from '@/components/SearchForm'
+import styles from './SourceManagement.less'
 import { format0, format24 } from '../../utils/utils'
 
 const { Option } = Select
-const { RangePicker } = DatePicker
-@connect(({ sourceManagement, nodeManagement, loading }) => ({
-  sourceManagement,
+@connect(({ catalogManagement, nodeManagement, loading }) => ({
+  catalogManagement,
   nodeManagement,
-  loading: loading.models.sourceManagement || loading.models.nodeManagement,
+  loading: loading.models.catalogManagement || loading.models.nodeManagement,
 }))
 export default class SourceManagement extends Component {
   state = {
     isNodeOperator: false,
     queryData: {},
     isChanged: false,
+    pagination:{
+      pageSize: 10,
+      pageNum: 1,
+    },
   }
 
   componentDidMount() {
@@ -30,7 +35,10 @@ export default class SourceManagement extends Component {
     this.props.dispatch({
       type: 'nodeManagement/getParentNodes',
     })
-    this.searchHandle({})
+    this.props.dispatch({
+      type: 'catalogManagement/directoryListAll',
+    })
+    this.handleSearch()
   }
 
   nameChange = e => {
@@ -59,7 +67,6 @@ export default class SourceManagement extends Component {
         ...queryData,
         dataType: val === ''?undefined:val,
       },
-      isChanged: true,
     })
   }
 
@@ -71,7 +78,6 @@ export default class SourceManagement extends Component {
         nodeId: val[0] && +[...val].pop(),
         nodeName: params[0] && params[0].label,
       },
-      isChanged: true,
     })
   }
 
@@ -94,7 +100,6 @@ export default class SourceManagement extends Component {
         ...queryData,
         checkStatus: val === '-2' ? undefined:val,
       },
-      isChanged: true,
     })
   }
 
@@ -108,31 +113,6 @@ export default class SourceManagement extends Component {
         startTime: val[0]?format0(val[0].format('x')):undefined,
         endTime: val[1]?format24(val[1].format('x')):undefined,
       },
-      isChanged: true,
-    })
-  }
-
-  searchHandle = ({pageSize, current}, flag) => {
-    const { isChanged } = this.state
-    if (!isChanged && flag) return null
-    const { queryData: { rsName, dataType, checkStatus,startTime, endTime, nodeName } } = this.state
-    this.props.dispatch({
-      type: 'sourceManagement/getResources',
-      payload: {
-        body: {
-          pageSize: pageSize || '10',
-          pageNum: current || '1',
-          checkStatus,
-          rsName,
-          dataType,
-          nodeName,
-          startTime,
-          endTime,
-        },
-      },
-    })
-    this.setState({
-      isChanged: false,
     })
   }
 
@@ -146,16 +126,6 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
   }
 
-  // handleSource1 = () => {
-  //   const { dispatch } = this.props
-  //   dispatch(routerRedux.push('/dataSourceManagement/fileSource'))
-  // }
-
-  // handleTask = () => {
-  //   const { dispatch } = this.props
-  //   dispatch(routerRedux.push('/dataSourceManagement/task'))
-  // }
-
   handleEdit = () => {
     const { dispatch } = this.props
     dispatch(routerRedux.push('/dataSourceManagement/addDirectory'))
@@ -167,8 +137,12 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', { resourceId: row.resourceId }))
   }
 
-  tableChange = pagination => {
-    this.searchHandle(pagination)
+  tableChange = ({current: pageNum}) => {
+    this.setState({
+      pagination: {
+        pageNum,
+      },
+    })
   }
 
   handlerelatedData = () => {
@@ -192,53 +166,135 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/inputDirectory')) 
   }
 
+  handleReset = () => {
+    // console.log('重置') // eslint-disable-line
+    this.setState({
+      pagination: {
+        pageNum: 1,
+      },
+    })
+  }
+
+  @Bind()
+  @Throttle(1000)
+  handleSearch(queryData = {}, pageReset = false) {
+    const pagination = pageReset?{pageNum: 1, pageSize: 10}:this.state.pagination
+    console.log(pagination, queryData) // eslint-disable-line
+    if (queryData.resourcePublishTime && queryData.resourcePublishTime.length > 0) {
+      queryData.startTime = queryData.resourcePublishTime[0].format().substr(0,10)
+      queryData.endTime = queryData.resourcePublishTime[1].format().substr(0,10)
+    }
+    delete queryData.resourcePublishTime
+    queryData.isMount = queryData.isMount ? '1':'0'
+    // delete queryData.isMount
+    if (queryData.typeId && queryData.typeId.length > 0) {
+      if (!queryData.typeId[3] && queryData.typeId[3] !== 0) {
+        return message.error('资源属性选择项不是细目')
+      } else {
+        queryData.typeId = queryData.typeId[3] // eslint-disable-line
+      }
+    } else {
+      queryData.typeId = undefined
+    }
+    this.props.dispatch({
+      type: 'catalogManagement/getCatalog',
+      payload: {
+        body: {
+          // limit: pagination.pageSize || '10',
+          // index: pagination.pageNum || '1',
+          ...queryData,
+        },
+      },
+    })
+  }
+
   render() {
     const that = this
-    const { isNodeOperator } = this.state
-    const { nodeManagement: { parentNodeList }, sourceManagement: {dataList,pagination}, loading } = this.props
-    // const options = [
-    //   {
-    //     value: '0-0',
-    //     label: '北京国土局',
-    //     children: [
-    //       {
-    //         value: '0-0-1',
-    //         label: '海淀国土局',
-    //         // children: [{
-    //         //   value: 'xihu',
-    //         //   label: 'West Lake',
-    //         // }],
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     value: '0-1',
-    //     label: '河北国土局',
-    //     children: [
-    //       {
-    //         value: '0-1-0',
-    //         label: '保定国土局',
-    //         // children: [{
-    //         //   value: 'zhonghuamen',
-    //         //   label: 'Zhong Hua Men',
-    //         // }],
-    //       },
-    //     ],
-    //   },
-    // ]
-    const data = [
-      { value: '', id: -1, label: '资源属性分类' },
-      { value: '数据库', id: 0, label: '数据库' },
-      { value: '文件', id: 1, label: '文件' },
-      { value: 'FTP', id: 2, label: 'FTP' },
+    const { isNodeOperator, isChanged, pagination: { pageNum: current } } = this.state
+    const { nodeManagement: { parentNodeListT = [] }, catalogManagement: {catalogData,pagination, srcProsTree}, loading } = this.props
+    const data4 = [
+      { value: '0',  label: '已拒绝' },
+      { value: '1', label: '已通过' },
+      { value: '-1', label: '待审核' },
     ]
-    const selectData = data.map(item => {
+    const selectData4 = data4.map(item => {
       return (
-        <Option value={item.value} key={item.id} title={item.label}>
+        <Option value={item.value} key={item.value} title={item.label}>
           {item.label}
         </Option>
       )
     })
+    const searchHandler = this.handleSearch
+    const resetHandler = this.handleReset
+    const formOptions = {
+      formData: [
+        {
+          name: 'resourceCode',
+          typeOptions: {
+            placeholder: '信息资源代码',
+          },
+        },
+        {
+          name: 'resourceName',
+          typeOptions: {
+            placeholder: '信息资源名称',
+          },
+        },
+        {
+          name: 'nodeId',
+          type: 'Cascader',
+          typeOptions: {
+            placeholder: '发布节点',
+            options: parentNodeListT,
+            displayRender(label) {
+              return label.pop()
+            },
+          },
+        },
+        // 这里应该是级联
+        {
+          name: 'typeId',
+          type: 'Cascader', // Cascader
+          typeOptions: {
+            placeholder: '资源属性分类',
+            fieldNames: {label: 'name', value: 'code'},
+            options: srcProsTree,
+            displayRender(label) {
+              return label[4]
+            },
+          },
+        },
+        {
+          name: 'checkStatus',
+          type: 'Select',
+          typeOptions: {
+            placeholder: '审核状态',
+            allowClear: true,
+          },
+          children: selectData4,
+        },
+        {
+          name: 'resourcePublishTime',
+          type: 'RangePicker',
+        },
+        {
+          name: 'isMount',
+          type: 'Checkbox',
+          children: '数据已关联',
+        },
+      ],
+      searchHandler,
+      resetHandler,
+    }
+    const paginationProps = {
+      showQuickJumper: true,
+      hideOnSinglePage: true,
+      showTotal(total) {
+        return `共 ${Math.ceil(total / 10)}页 / ${total}条 数据`
+      },
+      ...pagination,
+      current, 
+    }
     // const data1 = [{ value: '0', id: 0, label: '节点' }, { value: '1', id: 1, label: '节点1' }]
     // const selectData1 = data1.map(item => {
     //   return (
@@ -258,19 +314,6 @@ export default class SourceManagement extends Component {
     //     </Option>
     //   )
     // })
-    const data4 = [
-      { value: '-2',  label: '审核状态' },
-      { value: '0',  label: '已拒绝' },
-      { value: '1', label: '已通过' },
-      { value: '-1', label: '待审核' },
-    ]
-    const selectData4 = data4.map(item => {
-      return (
-        <Option value={item.value} key={item.value} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
     const columns = [
       // {
       //   title: 'ID',
@@ -278,15 +321,15 @@ export default class SourceManagement extends Component {
       // },
       {
         title: '信息资源代码',
-        dataIndex: 'resoureCode',
+        dataIndex: 'resourceCode',
       },
       {
         title: '信息资源名称',
-        dataIndex: 'rsName',
+        dataIndex: 'resourceName',
       },
       {
         title: '资源属性分类',
-        dataIndex: 'resourceClassfiy',
+        dataIndex: 'typeName',
       },
       // {
       //   title: '数据类型',
@@ -309,22 +352,28 @@ export default class SourceManagement extends Component {
       // },
       {
         title: '发布日期',
-        dataIndex: 'updataTime',
-        render(text) {
-          return moment(text).format('lll')
-        },
+        dataIndex: 'resourcePublishTime',
+        // render(text) {
+        //   return moment(text).format('lll')
+        // },
       },
       {
         title: '数据已关联',
-        dataIndex: 'isDataConnected',
+        dataIndex: 'isMount',
+        render(t) {
+          return +t === 1 ? '是' : '否' 
+        },
       },
       {
         title: '信息项',
-        dataIndex: 'dataItem',
+        dataIndex: 'itemNum',
       },
       {
         title: '订阅数',
-        dataIndex: 'subscription',
+        dataIndex: 'subAmounts',
+        render(text) {
+          return  text || '暂无'
+        },
       },
       // {
       //   title: '数据最后更新时间',
@@ -359,7 +408,7 @@ export default class SourceManagement extends Component {
               <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
                 查看
               </span>
-              <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row)}>
+              {/* <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row)}>
                 关联数据
               </span>
               <span className={styles.clickBtn} onClick={that.handleOpen}>
@@ -373,7 +422,7 @@ export default class SourceManagement extends Component {
                 onConfirm={() => message.info('删除成功')}
                 >
                 <a>删除</a>
-              </Popconfirm>
+              </Popconfirm> */}
             </div>
           )
         },
@@ -382,116 +431,26 @@ export default class SourceManagement extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    // const list = [
-    //   {
-    //     id: 0,
-    //     name: '城市低保标准表(各市第1季度)',
-    //     dataType: 'Mysql',
-    //     node: '石家庄民政部',
-    //     institution: '石家庄民政部',
-    //     applicationSystemName: '统计系统',
-    //     createTime: 233435354,
-    //     lastUpdataTime: 343435354,
-    //     subscription: 2,
-    //     status: '0',
-    //   },
-    //   {
-    //     id: 1,
-    //     name: '农村低保标准表(各市第1季度)',
-    //     dataType: 'Mysql',
-    //     node: '石家庄民政部',
-    //     institution: '石家庄民政部',
-    //     applicationSystemName: '统计系统',
-    //     createTime: 233435354,
-    //     lastUpdataTime: 343435354,
-    //     subscription: 1,
-    //     status: '1',
-    //   },
-    //   {
-    //     id: 2,
-    //     name: '人口普查数据',
-    //     dataType: '文件',
-    //     node: '石家庄民政部',
-    //     institution: '石家庄民政部',
-    //     applicationSystemName: '统计系统',
-    //     createTime: 233435354,
-    //     lastUpdataTime: 343435354,
-    //     subscription: 5,
-    //     status: '2',
-    //   },
-    // ]
-    const rowSelection = {
-      // onChange: selectedRows => {
-      // },
-      // getCheckboxProps: record => ({
-      //   disabled: record.name === 'Disabled User',
-      //   name: record.name,
-      // }),
-    }
-    // if (!isNodeOperator) {
-    //   rowSelection = null
-    //   columns.splice(2,0,{
-    //     title: '节点名称',
-    //     dataIndex: 'nodeName',
-    //     align: 'center',
-    //   })    
-    // }
     return (
       <PageHeaderLayout>
         <Card>
-          <div className={styles.form}>
-            <Input placeholder="信息资源代码" style={{ width: 150, marginRight: 20 }} onChange={this.codeChange} />
-            <Input placeholder="信息资源名称" style={{ width: 150, marginRight: 20 }} onChange={this.nameChange} />
-            {/* <Input placeholder="应用系统名称" style={{ width: 150, marginRight: 20 }} /> */}
-            {/* <Select
-              style={{ marginRight: 20, width: 120 }}
-              value={nodeName}
-              onChange={this.nodeNameChange}
-            >
-              {selectData1}
-            </Select> */}
-            {!isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={label => [...label].pop()} onChange={this.nodeChange} placeholder="节点名称" style={{ marginRight: 16, width: 120 }} />}
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              defaultValue=''
-              onChange={this.dataTypeChange}
-              >
-              {selectData}
-            </Select>
-            {/* <Select
-              style={{ marginRight: 20, width: 120 }}
-              value={owingJg}
-              onChange={this.owingJgChange}
-            >
-              {selectData2}
-            </Select> */}
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              defaultValue='-2'
-              onChange={this.statusChange}
-              >
-              {selectData4}
-            </Select>
-            <RangePicker style={{ marginRight: 20, width: 210 }} onChange={this.timeChange} />
-            <Checkbox onChange={this.handleIsRelated}>数据已关联</Checkbox>
-            <Button type="primary" onClick={() => this.searchHandle({}, true)}>搜索</Button>
-          </div>
-          <div className={styles.createBtn}>
+          <SearchForm isChanged={isChanged} formOptions={formOptions} onChange={this.onChange} />
+          {/* <div className={styles.createBtn}>
             <Button icon="plus" type="primary" onClick={this.handleAdd} style={{marginRight:'20px'}}>
                 新建
             </Button>
             <Button type="primary" onClick={this.handleInput}>
                 导入
             </Button>
-          </div>
+          </div> */}
           <div>
             <Table
               loading={loading}
               columns={columns}
-              dataSource={dataList}
-              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-              rowKey="rsId"
-              rowSelection={rowSelection}
+              dataSource={catalogData}
+              pagination={paginationProps}
+              rowKey="resourceId"
+              // rowSelection={rowSelection}
               bordered
               onChange={this.tableChange}
               />
