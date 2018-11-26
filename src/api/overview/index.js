@@ -42,7 +42,7 @@ module.apis.forEach(item => {
     } else {
       item.baseHost = 'http://cdyoue.com.cn:19106' // 公网接口(生成接口)
     }
-    // item.baseHost = 'http://govecore.tpaas.youedata.com' // 公网接口(生成接口)
+    // item.baseHost = 'http://cdyoue.com.cn:19106' // 公网接口(生成接口)
     // item.baseHost = 'http://192.168.100.15:8807' // 局域网接口(开发接口)
   }
   if (!item.baseUrl) {
