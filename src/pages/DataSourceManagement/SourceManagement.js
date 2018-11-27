@@ -116,15 +116,15 @@ export default class SourceManagement extends Component {
     })
   }
 
-  handleSource = (row) => {
+  handleSource = ({resourceId = 0}) => {
     const { dispatch } = this.props
     // if (row.dataType === 'file') {
     //   dispatch(routerRedux.push('/dataSourceManagement/fileSource', { mountResourceId: row.id }))
     // } else {
     //   dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.id }))
     // }
-    console.log(row)
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', {resourceId: 1}))
+    // console.log(row)
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', {resourceId}))
   }
 
   handleEdit = () => {
