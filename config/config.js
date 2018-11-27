@@ -103,4 +103,5 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
+  // devtool: 'cheap-module-source-map',
 }

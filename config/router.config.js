@@ -868,6 +868,10 @@ export default [
             path: '500',
             component: '500',
           },
+          {
+            path: '404',
+            component: '500',
+          },
         ],
       },
       {

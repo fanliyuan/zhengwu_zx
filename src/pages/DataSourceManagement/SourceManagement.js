@@ -116,14 +116,15 @@ export default class SourceManagement extends Component {
     })
   }
 
-  handleSource = () => {
+  handleSource = (row) => {
     const { dispatch } = this.props
     // if (row.dataType === 'file') {
     //   dispatch(routerRedux.push('/dataSourceManagement/fileSource', { mountResourceId: row.id }))
     // } else {
     //   dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.id }))
     // }
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
+    console.log(row)
+    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', {resourceId: 1}))
   }
 
   handleEdit = () => {
@@ -177,9 +178,9 @@ export default class SourceManagement extends Component {
 
   @Bind()
   @Throttle(1000)
-  handleSearch(queryData = {}, pageReset = false) {
-    const pagination = pageReset?{pageNum: 1, pageSize: 10}:this.state.pagination
-    console.log(pagination, queryData) // eslint-disable-line
+  handleSearch(queryData = {}/* , pageReset = false */) {
+    // const pagination = pageReset?{pageNum: 1, pageSize: 10}:this.state.pagination
+    // console.log(pagination, queryData) // eslint-disable-line
     if (queryData.resourcePublishTime && queryData.resourcePublishTime.length > 0) {
       queryData.startTime = queryData.resourcePublishTime[0].format().substr(0,10)
       queryData.endTime = queryData.resourcePublishTime[1].format().substr(0,10)
@@ -196,6 +197,9 @@ export default class SourceManagement extends Component {
     } else {
       queryData.typeId = undefined
     }
+    if (Array.isArray(queryData.nodeId)) {
+      queryData.nodeId = [...queryData.nodeId].pop()
+    }
     this.props.dispatch({
       type: 'catalogManagement/getCatalog',
       payload: {
@@ -211,7 +215,7 @@ export default class SourceManagement extends Component {
   render() {
     const that = this
     const { isNodeOperator, isChanged, pagination: { pageNum: current } } = this.state
-    const { nodeManagement: { parentNodeListT = [] }, catalogManagement: {catalogData,pagination, srcProsTree}, loading } = this.props
+    const { nodeManagement: { parentNodeList = [] } = {}, catalogManagement: {catalogData,pagination, srcProsTree}, loading } = this.props
     const data4 = [
       { value: '0',  label: '已拒绝' },
       { value: '1', label: '已通过' },
@@ -232,12 +236,14 @@ export default class SourceManagement extends Component {
           name: 'resourceCode',
           typeOptions: {
             placeholder: '信息资源代码',
+            maxLength: 50,
           },
         },
         {
           name: 'resourceName',
           typeOptions: {
             placeholder: '信息资源名称',
+            maxLength: 50,
           },
         },
         {
@@ -245,7 +251,7 @@ export default class SourceManagement extends Component {
           type: 'Cascader',
           typeOptions: {
             placeholder: '发布节点',
-            options: parentNodeListT,
+            options: parentNodeList,
             displayRender(label) {
               return label.pop()
             },
@@ -338,10 +344,10 @@ export default class SourceManagement extends Component {
       //   //   return text === 'db' ? '数据库' : text
       //   // },
       // },
-      // {
-      //   title: '所属节点',
-      //   dataIndex: 'node',
-      // },
+      {
+        title: '发布节点',
+        dataIndex: 'nodeName',
+      },
       // {
       //   title: '所属机构',
       //   dataIndex: 'institution',
@@ -434,7 +440,7 @@ export default class SourceManagement extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <SearchForm isChanged={isChanged} formOptions={formOptions} onChange={this.onChange} />
+          <SearchForm isChange={isChanged} formOptions={formOptions} onChange={this.onChange} />
           {/* <div className={styles.createBtn}>
             <Button icon="plus" type="primary" onClick={this.handleAdd} style={{marginRight:'20px'}}>
                 新建

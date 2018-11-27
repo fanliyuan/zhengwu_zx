@@ -198,32 +198,32 @@ export default class ViewDirectory extends Component {
           <Card className={styles.InfoBlock}>
             <Row style={{ marginBottom: 10 }}>
               <Col span={6}>
-                名称: <span>{resourceTitle.resourceName}</span>
+                名称: <span>{resourceTitle.resourceName || '暂无'}</span>
               </Col>
               <Col span={6}>
-                分类: <span>{resourceTitle.dataType}</span>
+                分类: <span>{resourceTitle.dataType || '暂无'}</span>
               </Col>
               <Col span={6}>
-                信息资源代码: <span>{resourceTitle.resourceCode}</span>
+                信息资源代码: <span>{resourceTitle.resourceCode || '暂无'}</span>
               </Col>
               <Col span={6}>
-                信息资源格式: <span>{resourceTitle.resourceFormatClassify}</span>
+                信息资源格式: <span>{resourceTitle.resourceFormatClassify || '暂无'}</span>
               </Col>
             </Row>
             <Row style={{ marginBottom: 10 }}>
               <Col span={6}>
-                提供方名称: <span>{resourceTitle.resourceProviderName}</span>
+                提供方名称: <span>{resourceTitle.resourceProviderName || '暂无'}</span>
               </Col>
               <Col span={6}>
-                提供方内部部门: <span>{resourceTitle.resourceProviderDepartment}</span>
+                提供方内部部门: <span>{resourceTitle.resourceProviderDepartment || '暂无'}</span>
               </Col>
               <Col span={6}>
-                资源提供方代码: <span>{resourceTitle.resourceProviderCode}</span>
+                资源提供方代码: <span>{resourceTitle.resourceProviderCode || '暂无'}</span>
               </Col>
             </Row>
             <Row style={{ marginBottom: 10 }}>
               <Col span={24}>
-                摘要: <span>{resourceTitle.resourceAbstract}</span>
+                摘要: <span>{resourceTitle.resourceAbstract || '暂无'}</span>
               </Col>
             </Row>
             {/* <Row>

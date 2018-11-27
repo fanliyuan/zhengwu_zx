@@ -102,11 +102,11 @@ class BasicLayout extends React.PureComponent {
     dispatch({
       type: 'setting/getSetting',
     })
-    const accountId = localStorage.getItem("accountId")
-    dispatch({
-      type:'user/getNoticeList',
-      payload:{accountId,state:0},
-    })
+    // const accountId = localStorage.getItem("accountId")
+    // dispatch({
+    //   type:'user/getNoticeList',
+    //   payload:{accountId,state:0},
+    // })
     this.renderRef = requestAnimationFrame(() => {
       this.setState({
         rendering: false,

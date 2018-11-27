@@ -32,11 +32,11 @@ module.apis.forEach(item => {
     if (process.env.NODE_ENV === 'development') {
       item.baseHost = 'http://192.168.100.16:8801'
     } else {
-      item.baseHost = 'http://cdyoue.com.cn:19006/'
+      item.baseHost = 'http://cdyoue.com.cn:19006'
     }
   }
   if (!item.baseUrl) {
-    item.baseUrl = 'zwjh/api/v1/'
+    item.baseUrl = 'zwjh/api/v1'
   }
 })
 export default module

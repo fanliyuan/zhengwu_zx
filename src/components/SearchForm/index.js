@@ -34,6 +34,7 @@ export default class SearchForm extends Component {
     const { form: { resetFields, getFieldsValue }, formOptions: { searchHandler = () => {}, resetHandler = () => {} } } = this.props
     resetFields()
     const data = getFieldsValue()
+    // console.log(data)
     this.setState({
       data,
     })
@@ -93,7 +94,10 @@ export default class SearchForm extends Component {
         case 'Checkbox':
           FormItems.push(
             <FormItem className='fl mr16' {...item.itemOptions} key={item.name+item.type}>
-              {getFieldDecorator(item.name)(
+              {getFieldDecorator(item.name, {
+                // initalValue: false,
+                valuePropName: 'checked',
+              })(
                 <Checkbox {...item.typeOptions}>{item.children || '复选'}</Checkbox>
               )}
             </FormItem>)
