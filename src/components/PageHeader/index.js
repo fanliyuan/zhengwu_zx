@@ -40,7 +40,7 @@ export default class PageHeader extends PureComponent {
     }
     return (
       <div className={clsString}>
-        <div className={wide ? styles.wide : ''}>
+        <div className={wide ? styles.wide : ''} style={{ position: 'relative' }}>
           <Skeleton
             loading={loading}
             title={false}

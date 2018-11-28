@@ -1,0 +1,64 @@
+.boxOpen {
+  position: relative;
+  // 这里需要固定高度才能有
+  // height: 100px
+  transition: all 0.3s linear;
+}
+.boxClose {
+  position: relative;
+  height: 37px;
+  overflow: hidden;
+  transition: all 0.3s linear;
+}
+.button {
+  position: absolute;
+  right: 16px;
+  top: 10px;
+}
+.name {
+  font-weight: bold;
+  font-size: 20px;
+  &::after {
+    content: ':';
+    margin: 0 8px;
+  }
+}
+.label {
+  font-weight: bold;
+  &::after {
+    content: ':';
+    margin: 0 4px;
+  }
+}
+.value1 {
+  font-size: 20px;
+  display: inline-block;
+  width: 150px;
+  font-weight: bold;
+  position: relative;
+  top: 6px;
+}
+.value2 {
+  display: inline-block;
+  width: 60px;
+  position: relative;
+  top: 4px;
+}
+.value3 {
+  display: inline-block;
+  width: 200px;
+  position: relative;
+  top: 4px;
+}
+.value4 {
+  display: inline-block;
+  width: 150px;
+  position: relative;
+  top: 4px;
+}
+.value5 {
+  display: inline-block;
+  width: 150px;
+  position: relative;
+  top: 4px;
+}

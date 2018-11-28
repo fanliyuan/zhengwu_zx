@@ -108,14 +108,13 @@ class TableList extends Component {
             <Fragment>
               <a
                 onClick={() => {
-                  const { match } = this.props
-                  switch (record.type) {
-                    case 'db':
-                      return router.push(`${match.url}/dbview/${record.id}`)
-                    case 'ftp':
-                      return router.push(`${match.url}/ftpview/${record.id}`)
-                    case 'file':
-                      return router.push(`${match.url}/fileview/${record.id}`)
+                  switch (record.dataType) {
+                    case '数据库':
+                      return router.push(`/dataPublicManagement/dbview/${record.id}`)
+                    case 'FTP':
+                      return router.push(`/dataPublicManagement/ftpview/${record.id}`)
+                    case '文件':
+                      return router.push(`/dataPublicManagement/fileview/${record.id}`)
                     default:
                       message.destroy()
                       return message.error('无法查看数据，缺少数据类型！')
