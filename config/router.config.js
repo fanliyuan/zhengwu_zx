@@ -404,6 +404,7 @@ export default [
         ],
         authority: ['operator', 'operator-n', 'assessor-n'],
       },
+      // 数据发布管理 dataPublicManagement
       {
         name: 'dataPublicManagement',
         icon: 'database',

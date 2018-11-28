@@ -1,472 +1,715 @@
-import React, { Component } from 'react'
-import { Table, Button, Input, Select, Card, DatePicker, Popconfirm, message, Cascader } from 'antd'
-import moment from 'moment'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import { routerRedux } from 'dva/router'
-import Cookies from 'js-cookie'
+import moment from 'moment'
+import {
+    Card,
+    Form,
+    Modal,
+    Divider,
+    Table,
+    message,
+    Icon,
+    Alert,
+} from 'antd'
+import router from 'umi/router'
+import PageHeaderWrapper from '@/components/PageHeaderWrapper'
+import DescriptionList from '@/components/DescriptionList'
+import FilterRowForm from '@/components/FilterRowForm'
 
 import styles from './DataManager.less'
-import PageHeaderLayout from '@/components/PageHeaderWrapper'
-import { format0, format24 } from '../../utils/utils'
 
-const { Option } = Select
-const { RangePicker } = DatePicker
-@connect(({ sourceManagement, nodeManagement, loading }) => ({
-  sourceManagement,
-  nodeManagement,
-  loading: loading.models.sourceManagement || loading.models.nodeManagement,
+const { Description } = DescriptionList
+let paramsPage = { pageNum: 1, pageSize: 10 }
+let formValues
+let formTime
+
+@connect(({ dataManager, loading }) => ({
+  dataManager,
+  loading: loading.effects['dataManager/fetch'],
 }))
-export default class SourceManagement extends Component {
+@Form.create()
+class TableList extends Component {
+  columns = [
+    {
+      title: '序号',
+      dataIndex: 'id',
+      render: (text, record, index) => {
+        const { dataManager } = this.props
+        return `${index + 1 + (dataManager.data.pageNum - 1) * 10}`
+      },
+    },
+    {
+      title: '数据名称',
+      dataIndex: 'rsName',
+    },
+    {
+      title: '数据类型',
+      dataIndex: 'dataType',
+    },
+    {
+      title: '所属数据源',
+      dataIndex: 'dataSource',
+    },
+    {
+      title: '发布节点',
+      dataIndex: 'nodeName',
+    },
+    {
+      title: '最近更新时间',
+      dataIndex: 'updataTime',
+    },
+    {
+      title: '操作人',
+      dataIndex: 'createUser',
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'checkStatus',
+      render: text => {
+        switch (text) {
+          case '-1':
+            return <span style={{ color: '#5cadff' }}>待审核</span>
+          case '-11':
+            return <span style={{ color: '#5cadff' }}>修改待审核</span>
+          case '-21':
+            return <span style={{ color: '#5cadff' }}>删除待审核</span>
+          case '0':
+            return <span style={{ color: '#ed4014' }}>已拒绝</span>
+          case '10':
+            return <span style={{ color: '#ed4014' }}>修改已拒绝</span>
+          case '20':
+            return <span style={{ color: '#ed4014' }}>删除已拒绝</span>
+          case '1':
+            return <span style={{ color: '#19be6b' }}>已通过</span>
+          default:
+            return <span>无状态</span>
+        }
+      },
+    },
+    {
+      title: '操作',
+      render: (text, record) => (
+        <Fragment>
+          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
+            <Fragment>
+              <a
+                onClick={() =>
+                  router.push(
+                    `/data/management/infoSource${record.type}/${record.id}/${record.resourceId}`
+                  )
+                }
+                >
+                信息资源
+              </a>
+              <Divider type="vertical" />
+            </Fragment>
+          )}
+          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
+            <Fragment>
+              <a
+                onClick={() => {
+                  const { match } = this.props
+                  switch (record.type) {
+                    case 'db':
+                      return router.push(`${match.url}/dbview/${record.id}`)
+                    case 'ftp':
+                      return router.push(`${match.url}/ftpview/${record.id}`)
+                    case 'file':
+                      return router.push(`${match.url}/fileview/${record.id}`)
+                    default:
+                      message.destroy()
+                      return message.error('无法查看数据，缺少数据类型！')
+                  }
+                  }}
+                >
+                数据
+              </a>
+              <Divider type="vertical" />
+            </Fragment>
+          )}
+          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
+            <Fragment>
+              <a
+                onClick={() => {
+                  const { match } = this.props
+                  return router.push(`${match.url}/taskview/${record.type}/${record.id}`)
+                }}
+                >
+                任务
+              </a>
+              <Divider type="vertical" />
+            </Fragment>
+          )}
+          <Fragment>
+            <a
+              onClick={() => this.handleView(record.id, record.dataType)}
+              >
+              查看
+            </a>
+          </Fragment>
+        </Fragment>
+      ),
+    },
+  ];
+
   state = {
-    isNodeOperator: false,
-    queryData: {},
-    isChanged: false,
+    visible: false,
+    dataType: '',
   }
+
 
   componentDidMount() {
-    this.setState({
-      isNodeOperator: Cookies.get(['antd-pro-authority']) === 'operator-n',
-    })
-    this.props.dispatch({
-      type: 'nodeManagement/getParentNodes',
-    })
-    this.searchHandle({})
-  }
-
-  nameChange = e => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        rsName: e.target.value.trim(),
-      },
-      isChanged: true,
-    })
-  }
-
-  dataTypeChange = val => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        dataType: val === ''?undefined:val,
-      },
-      isChanged: true,
-    })
-  }
-
-  nodeChange = (val, params) => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        nodeId: val[0] && +[...val].pop(),
-        nodeName: params[0] && params[0].label,
-      },
-      isChanged: true,
-    })
-  }
-
-  // nodeNameChange = () => {
-    // this.setState({
-    //   nodeName: val,
-    // })
-  // }
-
-  // owingJgChange = () => {
-  //   this.setState({
-  //     owingJg: val,
-  //   })
-  // }
-
-  statusChange = val => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        checkStatus: val === '-2' ? undefined:val,
-      },
-      isChanged: true,
-    })
-  }
-
-  timeChange = val => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        // startTime: val[0] ? `${val[0].format().substr(0,10)} 0:00:00` :undefined,
-        // endTime: val[1] ? `${val[1].format().substr(0,10)} 23:59:59` :undefined,
-        startTime: val[0]?format0(val[0].format('x')):undefined,
-        endTime: val[1]?format24(val[1].format('x')):undefined,
-      },
-      isChanged: true,
-    })
-  }
-
-  searchHandle = ({pageSize, current}, flag) => {
-    const { isChanged } = this.state
-    if (!isChanged && flag) return null
-    const { queryData: { rsName, dataType, checkStatus,startTime, endTime, nodeName } } = this.state
-    this.props.dispatch({
-      type: 'sourceManagement/getResources',
+    const routeName = sessionStorage.getItem('currentList')
+    const { dispatch, form, route } = this.props
+    if (routeName && routeName !== route.name) {
+      paramsPage = { pageNum: 1, pageSize: 10 }
+      formValues = {}
+      formTime = {}
+    } else {
+      if (formTime !== undefined && formValues !== undefined) {
+        if (formTime.startTime) {
+          formValues.date = [
+            moment(formTime.startTime, 'YYYY-MM-DD'),
+            moment(formTime.endTime, 'YYYY-MM-DD'),
+          ]
+          form.setFieldsValue(formValues)
+          delete formValues.date
+        }
+      }
+      form.setFieldsValue(formValues)
+    }
+    dispatch({
+      type: 'dataManager/getNodes',
       payload: {
-        body: {
-          pageSize: pageSize || '10',
-          pageNum: current || '1',
-          checkStatus,
-          rsName,
-          dataType,
-          nodeName,
-          startTime,
-          endTime,
+        pageNum: '',
+        pageSize: '',
+      },
+    })
+    dispatch({
+      type: 'dataManager/fetch',
+      payload: {
+        ...paramsPage,
+        ...formValues,
+        ...formTime,
+      },
+    })
+  }
+
+  componentWillUnmount() {
+    const { route } = this.props
+    sessionStorage.setItem('currentList', route.name)
+  }
+
+  handleSearch = (fieldsForm, paramsTime) => {
+    const { dispatch } = this.props
+    fieldsForm.nodeName = fieldsForm.pubNodeName
+    delete fieldsForm.pubNodeName
+    paramsPage = { pageNum: 1, pageSize: 10 }
+    formValues = fieldsForm
+    formTime = paramsTime
+    const values = {
+      ...fieldsForm,
+      ...paramsPage,
+      ...paramsTime,
+    }
+    dispatch({
+      type: 'dataManager/fetch',
+      payload: values,
+    })
+  }
+
+  handleView = (id, dataType) => {
+    const { dispatch } = this.props
+    dispatch({
+      type: 'dataManager/getReqBeanEntityInfo',
+      payload: {
+        id,
+      },
+    })
+    this.setState({
+      visible: true,
+      dataType,
+    })
+  }
+
+  handleCancel = () => {
+    const { dispatch } = this.props
+    this.setState({
+      visible: false,
+      dataType: '',
+    })
+    dispatch({
+      type: 'dataManager/resetEntityInfo',
+    })
+  }
+
+  setFileSize = size => {
+    if (size === null || size === 0) {
+      return '0 Bytes'
+    }
+    const unitArr = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+    const srcSize = parseFloat(size)
+    const index = Math.floor(Math.log(srcSize) / Math.log(1024))
+    let powNum = 1
+    for (let i = 0, len = index; i < len; i += 1) {
+      powNum *= 1024
+    }
+    let newSize = srcSize / powNum
+    newSize = newSize.toFixed(2)
+    return newSize + unitArr[index]
+  }
+
+  changePage = (pageNum, pageSize) => {
+    const { dispatch } = this.props
+    paramsPage = { pageNum, pageSize }
+    dispatch({
+      type: 'dataManager/fetch',
+      payload: {
+        ...paramsPage,
+        ...formValues,
+        ...formTime,
+      },
+    })
+  }
+
+  renderDbInfo = () => {
+    let currentDetail
+    let currentSync
+    let currentList
+    let currentDetailTable
+    const {
+        dataManager: { entityInfo },
+        } = this.props
+    const keyArr = Object.keys(entityInfo)
+    if (keyArr.length > 0) {
+      currentDetail = entityInfo.value
+      currentSync = currentDetail.syncEntity
+      currentList = currentDetail.structEntityCollection
+      currentDetailTable = [
+        {
+          tableName: currentDetail.tableName,
+          tableNote: currentDetail.tableNote,
+        },
+      ]
+    }
+    const tableColumn = [
+      {
+        title: '表名称',
+        dataIndex: 'tableName',
+        align: 'center',
+      },
+      {
+        title: '中文标注',
+        dataIndex: 'tableNote',
+        align: 'center',
+      },
+    ]
+    const structColumn = [
+      {
+        title: '主键',
+        dataIndex: 'primaryKey',
+        render: text => {
+          if (text) {
+            return <Icon style={{ color: '#fb9a03' }} type="key" theme="outlined" />
+          }
+          return ''
         },
       },
-    })
-    this.setState({
-      isChanged: false,
-    })
-  }
-
-  handleSource = row => {
-    const { dispatch } = this.props
-    if (row.dataType === 'file') {
-      dispatch(routerRedux.push('/dataSourceManagement/fileSource', { mountResourceId: row.id }))
-    } else {
-      dispatch(routerRedux.push('/dataSourceManagement/dataBaseSource', { mountResourceId: row.id }))
-    }
-  }
-
-  // handleSource1 = () => {
-  //   const { dispatch } = this.props
-  //   dispatch(routerRedux.push('/dataSourceManagement/fileSource'))
-  // }
-
-  // handleTask = () => {
-  //   const { dispatch } = this.props
-  //   dispatch(routerRedux.push('/dataSourceManagement/task'))
-  // }
-
-  handleEdit = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/inputDataInfo'))
-  }
-
-  // handleCheck = () => {
-  //   const { dispatch } = this.props
-  //   dispatch(routerRedux.push('/dataSourceManagement/checkDataInfo'))
-  // }
-
-  handleCatalog = row => {
-    const { dispatch } = this.props
-    // dispatch(routerRedux.push('/dataSourceManagement/catalog'))
-    dispatch(routerRedux.push('/dataSourceManagement/viewDirectory', { resourceId: row.resourceId }))
-  }
-
-  // handleCatalog1 = () => {
-  //   const { dispatch } = this.props
-  //   dispatch(routerRedux.push('/dataSourceManagement/viewDirectory'))
-  // }
-
-  tableChange = pagination => {
-    this.searchHandle(pagination)
-  }
-
-  render() {
-    const that = this
-    const { isNodeOperator } = this.state
-    const { nodeManagement: { parentNodeList }, sourceManagement: {dataList,pagination}, loading } = this.props
-    // const options = [
-    //   {
-    //     value: '0-0',
-    //     label: '北京国土局',
-    //     children: [
-    //       {
-    //         value: '0-0-1',
-    //         label: '海淀国土局',
-    //         // children: [{
-    //         //   value: 'xihu',
-    //         //   label: 'West Lake',
-    //         // }],
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     value: '0-1',
-    //     label: '河北国土局',
-    //     children: [
-    //       {
-    //         value: '0-1-0',
-    //         label: '保定国土局',
-    //         // children: [{
-    //         //   value: 'zhonghuamen',
-    //         //   label: 'Zhong Hua Men',
-    //         // }],
-    //       },
-    //     ],
-    //   },
-    // ]
-    const data = [
-      { value: '', id: -1, label: '全部数据' },
-      { value: '数据库', id: 0, label: '数据库' },
-      { value: '文件', id: 1, label: '文件' },
-      { value: 'FTP', id: 2, label: 'FTP' },
-    ]
-    const selectData = data.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
-    // const data1 = [{ value: '0', id: 0, label: '节点' }, { value: '1', id: 1, label: '节点1' }]
-    // const selectData1 = data1.map(item => {
-    //   return (
-    //     <Option value={item.value} key={item.id} title={item.label}>
-    //       {item.label}
-    //     </Option>
-    //   )
-    // })
-    // const data2 = [
-    //   { value: '0', id: 0, label: '所属机构' },
-    //   { value: '1', id: 1, label: 'XXX机构' },
-    // ]
-    // const selectData2 = data2.map(item => {
-    //   return (
-    //     <Option value={item.value} key={item.id} title={item.label}>
-    //       {item.label}
-    //     </Option>
-    //   )
-    // })
-    const data4 = [
-      { value: '-2',  label: '审核状态' },
-      { value: '0',  label: '已拒绝' },
-      { value: '1', label: '已通过' },
-      { value: '-1', label: '待审核' },
-    ]
-    const selectData4 = data4.map(item => {
-      return (
-        <Option value={item.value} key={item.value} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
-    const columns = [
       {
-        title: 'ID',
-        dataIndex: 'rsId',
-      },
-      {
-        title: '数据名称',
-        dataIndex: 'rsName',
+        title: '字段名称',
+        dataIndex: 'columnName',
       },
       {
         title: '数据类型',
-        dataIndex: 'dataType',
-        // render(text) {
-        //   return text === 'db' ? '数据库' : text
-        // },
-      },
-      // {
-      //   title: '所属节点',
-      //   dataIndex: 'node',
-      // },
-      // {
-      //   title: '所属机构',
-      //   dataIndex: 'institution',
-      // },
-      // {
-      //   title: '应用系统名称',
-      //   dataIndex: 'applicationSystemName',
-      // },
-      {
-        title: '最近更新时间',
-        dataIndex: 'updataTime',
-        render(text) {
-          return moment(text).format('lll')
-        },
-      },
-      // {
-      //   title: '数据最后更新时间',
-      //   dataIndex: 'lastUpdataTime',
-      //   render(text) {
-      // //     return moment(text).format('YYYY-MM-DD HH:mm:ss')
-      // //   },
-      // // },
-      // {
-      //   title: '订阅数',
-      //   dataIndex: 'subscription',
-      // },
-      {
-        title: '审核状态',
-        dataIndex: 'checkStatus',
-        render(text) {
-          switch (text) {
-            case '-1':
-              return '待审核'
-            case '0':
-              return '已拒绝'
-            default:
-              return '已通过'
-          }
-        },
+        dataIndex: 'columnType',
       },
       {
-        title: '操作',
-        render: (text, row) => {
-          return (
-            <div>
-              {/* <span className={styles.clickBtn} onClick={() => that.handleCatalog(row)}>
-                目录
-              </span> */}
-              {/* <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
-                查看
-              </span> */}
-              {/* <span className={styles.clickBtn} onClick={that.handleTask}>
-                任务
-              </span> */}
-              <span className={styles.clickBtn}>
-                信息资源
-              </span>
-              <span className={styles.clickBtn}>
-                资源
-              </span>
-              <span className={styles.clickBtn}>
-                任务
-              </span>
-              {isNodeOperator && (
-                <span className={styles.clickBtn} onClick={that.handleEdit}>
-                  修改
-                </span>
-              )}
-              {/* {!isNodeOperator && (
-                <span className={styles.clickBtn} onClick={that.handleCheck}>
-                  查看
-                </span>
-              )} */}
-              {isNodeOperator && (
-                <Popconfirm
-                  title={`确认删除${row.name}?`}
-                  onConfirm={() => message.info('删除成功')}
-                  >
-                  <a>删除</a>
-                </Popconfirm>
-              )}
-            </div>
-          )
-        },
+        title: '中文标注',
+        dataIndex: 'note',
       },
     ]
-    columns.forEach(item => {
-      item.align = 'center'
-    })
-    // const list = [
-    //   {
-    //     id: 0,
-    //     name: '城市低保标准表(各市第1季度)',
-    //     dataType: 'Mysql',
-    //     node: '石家庄民政部',
-    //     institution: '石家庄民政部',
-    //     applicationSystemName: '统计系统',
-    //     createTime: 233435354,
-    //     lastUpdataTime: 343435354,
-    //     subscription: 2,
-    //     status: '0',
-    //   },
-    //   {
-    //     id: 1,
-    //     name: '农村低保标准表(各市第1季度)',
-    //     dataType: 'Mysql',
-    //     node: '石家庄民政部',
-    //     institution: '石家庄民政部',
-    //     applicationSystemName: '统计系统',
-    //     createTime: 233435354,
-    //     lastUpdataTime: 343435354,
-    //     subscription: 1,
-    //     status: '1',
-    //   },
-    //   {
-    //     id: 2,
-    //     name: '人口普查数据',
-    //     dataType: '文件',
-    //     node: '石家庄民政部',
-    //     institution: '石家庄民政部',
-    //     applicationSystemName: '统计系统',
-    //     createTime: 233435354,
-    //     lastUpdataTime: 343435354,
-    //     subscription: 5,
-    //     status: '2',
-    //   },
-    // ]
-    let rowSelection = {
-      // onChange: selectedRows => {
-      // },
-      // getCheckboxProps: record => ({
-      //   disabled: record.name === 'Disabled User',
-      //   name: record.name,
-      // }),
+    return (
+      <Fragment>
+        {keyArr.length === 0 && (
+          <Alert
+            message="页面正努力加载中......"
+            style={{ marginBottom: 20 }}
+            type="info"
+            showIcon
+            />
+        )}
+        {keyArr.length > 0 && (
+          <Card bordered={false}>
+            <DescriptionList size="large" title="基础信息" style={{ marginBottom: 32 }}>
+              <Description term="数据库">{currentDetail.dbName}</Description>
+              <Description term="数据名称">{currentDetail.name}</Description>
+              <Description term="建库单位">{currentDetail.createUnit}</Description>
+              <Description term="应用系统名称">{currentDetail.appsysName}</Description>
+              <Description term="数据描述">{currentDetail.describe}</Description>
+              <Description term="负责人姓名">{currentDetail.dutyName}</Description>
+              <Description term="负责人手机号">{currentDetail.dutyPhone}</Description>
+              <Description term="负责人职位">{currentDetail.dutyPosition}</Description>
+            </DescriptionList>
+            <Divider style={{ marginBottom: 32 }} />
+            <DescriptionList size="large" title="同步信息" style={{ marginBottom: 32 }}>
+              <Description term="同步模式">{currentSync.syncMode}</Description>
+              <Description term="同步频率">{currentSync.syncRate}</Description>
+              <Description term="定时设置">每{currentSync.timeSet}</Description>
+              <Description term="自动停止">{currentSync.stopNum}次</Description>
+            </DescriptionList>
+            <Divider style={{ marginBottom: 32 }} />
+            <div className={styles.title}>表信息</div>
+            <Table
+              style={{ marginBottom: 24 }}
+              dataSource={currentDetailTable}
+              columns={tableColumn}
+              rowKey="tableName"
+              />
+            <div className={styles.title}>结构信息</div>
+            <Table
+              style={{ marginBottom: 16 }}
+              dataSource={currentList}
+              columns={structColumn}
+              rowKey="id"
+              />
+          </Card>
+        )}
+      </Fragment>
+    )
+  }
+
+  renderFtpInfo = () => {
+    let currentDetail
+    let currentSync
+    let currentList
+    const {
+        dataManager: { entityInfo },
+        } = this.props
+    const keyArr = Object.keys(entityInfo)
+    if (keyArr.length > 0) {
+      currentDetail = entityInfo.value
+      currentSync = currentDetail.syncEntity
+      currentList = currentDetail.ftpfileEntityCollection
     }
-    if (!isNodeOperator) {
-      rowSelection = null
-      columns.splice(3,0,{
-        title: '所属节点',
-        dataIndex: 'nodeName',
-        align: 'center',
-      })    
+    const tableColumn = [
+      {
+        title: '文件名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '文件类型',
+        dataIndex: 'type',
+      },
+      {
+        title: '文件相对路径',
+        dataIndex: 'path',
+      },
+    ]
+    return (
+      <Fragment>
+        {keyArr.length === 0 && (
+          <Alert
+            message="页面正努力加载中......"
+            style={{ marginBottom: 20 }}
+            type="info"
+            showIcon
+            />
+        )}
+        {keyArr.length > 0 && (
+          <Card bordered={false}>
+            <DescriptionList size="large" title="基础信息" style={{ marginBottom: 32 }}>
+              <Description term="数据名称">{currentDetail.name}</Description>
+              <Description term="文件所属单位">{currentDetail.createUnit}</Description>
+              <Description term="数据描述">{currentDetail.describe}</Description>
+              <Description term="负责人姓名">{currentDetail.dutyName}</Description>
+              <Description term="负责人手机号">{currentDetail.dutyPhone}</Description>
+              <Description term="负责人职位">{currentDetail.dutyPosition}</Description>
+            </DescriptionList>
+            <Divider style={{ marginBottom: 32 }} />
+            <DescriptionList size="large" title="同步信息" style={{ marginBottom: 32 }}>
+              <Description term="同步模式">{currentSync.syncMode}</Description>
+              <Description term="同步频率">{currentSync.syncRate}</Description>
+              <Description term="定时设置">每{currentSync.timeSet}</Description>
+              <Description term="自动停止">{currentSync.stopNum}次</Description>
+            </DescriptionList>
+            <Divider style={{ marginBottom: 32 }} />
+            <div className={styles.title}>文件信息</div>
+            <Table
+              style={{ marginBottom: 24 }}
+              dataSource={currentList}
+              columns={tableColumn}
+              rowKey="id"
+              />
+          </Card>
+        )}
+      </Fragment>
+    )
+  }
+
+  renderFileInfo = () => {
+    let currentDetail
+    let currentList
+    const {
+        dataManager: { entityInfo },
+        } = this.props
+    const keyArr = Object.keys(entityInfo)
+    if (keyArr.length > 0) {
+      currentDetail = entityInfo.value
+      currentList = currentDetail.fileEntityCollection
+    }
+    const tableColumn = [
+      {
+        title: '文件名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '文件类型',
+        dataIndex: 'type',
+      },
+      {
+        title: '文件大小',
+        dataIndex: 'size',
+        render: text => this.setFileSize(parseInt(text, 10)),
+      },
+      {
+        title: '最近更新时间',
+        dataIndex: 'uploadTime',
+      },
+    ]
+    return (
+      <Fragment>
+        {keyArr.length === 0 && (
+          <Alert
+            message="页面正努力加载中......"
+            style={{ marginBottom: 20 }}
+            type="info"
+            showIcon
+            />
+        )}
+        {keyArr.length > 0 && (
+          <Card bordered={false}>
+            <DescriptionList size="large" title="基础信息" style={{ marginBottom: 32 }}>
+              <Description term="数据名称">{currentDetail.name}</Description>
+              <Description term="文件所属单位">{currentDetail.createUnit}</Description>
+              <Description term="数据描述">{currentDetail.describe}</Description>
+              <Description term="负责人姓名">{currentDetail.dutyName}</Description>
+              <Description term="负责人手机号">{currentDetail.dutyPhone}</Description>
+              <Description term="负责人职位">{currentDetail.dutyPosition}</Description>
+            </DescriptionList>
+            <Divider style={{ marginBottom: 32 }} />
+            <div className={styles.title}>文件信息</div>
+            <Table
+              style={{ marginBottom: 24 }}
+              dataSource={currentList}
+              columns={tableColumn}
+              rowKey="id"
+              />
+          </Card>
+        )}
+      </Fragment>
+    )
+  }
+
+  renderForm() {
+    const {
+        dataManager: { nodes },
+        } = this.props
+    const pubNodes = [
+      {
+        key: '全部',
+        value: '',
+      },
+    ]
+    nodes.map(item => {
+      return pubNodes.push({
+        key: item.nodeName,
+        value: item.nodeName,
+      })
+    })
+    const formData = {
+      md: 8,
+      lg: 24,
+      xl: 48,
+      data: [
+        {
+          key: 1,
+          data: [
+            {
+              prop: 'rsName',
+              label: '数据名称',
+              typeOptions: {
+                placeholder: '请输入数据名称',
+                maxLength: 50,
+              },
+            },
+            {
+              prop: 'createUser',
+              label: '操作人',
+              typeOptions: {
+                placeholder: '请输入操作人',
+                maxLength: 50,
+              },
+            },
+            {
+              type: 'RangePicker',
+              prop: 'date',
+              label: '更新时间',
+            },
+          ],
+        },
+        {
+          key: 2,
+          data: [
+            {
+              type: 'Select',
+              prop: 'dataType',
+              label: '数据类型',
+              typeOptions: {
+                placeholder: '请选择数据类型',
+              },
+              options: [
+                {
+                  key: '全部',
+                  value: '',
+                },
+                {
+                  key: '数据库',
+                  value: '数据库',
+                },
+                {
+                  key: 'FTP',
+                  value: 'FTP',
+                },
+                {
+                  key: '文件',
+                  value: '文件',
+                },
+              ],
+            },
+            {
+              type: 'Select',
+              prop: 'pubNodeName',
+              label: '发布节点',
+              typeOptions: {
+                placeholder: '请选择发布节点',
+              },
+              options: pubNodes,
+            },
+            {
+              type: 'Select',
+              prop: 'checkStatus',
+              label: '审核状态',
+              typeOptions: {
+                placeholder: '请选择审核状态',
+              },
+              options: [
+                {
+                  key: '全部',
+                  value: '',
+                },
+                {
+                  key: '待审核',
+                  value: '-1',
+                },
+                {
+                  key: '修改待审核',
+                  value: '-11',
+                },
+                {
+                  key: '删除待审核',
+                  value: '-21',
+                },
+                {
+                  key: '已拒绝',
+                  value: '0',
+                },
+                {
+                  key: '修改已拒绝',
+                  value: '10',
+                },
+                {
+                  key: '删除已拒绝',
+                  value: '20',
+                },
+                {
+                  key: '已通过',
+                  value: '1',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    }
+    const actions = {
+      handleSearch: this.handleSearch,
     }
     return (
-      <PageHeaderLayout>
-        <Card>
-          <div className={styles.form}>
-            <Input placeholder="数据名称" style={{ width: 150, marginRight: 20 }} onChange={this.nameChange} />
-            {/* <Input placeholder="应用系统名称" style={{ width: 150, marginRight: 20 }} /> */}
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              defaultValue=''
-              onChange={this.dataTypeChange}
-              >
-              {selectData}
-            </Select>
-            {/* <Select
-              style={{ marginRight: 20, width: 120 }}
-              value={nodeName}
-              onChange={this.nodeNameChange}
-            >
-              {selectData1}
-            </Select> */}
-            {!isNodeOperator && <Cascader options={parentNodeList} changeOnSelect displayRender={label => [...label].pop()} onChange={this.nodeChange} placeholder="所属节点" style={{ marginRight: 16, width: 120 }} />}
-            {/* <Select
-              style={{ marginRight: 20, width: 120 }}
-              value={owingJg}
-              onChange={this.owingJgChange}
-            >
-              {selectData2}
-            </Select> */}
-            <Select
-              style={{ marginRight: 20, width: 120 }}
-              defaultValue='-2'
-              onChange={this.statusChange}
-              >
-              {selectData4}
-            </Select>
-            <RangePicker style={{ marginRight: 20, width: 210 }} onChange={this.timeChange} />
-            <Button type="primary" onClick={() => this.searchHandle({}, true)}>搜索</Button>
-          </div>
-          <div>
+      <FilterRowForm formData={formData} actions={actions} />
+    )
+  }
+
+  render() {
+    const {
+        dataManager: { data },
+        loading,
+        } = this.props
+    const { visible, dataType } = this.state
+    const paginationProps = {
+      showQuickJumper: true,
+      total: data.total,
+      current: data.pageNum,
+      onChange: this.changePage,
+      pageSize: 10,
+      showTotal(total) {
+        return `共${Math.ceil(total / 10)}页 / ${total}条数据`
+      },
+    }
+    const locale = {
+      emptyText: '很遗憾，没有搜索到匹配的数据',
+    }
+    const cancelButtonProps = {
+      className: styles.hiddenBtn,
+    }
+    return (
+      <PageHeaderWrapper title="">
+        <Card bordered={false}>
+          <div className={styles.tableList}>
+            <div className={styles.tableListForm}>{this.renderForm()}</div>
             <Table
-              loading={loading}
-              columns={columns}
-              dataSource={dataList}
-              pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-              rowKey="rsId"
-              rowSelection={rowSelection}
+              rowKey={record => record.id}
               bordered
-              onChange={this.tableChange}
+              columns={this.columns}
+              dataSource={data.data}
+              pagination={paginationProps}
+              locale={locale}
+              loading={loading}
               />
           </div>
-          <div>{isNodeOperator && <Button type="primary">删除</Button>}</div>
+          <Modal
+            title='查看'
+            visible={visible}
+            onOk={this.handleCancel}
+            okText="关闭"
+            onCancel={this.handleCancel}
+            cancelButtonProps={cancelButtonProps}
+            width={900}
+            maskClosable={false}
+            >
+            {dataType === '数据库' && (
+              this.renderDbInfo()
+            )}
+            {dataType === 'FTP' && (
+              this.renderFtpInfo()
+            )}
+            {dataType === '文件' && (
+              this.renderFileInfo()
+            )}
+          </Modal>
         </Card>
-      </PageHeaderLayout>
+      </PageHeaderWrapper>
     )
   }
 }
+
+export default TableList

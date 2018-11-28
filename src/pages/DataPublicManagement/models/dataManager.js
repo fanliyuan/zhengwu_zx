@@ -1,0 +1,86 @@
+import { message } from 'antd'
+import apis from '../../../api'
+
+const { getSourceList, getNodes, getEntityInfo } = apis
+
+export default {
+  namespace: 'dataManager',
+
+  state: {
+    data: {
+      data: [],
+      total: 0,
+    },
+    nodes: [],
+    entityInfo: {},
+  },
+
+  effects: {
+    *fetch({ payload }, { call, put }) {
+      const response = yield call(getSourceList, { body: payload })
+      yield put({
+        type: 'queryList',
+        payload: response,
+      })
+    },
+    *getNodes({ payload }, { call, put }) {
+      const response = yield call(getNodes, { body: payload })
+      if (response.code === '0') {
+        yield put({
+          type: 'setNodes',
+          payload: response,
+        })
+      } else {
+        message.error(response.msg)
+      }
+    },
+    *getReqBeanEntityInfo({ payload }, { call, put }) {
+      const response = yield call(getEntityInfo, { params: payload })
+      if (response.code === '200') {
+        yield put({
+          type: 'setEntityInfo',
+          payload: response,
+        })
+      } else {
+        message.error(response.msg)
+      }
+    },
+  },
+
+  reducers: {
+    queryList(state, { payload }) {
+      if (payload && payload.data) {
+        return {
+          ...state,
+          data: {
+            ...payload.data,
+          },
+        }
+      }
+      return {
+        ...state,
+        data: {
+          ...payload,
+        },
+      }
+    },
+    setNodes(state, { payload }) {
+      return {
+        ...state,
+        nodes: payload.result.datas,
+      }
+    },
+    setEntityInfo(state, { payload }) {
+      return {
+        ...state,
+        entityInfo: payload.data,
+      }
+    },
+    resetEntityInfo(state) {
+      return {
+        ...state,
+        entityInfo: {},
+      }
+    },
+  },
+}

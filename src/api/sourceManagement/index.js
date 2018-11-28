@@ -35,6 +35,11 @@ const module = {
       method: 'post',
     },
     {
+      name: 'getEntityInfo',
+      url: 'zwjh/api/v1/getReqBeanEntityInfo',
+      baseHost:'http://cdyoue.com.cn:19006',
+    },
+    {
       name: 'list',
       url: 'zwjh/api/v1/list',
       // method: 'get',
