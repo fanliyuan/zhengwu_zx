@@ -156,7 +156,6 @@ class TableList extends Component {
     dataType: '',
   }
 
-
   componentDidMount() {
     const routeName = sessionStorage.getItem('currentList')
     const { dispatch, form, route } = this.props
