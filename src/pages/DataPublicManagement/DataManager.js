@@ -180,7 +180,7 @@ class TableList extends Component {
       type: 'dataManager/getNodes',
       payload: {
         pageNum: '',
-        pageSize: '',
+        pageSize: '10000',
       },
     })
     dispatch({
@@ -483,16 +483,48 @@ class TableList extends Component {
                   value: '',
                 },
                 {
-                  key: '数据库',
-                  value: '数据库',
+                  label: '数据库类型',
+                  OptGroup: true,
+                  options: [
+                    {
+                      key: 'mysql',
+                      value: 'mysql',
+                    },
+                    {
+                      key: 'sqlserver',
+                      value: 'sqlserver',
+                    },
+                    {
+                      key: 'oracle',
+                      value: 'oracle',
+                    },
+                    {
+                      key: 'dm',
+                      value: 'dm',
+                    },
+                    {
+                      key: 'kingbase',
+                      value: 'kingbase',
+                    },
+                  ],
                 },
                 {
-                  key: 'FTP',
-                  value: 'FTP',
-                },
-                {
-                  key: '文件',
-                  value: '文件',
+                  label: '半结构文件类型',
+                  OptGroup: true,
+                  options: [
+                    {
+                      key: 'ftp',
+                      value: 'ftp',
+                    },
+                    {
+                      key: 'sftp',
+                      value: 'sftp',
+                    },
+                    {
+                      key: '文件',
+                      value: 'file',
+                    },
+                  ],
                 },
               ],
             },

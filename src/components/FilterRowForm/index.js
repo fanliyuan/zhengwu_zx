@@ -54,7 +54,7 @@ export default class FilterRowForm extends PureComponent {
                           {compent.options.map(option => {
                             if (option.OptGroup) {
                               return (
-                                <OptGroup label={option.label}>
+                                <OptGroup label={option.label} key={option.label}>
                                   {option.options.map(op => {
                                     return (
                                       <Option value={op.value} key={op.value}>{op.key}</Option>
