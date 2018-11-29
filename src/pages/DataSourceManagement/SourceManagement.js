@@ -41,6 +41,16 @@ export default class SourceManagement extends Component {
     this.handleSearch()
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.catalogManagement.catalogData !== this.props.catalogManagement.catalogData) {
+      this.setState({
+        pagination: {
+          pageNum: 1,
+        },
+      })
+    }
+  }
+
   nameChange = e => {
     const { queryData } = this.state
     this.setState({
@@ -196,12 +206,19 @@ export default class SourceManagement extends Component {
     // } else {
     //   queryData.typeId = undefined
     // }
-    if (Array.isArray(queryData.typeId)) {
-      [queryData.classId,queryData.projectId,queryData.catalogId,queryData.typeId] = queryData.typeId
-      // queryData.typeId = queryData.typeId[3]
-      // queryData.catalogId = queryData.typeId[2]
-      // queryData.projectId = queryData.typeId[1]
-      // queryData.classId = queryData.typeId[0]
+    const { levelTree } = queryData
+    delete queryData.levelTree
+    if (Array.isArray(levelTree) && levelTree.length>0) {
+      // [queryData.classId,queryData.projectId,queryData.catalogId,queryData.typeId] = queryData.typeId
+      queryData.classId = `${levelTree[0]}`
+      queryData.projectId = `${levelTree[1]}`
+      queryData.catalogId = `${levelTree[2]}`
+      queryData.typeId = `${levelTree[3]}`
+    }else{
+      queryData.typeId = ''
+      queryData.catalogId = ''
+      queryData.projectId = ''
+      queryData.classId = ''
     }
     if (Array.isArray(queryData.nodeId)) {
       queryData.nodeId = [...queryData.nodeId].pop()
@@ -265,11 +282,11 @@ export default class SourceManagement extends Component {
         },
         // 这里应该是级联
         {
-          name: 'typeId',
+          name: 'levelTree',
           type: 'Cascader', // Cascader
           typeOptions: {
             placeholder: '资源属性分类',
-            fieldNames: {label: 'name', value: 'code'},
+            fieldNames: {label: 'name', value: 'id'},
             options: srcProsTree,
             displayRender(label) {
               return label.pop()
