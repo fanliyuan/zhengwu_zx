@@ -1,0 +1,95 @@
+import React, {Fragment, PureComponent} from 'react'
+import { Alert, Card, Divider, Table } from 'antd'
+import DescriptionList from '@/components/DescriptionList'
+import Ellipsis from '@/components/Ellipsis'
+
+import styles from './index.less'
+
+const { Description } = DescriptionList
+
+export default class DbModalView extends PureComponent {
+
+  render() {
+    const { data } = this.props
+    return (
+      <Fragment>
+        {data.keyArr.length === 0 && (
+          <Alert
+            message="页面正努力加载中......"
+            style={{ marginBottom: 20 }}
+            type="info"
+            showIcon
+            />
+        )}
+        {data.keyArr.length > 0 && (
+          <Card bordered={false}>
+            <DescriptionList size="large" title="基础信息" style={{ marginBottom: 32 }}>
+              <Description term="数据库">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.dbName}
+                </Ellipsis>
+              </Description>
+              <Description term="数据名称">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.name}
+                </Ellipsis>
+              </Description>
+              <Description term="建库单位">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.createUnit}
+                </Ellipsis>
+              </Description>
+              <Description term="应用系统名称">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.appsysName}
+                </Ellipsis>
+              </Description>
+              <Description term="数据描述">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.describe}
+                </Ellipsis>
+              </Description>
+              <Description term="负责人姓名">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.dutyName}
+                </Ellipsis>
+              </Description>
+              <Description term="负责人手机号">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.dutyPhone}
+                </Ellipsis>
+              </Description>
+              <Description term="负责人职位">
+                <Ellipsis lines={1} fullWidthRecognition tooltip>
+                  {data.currentDetail.dutyPosition}
+                </Ellipsis>
+              </Description>
+            </DescriptionList>
+            <Divider style={{ marginBottom: 32 }} />
+            <DescriptionList size="large" title="同步信息" style={{ marginBottom: 32 }}>
+              <Description term="同步模式">{data.currentSync.syncMode}</Description>
+              <Description term="同步频率">{data.currentSync.syncRate}</Description>
+              <Description term="定时设置">每{data.currentSync.timeSet}</Description>
+              <Description term="自动停止">{data.currentSync.stopNum}次</Description>
+            </DescriptionList>
+            <Divider style={{ marginBottom: 32 }} />
+            <div className={styles.title}>表信息</div>
+            <Table
+              style={{ marginBottom: 24 }}
+              dataSource={data.currentDetailTable}
+              columns={data.tableColumn}
+              rowKey="tableName"
+              />
+            <div className={styles.title}>结构信息</div>
+            <Table
+              style={{ marginBottom: 16 }}
+              dataSource={data.currentList}
+              columns={data.structColumn}
+              rowKey="id"
+              />
+          </Card>
+        )}
+      </Fragment>
+    )
+  }
+}
