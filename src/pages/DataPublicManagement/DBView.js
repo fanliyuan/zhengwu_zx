@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react'
-import { Table, Icon, Alert, Button, Card } from 'antd'
+import { Table, Icon, Alert, Button, Card, message } from 'antd'
 import { connect } from 'dva'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import DataBaseInfo from '@/components/DataBaseInfo'
+
+import styles from './DataManager.less'
 
 @connect(({ dbView }) => ({
   dbView,
@@ -12,6 +14,9 @@ class DBView extends Component {
 
   state = {
     page: 1,
+    modelName: '结构',
+    modelTitle: '数据项',
+    modelUnit: '项',
   }
 
   componentDidMount() {
@@ -28,6 +33,17 @@ class DBView extends Component {
     const { dispatch } = this.props
     dispatch({
       type: 'dbView/reset',
+    })
+  }
+
+  viewTableData = () => {
+    message.destroy()
+    message.info('暂未开放！')
+  }
+
+  viewTableStruct = () => {
+    this.setState({
+      modelName: '结构',
     })
   }
 
@@ -50,6 +66,7 @@ class DBView extends Component {
     const {
         dbView: { entityInfo },
         } = this.props
+    const { modelName, modelTitle, modelUnit } = this.state
     const keyArr = Object.keys(entityInfo)
     if (keyArr.length > 0) {
       currentDetail = entityInfo.value
@@ -85,6 +102,10 @@ class DBView extends Component {
         describe,
       }
     }
+    const methods = {
+      viewTableData: this.viewTableData,
+      viewTableStruct: this.viewTableStruct,
+    }
     const tableColumn = [
       {
         title: '序号',
@@ -101,6 +122,22 @@ class DBView extends Component {
         title: '中文标注',
         dataIndex: 'tableNote',
         align: 'center',
+      },
+      {
+        title: '操作',
+        align: 'center',
+        render() {
+          return (
+            <Fragment>
+              <a className="mr16" disabled={modelName === '浏览'} onClick={methods.viewTableData}>
+                浏览
+              </a>
+              <a className="mr16" disabled={modelName === '结构'} onClick={methods.viewTableStruct}>
+                结构
+              </a>
+            </Fragment>
+          )
+        },
       },
     ]
     const structColumn = [
@@ -176,12 +213,15 @@ class DBView extends Component {
                   columns={tableColumn}
                   rowKey="tableName"
                   />
+                <div className={`mt16 ${styles.title}`}>
+                  {modelTitle} 共 <span style={{ color: '#ed4014' }}>{currentList.length}</span> {modelUnit}
+                </div>
                 <Table
                   bordered
                   pagination={paginationProps}
                   dataSource={currentList}
                   columns={structColumn}
-                  className="mt16"
+                  className={`mt16 ${modelName === '结构' ? `${styles.show}` : `${styles.hidden}`}`}
                   rowKey="id"
                   />
               </Fragment>
