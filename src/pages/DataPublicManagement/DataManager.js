@@ -126,7 +126,7 @@ class TableList extends Component {
               <Divider type="vertical" />
             </Fragment>
           )}
-          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
+          {(record.checkStatus === '1' || record.checkStatus === '-11') && record.dataType !== '文件' && (
             <Fragment>
               <a
                 onClick={() => {
