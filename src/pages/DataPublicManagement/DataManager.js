@@ -9,16 +9,16 @@ import {
     Table,
     message,
     Icon,
-    Alert,
 } from 'antd'
 import router from 'umi/router'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
-import DescriptionList from '@/components/DescriptionList'
 import FilterRowForm from '@/components/FilterRowForm'
+import DbModalView from '@/components/DbModalView'
+import FtpModalView from '@/components/FtpModalView'
+import FileModalView from '@/components/FileModalView'
 
 import styles from './DataManager.less'
 
-const { Description } = DescriptionList
 let paramsPage = { pageNum: 1, pageSize: 10 }
 let formValues
 let formTime
@@ -326,53 +326,17 @@ class TableList extends Component {
         dataIndex: 'note',
       },
     ]
+    const data = {
+      currentDetail,
+      currentSync,
+      currentList,
+      currentDetailTable,
+      tableColumn,
+      structColumn,
+      keyArr,
+    }
     return (
-      <Fragment>
-        {keyArr.length === 0 && (
-          <Alert
-            message="页面正努力加载中......"
-            style={{ marginBottom: 20 }}
-            type="info"
-            showIcon
-            />
-        )}
-        {keyArr.length > 0 && (
-          <Card bordered={false}>
-            <DescriptionList size="large" title="基础信息" style={{ marginBottom: 32 }}>
-              <Description term="数据库">{currentDetail.dbName}</Description>
-              <Description term="数据名称">{currentDetail.name}</Description>
-              <Description term="建库单位">{currentDetail.createUnit}</Description>
-              <Description term="应用系统名称">{currentDetail.appsysName}</Description>
-              <Description term="数据描述">{currentDetail.describe}</Description>
-              <Description term="负责人姓名">{currentDetail.dutyName}</Description>
-              <Description term="负责人手机号">{currentDetail.dutyPhone}</Description>
-              <Description term="负责人职位">{currentDetail.dutyPosition}</Description>
-            </DescriptionList>
-            <Divider style={{ marginBottom: 32 }} />
-            <DescriptionList size="large" title="同步信息" style={{ marginBottom: 32 }}>
-              <Description term="同步模式">{currentSync.syncMode}</Description>
-              <Description term="同步频率">{currentSync.syncRate}</Description>
-              <Description term="定时设置">每{currentSync.timeSet}</Description>
-              <Description term="自动停止">{currentSync.stopNum}次</Description>
-            </DescriptionList>
-            <Divider style={{ marginBottom: 32 }} />
-            <div className={styles.title}>表信息</div>
-            <Table
-              style={{ marginBottom: 24 }}
-              dataSource={currentDetailTable}
-              columns={tableColumn}
-              rowKey="tableName"
-              />
-            <div className={styles.title}>结构信息</div>
-            <Table
-              style={{ marginBottom: 16 }}
-              dataSource={currentList}
-              columns={structColumn}
-              rowKey="id"
-              />
-          </Card>
-        )}
-      </Fragment>
+      <DbModalView data={data} />
     )
   }
 
@@ -403,44 +367,15 @@ class TableList extends Component {
         dataIndex: 'path',
       },
     ]
+    const data = {
+      currentDetail,
+      currentSync,
+      currentList,
+      tableColumn,
+      keyArr,
+    }
     return (
-      <Fragment>
-        {keyArr.length === 0 && (
-          <Alert
-            message="页面正努力加载中......"
-            style={{ marginBottom: 20 }}
-            type="info"
-            showIcon
-            />
-        )}
-        {keyArr.length > 0 && (
-          <Card bordered={false}>
-            <DescriptionList size="large" title="基础信息" style={{ marginBottom: 32 }}>
-              <Description term="数据名称">{currentDetail.name}</Description>
-              <Description term="文件所属单位">{currentDetail.createUnit}</Description>
-              <Description term="数据描述">{currentDetail.describe}</Description>
-              <Description term="负责人姓名">{currentDetail.dutyName}</Description>
-              <Description term="负责人手机号">{currentDetail.dutyPhone}</Description>
-              <Description term="负责人职位">{currentDetail.dutyPosition}</Description>
-            </DescriptionList>
-            <Divider style={{ marginBottom: 32 }} />
-            <DescriptionList size="large" title="同步信息" style={{ marginBottom: 32 }}>
-              <Description term="同步模式">{currentSync.syncMode}</Description>
-              <Description term="同步频率">{currentSync.syncRate}</Description>
-              <Description term="定时设置">每{currentSync.timeSet}</Description>
-              <Description term="自动停止">{currentSync.stopNum}次</Description>
-            </DescriptionList>
-            <Divider style={{ marginBottom: 32 }} />
-            <div className={styles.title}>文件信息</div>
-            <Table
-              style={{ marginBottom: 24 }}
-              dataSource={currentList}
-              columns={tableColumn}
-              rowKey="id"
-              />
-          </Card>
-        )}
-      </Fragment>
+      <FtpModalView data={data} />
     )
   }
 
@@ -474,37 +409,14 @@ class TableList extends Component {
         dataIndex: 'uploadTime',
       },
     ]
+    const data = {
+      currentDetail,
+      currentList,
+      tableColumn,
+      keyArr,
+    }
     return (
-      <Fragment>
-        {keyArr.length === 0 && (
-          <Alert
-            message="页面正努力加载中......"
-            style={{ marginBottom: 20 }}
-            type="info"
-            showIcon
-            />
-        )}
-        {keyArr.length > 0 && (
-          <Card bordered={false}>
-            <DescriptionList size="large" title="基础信息" style={{ marginBottom: 32 }}>
-              <Description term="数据名称">{currentDetail.name}</Description>
-              <Description term="文件所属单位">{currentDetail.createUnit}</Description>
-              <Description term="数据描述">{currentDetail.describe}</Description>
-              <Description term="负责人姓名">{currentDetail.dutyName}</Description>
-              <Description term="负责人手机号">{currentDetail.dutyPhone}</Description>
-              <Description term="负责人职位">{currentDetail.dutyPosition}</Description>
-            </DescriptionList>
-            <Divider style={{ marginBottom: 32 }} />
-            <div className={styles.title}>文件信息</div>
-            <Table
-              style={{ marginBottom: 24 }}
-              dataSource={currentList}
-              columns={tableColumn}
-              rowKey="id"
-              />
-          </Card>
-        )}
-      </Fragment>
+      <FileModalView data={data} />
     )
   }
 
