@@ -107,8 +107,9 @@ export default function request(url, option) {
     .update(fingerprint)
     .digest('hex')
 
+  // fetch 配置 
   const defaultOptions = {
-    credentials: 'include',
+    // credentials: 'include', // 是否携带cookie, 默认不带
   }
   const newOptions = { ...defaultOptions, ...options }
   if (

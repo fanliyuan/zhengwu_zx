@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Button, Select, Card, message } from 'antd'
+import { Table, Button, Select, Card } from 'antd'
 // import moment from 'moment'
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
@@ -146,9 +146,9 @@ export default class SourceManagement extends Component {
     })
   }
 
-  handlerelatedData = () => {
+  handlerelatedData = row => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData'))
+    dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData', { resourceId: row.resourceId, moutResourceId: row.moutResourceId  }))
   }
 
   handleAdd = () => {
@@ -187,15 +187,21 @@ export default class SourceManagement extends Component {
     }
     delete queryData.resourcePublishTime
     queryData.isMount = queryData.isMount ? '1':'0'
-    // delete queryData.isMount
-    if (queryData.typeId && queryData.typeId.length > 0) {
-      if (!queryData.typeId[3] && queryData.typeId[3] !== 0) {
-        return message.error('资源属性选择项不是细目')
-      } else {
-        queryData.typeId = queryData.typeId[3] // eslint-disable-line
-      }
-    } else {
-      queryData.typeId = undefined
+    // if (queryData.typeId && queryData.typeId.length > 0) {
+    //   if (!queryData.typeId[3] && queryData.typeId[3] !== 0) {
+    //     return message.error('资源属性选择项不是细目')
+    //   } else {
+    //     queryData.typeId = queryData.typeId[3] // eslint-disable-line
+    //   }
+    // } else {
+    //   queryData.typeId = undefined
+    // }
+    if (Array.isArray(queryData.typeId)) {
+      [queryData.classId,queryData.projectId,queryData.catalogId,queryData.typeId] = queryData.typeId
+      // queryData.typeId = queryData.typeId[3]
+      // queryData.catalogId = queryData.typeId[2]
+      // queryData.projectId = queryData.typeId[1]
+      // queryData.classId = queryData.typeId[0]
     }
     if (Array.isArray(queryData.nodeId)) {
       queryData.nodeId = [...queryData.nodeId].pop()
@@ -266,7 +272,7 @@ export default class SourceManagement extends Component {
             fieldNames: {label: 'name', value: 'code'},
             options: srcProsTree,
             displayRender(label) {
-              return label[4]
+              return label.pop()
             },
           },
         },
@@ -414,12 +420,13 @@ export default class SourceManagement extends Component {
               <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
                 查看
               </span>
-              {/* <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row)}>
-                关联数据
-              </span>
+              {
+                row.isMount === 1 && <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row)}>关联数据</span>
+              } 
               <span className={styles.clickBtn} onClick={that.handleOpen}>
                 共享开放
               </span>
+              {/*
               <span className={styles.clickBtn} onClick={that.handleEdit}>
                 修改
               </span>

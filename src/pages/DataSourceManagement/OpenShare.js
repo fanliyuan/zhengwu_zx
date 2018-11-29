@@ -39,8 +39,7 @@ export default class OpenShare extends Component {
   }
 
   handleBack = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+    window.history.back()
   }
 
   render() {
