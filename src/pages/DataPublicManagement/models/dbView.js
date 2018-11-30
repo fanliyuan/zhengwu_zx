@@ -4,7 +4,7 @@ import apis from '../../../api'
 const { getEntityInfo } = apis
 
 export default {
-  namescpace: 'dbView',
+  namespace: 'dbView',
 
   state: {
     entityInfo: {},

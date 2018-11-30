@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { Table, Icon, Alert, Button, Card, message } from 'antd'
 import { connect } from 'dva'
+import { Table, Icon, Alert, Button, Card, message } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import DataBaseInfo from '@/components/DataBaseInfo'
@@ -10,7 +10,7 @@ import styles from './DataManager.less'
 @connect(({ dbView }) => ({
   dbView,
 }))
-class DBView extends Component {
+class ViewDb extends Component {
 
   state = {
     page: 1,
@@ -232,4 +232,4 @@ class DBView extends Component {
     )
   }
 }
-export default DBView
+export default ViewDb
