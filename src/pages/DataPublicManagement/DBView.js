@@ -38,7 +38,7 @@ class DBView extends Component {
 
   viewTableData = () => {
     message.destroy()
-    message.info('暂未开放！')
+    message.info('数据未开放，不能做数据浏览！')
   }
 
   viewTableStruct = () => {

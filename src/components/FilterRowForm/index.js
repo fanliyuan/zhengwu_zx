@@ -20,7 +20,6 @@ export default class FilterRowForm extends PureComponent {
           startTime: moment(fieldsForm.date[0], 'YYYY-MM-DD').valueOf(),
           endTime: moment(fieldsForm.date[1], 'YYYY-MM-DD').valueOf(),
         }
-        delete fieldsForm.date
       }
       actions.handleSearch(fieldsForm, paramsTime)
     })
@@ -38,6 +37,7 @@ export default class FilterRowForm extends PureComponent {
     const {
         form: { getFieldDecorator },
         formData,
+        data,
         } = this.props
     const RowForm = []
     formData.data.map(item => {
@@ -49,7 +49,9 @@ export default class FilterRowForm extends PureComponent {
                 return (
                   <Col md={formData.md} sm={formData.lg} key={compent.prop}>
                     <FormItem label={compent.label} key={compent.prop}>
-                      {getFieldDecorator(compent.prop)(
+                      {getFieldDecorator(compent.prop, {
+                        initialValue: data[compent.prop],
+                      })(
                         <Select style={{ width: '100%' }} {...compent.typeOptions}>
                           {compent.options.map(option => {
                             if (option.OptGroup) {
@@ -76,7 +78,9 @@ export default class FilterRowForm extends PureComponent {
                 return (
                   <Col md={formData.md} sm={formData.lg} key={compent.prop}>
                     <FormItem label={compent.label}>
-                      {getFieldDecorator(compent.prop)(
+                      {getFieldDecorator(compent.prop, {
+                        initialValue: data[compent.prop],
+                      })(
                         <RangePicker style={{ width: '100%' }} placeholder={['开始时间', '结束时间']} />
                       )}
                     </FormItem>
@@ -86,7 +90,9 @@ export default class FilterRowForm extends PureComponent {
                 return (
                   <Col md={formData.md} sm={formData.lg} key={compent.prop}>
                     <FormItem label={compent.label}>
-                      {getFieldDecorator(compent.prop)(
+                      {getFieldDecorator(compent.prop, {
+                        initialValue: data[compent.prop],
+                      })(
                         <Input {...compent.typeOptions} />
                       )}
                     </FormItem>

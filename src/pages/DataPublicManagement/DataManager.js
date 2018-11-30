@@ -108,16 +108,15 @@ class TableList extends Component {
             <Fragment>
               <a
                 onClick={() => {
-                  switch (record.dataType) {
-                    case '数据库':
-                      return router.push(`/dataPublicManagement/dbview/${record.id}`)
-                    case 'FTP':
-                      return router.push(`/dataPublicManagement/ftpview/${record.id}`)
-                    case '文件':
-                      return router.push(`/dataPublicManagement/fileview/${record.id}`)
-                    default:
-                      message.destroy()
-                      return message.error('无法查看数据，缺少数据类型！')
+                  if (record.id.indexOf('db') !== -1) {
+                    return router.push(`/dataPublicManagement/dbview/${record.id}`)
+                  } else if (record.id.indexOf('ftp') !== -1) {
+                    return router.push(`/dataPublicManagement/ftpview/${record.id}`)
+                  } else if (record.id.indexOf('file') !== -1) {
+                    return router.push(`/dataPublicManagement/fileview/${record.id}`)
+                  } else {
+                    message.destroy()
+                    return message.error('无法查看数据，缺少数据类型！')
                   }
                   }}
                 >
@@ -171,7 +170,6 @@ class TableList extends Component {
             moment(formTime.endTime, 'YYYY-MM-DD'),
           ]
           form.setFieldsValue(formValues)
-          delete formValues.date
         }
       }
       form.setFieldsValue(formValues)
@@ -180,7 +178,7 @@ class TableList extends Component {
       type: 'dataManager/getNodes',
       payload: {
         pageNum: '',
-        pageSize: '10000',
+        pageSize: '',
       },
     })
     dispatch({
@@ -201,7 +199,6 @@ class TableList extends Component {
   handleSearch = (fieldsForm, paramsTime) => {
     const { dispatch } = this.props
     fieldsForm.nodeName = fieldsForm.pubNodeName
-    delete fieldsForm.pubNodeName
     paramsPage = { pageNum: 1, pageSize: 10 }
     formValues = fieldsForm
     formTime = paramsTime
@@ -586,8 +583,11 @@ class TableList extends Component {
     const actions = {
       handleSearch: this.handleSearch,
     }
+    const data = {
+      ...formValues,
+    }
     return (
-      <FilterRowForm formData={formData} actions={actions} />
+      <FilterRowForm formData={formData} actions={actions} data={data} />
     )
   }
 
