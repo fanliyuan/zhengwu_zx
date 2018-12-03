@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import moment from 'moment'
 import {
     Card,
     Form,
@@ -157,22 +156,11 @@ class TableList extends Component {
 
   componentDidMount() {
     const routeName = sessionStorage.getItem('currentList')
-    const { dispatch, form, route } = this.props
+    const { dispatch, route } = this.props
     if (routeName && routeName !== route.name) {
       paramsPage = { pageNum: 1, pageSize: 10 }
       formValues = {}
       formTime = {}
-    } else {
-      if (formTime !== undefined && formValues !== undefined) {
-        if (formTime.startTime) {
-          formValues.date = [
-            moment(formTime.startTime, 'YYYY-MM-DD'),
-            moment(formTime.endTime, 'YYYY-MM-DD'),
-          ]
-          form.setFieldsValue(formValues)
-        }
-      }
-      form.setFieldsValue(formValues)
     }
     dispatch({
       type: 'dataManager/getNodes',
