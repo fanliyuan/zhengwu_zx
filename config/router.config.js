@@ -35,19 +35,21 @@ export default [
             path: 'logging',
             name: 'logging',
             component: './Overview/Logging',
+            hideInMenu: true,
           },
           {
             path: 'systemnotification',
             name: 'systemnotification',
             component: './Overview/SystemNotification',
             authority: ['operator', 'security', 'operator-n'],
+            hideInMenu: true,
           },
           {
             name: 'noticedetail',
             path: 'noticedetail',
             component: './Overview/NoticeDetail',
-            hideInMenu: true,
             authority: ['operator', 'security', 'operator-n'],
+            hideInMenu: true,
           },
         ],
       },
@@ -80,6 +82,7 @@ export default [
             name: 'node',
             path: 'node',
             component: './InfrastructureManagement/NodeManagement',
+            hideInMenu: true,
           },
           {
             name: 'addnode',
@@ -191,6 +194,7 @@ export default [
           },
         ],
         authority: ['admin', 'security', 'admin-n', 'security-n', 'operator'],
+        hideInMenu: true,
       },
       // 数据资源管理 dataSourceManagement
       {

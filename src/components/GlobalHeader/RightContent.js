@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { PureComponent } from 'react'
 import { FormattedMessage, formatMessage } from 'umi/locale'
 import { Spin, Tag, Menu, Icon, Dropdown, Avatar, Tooltip } from 'antd'
@@ -83,7 +84,7 @@ export default class GlobalHeaderRight extends PureComponent {
     }
     return (
       <div className={className}>
-        <HeaderSearch
+        {/* <HeaderSearch
           className={`${styles.action} ${styles.search}`}
           placeholder={formatMessage({ id: 'component.globalHeader.search' })}
           dataSource={[
@@ -130,7 +131,7 @@ export default class GlobalHeaderRight extends PureComponent {
             emptyText={formatMessage({ id: 'component.globalHeader.notification.empty' })}
             emptyImage={emptyNotice}
             />
-          {/* <NoticeIcon.Tab
+          <NoticeIcon.Tab
             list={noticeData.message}
             title={formatMessage({ id: 'component.globalHeader.message' })}
             name="message"
@@ -143,8 +144,8 @@ export default class GlobalHeaderRight extends PureComponent {
             name="event"
             emptyText={formatMessage({ id: 'component.globalHeader.event.empty' })}
             emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
-            /> */}
-        </NoticeIcon>
+            />
+        </NoticeIcon> */}
         {currentUser.name ? (
           <Dropdown overlay={menu}>
             <span className={`${styles.action} ${styles.account}`}>

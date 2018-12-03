@@ -2,10 +2,11 @@
 const module = {
   moduleName: 'catalog',
   apis: [
-    {
-      name: 'getCatalogList',
-      url: 'resourceSearchList',
-    },
+    // 此目录以及移除了.
+    // {
+    //   name: 'getCatalogList',
+    //   url: 'resourceSearchList',
+    // },
     // 根据资源属性分类展示信息资源管理列表
     {
       name: 'getCatalog',
@@ -30,9 +31,9 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseHost) {
     if (process.env.NODE_ENV === 'development') {
-      item.baseHost = 'http://192.168.100.16:8801'
+      item.baseHost = 'http://192.168.100.15:8008'
     } else {
-      item.baseHost = 'http://cdyoue.com.cn:19006'
+      item.baseHost = 'http://zwswsb.cdyoue.com.cn'
     }
   }
   if (!item.baseUrl) {

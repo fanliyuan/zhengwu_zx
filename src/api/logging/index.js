@@ -1,31 +1,21 @@
-/*
- * @Author: ChouEric
- * @Date: 2018-08-05 17:19:00
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-30 17:49:10
- * @Description: 角色模块请求
- */
+//  对应后端模块 gove-sys-log-controller : 系统日志
 const module = {
-  moduleName: 'role',
+  moduleName: 'logging',
   apis: [
     {
-      name: 'getRoleName',
-      url: 'roles',
-    },
-    {
-      name: 'getRoleList',
-      url: 'queryGoveRoleInfoList',
+      name: 'insertLogging',
+      url: 'insertGoveSysLog',
       method: 'post',
     },
     {
-      name: 'saveRoleByAccount',
-      url: 'saveRoleByAccount',
+      name: 'getLoginLogging',
+      url: 'queryGoveSysLogInfoList',
       method: 'post',
     },
   ],
 }
 module.apis.forEach(item => {
-  if (!item.baseHost) {
+  if(!item.baseHost) {
     if (process.env.NODE_ENV === 'development') {
       item.baseHost = 'http://192.168.100.16:8000' // 局域网接口(开发接口)
     } else {
@@ -38,5 +28,4 @@ module.apis.forEach(item => {
     item.baseUrl = 'zwjh/api/v1'
   }
 })
-
 export default module

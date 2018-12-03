@@ -2,14 +2,14 @@
  * @Author: ChouEric
  * @Date: 2018-08-03 14:59:34
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-20 15:22:17
+ * @Last Modified time: 2018-11-30 14:50:11
  * @Description: 用户管理
  */
 import { routerRedux } from 'dva/router'
 import { message } from 'antd'
 import apis from '../api'
 
-const { getAccounts, addAccount, deleteAccount, updateAccount, postNotification } = apis
+const { getAccounts, addAccount, deleteAccount, updateAccount } = apis
 export default {
   namespace: 'accounts',
 
@@ -59,12 +59,6 @@ export default {
         response = yield call(addAccount, {body: payload})
         const { code } = response
         if (+code === 200) {
-          yield call(postNotification, {body: { 
-            content: `您有一条新的用户待分配角色：${payload.accountName}!`,
-            notifier: 'security',
-            notifyTime: Date.now(),
-            title: '新用户待分配角色',
-           }})
           message.success('添加成功')
           yield put(routerRedux.push('/institutionalUserManage/userManage'))
         } else {

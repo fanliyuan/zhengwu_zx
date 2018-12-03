@@ -64,7 +64,7 @@ export default class Task extends Component {
       resourceInfo,
     })
     if(mountResourceId) this.props.dispatch({
-      type: 'sourceManagement/getDBInfo',
+      type: 'sourceManagement/getEntityInfo',
       payload: {
         params: {
           id: mountResourceId,

@@ -1,7 +1,7 @@
 import moment from 'moment'
 import apis from '../../../api'
 
-const { getLoginAudit } = apis
+const { getLoginLogging } = apis
 
 export default {
   namespace: 'loginAudit',
@@ -26,7 +26,7 @@ export default {
     *getLoginAudit({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(getLoginAudit, {body: payload.body})
+        response = yield call(getLoginLogging, {body: payload.body})
         const { list, total = 0, pageSize = 10, pageNum = 1 } = response.data
         const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
         list.forEach(item => {moment(item.createTime).format('lll')})

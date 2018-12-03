@@ -63,7 +63,7 @@ export default class SearchForm extends Component {
             <FormItem className='w120 fl mr16' {...item.itemOptions} key={item.name+item.type}>
               {
                 getFieldDecorator(item.name)(
-                  <Select {...item.typeOptions}>{item.children}</Select>
+                  <Select allowClear {...item.typeOptions}>{item.children}</Select>
                 )
               }
             </FormItem>

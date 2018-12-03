@@ -1,31 +1,26 @@
-/*
- * @Author: ChouEric
- * @Date: 2018-08-05 17:19:00
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-30 17:49:10
- * @Description: 角色模块请求
- */
+// 对应后端接口 gove-pro-info-controller : 省市辖区信息
 const module = {
-  moduleName: 'role',
+  moduleName:'district',
   apis: [
     {
-      name: 'getRoleName',
-      url: 'roles',
+      name:'getProOneLevels',
+      url:'getProOneLevels',
+      method:'get',
     },
     {
-      name: 'getRoleList',
-      url: 'queryGoveRoleInfoList',
-      method: 'post',
+      name:'getProThreeLevels',
+      url:'getProThreeLevels',
+      method:'get',
     },
     {
-      name: 'saveRoleByAccount',
-      url: 'saveRoleByAccount',
-      method: 'post',
+      name:'getProTwoLevels',
+      url:'getProTwoLevels',
+      method:'get',
     },
   ],
 }
 module.apis.forEach(item => {
-  if (!item.baseHost) {
+  if(!item.baseHost){
     if (process.env.NODE_ENV === 'development') {
       item.baseHost = 'http://192.168.100.16:8000' // 局域网接口(开发接口)
     } else {

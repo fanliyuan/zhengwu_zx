@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-27 14:49:28
- * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2018-11-05 16:59:23
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-11-30 15:07:01
  * @Description: 这个页面值得研究
  */
 import React, { Component } from 'react'
@@ -99,7 +99,7 @@ export default class ResourceConnectionData extends Component {
       resourceInfo,
     })
     // this.props.dispatch({
-    //   type: 'sourceManagement/getDBInfo',
+    //   type: 'sourceManagement/getEntityInfo',
     //   payload: {
     //     params: {
     //       id: resourceInfo.mountResourceId,

@@ -1,13 +1,13 @@
 import { message } from 'antd'
 import apis from '../../../api'
 
-const { getCatalogList, getCatalog, getResourceItemList, getResourceTaskInfo, getResourceTitle, directoryListAll } = apis
+const { getCatalog, getResourceItemList, getResourceTaskInfo, getResourceTitle, directoryListAll } = apis
 
 // 用来过滤树形数据的
 function filter(params, data) {
   const temp = JSON.parse(JSON.stringify(data))
   return temp.filter(item => {// eslint-disable-line
-    if (item.title.includes(params)) {
+    if (item.name.includes(params)) {
       return item
     } else {
       if (item.children && item.children.length !== 0) { // eslint-disable-line
@@ -53,11 +53,8 @@ function filterTreeList(params, data) {
     *getCatalogList(_, { call, put }) {
       let response
       try {
-        response = yield call(getCatalogList, {})
-        // const { datas, total = 0, pageSize = 10, pageNum = 1 } = response.result
-        // const pagination = total > pageSize ? {total, pageSize, current: pageNum} : false
+        response = yield call(directoryListAll, {})
         if (+response.code === 0) {
-          response.data = JSON.parse(JSON.stringify(response.data).replace(/"typeName"/g, '"title"').replace(/"id"/g,'"key"').replace(/"children":\[\],/g,''))
           yield put({
             type: 'savaCatalogTreeList',
             payload: response.data,

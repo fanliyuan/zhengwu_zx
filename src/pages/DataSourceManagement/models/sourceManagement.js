@@ -2,7 +2,7 @@ import { message } from 'antd'
 
 import apis from '../../../api'
 
-const { getSourceList, getDBInfo } = apis
+const { getSourceList, getEntityInfo } = apis
  export default {
   namespace:'sourceManagement',
 
@@ -50,10 +50,10 @@ const { getSourceList, getDBInfo } = apis
       }
       }
     },
-    *getDBInfo({ payload }, { call, put }) {
+    *getEntityInfo({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(getDBInfo, {params: payload.params})
+        response = yield call(getEntityInfo, {params: payload.params})
         const { data } = response
         if (+response.code === 200) {
           yield put({

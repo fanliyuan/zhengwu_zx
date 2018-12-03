@@ -2,7 +2,7 @@
  * @Author: 樊丽园
  * @Date: 2018-07-19 17:59:46
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-08 11:51:52
+ * @Last Modified time: 2018-11-30 15:07:05
  * @Description: 添加 文本换行省略号组件并和tooltip兼容,可以设置截取后缀,以及链接; 组件地址: https://github.com/ShinyChang/React-Text-Truncate
  */
 import React, { Component } from 'react'
@@ -34,7 +34,7 @@ export default class DataBaseSource extends Component {
     })
     const { state: { mountResourceId } = {} } = this.props.history.location
     this.props.dispatch({
-      type: 'sourceManagement/getDBInfo',
+      type: 'sourceManagement/getEntityInfo',
       payload: {
         params: {
           id: mountResourceId,
