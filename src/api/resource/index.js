@@ -43,7 +43,7 @@ module.apis.forEach(item => {
     if (process.env.NODE_ENV === 'development') {
       item.baseHost = 'http://192.168.100.16:8800'
     } else {
-      item.baseHost = 'http://zwswsb.cdyoue.com.cn'
+      item.baseHost = 'http://cdyoue.com.cn:19006'
     }
   }
   if (!item.baseUrl) {
