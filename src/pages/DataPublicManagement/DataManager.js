@@ -189,6 +189,7 @@ class TableList extends Component {
     fieldsForm.nodeName = fieldsForm.pubNodeName
     paramsPage = { pageNum: 1, pageSize: 10 }
     formValues = fieldsForm
+    console.log(formValues)
     formTime = paramsTime
     const values = {
       ...fieldsForm,
