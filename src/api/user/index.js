@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:24
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-12-03 16:16:33
+ * @Last Modified by: fly
+ * @Last Modified time: 2018-12-03 16:20:01
  * @Description: 用户模块请求
  */
 const module = {
@@ -65,7 +65,7 @@ module.apis.forEach(item => {
     } else {
       item.baseHost = 'http://cdyoue.com.cn:19106' // 公网接口(生成接口)
     }
-    // item.baseHost = 'http://cdyoue.com.cn:19106' // 公网接口(生成接口)
+    item.baseHost = 'http://cdyoue.com.cn:19106' // 公网接口(生成接口)
     // item.baseHost = 'http://192.168.100.15:8807' // 局域网接口(开发接口)
   }
   if (!item.baseUrl) {

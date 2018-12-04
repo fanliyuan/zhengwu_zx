@@ -45,6 +45,7 @@ module.apis.forEach(item => {
     } else {
       item.baseHost = 'http://cdyoue.com.cn:19006'
     }
+    item.baseHost = 'http://cdyoue.com.cn:19006'
   }
   if (!item.baseUrl) {
     item.baseUrl = 'zwjh/api/v1'

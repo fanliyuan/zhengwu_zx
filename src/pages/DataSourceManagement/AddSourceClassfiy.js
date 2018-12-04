@@ -27,6 +27,9 @@ export default class AddSourceClassfiy extends Component {
     pid:'',
     classNum:2,
     routeid:-1,
+    disAblex:false,
+    disAblem:false,
+    disAblexm:false,
   }
 
   componentDidMount = async() => {
@@ -44,6 +47,31 @@ export default class AddSourceClassfiy extends Component {
       this.setState({
         routeid:state.id,
       })
+      switch(+state.level){
+        case 2:
+          this.setState({
+            disAblex:false,
+            disAblem:true,
+            disAblexm:true,
+          })
+          break
+        case 3:
+          this.setState({
+            disAblex:true,
+            disAblem:false,
+            disAblexm:true,
+          })
+          break
+        case 4:
+          this.setState({
+            disAblex:true,
+            disAblem:true,
+            disAblexm:false,
+          })
+          break
+        default:
+          break
+      }
       if(currentClassify){
         setFieldsValue({
           'classify':+currentClassify.level,
@@ -118,9 +146,16 @@ export default class AddSourceClassfiy extends Component {
     const { form:{ setFieldsValue} } = this.props
     this.setState({
       classNum:e.target.value,
+      selectCode:'',
+      level:'',
+      pid:'',
     })
     setFieldsValue({
       'number':'',
+      "parentName":'请选择类',
+      "item":'请选择项',
+      "classfiyItem":'请选择目',
+      'names':'',
     })
   }
 
@@ -297,7 +332,7 @@ export default class AddSourceClassfiy extends Component {
     const detailList = itemList.map(item => {
       return <Option value={item.code} key={item.id}>{item.name}</Option>
     })
-    const { classifyName, itemName, detailName, classNum } = this.state
+    const { classifyName, itemName, detailName, classNum, disAblex, disAblem, disAblexm } = this.state
     const { getFieldDecorator, getFieldValue } = this.props.form
     const formItemLayout = {
       labelCol: {
@@ -353,9 +388,9 @@ export default class AddSourceClassfiy extends Component {
                 ],
               })(
                 <RadioGroup onChange={this.handleClassChange}>
-                  <Radio value={2}>项</Radio>
-                  <Radio value={3}>目</Radio>
-                  <Radio value={4}>细目</Radio>
+                  <Radio value={2} disabled={disAblex}>项</Radio>
+                  <Radio value={3} disabled={disAblem}>目</Radio>
+                  <Radio value={4} disabled={disAblexm}>细目</Radio>
                 </RadioGroup>)}
             </FormItem>
             <Row>
