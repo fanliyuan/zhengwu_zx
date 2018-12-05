@@ -36,6 +36,11 @@ const module = {
       url: 'update',
       method: 'post',
     },
+    {
+      name: 'isMountResource',
+      url: 'isMountResource',
+      method: 'get',
+    },
   ],
 }
 module.apis.forEach(item => {

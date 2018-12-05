@@ -2,7 +2,7 @@ import { message } from 'antd'
 import { routerRedux } from 'dva/router'
 import apis from '../../../api'
 
-const { list, deletes, getResourceProperty, addResourceProperty, autoGetCode, getItemByIdLevel, editResourceProperty } = apis
+const { list, deletes, getResourceProperty, addResourceProperty, autoGetCode, getItemByIdLevel, editResourceProperty, isMountResource } = apis
 export default {
   namespace:'sourceClassfiy',
   state:{
@@ -12,6 +12,7 @@ export default {
     itemList:[],
     autoCodes:'',
     targetData:[],
+    mountMessage:false,
   },
   effects:{
     *getLists({ payload} ,{ call, put }){
@@ -83,6 +84,23 @@ export default {
           })
         }else {
           message.error('获取自动编码失败,请手动填写')
+        }
+      }catch(err){
+        if(err){
+          console.log(err) // eslint-disable-line
+        }
+      }
+    },
+    *isMount({ payload} ,{ call, put }){
+      const response = yield call(isMountResource,{params:payload, headers: {token: undefined}})
+      try{
+        if(+response.code === 0){
+          yield put({
+            type:'getMount',
+            payload:response.data,
+          })
+        }else {
+          message.error(response.message)
         }
       }catch(err){
         if(err){
@@ -207,6 +225,12 @@ export default {
       return {
         ...state,
         targetData:payload,
+      }
+    },
+    getMount(state, { payload }){
+      return {
+        ...state,
+        mountMessage:payload,
       }
     },
   },

@@ -12,6 +12,7 @@ import PageHeaderLayout from '@/components/PageHeaderWrapper'
 const {TabPane} = Tabs
 // const { RangePicker } = DatePicker
 const userName = Cookie.get('antd-pro-authority')
+let mountMsg = 'false'
 @connect(({sourceClassfiy,loading}) => ({
   sourceClassfiy,
   loadings:loading.models.sourceClassfiy,
@@ -75,9 +76,21 @@ export default class SourceClassfiy extends Component {
     this.searchBtn(3, bmClassfiyName)
   }
 
-  handleEdit = (row) => {
+  handleEdit = async(row) => {
     const { dispatch } = this.props
     const { currentTab } = this.state
+    await dispatch({
+      type:'sourceClassfiy/isMount',
+      payload:{
+        id:row.id,
+        level:row.level,
+      },
+    })
+
+    if(mountMsg === 'true'){
+      message.info("该类型下挂载有资源，不能修改")
+      return
+    }
     dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy',{
       id:row.id,
       level:row.level,
@@ -87,9 +100,20 @@ export default class SourceClassfiy extends Component {
     }))
   }
 
-  handleDelete = (row) => {
+  handleDelete = async(row) => {
     const { currentTab } = this.state
     const { dispatch } = this.props
+    await dispatch({
+      type:'sourceClassfiy/isMount',
+      payload:{
+        id:row.id,
+        level:row.level,
+      },
+    })
+    if(mountMsg === 'true'){
+      message.info("该类型下挂载有资源，不能修改")
+      return
+    }
     dispatch({
       type:'sourceClassfiy/deleteItem',
       payload:{id:row.id,level:row.level},
@@ -202,7 +226,8 @@ export default class SourceClassfiy extends Component {
 
   render() {
     const { classfiyName, ztClassfiyName, bmClassfiyName } = this.state
-    const { sourceClassfiy:{loadings, dataList, paginations} } = this.props
+    const { sourceClassfiy:{loadings, dataList, paginations, mountMessage} } = this.props
+    mountMsg = mountMessage
     const columns = [
       {
         title: '项',
