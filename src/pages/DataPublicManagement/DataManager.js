@@ -89,7 +89,7 @@ class TableList extends Component {
       title: '操作',
       render: (text, record) => (
         <Fragment>
-          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
+          {(record.checkStatus !== '-1' && record.checkStatus !== '0') && (
             <Fragment>
               <a
                 onClick={() =>
@@ -103,7 +103,7 @@ class TableList extends Component {
               <Divider type="vertical" />
             </Fragment>
           )}
-          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
+          {(record.checkStatus !== '-1' && record.checkStatus !== '0') && (
             <Fragment>
               <a
                 onClick={() => {
@@ -124,7 +124,7 @@ class TableList extends Component {
               <Divider type="vertical" />
             </Fragment>
           )}
-          {(record.checkStatus === '1' || record.checkStatus === '-11') && record.dataType !== '文件' && (
+          {(record.checkStatus !== '-1' && record.checkStatus !== '0') && record.dataType !== '文件' && (
             <Fragment>
               <a
                 onClick={() => {
@@ -137,13 +137,15 @@ class TableList extends Component {
               <Divider type="vertical" />
             </Fragment>
           )}
-          <Fragment>
-            <a
-              onClick={() => this.handleView(record.id, record.dataType)}
-              >
-              查看
-            </a>
-          </Fragment>
+          {record.checkStatus !== '-1' && record.checkStatus !== '0' && (
+            <Fragment>
+              <a
+                onClick={() => this.handleView(record.id, record.dataType)}
+                >
+                查看
+              </a>
+            </Fragment>
+          )}
         </Fragment>
       ),
     },
