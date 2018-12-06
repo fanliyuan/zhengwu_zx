@@ -111,7 +111,7 @@ export default class SourceClassfiy extends Component {
       },
     })
     if(mountMsg === 'true'){
-      message.info("该类型下挂载有资源，不能修改")
+      message.info("该类型下挂载有资源，不能删除")
       return
     }
     dispatch({
