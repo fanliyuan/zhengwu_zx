@@ -88,10 +88,10 @@ class TableList extends Component {
     {
       title: '操作',
       render: (text, record) => {
-        if (record.dataStatus === 1) {
+        if (record.dataStatus === 1 && record.checkStatus !== '-1' && record.checkStatus !== '0') {
           return (
             <Fragment>
-              {(record.checkStatus !== '-1' && record.checkStatus !== '0' && record.resourceStatus === 1) && (
+              {record.resourceStatus === 1 && (
                 <Fragment>
                   <a onClick={() => router.push(`/data/management/infoSource${record.type}/${record.id}/${record.resourceId}`)}>
                     信息资源
@@ -99,28 +99,26 @@ class TableList extends Component {
                   <Divider type="vertical" />
                 </Fragment>
               )}
-              {(record.checkStatus !== '-1' && record.checkStatus !== '0') && (
-                <Fragment>
-                  <a
-                    onClick={() => {
-                      if (record.id.indexOf('db') !== -1) {
-                        return router.push(`/dataPublicManagement/dbview/${record.id}`)
-                      } else if (record.id.indexOf('ftp') !== -1) {
-                        return router.push(`/dataPublicManagement/ftpview/${record.id}`)
-                      } else if (record.id.indexOf('file') !== -1) {
-                        return router.push(`/dataPublicManagement/fileview/${record.id}`)
-                      } else {
-                        message.destroy()
-                        return message.error('无法查看数据，缺少数据类型！')
-                      }
-                      }}
-                    >
-                    数据
-                  </a>
-                  <Divider type="vertical" />
-                </Fragment>
-              )}
-              {(record.checkStatus !== '-1' && record.checkStatus !== '0') && record.dataType !== '文件' && (
+              <Fragment>
+                <a
+                  onClick={() => {
+                    if (record.id.indexOf('db') !== -1) {
+                      return router.push(`/dataPublicManagement/dbview/${record.id}`)
+                    } else if (record.id.indexOf('ftp') !== -1) {
+                      return router.push(`/dataPublicManagement/ftpview/${record.id}`)
+                    } else if (record.id.indexOf('file') !== -1) {
+                      return router.push(`/dataPublicManagement/fileview/${record.id}`)
+                    } else {
+                      message.destroy()
+                      return message.error('无法查看数据，缺少数据类型！')
+                    }
+                    }}
+                  >
+                  数据
+                </a>
+                <Divider type="vertical" />
+              </Fragment>
+              {record.dataType !== '文件' && (
                 <Fragment>
                   <a
                     onClick={() => {
@@ -133,13 +131,11 @@ class TableList extends Component {
                   <Divider type="vertical" />
                 </Fragment>
               )}
-              {record.checkStatus !== '-1' && record.checkStatus !== '0' && (
-                <Fragment>
-                  <a onClick={() => this.handleView(record.id, record.dataType)}>
-                    查看
-                  </a>
-                </Fragment>
-              )}
+              <Fragment>
+                <a onClick={() => this.handleView(record.id, record.dataType)}>
+                  查看
+                </a>
+              </Fragment>
             </Fragment>
           )
         }
