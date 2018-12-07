@@ -25,6 +25,7 @@ let formTime
 @connect(({ dataManager, loading }) => ({
   dataManager,
   loading: loading.effects['dataManager/fetch'],
+  loadingView: loading.effects['dataManager/getReqBeanEntityInfo'],
 }))
 @Form.create()
 class TableList extends Component {
@@ -122,8 +123,7 @@ class TableList extends Component {
                 <Fragment>
                   <a
                     onClick={() => {
-                      const { match } = this.props
-                      return router.push(`${match.url}/taskview/${record.type}/${record.id}`)
+                      return router.push(`/dataPublicManagement/taskview/${record.dataType}/${record.id}`)
                     }}
                     >
                     任务
@@ -132,7 +132,7 @@ class TableList extends Component {
                 </Fragment>
               )}
               <Fragment>
-                <a onClick={() => this.handleView(record.id, record.dataType)}>
+                <a onClick={() => this.handleView(record.id)}>
                   查看
                 </a>
               </Fragment>
@@ -183,7 +183,6 @@ class TableList extends Component {
     fieldsForm.nodeName = fieldsForm.pubNodeName
     paramsPage = { pageNum: 1, pageSize: 10 }
     formValues = fieldsForm
-    console.log(formValues)
     formTime = paramsTime
     const values = {
       ...fieldsForm,
@@ -196,8 +195,18 @@ class TableList extends Component {
     })
   }
 
-  handleView = (id, dataType) => {
+  handleView = (id) => {
+    let dataType
     const { dispatch } = this.props
+    if (id.indexOf('db') !== -1) {
+      dataType = 'db'
+    } else if (id.indexOf('ftp') !== -1) {
+      dataType = 'ftp'
+    } else if (id.indexOf('file') !== -1) {
+      dataType = 'file'
+    } else {
+      dataType = ''
+    }
     dispatch({
       type: 'dataManager/getReqBeanEntityInfo',
       payload: {
@@ -566,6 +575,7 @@ class TableList extends Component {
     const {
         dataManager: { data },
         loading,
+        loadingView,
         } = this.props
     const { visible, dataType } = this.state
     const paginationProps = {
@@ -609,15 +619,17 @@ class TableList extends Component {
             width={900}
             maskClosable={false}
             >
-            {dataType === '数据库' && (
-              this.renderDbInfo()
-            )}
-            {dataType === 'FTP' && (
-              this.renderFtpInfo()
-            )}
-            {dataType === '文件' && (
-              this.renderFileInfo()
-            )}
+            <Card bordered={false} loading={loadingView}>
+              {dataType === 'db' && (
+                this.renderDbInfo()
+              )}
+              {dataType === 'ftp' && (
+                this.renderFtpInfo()
+              )}
+              {dataType === 'file' && (
+                this.renderFileInfo()
+              )}
+            </Card>
           </Modal>
         </Card>
       </PageHeaderWrapper>

@@ -319,6 +319,7 @@ export default {
   'menu.dataPublicManagement.dbview': '查看数据库',
   'menu.dataPublicManagement.ftpview': '查看FTP',
   'menu.dataPublicManagement.fileview': '查看文件',
+  'menu.dataPublicManagement.taskview': '查看任务',
   'menu.dataSwitchManagement': '数据订阅管理',
   'menu.dataSwitchManagement.allSub': '订阅管理',
   'menu.dataSwitchManagement.subscriptionTable': '订阅表',
