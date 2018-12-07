@@ -88,10 +88,10 @@ class TableList extends Component {
     {
       title: '操作',
       render: (text, record) => {
-        if (record.dataStatus === 1 && record.checkStatus !== '-1' && record.checkStatus !== '0') {
+        if (record.dataStatus === '1' && record.checkStatus !== '-1' && record.checkStatus !== '0') {
           return (
             <Fragment>
-              {record.resourceStatus === 1 && (
+              {record.resourceStatus === '1' && (
                 <Fragment>
                   <a onClick={() => router.push(`/data/management/infoSource${record.type}/${record.id}/${record.resourceId}`)}>
                     信息资源
