@@ -2,21 +2,21 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-12-03 13:15:35
+ * @Last Modified time: 2018-12-08 10:35:28
  * @描述: 订阅管理
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Select, Table, Tabs, Badge } from 'antd'
+import { Select, Badge } from 'antd'
 import moment from 'moment'
 import { Bind, Throttle } from 'lodash-decorators'
 
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
 import SearchForm from '@/components/SearchForm'
+import StandardTable from '@/components/StandardTable'
 import styles from './AllSub.less'
 // import { format0, format24 } from '../../utils/utils'
 
-const { TabPane } = Tabs
 
 // @connect(({ overviewLogging, loading }) => ({
 //   overviewLogging,
@@ -67,7 +67,6 @@ export default class AllSub extends Component {
   state = {
     queryData: {},
     pagination: {pageNum:1, pageSize:10},
-    tabKey: 'hasSubscribed',
   }
 
   componentDidMount() {
@@ -97,16 +96,15 @@ export default class AllSub extends Component {
     })
   }
 
-  tabChange = value => {
-    const { queryData } = this.state
-    // 加入订阅状态情况
-    this.setState({
-      tabKey: value,
-      queryData: {
-        ...queryData,
-      },
-    })
-  }
+  // tabChange = value => {
+  //   const { queryData } = this.state
+  //   // 加入订阅状态情况
+  //   this.setState({
+  //     queryData: {
+  //       ...queryData,
+  //     },
+  //   })
+  // }
 
   @Bind()
   @Throttle(1000)
@@ -137,13 +135,12 @@ export default class AllSub extends Component {
   }
 
   render() {
-    const { tabKey } = this.state
     const { allSubscription: { dataList, pagination }, loading } = this.props // eslint-disable-line
 
     const columns = [
       {
         title: '订阅名称',
-        dataIndex: 'dsName',
+        dataIndex: 'subscriberName',
       },
       {
         title: '订阅申请人',
@@ -156,22 +153,22 @@ export default class AllSub extends Component {
           return moment(text).format('lll')
         },
       },
-      {
-        title: '订阅节点',
-        dataIndex: 'subNodeName',
-      },
+      // {
+      //   title: '订阅节点',
+      //   dataIndex: 'subNodeName',
+      // },
       {
         title: '信息资源名称',
-        dataIndex: 'infoSrcName',
+        dataIndex: 'dsName',
       },
       {
         title: '目录名称',
         dataIndex: 'dsDirName',
       },
-      {
-        title: '发布节点',
-        dataIndex: 'pubNodeName',
-      },
+      // {
+      //   title: '发布节点',
+      //   dataIndex: 'pubNodeName',
+      // },
       {
         title: '运行状态',
         dataIndex: 'runStatus',
@@ -179,12 +176,12 @@ export default class AllSub extends Component {
           return <Badge status={text?'success': 'default'} text={text==='1'?'运行中':'已停止'} />
         },
       },
-      {
-        title: '操作',
-        render: () => {
-          return <a>审核日志</a>
-        },
-      },
+      // {
+      //   title: '操作',
+      //   render: () => {
+      //     return <a>审核日志</a>
+      //   },
+      // },
     ]
     columns.forEach(item => {
       item.align = 'center'
@@ -193,50 +190,8 @@ export default class AllSub extends Component {
     return (
       <PageHeaderLayout>
         <div className={styles.layout}>
-          <Tabs activeKey={tabKey} onChange={this.tabChange}>
-            <TabPane tab="已订阅" key="hasSubscribed">
-              <SearchForm formOptions={this.formOptions} />
-              <div>
-                <Table
-                  loading={loading}
-                  bordered
-                  columns={columns}
-                  dataSource={dataList}
-                  rowKey="id"
-                  pagination={pagination && { ...pagination,showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                  onChange={this.handleStandardTableChange}
-                  />
-              </div>
-            </TabPane>
-            <TabPane tab="待审核" key="willAudit">
-              <SearchForm formOptions={this.formOptions} />
-              <div>
-                <Table
-                  loading={loading}
-                  bordered
-                  columns={columns}
-                  dataSource={dataList}
-                  rowKey="id"
-                  pagination={pagination && { ...pagination,showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                  onChange={this.handleStandardTableChange}
-                  />
-              </div>
-            </TabPane>
-            <TabPane tab="订阅失败" key="failSubcribed">
-              <SearchForm formOptions={this.formOptions} />
-              <div>
-                <Table
-                  loading={loading}
-                  bordered
-                  columns={columns}
-                  dataSource={dataList}
-                  rowKey="id"
-                  pagination={pagination && { ...pagination,showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
-                  onChange={this.handleStandardTableChange}
-                  />
-              </div>
-            </TabPane>
-          </Tabs>
+          <SearchForm formOptions={this.formOptions} />
+          <StandardTable pagination={pagination} loading={loading} columns={columns} dataSource={dataList} bordered rowKey='id' onChange={this.handleStandardTableChange} />
         </div>
       </PageHeaderLayout>
     )

@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-05 17:19:24
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-12-03 16:16:33
+ * @Last Modified time: 2018-12-08 10:40:42
  * @Description: 用户模块请求
  */
 const module = {
