@@ -45,11 +45,12 @@ const module = {
     },
     {
       name: 'getNodes',
-      url: 'nodeManager/nodes',
+      url: 'nodes',
+      method: 'post',
     },
     {
       name: 'getParentNodes',
-      url: 'nodeManager/parentnodestree',
+      url: 'parentnodestree',
     },
     // 同名,应该被替换了
     // {
@@ -58,17 +59,17 @@ const module = {
     // },
     {
       name: 'deleteNode',
-      url: 'nodeManager/node',
+      url: 'deleteNode',
       method: 'delete',
     },
     {
       name: 'addNode',
-      url: 'nodeManager/node',
+      url: 'addNode',
       method: 'post',
     },
     {
       name: 'editNode',
-      url: 'nodeManager/node',
+      url: 'updateNode',
       method: 'put',
     },
     {
@@ -92,8 +93,17 @@ const module = {
   ],
 }
 module.apis.forEach(item => {
-  if (!item.baseHost) {
-    item.baseHost = 'http://testgoverinfrast.tpaas.youedata.com' 
+  if(!item.baseHost){
+    if (process.env.NODE_ENV === 'development') {
+      item.baseHost = 'http://cdyoue.com.cn:19006' // 局域网接口(开发接口)
+    } else {
+      item.baseHost = 'http://cdyoue.com.cn:19006' // 公网接口(生成接口)
+    }
+    // item.baseHost = 'http://cdyoue.com.cn:19106' // 公网接口(生成接口)
+    // item.baseHost = 'http://192.168.100.15:8807' // 局域网接口(开发接口)
+  }
+  if (!item.baseUrl) {
+    item.baseUrl = 'zwjh/api/v1'
   }
 })
 

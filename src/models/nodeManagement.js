@@ -30,14 +30,14 @@ function number2String(array, field) {
     *getNodes({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(getNodes, {params:payload})
-        const { datas, total = 0, pageSize = 10, pageNumber = 1 } = response.result
-        const pagination = {total, pageSize, current: pageNumber}
-        if (+response.code === 0) {
+        response = yield call(getNodes, {body:payload})
+        const { list, total = 0, pageSize = 10, pageNum = 1 } = response.data
+        const pagination = {total, pageSize, current: pageNum}
+        if (+response.code === 200) {
           yield put({
             type: 'changeNodeList',
             payload: {
-              list: datas,
+              list,
               pagination,
             },
           })
@@ -60,12 +60,12 @@ function number2String(array, field) {
       let response
       try {
         response = yield call(getParentNodes, {})
-        if (+response.code === 0) {
+        if (response.code === '604') {
           yield put({
             type: 'changeParentNodeList',
             payload: {
-              parentNodeList: JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children')),
-              parentNodeListT: number2String(JSON.parse(JSON.stringify(response.result).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children')), 'value'),
+              parentNodeList: JSON.parse(JSON.stringify(response.data).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children')),
+              parentNodeListT: number2String(JSON.parse(JSON.stringify(response.data).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children')), 'value'),
             },
           })
         }
@@ -112,8 +112,8 @@ function number2String(array, field) {
     *deleteNode({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(deleteNode, {path: payload.nodeId})
-        if (+response.code === 0) {
+        response = yield call(deleteNode, {params: payload})
+        if (+response.code === 200) {
           message.success('删除成功!')
           yield put({
             type: 'getNodes',
@@ -130,7 +130,7 @@ function number2String(array, field) {
       let response
       try {
         response = yield call(addNode, {body: payload.body})
-        if (+response.code === 0) {
+        if (+response.code === 200) {
           message.success('新增成功')
           yield put(routerRedux.push('/infrastructure/node'))
         } else {
@@ -146,7 +146,7 @@ function number2String(array, field) {
       try {
         // console.log(payload)
         response = yield call(editNode, {body: payload.body})
-        if (+response.code === 0) {
+        if (+response.code === 200) {
           message.success('修改成功')
           yield put(routerRedux.push('/infrastructure/node'))
         } else {

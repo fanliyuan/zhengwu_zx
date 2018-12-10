@@ -103,6 +103,8 @@ export default {
             type:'querys',
             payload:{pageNum:1,pageSize:10},
           })
+        } else {
+          message.error(response.msg)
         }
       }catch(err){
         console.log(err) // eslint-disable-line

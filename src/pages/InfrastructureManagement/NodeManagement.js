@@ -47,7 +47,7 @@ export default class NodeManagement extends Component {
     const { dispatch } = this.props
     dispatch({
       type: 'nodeManagement/getNodes',
-      payload: {},
+      payload: {pageSize: 10, pageNum: 1, startTime: ''},
     })
     dispatch({
       type: 'nodeManagement/getParentNodes',
@@ -152,7 +152,7 @@ export default class NodeManagement extends Component {
     this.props.dispatch({
       type: 'nodeManagement/deleteNode',
       payload: {
-        nodeId: row.nodeId,
+        id: row.id,
       },
     })
   }
@@ -400,7 +400,7 @@ export default class NodeManagement extends Component {
             pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
             onChange={this.handleTableChange}
             loading={loading}
-            rowKey="nodeId"
+            rowKey="id"
             bordered
             />
         </div>
