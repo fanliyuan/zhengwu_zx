@@ -147,6 +147,21 @@ export default class InstitutionalManage extends Component {
     })
   }
 
+  handleResetBtn = () => {
+    const { dispatch } = this.props
+    this.setState({
+      provice:"所属省",
+      city:"所属市",
+      area:"所属区域",
+      institutionName:"",
+      times:[],
+    })
+    dispatch({
+      type:'Institution/querys',
+      payload:{pageNum:1,pageSize:10},
+    })
+  }
+
   @Bind()
   @Throttle(1000)
   handleSearchBtn(){
@@ -265,7 +280,8 @@ export default class InstitutionalManage extends Component {
               {areaData}
             </Select>
             <RangePicker style={{ marginRight: 20, width:200 }} value={times} onChange={this.handleTimeChange} />
-            <Button type="primary" onClick={this.handleSearchBtn}>搜索</Button>
+            <Button className='mr16' type="primary" onClick={this.handleSearchBtn}>搜索</Button>
+            <Button onClick={this.handleResetBtn}>重置</Button>
           </div>
           <div className={styles.createBtn}>
             <Button icon="plus" type="primary" onClick={this.handleAdd}>

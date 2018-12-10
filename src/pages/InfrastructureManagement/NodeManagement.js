@@ -131,12 +131,31 @@ export default class NodeManagement extends Component {
         ...queryParams,
         pageSize: 10,
         pageNum: 1,
-        startTime: '',
       },
     })
     this.setState({
       isChanged: false,
       queryParams,
+    })
+  }
+
+  handleReset = () => {
+    const { dispatch } = this.props
+    this.setState({
+      queryData: {
+        nodeName: '',
+        mac: undefined,
+        pid: [],
+        depId: [],
+        nodeState: '全部状态',
+      },
+    })
+    dispatch({
+      type: 'nodeManagement/getNodes',
+      payload: {
+        pageSize: 10,
+        pageNum: 1,
+      },
     })
   }
 
@@ -383,8 +402,11 @@ export default class NodeManagement extends Component {
               >
               {stateComs}
             </Select>
-            <Button type="primary" icon="search" onClick={this.handleSearch}>
+            <Button className='mr16' type="primary" icon="search" onClick={this.handleSearch}>
               搜索
+            </Button>
+            <Button onClick={this.handleReset}>
+              重置
             </Button>
           </Form>
           <div style={{ marginBottom: 20 }}>
