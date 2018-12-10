@@ -47,7 +47,7 @@ export default class NodeManagement extends Component {
     const { dispatch } = this.props
     dispatch({
       type: 'nodeManagement/getNodes',
-      payload: {pageSize: 10, pageNum: 1, startTime: ''},
+      payload: {pageSize: 10, pageNum: 1},
     })
     dispatch({
       type: 'nodeManagement/getParentNodes',
@@ -129,6 +129,9 @@ export default class NodeManagement extends Component {
       type: 'nodeManagement/getNodes',
       payload: {
         ...queryParams,
+        pageSize: 10,
+        pageNum: 1,
+        startTime: '',
       },
     })
     this.setState({
@@ -143,7 +146,7 @@ export default class NodeManagement extends Component {
       type: 'nodeManagement/getNodes',
       payload: {
         ...queryParams,
-        ...{pageSize: pagination.pageSize, pageNumber: pagination.current},
+        ...{pageSize: pagination.pageSize, pageNum: pagination.current},
       },
     })
   }
@@ -220,7 +223,7 @@ export default class NodeManagement extends Component {
       },
       {
         title: '上级节点',
-        dataIndex: 'parentNodeName',
+        dataIndex: 'parentName',
       },
       {
         title: '网卡·MAC·地址',
@@ -232,10 +235,10 @@ export default class NodeManagement extends Component {
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'nodeState',
         render(text) {
           const Com =
-            text === '运行中' ? (
+            text === 1 ? (
               <Badge status="success" text="运行中" />
             ) : (
               <Badge status="default" text="已停止" />
