@@ -23,10 +23,10 @@ export default {
       let pagination
       try {
         if(response.code === '200'){
-          pagination = response.data.total > 9 ? { current:response.data.pageNum,pageSize:response.data.pageSize,total:response.data.total } : false
+          pagination = { current:response.data.pageNum,pageSize:response.data.pageSize,total:response.data.total }
           yield put({
             type:'queryInstitution',
-            payload:{list:response.data.list,pagination},
+            payload:{list:response.data.list, pagination},
           })
         }
         else {
@@ -80,7 +80,7 @@ export default {
     *addItem ({ payload }, { call, put}){
       const response = yield call(insertGoveDept,{body:payload})
       try{
-        if(+response.code === 0){
+        if(+response.code === 200){
           message.success(response.msg)
           yield put({
             type:'querys',

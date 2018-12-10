@@ -82,7 +82,6 @@ export default [
             name: 'node',
             path: 'node',
             component: './InfrastructureManagement/NodeManagement',
-            hideInMenu: true,
           },
           {
             name: 'addnode',
@@ -194,7 +193,6 @@ export default [
           },
         ],
         authority: ['admin', 'security', 'admin-n', 'security-n', 'operator'],
-        hideInMenu: true,
       },
       // 数据资源管理 dataSourceManagement
       {

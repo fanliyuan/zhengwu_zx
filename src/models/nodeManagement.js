@@ -32,7 +32,7 @@ function number2String(array, field) {
       try {
         response = yield call(getNodes, {params:payload})
         const { datas, total = 0, pageSize = 10, pageNumber = 1 } = response.result
-        const pagination = total > 10 ? {total, pageSize, current: pageNumber} : false
+        const pagination = {total, pageSize, current: pageNumber}
         if (+response.code === 0) {
           yield put({
             type: 'changeNodeList',
