@@ -18,8 +18,12 @@ const module = {
       url: 'getResourceItemList',
     },
     {
-      name: 'getResourceInfo',
-      url: 'getResourceInfo',
+      name: 'getReqBeanEntityInfo',
+      url: 'getReqBeanEntityInfo',
+    },
+    {
+      name: 'getResourceTypeById',
+      url: 'getResourceTypeById',
     },
     {
       name: 'getResourceTitle',

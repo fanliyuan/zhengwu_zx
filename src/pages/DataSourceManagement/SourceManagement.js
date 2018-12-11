@@ -156,15 +156,14 @@ export default class SourceManagement extends Component {
     })
   }
 
-  handlerelatedData = id => {
+  handlerelatedData = row => {
     const { dispatch } = this.props
     dispatch(
       routerRedux.push({
         pathname: '/dataSourceManagement/resourceConnection',
-        state: { routeId: id },
+        state: { routeId: row.resourceId,mountId:row.mountResourceId },
       })
     )
-    // dispatch(routerRedux.push('/dataSourceManagement/resourceConnection', { resourceId: row.resourceId, moutResourceId: row.moutResourceId  }))
   }
 
   handleAdd = () => {
@@ -172,10 +171,14 @@ export default class SourceManagement extends Component {
     dispatch(routerRedux.push('/dataSourceManagement/addDirectory'))
   }
 
-  handleOpen = () => {
+  handleOpen = (id) => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/openShare'))
-    // dispatch(routerRedux.push('/dataSourceManagement/openShareFile'))
+    dispatch(
+      routerRedux.push({
+        pathname: '/dataSourceManagement/openShare',
+        state: { routeId:id },
+      })
+    )
   }
 
   handleInput = () => {
@@ -445,24 +448,24 @@ export default class SourceManagement extends Component {
               // </span>
           //  )
           }else if(+row.checkStatus === 0){
-            return (
-              <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
-                审核日志
-              </span>
-            )
+            // return (
+            //   <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
+            //     审核日志
+            //   </span>
+            // )
           }else {
             return (
               <div>
                 <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
                   查看
                 </span>
-                <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
+                {/* <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
                 审核日志
-                </span>
+                </span> */}
                 {/* {row.isMount === 1 &&  */}
-                <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row.resourceId)}>关联数据</span>
+                <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row)}>关联数据</span>
                 {/* }  */}
-                <span className={styles.clickBtn} onClick={that.handleOpen}>
+                <span className={styles.clickBtn} onClick={that.handleOpen.bind(null,row.resourceId)}>
                   共享开放
                 </span>
                 {/*

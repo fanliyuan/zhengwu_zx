@@ -11,7 +11,7 @@ import {
   // Modal,
   // Input,
   // DatePicker,
-  Popconfirm,
+  // Popconfirm,
   // message,
 } from 'antd'
 import moment from 'moment'
@@ -25,7 +25,7 @@ const { isMoment } = moment
 let initialData = []
 let enableEditFile = []
 // let resourceDetailData;
-let resourceItemDetail = []
+const resourceItemDetail = []
 @connect(({ catalogManagement, loading }) => ({
   catalogManagement,
   loading: loading.models.catalogManagement,
@@ -48,10 +48,10 @@ export default class ResourceConnection extends Component {
     startTimes: '',
     endTimes: '',
     // connectTime: [],
-    chooseName: '',
+    // chooseName: '',
     chooseId: '',
     chooseId1: '',
-    zcName: '',
+    // zcName: '',
     zcId: -1,
     zcType: '',
     fileListData: [],
@@ -59,6 +59,7 @@ export default class ResourceConnection extends Component {
     isExpandOrFolder: true,
     dataTypes: '',
     initialType: '',
+    // mountId:"",
   };
 
   componentDidMount() {
@@ -72,9 +73,15 @@ export default class ResourceConnection extends Component {
          params:{resourceId: state ? state.routeId : '' },
         },
     })
+    dispatch({
+      type:'catalogManagement/getConnectList',
+      payload:{
+        params:{id:state ? state.mountId : ''}},
+    })
     this.setState({
       routeId: state ? state.routeId : '',
       fileListData: [],
+      // mountId:state ? state.mountId : '',
     })
   }
 
@@ -118,7 +125,7 @@ export default class ResourceConnection extends Component {
 
   handleChooseChange = row => {
     this.setState({
-      zcName: row.name,
+      // zcName: row.name,
       zcId: row.id,
       zcType: row.type,
     })
@@ -198,9 +205,9 @@ export default class ResourceConnection extends Component {
   handleOk1 = async () => {
     initialData = []
     enableEditFile = []
-    const { zcName, zcId, zcType } = this.state
+    const { zcId, zcType } = this.state
     this.setState({
-      chooseName: zcName,
+      // chooseName: zcName,
       chooseId: zcId,
       // abc: zcType,
       dataTypes: zcType,
@@ -261,7 +268,7 @@ export default class ResourceConnection extends Component {
   handleCancel1 = () => {
     this.setState({
       // visible1: false,
-      zcName: '',
+      // zcName: '',
       zcId: -1,
       zcType: '',
     })
@@ -370,29 +377,24 @@ export default class ResourceConnection extends Component {
         resourceDetail,
         // connectList,
         // connectPagination,
-        connectFileList,
-        connectFilePagination,
-        itemList,
+        // connectFileList,
+        connectFileLists,
+        // connectFilePagination,
+        // itemList,
       },
     } = this.props
-    enableEditFile = [...connectFileList]
-    // initialData = [...connectFileList]
-    // resourceDetailData = resourceDetail;
-    resourceItemDetail = itemList
+    const typess = (connectFileLists && connectFileLists.value && connectFileLists.value.datasourceEntity.type) ? (connectFileLists && connectFileLists.value && connectFileLists.value.datasourceEntity.type) : ''
+    const connectArr = (connectFileLists && connectFileLists.value && connectFileLists.value.ftpfileEntityCollection) ? connectFileLists.value.ftpfileEntityCollection : []
+    const connectRight = (connectFileLists && connectFileLists.value && connectFileLists.value.structEntityCollection) ? connectFileLists.value.structEntityCollection : []
+    const connectLeft = [] // (connectFileLists && connectFileLists.value && connectFileLists.value.syncEntity) ? connectFileLists.value.syncEntity :
     const {
       // visible1,
       // visible2,
       // connectName,
       // connectType,
       // connectTime,
-      fileListData,
       isExpandOrFolder,
-      initialType,
-      dataTypes,
-      chooseName,
     } = this.state
-    // console.log(dataTypes)
-    // const pagination = { pageSize: 10, current: 1 }
     const columns = [
       {
         title: '序号',
@@ -415,26 +417,26 @@ export default class ResourceConnection extends Component {
       },
       {
         title: '挂接时间',
-        dataIndex: 'connectionTime',
+        dataIndex: 'uploadTime',
         render(text) {
           return moment(text).format('lll')
         },
       },
     ]
     // if (isNodeOperator) {
-    columns.push({
-      title: '操作',
-      render: (text, row) => {
-        return (
-          <Popconfirm
-            title={`是否删除${row.fileName || '此行'}?`}
-            onConfirm={() => this.handleDeleteFile(row.id)}
-            >
-            <a>删除</a>
-          </Popconfirm>
-        )
-      },
-    })
+    // columns.push({
+    //   title: '操作',
+    //   render: (text, row) => {
+    //     return (
+    //       <Popconfirm
+    //         title={`是否删除${row.fileName || '此行'}?`}
+    //         onConfirm={() => this.handleDeleteFile(row.id)}
+    //         >
+    //         <a>删除</a>
+    //       </Popconfirm>
+    //     )
+    //   },
+    // })
     // }
     columns.forEach(item => {
       item.align = 'center'
@@ -599,85 +601,34 @@ export default class ResourceConnection extends Component {
     columnsModal2.forEach(item => {
       item.align = 'center'
     })
-    // const listModal1 = [
-    //   {
-    //     id: 0,
-    //     sourceName: '城市低保标准',
-    //     dataType: '文件',
-    //     systemName: '统计系统',
-    //     registerTime: 451233554,
-    //   },
-    //   {
-    //     id: 1,
-    //     sourceName: '农村低保准备',
-    //     dataType: '文件',
-    //     systemName: '统计系统',
-    //     registerTime: 451233554,
-    //   },
-    //   {
-    //     id: 2,
-    //     sourceName: '人口统计',
-    //     dataType: '文件',
-    //     systemName: '统计系统',
-    //     registerTime: 451233554,
-    //   },
-    // ]
-    // const listModal2 = [
-    //   {
-    //     fileName: '城市低保标准表(各市第7季度).xlsx',
-    //     type: 'Zip',
-    //     fileSize: '1.38MB',
-    //     uploader: '张三',
-    //     uploadTime: 4512211,
-    //   },
-    //   {
-    //     fileName: '农村低保标准表(各地第1季度).json',
-    //     type: 'json',
-    //     fileSize: '0.12MB',
-    //     uploader: '李四',
-    //     uploadTime: 4512211,
-    //   },
-    //   {
-    //     fileName: '人口普查数据.xml',
-    //     type: 'jpeg',
-    //     fileSize: '1.56MB',
-    //     uploader: '王五',
-    //     uploadTime: 4512211,
-    //   },
-    // ]
     return (
       <PageHeaderLayout>
         <div className="btncls">
           <Button onClick={this.handleBack} className="fr mr40">
             返回
           </Button>
-          {/* {isNodeOperator && ( */}
-          {/* <Button type="primary" className="fr mr40" onClick={this.handleSave}>
-            保存
-          </Button> */}
-          {/* )} */}
         </div>
         <Card>
           <div className={styles.form}>
             <h3>
               信息资源代码:
-              <span> {resourceDetail && resourceDetail.value.code}</span>
+              <span> {resourceDetail && resourceDetail.resourceCode}</span>
               信息资源名称:
-              <span> {resourceDetail && resourceDetail.value.name}</span>
+              <span> {resourceDetail && resourceDetail.resourceName}</span>
               信息资源提供方:
-              <span> {resourceDetail && resourceDetail.value.providerDept}</span>
+              <span> {resourceDetail && resourceDetail.resourceProviderDepartment}</span>
               发布时间:
-              <span> {resourceDetail && resourceDetail.value.publishTime}</span>
+              <span> {resourceDetail && resourceDetail.resourcePublishTime}</span>
             </h3>
             <h3 style={{ display: isExpandOrFolder ? 'none' : 'block' }}>
               提供方代码:
-              <span> {resourceDetail && resourceDetail.value.providerNo}</span>
+              <span> {resourceDetail && resourceDetail.resourceProviderCode}</span>
               信息属性分类:
-              <span> {resourceDetail && resourceDetail.value.typeName}</span>
+              <span> {resourceDetail && resourceDetail.resourceProjectCatalogType}</span>
               信息资源格式:
-              <span> {resourceDetail && resourceDetail.value.format}</span>
+              <span> {resourceDetail && resourceDetail.resourceFormatClassify}</span>
               信息资源摘要:
-              <span> {resourceDetail && resourceDetail.value.summary}</span>
+              <span> {resourceDetail && resourceDetail.resourceAbstract}</span>
             </h3>
             <Button style={{ marginLeft: 10 }} onClick={this.isFolderOrExpand}>
               {isExpandOrFolder ? '展开' : '收起'}
@@ -688,69 +639,28 @@ export default class ResourceConnection extends Component {
             <div style={{ display: 'inline-block', marginRight: 20 }}>
               <h3>
                 关联数据名称:
-                <span style={{ marginLeft: 10 }}>{chooseName}</span>
+                <span style={{ marginLeft: 10 }}>{connectFileLists && connectFileLists && connectFileLists.name}</span>
               </h3>
             </div>
-            {/* {isNodeOperator && ( */}
-            {/* <div style={{ display: 'inline-block' }}> */}
-            {/* <span className={styles.linkBtn} onClick={this.showModal1}>
-                去选择
-              </span> */}
-            {/* <span
-                className={styles.linkBtn}
-                style={{
-                  marginLeft: 20,
-                  display: !dataTypes
-                    ? initialType !== 'db'
-                      ? 'inline-block'
-                      : 'none'
-                    : dataTypes !== 'db'
-                      ? 'inline-block'
-                      : 'none',
-                }}
-                onClick={this.handleResetFile}
-                >
-                重载文件
-              </span> */}
-            {/* </div> */}
-            {/* <span
-              className={styles.linkBtn}
-              style={{ float: 'right' }}
-              onClick={this.handleCancelMount}
-              >
-              取消关联
-            </span> */}
-            {/* )} */}
           </div>
-          {/* <div style={{ marginBottom: 20 }}>
-            <div style={{ display: 'inline-block', marginRight: 20 }}>
-              <h3>挂接资源检索关系设置:</h3>
-            </div>
-            {/* {isNodeOperator && ( */}
-          {/* <div style={{ display: 'inline-block' }}>
-                <span className={styles.linkBtn} onClick={this.showModal2}>
-                  去选择
-                </span>
-              </div> */}
-          {/* )} */}
-          {/* </div> */}
           <div>
             <Row>
               <Col
-                span={!dataTypes ? (initialType !== 'db' ? 0 : 11) : dataTypes !== 'db' ? 0 : 11}
+                span={typess === 'mysql' ? 11 : 0}
                 >
                 <Table
                   columns={columnsLeft}
-                  dataSource={itemList}
+                  dataSource={connectLeft}
                   pagination={
-                    connectFilePagination && {
-                      ...connectFilePagination,
-                      showQuickJumper: true,
-                      showTotal: total =>
-                        `共 ${Math.ceil(
-                          total / connectFilePagination.pageSize
-                        )}页 / ${total}条 数据`,
-                    }
+                    // connectFilePagination && {
+                    //   ...connectFilePagination,
+                    //   showQuickJumper: true,
+                    //   showTotal: total =>
+                    //     `共 ${Math.ceil(
+                    //       total / connectFilePagination.pageSize
+                    //     )}页 / ${total}条 数据`,
+                    // }
+                    false
                   }
                   rowKey="id"
                   bordered
@@ -758,23 +668,24 @@ export default class ResourceConnection extends Component {
                   />
               </Col>
               <Col
-                span={!dataTypes ? (initialType !== 'db' ? 0 : 2) : dataTypes !== 'db' ? 0 : 2}
+                span={typess === 'mysql' ? 2 : 0}
                 />
               <Col
-                span={!dataTypes ? (initialType !== 'db' ? 0 : 11) : dataTypes !== 'db' ? 0 : 11}
+                span={typess === 'mysql' ? 11 : 0}
                 >
                 <Table
                   columns={columnsr}
-                  dataSource={fileListData}
+                  dataSource={connectRight}
                   pagination={
-                    connectFilePagination && {
-                      ...connectFilePagination,
-                      showQuickJumper: true,
-                      showTotal: total =>
-                        `共 ${Math.ceil(
-                          total / connectFilePagination.pageSize
-                        )}页 / ${total}条 数据`,
-                    }
+                    // connectFilePagination && {
+                    //   ...connectFilePagination,
+                    //   showQuickJumper: true,
+                    //   showTotal: total =>
+                    //     `共 ${Math.ceil(
+                    //       total / connectFilePagination.pageSize
+                    //     )}页 / ${total}条 数据`,
+                    // }
+                    false
                   }
                   rowKey="id"
                   bordered
@@ -782,20 +693,21 @@ export default class ResourceConnection extends Component {
                   />
               </Col>
               <Col
-                span={!dataTypes ? (initialType !== 'db' ? 24 : 0) : dataTypes !== 'db' ? 24 : 0}
+                span={typess === 'mysql' ? 0 : 24}
                 >
                 <Table
                   columns={columns}
-                  dataSource={fileListData}
+                  dataSource={connectArr}
                   pagination={
-                    connectFilePagination && {
-                      ...connectFilePagination,
-                      showQuickJumper: true,
-                      showTotal: total =>
-                        `共 ${Math.ceil(
-                          total / connectFilePagination.pageSize
-                        )}页 / ${total}条 数据`,
-                    }
+                    // connectFilePagination && {
+                    //   ...connectFilePagination,
+                    //   showQuickJumper: true,
+                    //   showTotal: total =>
+                    //     `共 ${Math.ceil(
+                    //       total / connectFilePagination.pageSize
+                    //     )}页 / ${total}条 数据`,
+                    // }
+                    false
                   }
                   rowKey="id"
                   bordered
@@ -803,79 +715,7 @@ export default class ResourceConnection extends Component {
                   />
               </Col>
             </Row>
-            {/* <Button type="primary" style={{ marginTop: 20 }} onClick={this.handleSaveMountData}>
-              保存
-            </Button> */}
           </div>
-          {/* <Modal
-            title="选择要挂接的数据"
-            visible={visible1}
-            onOk={this.handleOk1}
-            onCancel={this.handleCancel1}
-            width={900}
-            >
-            <Row style={{ marginBottom: 20 }}>
-              <Col span={5}>
-                <Input
-                  placeholder="资源名称"
-                  value={connectName}
-                  onChange={this.handleConnectName}
-                  />
-              </Col>
-              <Col span={5} offset={1}>
-                <Input
-                  placeholder="数据源类型"
-                  value={connectType}
-                  onChange={this.handleConnectType}
-                  />
-              </Col>
-              <Col span={5} offset={1}>
-                <RangePicker onChange={this.handleConnectTimeChange} value={connectTime} />
-              </Col>
-              <Col span={5} offset={1}>
-                <Button type="primary" onClick={this.handleSearch.bind(null, '')}>
-                  搜索
-                </Button>
-              </Col>
-            </Row>
-            <Table
-              columns={columnsModal1}
-              dataSource={connectList}
-              onChange={this.handleConnectListChange}
-              pagination={
-                connectPagination && {
-                  ...connectPagination,
-                  showQuickJumper: true,
-                  showTotal: total =>
-                    `共 ${Math.ceil(total / connectPagination.pageSize)}页 / ${total}条 数据`,
-                }
-              }
-              rowKey="id"
-              bordered
-              />
-          </Modal> */}
-          {/* <Modal
-            title="选择要挂接的数据"
-            visible={visible2}
-            onOk={this.handleOk2}
-            onCancel={this.handleCancel2}
-            width={900}
-          >
-            <Table
-              columns={columnsModal2}
-              dataSource={listModal2}
-              pagination={
-                pagination && {
-                  ...pagination,
-                  showQuickJumper: true,
-                  showTotal: total =>
-                    `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`,
-                }
-              }
-              rowKey="id"
-              bordered
-            />
-          </Modal> */}
         </Card>
       </PageHeaderLayout>
     )
