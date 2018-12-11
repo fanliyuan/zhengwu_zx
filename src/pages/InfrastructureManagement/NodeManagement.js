@@ -269,7 +269,7 @@ export default class NodeManagement extends Component {
         dataIndex: 'nodeState',
         render(text) {
           const Com =
-            text === 1 ? (
+            text === '1' ? (
               <Badge status="success" text="运行中" />
             ) : (
               <Badge status="default" text="已停止" />
@@ -312,7 +312,7 @@ export default class NodeManagement extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const stateList = [{value: '全部状态', label: '全部状态'},{value: 1, label: '运行中'}, {value: 0,label: '已停止'}] 
+    const stateList = [{value: '全部状态', label: '全部状态'},{value: '1', label: '运行中'}, {value: '2',label: '已停止'}]
     const stateComs = stateList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value} title={item.label}>
