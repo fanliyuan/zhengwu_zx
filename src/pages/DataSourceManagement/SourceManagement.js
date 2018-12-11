@@ -156,9 +156,15 @@ export default class SourceManagement extends Component {
     })
   }
 
-  handlerelatedData = row => {
+  handlerelatedData = id => {
     const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/resourceConnectionData', { resourceId: row.resourceId, moutResourceId: row.moutResourceId  }))
+    dispatch(
+      routerRedux.push({
+        pathname: '/dataSourceManagement/resourceConnection',
+        state: { routeId: id },
+      })
+    )
+    // dispatch(routerRedux.push('/dataSourceManagement/resourceConnection', { resourceId: row.resourceId, moutResourceId: row.moutResourceId  }))
   }
 
   handleAdd = () => {
@@ -196,7 +202,7 @@ export default class SourceManagement extends Component {
       queryData.endTime = queryData.resourcePublishTime[1].format().substr(0,10)
     }
     delete queryData.resourcePublishTime
-    queryData.isMount = queryData.isMount ? '1':'0'
+    queryData.isMount = queryData.isMount ? '1':''
     // if (queryData.typeId && queryData.typeId.length > 0) {
     //   if (!queryData.typeId[3] && queryData.typeId[3] !== 0) {
     //     return message.error('资源属性选择项不是细目')
@@ -432,29 +438,46 @@ export default class SourceManagement extends Component {
       {
         title: '操作',
         render: (text, row) => {
-          return (
-            <div>
+          if(+row.checkStatus === -1){
+            // return (
+              // <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
+              //   查看
+              // </span>
+          //  )
+          }else if(+row.checkStatus === 0){
+            return (
               <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
-                查看
+                审核日志
               </span>
-              {
-                row.isMount === 1 && <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row)}>关联数据</span>
-              } 
-              <span className={styles.clickBtn} onClick={that.handleOpen}>
-                共享开放
-              </span>
-              {/*
-              <span className={styles.clickBtn} onClick={that.handleEdit}>
-                修改
-              </span>
-              <Popconfirm
-                title={`确认删除${row.name}?`}
-                onConfirm={() => message.info('删除成功')}
-                >
-                <a>删除</a>
-              </Popconfirm> */}
-            </div>
-          )
+            )
+          }else {
+            return (
+              <div>
+                <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
+                  查看
+                </span>
+                <span className={styles.clickBtn} onClick={() => that.handleSource(row)}>
+                审核日志
+                </span>
+                {/* {row.isMount === 1 &&  */}
+                <span className={styles.clickBtn} onClick={() => that.handlerelatedData(row.resourceId)}>关联数据</span>
+                {/* }  */}
+                <span className={styles.clickBtn} onClick={that.handleOpen}>
+                  共享开放
+                </span>
+                {/*
+                <span className={styles.clickBtn} onClick={that.handleEdit}>
+                  修改
+                </span>
+                <Popconfirm
+                  title={`确认删除${row.name}?`}
+                  onConfirm={() => message.info('删除成功')}
+                  >
+                  <a>删除</a>
+                </Popconfirm> */}
+              </div>
+            )
+          }
         },
       },
     ]

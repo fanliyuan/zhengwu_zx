@@ -25,6 +25,7 @@ let formTime
 @connect(({ dataManager, loading }) => ({
   dataManager,
   loading: loading.effects['dataManager/fetch'],
+  loadingView: loading.effects['dataManager/getReqBeanEntityInfo'],
 }))
 @Form.create()
 class TableList extends Component {
@@ -87,65 +88,58 @@ class TableList extends Component {
     },
     {
       title: '操作',
-      render: (text, record) => (
-        <Fragment>
-          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
+      render: (text, record) => {
+        if (record.dataStatus === '1' && record.checkStatus !== '-1' && record.checkStatus !== '0') {
+          return (
             <Fragment>
-              <a
-                onClick={() =>
-                  router.push(
-                    `/data/management/infoSource${record.type}/${record.id}/${record.resourceId}`
-                  )
-                }
-                >
-                信息资源
-              </a>
-              <Divider type="vertical" />
+              {record.resourceStatus === '1' && (
+                <Fragment>
+                  <a onClick={() => router.push(`/data/management/infoSource${record.type}/${record.id}/${record.resourceId}`)}>
+                    信息资源
+                  </a>
+                  <Divider type="vertical" />
+                </Fragment>
+              )}
+              <Fragment>
+                <a
+                  onClick={() => {
+                    if (record.id.indexOf('db') !== -1) {
+                      return router.push(`/dataPublicManagement/dbview/${record.id}`)
+                    } else if (record.id.indexOf('ftp') !== -1) {
+                      return router.push(`/dataPublicManagement/ftpview/${record.id}`)
+                    } else if (record.id.indexOf('file') !== -1) {
+                      return router.push(`/dataPublicManagement/fileview/${record.id}`)
+                    } else {
+                      message.destroy()
+                      return message.error('无法查看数据，缺少数据类型！')
+                    }
+                    }}
+                  >
+                  数据
+                </a>
+                <Divider type="vertical" />
+              </Fragment>
+              {record.dataType !== '文件' && (
+                <Fragment>
+                  <a
+                    onClick={() => {
+                      return router.push(`/dataPublicManagement/taskview/${record.dataType}/${record.id}`)
+                    }}
+                    >
+                    任务
+                  </a>
+                  <Divider type="vertical" />
+                </Fragment>
+              )}
+              <Fragment>
+                <a onClick={() => this.handleView(record.id)}>
+                  查看
+                </a>
+              </Fragment>
             </Fragment>
-          )}
-          {(record.checkStatus === '1' || record.checkStatus === '-11') && (
-            <Fragment>
-              <a
-                onClick={() => {
-                  if (record.id.indexOf('db') !== -1) {
-                    return router.push(`/dataPublicManagement/dbview/${record.id}`)
-                  } else if (record.id.indexOf('ftp') !== -1) {
-                    return router.push(`/dataPublicManagement/ftpview/${record.id}`)
-                  } else if (record.id.indexOf('file') !== -1) {
-                    return router.push(`/dataPublicManagement/fileview/${record.id}`)
-                  } else {
-                    message.destroy()
-                    return message.error('无法查看数据，缺少数据类型！')
-                  }
-                  }}
-                >
-                数据
-              </a>
-              <Divider type="vertical" />
-            </Fragment>
-          )}
-          {(record.checkStatus === '1' || record.checkStatus === '-11') && record.dataType !== '文件' && (
-            <Fragment>
-              <a
-                onClick={() => {
-                  const { match } = this.props
-                  return router.push(`${match.url}/taskview/${record.type}/${record.id}`)
-                }}
-                >
-                任务
-              </a>
-              <Divider type="vertical" />
-            </Fragment>
-          )}
-          <Fragment>
-            <a
-              onClick={() => this.handleView(record.id, record.dataType)}
-              >
-              查看
-            </a>
-          </Fragment>
-        </Fragment>
-      ),
+          )
+        }
+      },
     },
   ];
 
@@ -189,7 +183,6 @@ class TableList extends Component {
     fieldsForm.nodeName = fieldsForm.pubNodeName
     paramsPage = { pageNum: 1, pageSize: 10 }
     formValues = fieldsForm
-    console.log(formValues)
     formTime = paramsTime
     const values = {
       ...fieldsForm,
@@ -202,8 +195,18 @@ class TableList extends Component {
     })
   }
 
-  handleView = (id, dataType) => {
+  handleView = (id) => {
+    let dataType
     const { dispatch } = this.props
+    if (id.indexOf('db') !== -1) {
+      dataType = 'db'
+    } else if (id.indexOf('ftp') !== -1) {
+      dataType = 'ftp'
+    } else if (id.indexOf('file') !== -1) {
+      dataType = 'file'
+    } else {
+      dataType = ''
+    }
     dispatch({
       type: 'dataManager/getReqBeanEntityInfo',
       payload: {
@@ -469,48 +472,36 @@ class TableList extends Component {
                   value: '',
                 },
                 {
-                  label: '数据库类型',
-                  OptGroup: true,
-                  options: [
-                    {
-                      key: 'mysql',
-                      value: 'mysql',
-                    },
-                    {
-                      key: 'sqlserver',
-                      value: 'sqlserver',
-                    },
-                    {
-                      key: 'oracle',
-                      value: 'oracle',
-                    },
-                    {
-                      key: 'dm',
-                      value: 'dm',
-                    },
-                    {
-                      key: 'kingbase',
-                      value: 'kingbase',
-                    },
-                  ],
+                  key: 'mysql',
+                  value: 'mysql',
                 },
                 {
-                  label: '半结构文件类型',
-                  OptGroup: true,
-                  options: [
-                    {
-                      key: 'ftp',
-                      value: 'ftp',
-                    },
-                    {
-                      key: 'sftp',
-                      value: 'sftp',
-                    },
-                    {
-                      key: '文件',
-                      value: 'file',
-                    },
-                  ],
+                  key: 'sqlserver',
+                  value: 'sqlserver',
+                },
+                {
+                  key: 'oracle',
+                  value: 'oracle',
+                },
+                {
+                  key: 'dm',
+                  value: 'dm',
+                },
+                {
+                  key: 'kingbase',
+                  value: 'kingbase',
+                },
+                {
+                  key: 'ftp',
+                  value: 'ftp',
+                },
+                {
+                  key: 'sftp',
+                  value: 'sftp',
+                },
+                {
+                  key: '文件',
+                  value: 'file',
                 },
               ],
             },
@@ -584,6 +575,7 @@ class TableList extends Component {
     const {
         dataManager: { data },
         loading,
+        loadingView,
         } = this.props
     const { visible, dataType } = this.state
     const paginationProps = {
@@ -627,15 +619,17 @@ class TableList extends Component {
             width={900}
             maskClosable={false}
             >
-            {dataType === '数据库' && (
-              this.renderDbInfo()
-            )}
-            {dataType === 'FTP' && (
-              this.renderFtpInfo()
-            )}
-            {dataType === '文件' && (
-              this.renderFileInfo()
-            )}
+            <Card bordered={false} loading={loadingView}>
+              {dataType === 'db' && (
+                this.renderDbInfo()
+              )}
+              {dataType === 'ftp' && (
+                this.renderFtpInfo()
+              )}
+              {dataType === 'file' && (
+                this.renderFileInfo()
+              )}
+            </Card>
           </Modal>
         </Card>
       </PageHeaderWrapper>

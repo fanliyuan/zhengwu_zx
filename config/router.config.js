@@ -82,7 +82,6 @@ export default [
             name: 'node',
             path: 'node',
             component: './InfrastructureManagement/NodeManagement',
-            hideInMenu: true,
           },
           {
             name: 'addnode',
@@ -194,7 +193,6 @@ export default [
           },
         ],
         authority: ['admin', 'security', 'admin-n', 'security-n', 'operator'],
-        hideInMenu: true,
       },
       // 数据资源管理 dataSourceManagement
       {
@@ -326,10 +324,10 @@ export default [
           //   authority: ['operator', 'operator-n'],
           // },
           {
-            name: 'resourceConnectionData',
-            path: 'resourceConnectionData',
+            name: 'resourceConnection',
+            path: 'resourceConnection',
             hideInMenu: true,
-            component: './DataSourceManagement/ResourceConnectionData',
+            component: './DataSourceManagement/ResourceConnection',
             authority: ['operator', 'operator-n'],
           },
           {

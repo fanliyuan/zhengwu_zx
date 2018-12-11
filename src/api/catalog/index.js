@@ -18,6 +18,10 @@ const module = {
       url: 'getResourceItemList',
     },
     {
+      name: 'getResourceInfo',
+      url: 'getResourceInfo',
+    },
+    {
       name: 'getResourceTitle',
       url: 'getResourceTypeById',
     },
@@ -31,10 +35,11 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseHost) {
     if (process.env.NODE_ENV === 'development') {
-      item.baseHost = 'http://192.168.100.15:8008'
+      item.baseHost = 'http://192.168.100.16:8000'
     } else {
       item.baseHost = 'http://cdyoue.com.cn:19006'
     }
+    // item.baseHost = 'http://cdyoue.com.cn:19006'
   }
   if (!item.baseUrl) {
     item.baseUrl = 'zwjh/api/v1'

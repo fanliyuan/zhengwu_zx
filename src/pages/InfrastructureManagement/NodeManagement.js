@@ -47,7 +47,7 @@ export default class NodeManagement extends Component {
     const { dispatch } = this.props
     dispatch({
       type: 'nodeManagement/getNodes',
-      payload: {},
+      payload: {pageSize: 10, pageNum: 1},
     })
     dispatch({
       type: 'nodeManagement/getParentNodes',
@@ -129,11 +129,33 @@ export default class NodeManagement extends Component {
       type: 'nodeManagement/getNodes',
       payload: {
         ...queryParams,
+        pageSize: 10,
+        pageNum: 1,
       },
     })
     this.setState({
       isChanged: false,
       queryParams,
+    })
+  }
+
+  handleReset = () => {
+    const { dispatch } = this.props
+    this.setState({
+      queryData: {
+        nodeName: '',
+        mac: undefined,
+        pid: [],
+        depId: [],
+        nodeState: '全部状态',
+      },
+    })
+    dispatch({
+      type: 'nodeManagement/getNodes',
+      payload: {
+        pageSize: 10,
+        pageNum: 1,
+      },
     })
   }
 
@@ -143,7 +165,7 @@ export default class NodeManagement extends Component {
       type: 'nodeManagement/getNodes',
       payload: {
         ...queryParams,
-        ...{pageSize: pagination.pageSize, pageNumber: pagination.current},
+        ...{pageSize: pagination.pageSize, pageNum: pagination.current},
       },
     })
   }
@@ -152,7 +174,7 @@ export default class NodeManagement extends Component {
     this.props.dispatch({
       type: 'nodeManagement/deleteNode',
       payload: {
-        nodeId: row.nodeId,
+        id: row.id,
       },
     })
   }
@@ -220,7 +242,7 @@ export default class NodeManagement extends Component {
       },
       {
         title: '上级节点',
-        dataIndex: 'parentNodeName',
+        dataIndex: 'parentName',
       },
       {
         title: '网卡·MAC·地址',
@@ -232,10 +254,10 @@ export default class NodeManagement extends Component {
       },
       {
         title: '状态',
-        dataIndex: 'status',
+        dataIndex: 'nodeState',
         render(text) {
           const Com =
-            text === '运行中' ? (
+            text === 1 ? (
               <Badge status="success" text="运行中" />
             ) : (
               <Badge status="default" text="已停止" />
@@ -380,8 +402,11 @@ export default class NodeManagement extends Component {
               >
               {stateComs}
             </Select>
-            <Button type="primary" icon="search" onClick={this.handleSearch}>
+            <Button className='mr16' type="primary" icon="search" onClick={this.handleSearch}>
               搜索
+            </Button>
+            <Button onClick={this.handleReset}>
+              重置
             </Button>
           </Form>
           <div style={{ marginBottom: 20 }}>
@@ -400,7 +425,7 @@ export default class NodeManagement extends Component {
             pagination={pagination && {...pagination, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination.pageSize)}页 / ${total}条 数据`}}
             onChange={this.handleTableChange}
             loading={loading}
-            rowKey="nodeId"
+            rowKey="id"
             bordered
             />
         </div>

@@ -47,7 +47,7 @@ export default class AddNode extends Component {
           mac: value.mac.trim(),
           deptId: isNaN(+value.deptId)?undefined:+value.deptId,
           pid: isNaN(+value.pid)?undefined:+value.pid,
-          id: this.state.nodeInfo.nodeId,
+          id: this.state.nodeInfo.id,
         }
         // console.log(this.props.nodeManagement.parentNodeListT)
         // console.log(value.pid)

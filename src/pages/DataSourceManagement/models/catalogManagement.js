@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../../../api'
 
-const { getCatalog, getResourceItemList, getResourceTaskInfo, getResourceTitle, directoryListAll } = apis
+const { getCatalog, getResourceItemList, getResourceTaskInfo, getResourceTitle, directoryListAll, getResourceInfo } = apis
 
 // 用来过滤树形数据的
 function filter(params, data) {
@@ -47,6 +47,10 @@ function filterTreeList(params, data) {
     resourceTaskInfo: {},
     catalogQueryData: '',
     srcProsTree: [],
+    resourceDetail:{},
+    connectFileList:[],
+    connectFilePagination:{},
+    itemList:[],
   },
 
   effects:{
@@ -231,6 +235,78 @@ function filterTreeList(params, data) {
         })
       }
     },
+    *getResources({ payload }, { call, put }) {
+      const response = yield call(getResourceInfo, { params:payload.params })
+      try {
+        if (+response.code === 200) {
+          // if (response.result.data && response.result.data.mount) {
+          //   if (response.result.data.mountType === 'ftp') {
+          //     yield put({
+          //       type: 'getFileList',
+          //       payload: {
+          //         id: response.result.data.mountId,
+          //         pagination: { pageNum: 1, pageSize: 10 },
+          //         type: 'ftp',
+          //         type1: 'ftpfile',
+          //       },
+          //     })
+          //     // yield put({
+          //     //   type: 'getResourceDetail',
+          //     //   payload: response.result.data,
+          //     // });
+          //   } else if (response.result.data.mountType === 'file') {
+          //     yield put({
+          //       type: 'getFileList',
+          //       payload: {
+          //         id: response.result.data.mountId,
+          //         pagination: { pageNum: 1, pageSize: 10 },
+          //         type: 'file',
+          //         type1: 'file',
+          //       },
+          //     })
+          //     // yield put({
+          //     //   type: 'getResourceDetail',
+          //     //   payload: response.result.data,
+          //     // });
+          //   } else if (response.result.data.mountType === 'db') {
+          //     yield put({
+          //       type: 'getFileList',
+          //       payload: {
+          //         id: response.result.data.mountId,
+          //         pagination: { pageNum: 1, pageSize: 10 },
+          //         type: 'db',
+          //         type1: 'struct',
+          //       },
+          //     })
+          //   }
+            yield put({
+              type: 'getResourceDetail',
+              payload: response.data,
+            })
+            // yield put({
+            //   type: 'reWriteItemList',
+            //   payload: { id: payload.id, pageNum: 1, pageSzie: 10 },
+            // });
+            // yield put({
+            //   type: 'getConnectItemList',
+            //   payload: response.result.data,
+            // });
+          }
+          // yield put({
+          //   type: 'reWriteItemList',
+          //   payload: { id: payload.id, pageNum: 1, pageSzie: 10 },
+          // })
+          // yield put({
+          //   type: 'getConnectItemList',
+          //   payload: response.result.data,
+          // });
+        // } else {
+        //   message.error(response.message)
+        // }
+      } catch (error) {
+        console.log(error) //eslint-disable-line
+      }
+    },
   },
 
   reducers:{
@@ -288,6 +364,12 @@ function filterTreeList(params, data) {
       return {
         ...state,
         srcProsTree,
+      }
+    },
+    getResourceDetail(state, {payload}) {
+      return {
+        ...state,
+        resourceDetail:payload,
       }
     },
   },

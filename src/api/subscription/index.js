@@ -30,6 +30,7 @@ module.apis.forEach(item => {
     } else {
       item.baseHost = 'http://cdyoue.com.cn:19006' // 公网接口(生成接口)
     }
+    // item.baseHost = 'http://cdyoue.com.cn:19006' // 公网接口(生成接口)
   }
   if (!item.baseUrl) {
     item.baseUrl = 'zwjh/api/v1'
