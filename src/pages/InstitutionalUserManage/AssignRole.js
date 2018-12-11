@@ -139,7 +139,21 @@ export default class AssignRole extends Component {
     const that = this
     const { visible, roleObject, isChanged } = this.state
     const { accounts: { accountList, pagination }, roles: { roleList: data1 }, loading } = this.props
-    
+    const selectData1 = data1.map(item => {
+      return (
+        <Option value={item.roleName} key={item.roleId} title={item.roleDesc}>
+          {item.roleDesc}
+        </Option>
+      )
+    })
+    const data2 = [{ value: '0', id: 0, label: '启用' }, { value: '1', id: 1, label: '停用' }]
+    const selectData2 = data2.map(item => {
+      return (
+        <Option value={item.value} key={item.id} title={item.label}>
+          {item.label}
+        </Option>
+      )
+    })
     accountList.forEach(item => item.role = roleObject[item.roleName]) // eslint-disable-line
     const searchHandler = this.handleSearch
     const formOptions = {
@@ -190,21 +204,6 @@ export default class AssignRole extends Component {
       ],
       searchHandler,
     }
-    const selectData1 = data1.map(item => {
-      return (
-        <Option value={item.roleName} key={item.roleId} title={item.roleDesc}>
-          {item.roleDesc}
-        </Option>
-      )
-    })
-    const data2 = [{ value: '0', id: 0, label: '启用' }, { value: '1', id: 1, label: '停用' }]
-    const selectData2 = data2.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
     const columns = [
       // {
       //   title: 'ID',

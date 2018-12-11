@@ -9,15 +9,21 @@ const module = {
     {
       name: 'getEntityInfo',
       url: 'getReqBeanEntityInfo',
+      method:'get',
+    },
+    {
+      name: 'getResourceByDataId',
+      url: 'getResourceByDataId',
+      method:'get',
     },
   ],
 }
 module.apis.forEach(item => {
-  if(item.baseHost) {
+  if(!item.baseHost) {
     // item.baseHost = 'http://testresource.tpaas.youedata.com'
     item.baseHost = '/api'
   }
-  if (!item.baseHost) {
+  if (!item.baseUrl) {
     item.baseUrl = 'zwjh/api/v1'
   }
 })

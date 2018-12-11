@@ -25,6 +25,8 @@ import {
 import styles from './NodeManagement.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
 
+let paramsPage = { pageSize: 10, pageNum: 1 }
+
 @connect(({ nodeManagement, loading }) => ({
   nodeManagement,
   loading: loading.models.nodeManagement,
@@ -144,7 +146,7 @@ export default class NodeManagement extends Component {
     this.setState({
       queryData: {
         nodeName: '',
-        mac: undefined,
+        mac: '',
         pid: [],
         depId: [],
         nodeState: '全部状态',
@@ -161,6 +163,7 @@ export default class NodeManagement extends Component {
 
   handleTableChange = pagination => {
     const { queryParams } = this.state
+    paramsPage = { pageSize: pagination.pageSize, pageNum: pagination.current }
     this.props.dispatch({
       type: 'nodeManagement/getNodes',
       payload: {
@@ -171,10 +174,18 @@ export default class NodeManagement extends Component {
   }
 
   handleDelete = row => {
+    const { queryParams } = this.state
+    const values = {
+      ...queryParams,
+      ...paramsPage,
+    }
     this.props.dispatch({
       type: 'nodeManagement/deleteNode',
       payload: {
-        id: row.id,
+        params: { ...values },
+        item: {
+          id: row.id,
+        },
       },
     })
   }
@@ -223,6 +234,7 @@ export default class NodeManagement extends Component {
       nodeManagement: { list, pagination, parentNodeList, departmentList},
       loading,
     } = this.props
+    const { queryData } = this.state
     // const rowSelection = {
     //   selectKeys,
     //   onChange: Keys => {
@@ -257,7 +269,7 @@ export default class NodeManagement extends Component {
         dataIndex: 'nodeState',
         render(text) {
           const Com =
-            text === 1 ? (
+            text === '1' ? (
               <Badge status="success" text="运行中" />
             ) : (
               <Badge status="default" text="已停止" />
@@ -300,7 +312,7 @@ export default class NodeManagement extends Component {
     columns.forEach(item => {
       item.align = 'center'
     })
-    const stateList = [{value: '全部状态', label: '全部状态'},{value: 1, label: '运行中'}, {value: 0,label: '已停止'}] 
+    const stateList = [{value: '全部状态', label: '全部状态'},{value: '1', label: '运行中'}, {value: '2',label: '已停止'}]
     const stateComs = stateList.map(item => {
       return (
         <Select.Option value={item.value} key={item.value} title={item.label}>
@@ -367,16 +379,18 @@ export default class NodeManagement extends Component {
               onPressEnter={this.handleSearch}
               className={styles.node}
               placeholder="节点名名称"
+              value={queryData.nodeName}
               />
             <Input
               onChange={this.handleIPChange}
               onPressEnter={this.handleSearch}
               className={styles.ip}
               placeholder="网卡·MAC·地址"
+              value={queryData.mac}
               />
             <Cascader
               options={parentNodeList}
-              value={this.state.queryData.pid}
+              value={queryData.pid}
               onChange={this.handleNodeSelectChange}
               className={styles.parentNode}
               changeOnSelect
@@ -385,7 +399,7 @@ export default class NodeManagement extends Component {
               />
             <Cascader
               options={departmentList}
-              value={this.state.queryData.depId}
+              value={queryData.depId}
               onChange={this.handleOrganizationChange}
               className={styles.organization}
               changeOnSelect
@@ -396,7 +410,7 @@ export default class NodeManagement extends Component {
               {departmentComs}
             </Select> */}
             <Select
-              value={this.state.queryData.nodeState}
+              value={queryData.nodeState}
               onChange={this.handleStateChange}
               className={styles.state}
               >

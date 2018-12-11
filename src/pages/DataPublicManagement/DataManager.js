@@ -94,7 +94,7 @@ class TableList extends Component {
             <Fragment>
               {record.resourceStatus === '1' && (
                 <Fragment>
-                  <a onClick={() => router.push(`/data/management/infoSource${record.type}/${record.id}/${record.resourceId}`)}>
+                  <a onClick={() => router.push(`/dataPublicManagement/infoSource/${record.id}`)}>
                     信息资源
                   </a>
                   <Divider type="vertical" />

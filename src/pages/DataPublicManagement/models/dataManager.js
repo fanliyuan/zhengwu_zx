@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../../../api'
 
-const { getSourceList, getNodes, getEntityInfo } = apis
+const { getSourceList, getParentNodes, getEntityInfo } = apis
 
 export default {
   namespace: 'dataManager',
@@ -24,8 +24,8 @@ export default {
       })
     },
     *getNodes({ payload }, { call, put }) {
-      const response = yield call(getNodes, { body: payload })
-      if (response.code === '0') {
+      const response = yield call(getParentNodes, { params: payload })
+      if (response.code === '604') {
         yield put({
           type: 'setNodes',
           payload: response,
@@ -67,7 +67,7 @@ export default {
     setNodes(state, { payload }) {
       return {
         ...state,
-        nodes: payload.result.datas,
+        nodes: payload.data,
       }
     },
     setEntityInfo(state, { payload }) {

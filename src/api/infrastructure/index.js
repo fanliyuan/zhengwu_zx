@@ -60,7 +60,6 @@ const module = {
     {
       name: 'deleteNode',
       url: 'deleteNode',
-      method: 'delete',
     },
     {
       name: 'addNode',

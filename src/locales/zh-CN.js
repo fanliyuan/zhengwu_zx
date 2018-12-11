@@ -321,6 +321,7 @@ export default {
   'menu.dataPublicManagement.ftpview': '查看FTP',
   'menu.dataPublicManagement.fileview': '查看文件',
   'menu.dataPublicManagement.taskview': '查看任务',
+  'menu.dataPublicManagement.infoSource': '信息资源',
   'menu.dataSwitchManagement': '数据订阅管理',
   'menu.dataSwitchManagement.allSub': '订阅管理',
   'menu.dataSwitchManagement.subscriptionTable': '订阅表',
