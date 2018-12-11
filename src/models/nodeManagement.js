@@ -112,11 +112,12 @@ function number2String(array, field) {
     *deleteNode({ payload }, { call, put }) {
       let response
       try {
-        response = yield call(deleteNode, {params: payload})
+        response = yield call(deleteNode, {params: payload.item})
         if (+response.code === 200) {
           message.success('删除成功!')
           yield put({
             type: 'getNodes',
+            payload: payload.params,
           })
         } else {
           message.error(`删除失败,${response.msg}`)

@@ -440,6 +440,13 @@ export default [
             authority: ['operator', 'operator-n'],
             hideInMenu: true,
           },
+          {
+            path: 'infoSource/:id',
+            name: 'infoSource',
+            component: './DataPublicManagement/InfoSource',
+            authority: ['operator', 'operator-n'],
+            hideInMenu: true,
+          },
         ],
         authority: ['operator', 'operator-n', 'assessor-n'],
       },
