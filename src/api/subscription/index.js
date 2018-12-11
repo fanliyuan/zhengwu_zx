@@ -26,9 +26,9 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseHost) {
     if (process.env.NODE_ENV === 'development') {
-      item.baseHost = 'http://192.168.100.16:8800'
+      item.baseHost = '/api'
     } else {
-      item.baseHost = 'http://cdyoue.com.cn:19006' // 公网接口(生成接口)
+      item.baseHost = '/api' // 公网接口(生成接口)
     }
     // item.baseHost = 'http://cdyoue.com.cn:19006' // 公网接口(生成接口)
   }

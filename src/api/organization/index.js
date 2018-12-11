@@ -37,10 +37,12 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseHost) {
     if (process.env.NODE_ENV === 'development') {
-      item.baseHost = 'http://192.168.100.16:8000'
+      item.baseHost = '/userapi'
     } else {
-      item.baseHost = 'http://cdyoue.com.cn:19106'
+      item.baseHost = '/userapi'
     }
+    // item.baseHost = 'http://cdyoue.com.cn:19106'
+    // item.baseHost = 'http://192.168.100.16:8000'
   }
   if (!item.baseUrl) {
     item.baseUrl = 'zwjh/api/v1'

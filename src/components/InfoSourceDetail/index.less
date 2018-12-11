@@ -1,0 +1,14 @@
+h2 {
+  font-weight: bold;
+  color: inherit;
+}
+.detail {
+  & > div {
+    display: inline-block;
+    width: 33%;
+    line-height: 2.5;
+    &:last-child {
+      width: 100%;
+    }
+  }
+}

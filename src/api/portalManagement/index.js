@@ -1,3 +1,5 @@
+// 开放门户 模块
+
 const module = {
   moduleName:'portalManagement',
   apis: [
@@ -154,8 +156,12 @@ const module = {
 }
 module.apis.forEach(item => {
   if(!item.baseHost){
+    item.baseHost = '/portalapi'
     // item.baseHost = 'http://192.168.100.16:8804/zwjh/api/v1'
-    item.baseHost = 'http://testgoveportalback.tpaas.youedata.com' // http://testgoveportalback.tpaas.youedata.com  http://testgoveportalback.tpaas.youedata.com
+    // item.baseHost = 'http://testgoveportalback.tpaas.youedata.com' // http://testgoveportalback.tpaas.youedata.com  http://testgoveportalback.tpaas.youedata.com
+  }
+  if(!item.baseUrl) {
+    item.baseUrl = 'zwjh/api/v1'
   }
 })
 

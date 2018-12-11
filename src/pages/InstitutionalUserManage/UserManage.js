@@ -236,21 +236,21 @@ export default class UserManage extends Component {
         {
           name: 'accountName',
           type: 'Input',
-          typeOtions: {
+          typeOptions: {
             placeholder: '用户名',
             maxLength: 50,
           },
         },
         {
           name: 'accountNickName',
-          typeOtions: {
+          typeOptions: {
             placeholder: '姓名',
             maxLength: 50,
           },
         },
         {
           name: 'accountTel',
-          typeOtions: {
+          typeOptions: {
             placeholder: '电话',
             maxLength: 50,
           },
@@ -258,7 +258,7 @@ export default class UserManage extends Component {
         {
           name: 'roleName',
           type: 'Select',
-          typeOtions: {
+          typeOptions: {
             placeholder: '角色',
             allowClear: true,
           },
@@ -267,7 +267,7 @@ export default class UserManage extends Component {
         {
           name: 'accountStatus',
           type: 'Select',
-          typeOtions: {
+          typeOptions: {
             placeholder: '状态',
             allowClear: true,
           },

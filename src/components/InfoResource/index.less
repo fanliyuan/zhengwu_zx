@@ -1,0 +1,91 @@
+.boxOpen {
+  position: relative;
+  // 这里需要固定高度才能有
+  // height: 100px
+  line-height: 35px;
+  transition: all 0.3s linear;
+}
+.boxClose {
+  position: relative;
+  height: 35px;
+  line-height: 35px;
+  overflow: hidden;
+  transition: all 0.3s linear;
+}
+.button {
+  position: absolute;
+  right: 16px;
+  top: 10px;
+}
+.box {
+  ul {
+    li {
+      width: 360px;
+      display: inline-block;
+      span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .label {
+        font-weight: bold;
+        width: 108px;
+        text-align: right;
+        & + span {
+          width: 240px;
+          line-height: initial;
+        }
+        &::after {
+          content: ':';
+          margin: 0 4px;
+        }
+      }
+    }
+  }
+}
+// .name {
+//   font-weight: bold;
+//   font-size: 20px;
+//   &::after {
+//     content: ':';
+//     margin: 0 8px;
+//   }
+// }
+// .label {
+//   font-weight: bold;
+//   &::after {
+//     content: ':';
+//     margin: 0 4px;
+//   }
+// }
+// .value1 {
+//   font-size: 20px;
+//   display: inline-block;
+//   width: 150px;
+//   font-weight: bold;
+//   position: relative;
+//   top: 6px;
+// }
+// .value2 {
+//   display: inline-block;
+//   width: 60px;
+//   position: relative;
+//   top: 4px;
+// }
+// .value3 {
+//   display: inline-block;
+//   width: 200px;
+//   position: relative;
+//   top: 4px;
+// }
+// .value4 {
+//   display: inline-block;
+//   width: 150px;
+//   position: relative;
+//   top: 4px;
+// }
+// .value5 {
+//   display: inline-block;
+//   width: 150px;
+//   position: relative;
+//   top: 4px;
+// }

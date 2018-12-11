@@ -35,7 +35,7 @@ export default [
             path: 'logging',
             name: 'logging',
             component: './Overview/Logging',
-            hideInMenu: true,
+            // hideInMenu: true,
           },
           {
             path: 'systemnotification',

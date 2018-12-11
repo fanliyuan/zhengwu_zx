@@ -2,7 +2,7 @@
 const module = {
   moduleName: 'catalog',
   apis: [
-    // 此目录以及移除了.
+    // 此目录已经移除了.
     // {
     //   name: 'getCatalogList',
     //   url: 'resourceSearchList',
@@ -37,7 +37,7 @@ module.apis.forEach(item => {
     if (process.env.NODE_ENV === 'development') {
       item.baseHost = 'http://192.168.100.16:8000'
     } else {
-      item.baseHost = 'http://cdyoue.com.cn:19006'
+      item.baseHost = '/api'
     }
     // item.baseHost = 'http://cdyoue.com.cn:19006'
   }
