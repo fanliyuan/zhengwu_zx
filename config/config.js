@@ -65,13 +65,26 @@ export default {
   // externals: {
   //   '@antv/data-set': 'DataSet',
   // },
-  // proxy: {
-  //   '/server/api/': {
-  //     target: 'https://preview.pro.ant.design/',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/server': '' },
-  //   },
-  // },
+  proxy: {
+    // 用户机构代理
+    '/userapi/': {
+      target: 'http://cdyoue.com.cn:19106',
+      changeOrigin: true,
+      pathRewrite: { '^/userapi/': '' },
+    },
+    // 中心节点后台代理
+    '/api/': {
+      target: 'http://cdyoue.com.cn:19006',
+      changeOrigin: true,
+      pathRewrite: { '^/api/': '' },
+    },
+    // 开放门户代理
+    '/portalapi/': {
+      target: 'http://cdyoue.com.cn:19082',
+      changeOrigin: true,
+      pathRewrite: { '^/portalapi': '' },
+    },
+  },
   ignoreMomentLocale: false,
   lessLoaderOptions: {
     javascriptEnabled: true,

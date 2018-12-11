@@ -337,7 +337,7 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="" onChange={this.handleTableChange} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange} bordered />
               </div>
             </TabPane>
             <TabPane tab="2 主题信息资源类" key="2">
@@ -353,7 +353,7 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="" onChange={this.handleTableChange1} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange1} bordered />
               </div>
             </TabPane>
             <TabPane tab="3 部门信息资源类" key="3">
@@ -369,7 +369,7 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="" onChange={this.handleTableChange2} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange2} bordered />
               </div>
             </TabPane>
           </Tabs>
