@@ -20,7 +20,7 @@ const DescriptionList = ({
   const column = col > 4 ? 4 : col
   return (
     <div className={clsString} {...restProps}>
-      {title ? <div className={styles.title}>{title}</div> : null}
+      {title ? <div className={styles.title} style={restProps.titlestyle ? restProps.titlestyle : null}>{title}</div> : null}
       <Row gutter={gutter}>
         {React.Children.map(
           children,

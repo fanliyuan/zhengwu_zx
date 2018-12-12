@@ -41,6 +41,18 @@ class InfoSource extends Component {
     return str
   }
 
+  setSync = val => {
+    if (val.value.syncEntity) {
+      if (val.value.syncEntity.syncRate === '定时') {
+        return `${val.value.syncEntity.syncMode}-${
+            val.value.syncEntity.syncRate
+          } 每${this.setTimeFormat(val.value.syncEntity.timeSet)}`
+      }
+      return `${val.value.syncEntity.syncMode}-${val.value.syncEntity.syncRate}`
+    }
+    return '无'
+  }
+
   back() {
     const { history } = this.props
     history.goBack()
@@ -153,7 +165,7 @@ class InfoSource extends Component {
         },
         {
           key: '发布模式',
-          value: `${dataDetail.value.syncEntity.syncMode}-${dataDetail.value.syncEntity.syncRate} 每${this.setTimeFormat(dataDetail.value.syncEntity.timeSet)}`,
+          value: this.setSync(dataDetail),
         },
         {
           key: '接入时间',
