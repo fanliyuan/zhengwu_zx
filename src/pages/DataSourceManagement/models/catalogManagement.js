@@ -53,6 +53,7 @@ function filterTreeList(params, data) {
     connectFilePagination:{},
     itemList:[],
     openData:{},
+    itemPagnation:{},
   },
 
   effects:{
@@ -263,6 +264,22 @@ function filterTreeList(params, data) {
         console.log(error) //eslint-disable-line
       }
     },
+    *getItemList({ payload }, { call, put }) {
+      const response = yield call(getResourceItemList, { params:payload.params })
+      try {
+        if (+response.code === 0) {
+          const pagination = response.total > 9 ? {current:response.page,pageSize:response.size,total:response.total} :false
+            yield put({
+              type: 'getResourceList',
+              payload: {list:response.data,pagination},
+            })
+          }else {
+            message.error(response.msg)
+          }
+      } catch (error) {
+        console.log(error) //eslint-disable-line
+      }
+    },
   },
   
 
@@ -333,6 +350,13 @@ function filterTreeList(params, data) {
       return {
         ...state,
         connectFileLists:payload,
+      }
+    },
+    getResourceList(state, {payload}) {
+      return {
+        ...state,
+        itemList:payload.list,
+        itemPagnation:payload.pagination,
       }
     },
   },

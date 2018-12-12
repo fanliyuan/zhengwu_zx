@@ -25,6 +25,10 @@ const module = {
       name: 'getResourceTypeById',
       url: 'getResourceTypeById',
     },
+    // {
+    //   name: 'getResourceItemList',
+    //   url: 'getResourceItemList',
+    // },
     {
       name: 'getResourceTitle',
       url: 'getResourceTypeById',

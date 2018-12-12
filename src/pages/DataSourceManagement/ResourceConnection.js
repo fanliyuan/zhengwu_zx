@@ -78,6 +78,11 @@ export default class ResourceConnection extends Component {
       payload:{
         params:{id:state ? state.mountId : ''}},
     })
+    dispatch({
+      type:'catalogManagement/getItemList',
+      payload:{
+        params:{resourceId:state ? state.routeId : '', index:1,limit:10}},
+    })
     this.setState({
       routeId: state ? state.routeId : '',
       fileListData: [],
@@ -381,12 +386,14 @@ export default class ResourceConnection extends Component {
         connectFileLists,
         // connectFilePagination,
         // itemList,
+        itemList,
+        itemPagnation,
       },
     } = this.props
     const typess = (connectFileLists && connectFileLists.value && connectFileLists.value.datasourceEntity.type) ? (connectFileLists && connectFileLists.value && connectFileLists.value.datasourceEntity.type) : ''
     const connectArr = (connectFileLists && connectFileLists.value && connectFileLists.value.ftpfileEntityCollection) ? connectFileLists.value.ftpfileEntityCollection : []
     const connectRight = (connectFileLists && connectFileLists.value && connectFileLists.value.structEntityCollection) ? connectFileLists.value.structEntityCollection : []
-    const connectLeft = [] // (connectFileLists && connectFileLists.value && connectFileLists.value.syncEntity) ? connectFileLists.value.syncEntity :
+    // const connectLeft = [] // (connectFileLists && connectFileLists.value && connectFileLists.value.syncEntity) ? connectFileLists.value.syncEntity :
     const {
       // visible1,
       // visible2,
@@ -444,15 +451,15 @@ export default class ResourceConnection extends Component {
     const columnsLeft = [
       {
         title: '信息项名称',
-        dataIndex: 'name',
+        dataIndex: 'resourceItemName',
       },
       {
         title: '数据类型',
-        dataIndex: 'dataType',
+        dataIndex: 'resourceType',
       },
       {
         title: '数据长度',
-        dataIndex: 'dataLength',
+        dataIndex: 'resourceLength',
       },
     ]
     columnsLeft.forEach(item => {
@@ -650,17 +657,17 @@ export default class ResourceConnection extends Component {
                 >
                 <Table
                   columns={columnsLeft}
-                  dataSource={connectLeft}
+                  dataSource={itemList}
                   pagination={
-                    // connectFilePagination && {
-                    //   ...connectFilePagination,
-                    //   showQuickJumper: true,
-                    //   showTotal: total =>
-                    //     `共 ${Math.ceil(
-                    //       total / connectFilePagination.pageSize
-                    //     )}页 / ${total}条 数据`,
-                    // }
-                    false
+                    itemPagnation && {
+                      ...itemPagnation,
+                      showQuickJumper: true,
+                      showTotal: total =>
+                        `共 ${Math.ceil(
+                          total / itemPagnation.pageSize
+                        )}页 / ${total}条 数据`,
+                    }
+                    // false
                   }
                   rowKey="id"
                   bordered
