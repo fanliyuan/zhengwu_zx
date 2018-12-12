@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Button, Card, Divider } from 'antd'
+import { Button, Card, Divider, Alert } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import ViewCard from '@/components/ViewCard'
@@ -128,7 +128,8 @@ class InfoSource extends Component {
   renderViewCardData() {
     let path
     const {
-        infoSource: { dataDetail, match },
+        infoSource: { dataDetail },
+        match,
         } = this.props
     if (match.params.id.indexOf('db') !== -1) {
       path = `/dataPublicManagement/dbview/${match.params.id}`
@@ -187,12 +188,15 @@ class InfoSource extends Component {
   }
 
   render() {
+    let keyArrR = []
     const {
         infoSource: { dataDetail, resourceDetail },
         loading,
         } = this.props
     const keyArr = Object.keys(dataDetail)
-    const keyArrR = Object.keys(resourceDetail)
+    if (resourceDetail !== null && resourceDetail !== undefined) {
+      keyArrR = Object.keys(resourceDetail)
+    }
     const buttonList = (
       <div style={{ position: 'absolute', top: 0, right: 0 }}>
         <Button type="primary" onClick={() => this.back()}>
@@ -204,6 +208,15 @@ class InfoSource extends Component {
       <PageHeaderWrapper action={buttonList}>
         <Card loading={loading} bordered={false}>
           {keyArrR.length > 0 && this.renderViewCard()}
+          {keyArrR.length < 1 && (
+            <Alert
+              message="提示信息"
+              description="该数据暂未关联任何信息资源！"
+              type="info"
+              showIcon
+              style={{ marginBottom: 32 }}
+              />
+          )}
           <Divider style={{ marginBottom: 32, marginTop: 0 }} />
           {keyArr.length > 0 && this.renderViewCardData()}
         </Card>
