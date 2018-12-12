@@ -92,6 +92,19 @@ export default class AddUser extends Component {
     this.props.form.validateFieldsAndScroll((err, value) => {
       if (!err) {
         if (this.props.location.pathname === '/institutionalUserManage/addUser') {
+          const { userInfo } = this.state
+          this.setState({
+            userInfo: {
+              ...userInfo,
+              accountName: value.accountName,
+              accountNickName: value.accountNickName,
+              // accountPasswd: sha('sha1').update(value.psw).digest('hex'),
+              accountPasswd: value.accountPasswd,
+              accountTel: value.accountTel,
+              accountEmail: value.accountEmail,
+              accountStatus: value.accountStatus ? '1': '0',
+            },
+          })
           this.props.dispatch({
             type: 'accounts/addAccount',
             payload: {
@@ -132,6 +145,7 @@ export default class AddUser extends Component {
     const { loading } = this.props
     const { getFieldDecorator } = this.props.form
     const accountDetail = this.state.userInfo
+    console.log(accountDetail)
     const role = [
       { value: '0', label: '管理员', id: '0' },
       { value: '1', label: '审核员', id: '1' },
@@ -178,7 +192,7 @@ export default class AddUser extends Component {
             </FormItem>
             <FormItem label="密码" {...formItemLayout}>
               {getFieldDecorator('accountPasswd', {
-                initialValue: '',
+                initialValue: accountDetail.accountPasswd,
                 rules: [
                   {
                     message: '请输入合法密码',
