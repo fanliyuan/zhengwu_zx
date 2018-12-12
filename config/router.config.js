@@ -443,6 +443,13 @@ export default [
             hideInMenu: true,
           },
           {
+            path: 'taskview/:id',
+            name: 'taskview',
+            component: './DataPublicManagement/TaskView',
+            authority: ['operator', 'operator-n'],
+            hideInMenu: true,
+          },
+          {
             path: 'infoSource/:id',
             name: 'infoSource',
             component: './DataPublicManagement/InfoSource',

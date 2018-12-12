@@ -16,6 +16,11 @@ const module = {
       url: 'getResourceByDataId',
       method:'get',
     },
+    {
+      name: 'getTaskData',
+      url: 'data',
+      method:'get',
+    },
   ],
 }
 module.apis.forEach(item => {

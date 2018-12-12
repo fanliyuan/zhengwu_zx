@@ -121,7 +121,7 @@ class TableList extends Component {
                 <Fragment>
                   <a
                     onClick={() => {
-                      return router.push(`/dataPublicManagement/taskview/${record.dataType}/${record.id}`)
+                      return router.push(`/dataPublicManagement/taskview/${record.id}`)
                     }}
                     >
                     任务
