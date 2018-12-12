@@ -325,6 +325,7 @@ export default {
   'menu.dataSwitchManagement': '数据订阅管理',
   'menu.dataSwitchManagement.allSub': '订阅管理',
   'menu.dataSwitchManagement.subscriptionTable': '订阅表',
+  'menu.dataSwitchManagement.assessLogs': '审核日志',
   'menu.portalManagement': '开放门户',
   'menu.portalManagement.newsManagement': '文章分类',
   'menu.portalManagement.publicationManagement': '文章发布',

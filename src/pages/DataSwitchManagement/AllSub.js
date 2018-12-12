@@ -2,12 +2,12 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-12-08 10:35:28
+ * @Last Modified time: 2018-12-12 11:51:19
  * @描述: 订阅管理
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Select, Badge } from 'antd'
+import { Select } from 'antd'
 import moment from 'moment'
 import { Bind, Throttle } from 'lodash-decorators'
 
@@ -38,7 +38,7 @@ export default class AllSub extends Component {
         name: 'resourceName',
         typeOptions: {
           maxLength: 50,
-          placeholder: '订阅名称',
+          placeholder: '信息资源名称',
         },
       },
       {
@@ -70,19 +70,19 @@ export default class AllSub extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch({
-      type: 'catalogManagement/getCatalogList',
-    })
+    // this.props.dispatch({
+    //   type: 'catalogManagement/getCatalogList',
+    // })
     this.handleSearch()
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.catalogManagement.catalogQueryData !== this.state.query) {
-      this.setState({
-        query: nextProps.catalogManagement.catalogQueryData,
-      })
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.catalogManagement.catalogQueryData !== this.state.query) {
+  //     this.setState({
+  //       query: nextProps.catalogManagement.catalogQueryData,
+  //     })
+  //   }
+  // }
 
   handleStandardTableChange = ({current: pageNum,pageSize}) => {
     this.setState({
@@ -165,23 +165,24 @@ export default class AllSub extends Component {
         title: '目录名称',
         dataIndex: 'dsDirName',
       },
-      // {
-      //   title: '发布节点',
-      //   dataIndex: 'pubNodeName',
-      // },
+      {
+        title: '发布节点',
+        dataIndex: 'pubNodeName',
+      },
       {
         title: '运行状态',
         dataIndex: 'runStatus',
         render: (text) => {
-          return <Badge status={text?'success': 'default'} text={text==='1'?'运行中':'已停止'} />
+          // return <Badge status={text?'success': 'default'} text={text==='1'?'运行中':'已停止'} />
+          return <span className={+text===1?'green':'silver'}>{+text===1?'运行':'停止'}</span>
         },
       },
-      // {
-      //   title: '操作',
-      //   render: () => {
-      //     return <a>审核日志</a>
-      //   },
-      // },
+      {
+        title: '操作',
+        render: () => {
+          return <a>审核日志</a>
+        },
+      },
     ]
     columns.forEach(item => {
       item.align = 'center'

@@ -43,9 +43,9 @@ export default class Guage extends Component {
   }
 
   render() {
-    const { width, height, id } = this.state
+    const { width, height, id, style } = this.state
     return (
-      <div id={`echart-gauge-${id}`} style={{ width, height }} className={styles.container} />
+      <div id={`echart-gauge-${id}`} style={{ ...style, width, height }} className={styles.container} />
     )
   }
 }

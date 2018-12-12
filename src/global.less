@@ -130,7 +130,24 @@ ol {
 .silver{
   color: silver !important;
 }
-.disabled{
-  cursor: no-drop !important;
+.colon::after {
+  content: ':';
+  padding-left: 4px;
+  padding-right: 6px;
+}
+.disabled {
   color: silver !important;
+  cursor: no-drop !important;
+  &:hover {
+    color: silver !important;
+  }
+}
+.blue {
+  color: #5cadff;
+}
+.green {
+  color: #19be6b;
+}
+.red {
+  color: #ed4014;
 }

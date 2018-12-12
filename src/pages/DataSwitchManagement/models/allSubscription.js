@@ -1,7 +1,7 @@
 import { message } from 'antd'
 import apis from '../../../api'
 
-const { getSubscription, getResourceSubscribeInfoInfo } = apis
+const { getSubscription, getResourceSubscribeInfoInfo, getAssessLogs } = apis
  export default {
   namespace:'allSubscription',
 
@@ -9,6 +9,7 @@ const { getSubscription, getResourceSubscribeInfoInfo } = apis
     dataList: [],
     pagination: false,
     subData: {},
+    assessLogs: [],
   },
 
   effects:{
@@ -62,6 +63,20 @@ const { getSubscription, getResourceSubscribeInfoInfo } = apis
       }
       }
     },
+    *getAssessLogs({ payload: params }, { call, put }) {
+      let assessLogs = {}
+      try {
+        const res = yield call(getAssessLogs, params)
+        assessLogs = res.result.datas
+      } catch (error) {
+        console.log(error) // eslint-disable-line
+      } finally {
+        yield put({
+          type: 'saveAssessLogs',
+          payload: [assessLogs],
+        })
+      }
+    },
   },
 
   reducers:{
@@ -76,6 +91,12 @@ const { getSubscription, getResourceSubscribeInfoInfo } = apis
       return {
         ...state,
         subData,
+      }
+    },
+    saveAssessLogs(state, { payload: assessLogs }) {
+      return {
+        ...state,
+        assessLogs,
       }
     },
   },

@@ -119,7 +119,7 @@ export default class Log extends Component {
         dataIndex: 'logState',
         align: 'center',
         render: (text) => {
-          return <span>{text === 0 ? <span className='orange'>登录成功</span> : <span className='silver'>登录失败</span>}</span>
+          return <span>{text === 0 ? <span className='green'>登录成功</span> : <span className='silver'>登录失败</span>}</span>
         },
       },
     ]

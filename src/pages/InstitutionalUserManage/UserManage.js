@@ -185,7 +185,7 @@ export default class UserManage extends Component {
         title: '状态',
         dataIndex: 'accountStatus',
         render(text) {
-          return +text === 0 ? <span className='orange'>启用</span> : <span className='silver'>停用</span>
+          return +text === 0 ? <span className='green'>启用</span> : <span className='silver'>停用</span>
         },
       },
       {
@@ -227,6 +227,7 @@ export default class UserManage extends Component {
         },
       },
     ]
+    
     columns.forEach(item => {
       item.align = 'center'
     })

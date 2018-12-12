@@ -8,101 +8,101 @@ import Gauge from '@/components/ECharts/Gauge'
 import Line from '@/components/ECharts/Line'
 import styles from './PlatformOverview.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
-import Graph from '../../components/ECharts/Graph'
+// import Graph from '../../components/ECharts/Graph'
 
 // 数据和相关联
-const data = [{ name: '徐云' }, { name: '冯可梁', category: 1 }, { name: '邓志荣', category: 1 }, { name: '李荣庆', category: 1 }, { name: '郑志勇', category: 1 }, { name: '赵英杰', category: 1 }, { name: '王承军', category: 1 }, { name: '陈卫东', category: 1 }, { name: '邹劲松', category: 1 }, { name: '赵成', category: 1 }, { name: '陈现忠', category: 1 }, { name: '陶泳', category: 1 }, { name: '王德福', category: 1 }]
-const links = [{ source: 0, target: 1, category: 0, value: '朋友' }, { source: 0, target: 2, value: '战友' }, { source: 0, target: 3, value: '房东' }, { source: 0, target: 4, value: '朋友' }, { source: 1, target: 2, value: '表亲' }, { source: 0, target: 5, value: '朋友' }, { source: 4, target: 5, value: '姑姑' }, { source: 2, target: 8, value: '叔叔' }, { source: 0, target: 12, value: '朋友' }, { source: 6, target: 11, value: '爱人' }, { source: 6, target: 3, value: '朋友' }, { source: 7, target: 5, value: '朋友' }, { source: 9, target: 10, value: '朋友' }, { source: 3, target: 10, value: '朋友' }, { source: 2, target: 11, value: '我是你的同学' }, { source: 11, target: 2, value: '你不是我的同学' }]
+// const data = [{ name: '徐云' }, { name: '冯可梁', category: 1 }, { name: '邓志荣', category: 1 }, { name: '李荣庆', category: 1 }, { name: '郑志勇', category: 1 }, { name: '赵英杰', category: 1 }, { name: '王承军', category: 1 }, { name: '陈卫东', category: 1 }, { name: '邹劲松', category: 1 }, { name: '赵成', category: 1 }, { name: '陈现忠', category: 1 }, { name: '陶泳', category: 1 }, { name: '王德福', category: 1 }]
+// const links = [{ source: 0, target: 1, category: 0, value: '朋友' }, { source: 0, target: 2, value: '战友' }, { source: 0, target: 3, value: '房东' }, { source: 0, target: 4, value: '朋友' }, { source: 1, target: 2, value: '表亲' }, { source: 0, target: 5, value: '朋友' }, { source: 4, target: 5, value: '姑姑' }, { source: 2, target: 8, value: '叔叔' }, { source: 0, target: 12, value: '朋友' }, { source: 6, target: 11, value: '爱人' }, { source: 6, target: 3, value: '朋友' }, { source: 7, target: 5, value: '朋友' }, { source: 9, target: 10, value: '朋友' }, { source: 3, target: 10, value: '朋友' }, { source: 2, target: 11, value: '我是你的同学' }, { source: 11, target: 2, value: '你不是我的同学' }]
 // 根据数和关联组装配置
-const option = {
-  title: {
-    text: '',
-  },
-  tooltip: {
-    formatter: "{c}",
-  },
-  // animationDuration: 1500,
-  // animationDurationUpdate: 1500,
-  // animationEasingUpdate: 'quinticInOut',
-  // animation: false,
-  // animationThreshold: 1,
-  // animationDelay: 10000,
-  // animationDelayUpdate: 10000,
-  label: {
-    normal: {
-      show: true,
-      textStyle: {
-        fontSize: 12,
-      },
-    },
-  },
-  series: [{
-    name: '主机名',
-    type: 'graph',
-    layout: 'force',
-    symbolSize: 45,
-    focusNodeAdjacency: true,
-    animation: false,
-    roam: true,
-    draggable: true,
-    categories: [{
-      name: '主机',
-      itemStyle: {
-        normal: {
-          color: "#009800",
-        },
-      },
-    }, {
-      name: '其他1',
-      animation: false,
-      itemStyle: {
-        normal: {
-          color: "#4592FF",
-        },
-      },
-    }, {
-      name: '其他2',
-      animation: false,
-      itemStyle: {
-        normal: {
-          color: "#3592F",
-        },
-      },
-    }],
-    label: {
-      normal: {
-        show: true,
-        textStyle: {
-          fontSize: 12,
-        },
-      },
-    },
-    force: {
-      initLayout: 'circular',
-      repulsion: 1000,
-    },
-    edgeSymbol: ['none','arrow'],
-    edgeSymbolSize: [8, 8],
-    edgeLabel: {
-      normal: {
-        show: true,
-        textStyle: {
-          fontSize: 12,
-        },
-        formatter: "{c}",
-      },
-    },
-    lineStyle: {
-      normal: {
-        opacity: 0.9,
-        width: 1,
-        curveness: 0.2,
-      },
-    },
-    data,
-    links,
-  }],
-}
+// const option = {
+//   title: {
+//     text: '',
+//   },
+//   tooltip: {
+//     formatter: "{c}",
+//   },
+//   // animationDuration: 1500,
+//   // animationDurationUpdate: 1500,
+//   // animationEasingUpdate: 'quinticInOut',
+//   // animation: false,
+//   // animationThreshold: 1,
+//   // animationDelay: 10000,
+//   // animationDelayUpdate: 10000,
+//   label: {
+//     normal: {
+//       show: true,
+//       textStyle: {
+//         fontSize: 12,
+//       },
+//     },
+//   },
+//   series: [{
+//     name: '主机名',
+//     type: 'graph',
+//     layout: 'force',
+//     symbolSize: 45,
+//     focusNodeAdjacency: true,
+//     animation: false,
+//     roam: true,
+//     draggable: true,
+//     categories: [{
+//       name: '主机',
+//       itemStyle: {
+//         normal: {
+//           color: "#009800",
+//         },
+//       },
+//     }, {
+//       name: '其他1',
+//       animation: false,
+//       itemStyle: {
+//         normal: {
+//           color: "#4592FF",
+//         },
+//       },
+//     }, {
+//       name: '其他2',
+//       animation: false,
+//       itemStyle: {
+//         normal: {
+//           color: "#3592F",
+//         },
+//       },
+//     }],
+//     label: {
+//       normal: {
+//         show: true,
+//         textStyle: {
+//           fontSize: 12,
+//         },
+//       },
+//     },
+//     force: {
+//       initLayout: 'circular',
+//       repulsion: 1000,
+//     },
+//     edgeSymbol: ['none','arrow'],
+//     edgeSymbolSize: [8, 8],
+//     edgeLabel: {
+//       normal: {
+//         show: true,
+//         textStyle: {
+//           fontSize: 12,
+//         },
+//         formatter: "{c}",
+//       },
+//     },
+//     lineStyle: {
+//       normal: {
+//         opacity: 0.9,
+//         width: 1,
+//         curveness: 0.2,
+//       },
+//     },
+//     data,
+//     links,
+//   }],
+// }
 
 // 饼图数据
 const PieData = [ { name: '分类1', value: 116 }, { name: '分类2', value: 87 }, { name: '分类3', value: 23 }, { name: '分类4', value: 15 }, { name: '分类5', value: 14 } ]
@@ -516,11 +516,10 @@ export default class PlatformOverview extends Component {
                   </List.Item>
                 )}
                 />
-              <div style={{ height: '500px', textAlign: 'center', overflow: 'hidden' }}>
+              {/* <div style={{ height: '500px', textAlign: 'center', overflow: 'hidden' }}>
                 <h3 style={{ textAlign: 'left' }}>交换任务</h3>
-                {/* <img src={img} alt="交换任务" /> */}
                 <Graph {...option} height='450px' />
-              </div>
+              </div> */}
               <div style={{ padding: '0 24px', height: 433, width: '100%' }}>
                 <h3>实时传输</h3>
                 <Line
@@ -529,6 +528,15 @@ export default class PlatformOverview extends Component {
                   height='400px'
                   // width='100%'
                   />
+              </div>
+              <div>
+                <h3>信息资源分类占比</h3>
+                <Card bordered={false}>
+                  <Pie
+                    {...pieOption}
+                    height={294}
+                    />
+                </Card>
               </div>
             </Col>
             <Col span={9} className={styles.rightBox}>
@@ -586,17 +594,8 @@ export default class PlatformOverview extends Component {
                 </div>
               </div>
               <div>
-                <h3>信息资源分类占比</h3>
-                <Card bordered={false}>
-                  <Pie
-                    {...pieOption}
-                    height={294}
-                    />
-                </Card>
-              </div>
-              <div>
                 <h3>平均传输速率</h3>
-                <Gauge {...gaugeOption} height={164} />
+                <Gauge {...gaugeOption} height={300} style={{paddingTop: '30px'}} />
               </div>
             </Col>
           </Row>

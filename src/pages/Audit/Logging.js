@@ -123,7 +123,7 @@ export default class Logging extends Component {
         dataIndex: 'logState',
         align: 'center',
         render: (text) => {
-          return +text === 0 ? <span className='orange'>登录成功</span> : <span className='silver'>登录失败</span>
+          return +text === 0 ? <span className='green'>登录成功</span> : <span className='silver'>登录失败</span>
         },
       },
     ]

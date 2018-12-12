@@ -99,11 +99,13 @@ export default [
             name: 'pass',
             path: 'pass',
             component: './InfrastructureManagement/PassManagement',
+            hideInMenu: true,
           },
           {
             name: 'switch',
             path: 'switch',
             component: './InfrastructureManagement/SwitchManagement',
+            hideInMenu: true,
           },
           {
             name: 'editpass',
@@ -456,53 +458,24 @@ export default [
         icon: 'sync',
         path: 'dataSwitchManagement',
         routes: [
-          // {
-          //   name: '资源集市',
-          //   path: 'sourceSubscription',
-          //   authority: ['operator', 'operator-n'],
-          // },
-          // {
-          //   name: '订阅授权',
-          //   path: 'subscriptionAudit',
-          //   authority: 'assessor-n',
-          // },
           {
             name: 'allSub',
             path: 'allSub',
             component: './DataSwitchManagement/AllSub',
             authority: ['operator', 'operator-n'],
           },
-          // {
-          //   name: '审核日志',
-          //   path: 'logAudit',
-          //   hideInMenu: true,
-          // },
-          // {
-          //   name: '资源',
-          //   path: 'source',
-          //   hideInMenu: true,
-          // },
-          // {
-          //   name: '查看目录',
-          //   path: 'viewDirectory',
-          //   hideInMenu: true,
-          // },
-          // {
-          //   name: '资源管理',
-          //   path: 'sourceManagement',
-          //   authority: 'operator-n',
-          // },
           {
             name: 'subscriptionTable',
             path: 'subscriptionTable',
             component: './DataSwitchManagement/SubscriptionTable',
             hideInMenu: true,
           },
-          // {
-          //   name: '订阅(文件)',
-          //   path: 'subscriptionFile',
-          //   hideInMenu: true,
-          // },
+          {
+            name: 'assessLogs',
+            path: 'assessLogs',
+            component: './DataSwitchManagement/AssessLogs',
+            hideInMenu: true,
+          },
         ],
         authority: ['operator', 'operator-n', 'assessor-n'],
       },
