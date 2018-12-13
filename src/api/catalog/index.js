@@ -43,7 +43,7 @@ const module = {
 module.apis.forEach(item => {
   if (!item.baseHost) {
     if (process.env.NODE_ENV === 'development') {
-      item.baseHost = 'http://192.168.100.16:8000'
+      item.baseHost = '/api'
     } else {
       item.baseHost = '/api'
     }

@@ -51,7 +51,7 @@ export default class Logging extends Component {
   }
 
   @Bind()
-  @Throttle(1000)
+  @Throttle(1000, { trailing: false })
   handleSearch() {
     const { pagination } = this.state
     const { dispatch, form: { getFieldsValue } } = this.props

@@ -65,7 +65,7 @@ export default class Log extends Component {
   }
 
   @Bind()
-  @Throttle(1000)
+  @Throttle(1000, { trailing: false })
   handleSearch(queryData = {}, pageReset=false) {
     const pagination = pageReset?{pageNum:1,pageSize:10}:this.state.pagination
     const { dispatch } = this.props

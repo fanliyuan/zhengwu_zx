@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-08-21 16:55:35
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-11-12 09:41:33
+ * @Last Modified time: 2018-12-13 14:25:38
  * @Description: 这里需要个优化,就是密码错误等登录错误需要清除错误密码,后期可能还有验证码的功能
  */
 import React, { Component } from 'react'
@@ -69,7 +69,7 @@ export default class LoginPage extends Component {
 
   // 登录节流
   @Bind()
-  @Throttle(1000)
+  @Throttle(1000, { trailing: false })
   handleLogin(values) {
     const { dispatch } = this.props
       // const sha1Password = sha('sha1').update(values.password).digest('hex')

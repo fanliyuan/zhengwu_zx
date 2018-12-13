@@ -112,7 +112,7 @@ export default class AssignRole extends Component {
   }
 
   @Bind()
-  @Throttle(1000)
+  @Throttle(1000, { trailing: false })
   handleSearch(queryData = {}, pageReset = false) {
     const pagination = pageReset?{pageNum:1,pageSize:10}:this.state.pagination
     // 这里用户储存搜索数据

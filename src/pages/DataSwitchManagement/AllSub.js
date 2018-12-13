@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-12-12 11:51:19
+ * @Last Modified time: 2018-12-13 14:25:21
  * @描述: 订阅管理
 */
 import React, { Component } from 'react'
@@ -107,7 +107,7 @@ export default class AllSub extends Component {
   // }
 
   @Bind()
-  @Throttle(1000)
+  @Throttle(1000, { trailing: false })
   handleSearch(queryData={}, pageReset) {
     const pagination = pageReset?{pageNum:1,pageSize:10}:this.state.pagination
     this.setState({

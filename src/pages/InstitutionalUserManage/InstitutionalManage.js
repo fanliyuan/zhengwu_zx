@@ -163,7 +163,7 @@ export default class InstitutionalManage extends Component {
   }
 
   @Bind()
-  @Throttle(1000)
+  @Throttle(1000, { trailing: false })
   handleSearchBtn(){
     const { institutionName, times, provice, city, area } = this.state // provice, city, area,
     // const proCityAreaInfo = provice

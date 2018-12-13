@@ -534,6 +534,7 @@ export default [
             name: 'menuManagement',
             path: 'menuManagement',
             component: './PortalManagement/MenuManagement',
+            hideInMenu: true,
           },
           {
             name: 'carouselManagement',
