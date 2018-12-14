@@ -117,7 +117,7 @@ class TableList extends Component {
                 </a>
                 <Divider type="vertical" />
               </Fragment>
-              {record.dataType !== '文件' && (
+              {record.dataType !== 'file' && (
                 <Fragment>
                   <a
                     onClick={() => {
