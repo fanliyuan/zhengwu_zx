@@ -74,7 +74,7 @@ export default {
     },
     // 中心节点后台代理
     '/api/': {
-      target: 'http://cdyoue.com.cn:19006',
+      target: 'http://124.152.158.55:9112',
       changeOrigin: true,
       pathRewrite: { '^/api/': '' },
     },

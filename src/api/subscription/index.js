@@ -21,6 +21,11 @@ const module = {
       url: 'updateResourceSubscribeInfoInfo',
       method: 'post',
     },
+    {
+      name: 'getAssessLogs',
+      url: 'auditLog',
+      method: 'post',
+    },
   ],
 }
 module.apis.forEach(item => {

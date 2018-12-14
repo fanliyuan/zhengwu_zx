@@ -2,12 +2,13 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 11:27:26
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-12-13 14:25:21
+ * @Last Modified time: 2018-12-14 14:43:47
  * @描述: 订阅管理
 */
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Select } from 'antd'
+import router from 'umi/router'
 import moment from 'moment'
 import { Bind, Throttle } from 'lodash-decorators'
 
@@ -28,7 +29,7 @@ export default class AllSub extends Component {
   formOptions = {
     formData: [
       {
-        name: 'subscriberName',
+        name: 'dsName',
         typeOptions: {
           maxLength: 50,
           placeholder: '订阅名称',
@@ -41,20 +42,25 @@ export default class AllSub extends Component {
           placeholder: '信息资源名称',
         },
       },
-      {
-        name: 'name',
-        typeOptions: {
-          maxLength: 50,
-          placeholder: '发布节点/订阅节点',
-        },
-      },
+      // {
+      //   name: 'publisherID',
+      //   type: 'Select',
+      //   typeOptions: {},
+      //   children: [],
+      // },
+      // {
+      //   name: 'subscriberID',
+      //   type: 'Select',
+      //   typeOptions: {},
+      //   children: [],
+      // },
       {
         name: 'runStatus',
         type: 'Select',
         typeOptions: {
           placeholder: '运行状态',
         },
-        children: [{label: '运行',value: 1},{label: '停止',value:0}].map(item => <Select.Option value={item.value} key={item.value}>{item.label}</Select.Option>),
+        children: [{label: '全部', value: 'all'},{label: '运行',value: '1'},{label: '停止',value: '0'}].map(item => <Select.Option value={item.value} key={item.value}>{item.label}</Select.Option>),
       },
       {
         name: 'subTime',
@@ -83,6 +89,10 @@ export default class AllSub extends Component {
   //     })
   //   }
   // }
+
+  goToAssessLogs = row => {
+    router.push('/dataSwitchManagement/assessLogs', {resourceId: row.dsId || 0})
+  }
 
   handleStandardTableChange = ({current: pageNum,pageSize}) => {
     this.setState({
@@ -116,13 +126,12 @@ export default class AllSub extends Component {
       },
     })
     const { subTime } = queryData
-    delete queryData.subTime
-    delete queryData.resourceName
-    delete queryData.name
     if (subTime && Array.isArray(subTime) && subTime.length>0) {
-      queryData.createTime = `${queryData[0].format().substr(0,10)} 0:00:00`
-      queryData.updateTime = `${queryData[1].format().substr(0,10)} 23:59:59`
+      queryData.createTime = `${subTime[0].format().substr(0,10)} 0:00:00`
+      queryData.updateTime = `${subTime[1].format().substr(0,10)} 23:59:59`
     }
+    if (queryData.runStatus === 'all') delete queryData.runStatus
+    delete queryData.subTime
     this.props.dispatch({
       type: 'allSubscription/getSubscription',
       payload: {
@@ -140,7 +149,7 @@ export default class AllSub extends Component {
     const columns = [
       {
         title: '订阅名称',
-        dataIndex: 'subscriberName',
+        dataIndex: 'dsName',
       },
       {
         title: '订阅申请人',
@@ -153,21 +162,21 @@ export default class AllSub extends Component {
           return moment(text).format('lll')
         },
       },
-      // {
-      //   title: '订阅节点',
-      //   dataIndex: 'subNodeName',
-      // },
+      {
+        title: '订阅节点',
+        dataIndex: 'subscriberName',
+      },
       {
         title: '信息资源名称',
-        dataIndex: 'dsName',
+        dataIndex: 'resourceName',
       },
-      {
-        title: '目录名称',
-        dataIndex: 'dsDirName',
-      },
+      // {
+      //   title: '目录名称',
+      //   dataIndex: 'dsDirName',
+      // },
       {
         title: '发布节点',
-        dataIndex: 'pubNodeName',
+        dataIndex: 'publishInstitution',
       },
       {
         title: '运行状态',
@@ -179,8 +188,8 @@ export default class AllSub extends Component {
       },
       {
         title: '操作',
-        render: () => {
-          return <a>审核日志</a>
+        render: (_, row) => {
+          return <a onClick={() => this.goToAssessLogs(row)}>审核日志</a>
         },
       },
     ]
