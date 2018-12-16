@@ -38,7 +38,7 @@ class ViewDb extends Component {
 
   viewTableData = () => {
     message.destroy()
-    message.info('数据未开放，不能做数据浏览！')
+    message.info('功能暂未开放！')
   }
 
   viewTableStruct = () => {
