@@ -64,7 +64,7 @@ function number2String(array, field) {
           yield put({
             type: 'changeParentNodeList',
             payload: {
-              parentNodeList: JSON.parse(JSON.stringify(response.data).replace(/nodeId/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children')),
+              parentNodeList: JSON.parse(JSON.stringify(response.data).replace(/uuid/g, 'value').replace(/nodeName/g, 'label').replace(/childNodes/g, 'children')),
               parentNodeListT: number2String(JSON.parse(JSON.stringify(response.data).replace(/nodeId/g, 'value').replace(/nodeName/g, 'title').replace(/childNodes/g, 'children')), 'value'),
             },
           })
