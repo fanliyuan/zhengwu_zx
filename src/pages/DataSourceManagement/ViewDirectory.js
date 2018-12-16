@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
-import { Table, Button, Input, Select, Card, Row, Col } from 'antd'
+import { Button, Select, Card, Row, Col } from 'antd'
+import { Bind, Throttle } from 'lodash-decorators'
 // import { Link, routerRedux } from 'dva/router'
 
 import styles from './ViewDirectory.less'
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
+import SearchForm from '@/components/SearchForm'
+import StandardTable from '@/components/StandardTable'
 
 const { Option } = Select
 @connect(({ catalogManagement, loading }) => ({
@@ -12,23 +15,44 @@ const { Option } = Select
   loading: loading.models.catalogManagement,
 }))
 export default class ViewDirectory extends Component {
+
+  formOptions = {
+    formData: [
+      {
+        name: 'resourceItemName',
+        typeOptions: {
+          maxLength: 50,
+          placeholder: '信息项名称',
+        },
+      },
+      // {
+      //   name: 'resourceItemCode', 
+      //   typeOptions: {
+      //     maxLength: 50,
+      //     placeholder: '信息项编码',
+      //   },
+      // },
+      {
+        name: 'shareType',
+        type: 'Select',
+        typeOptions: {
+          placeholder: '共享类型',
+        },
+        children: [{ value: 'all', id: -1, label: '全部开放类型' }, { value: '2', id: 2, label: '无条件开放' }, { value: '1', id: 1, label: '有条件开放' }, { value: '3', id: 3, label: '不予开放' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
+      },
+    ],
+    searchHandler: this.handleSearch,
+    resetHandler: this.handleReset,
+  }
+
   state = {
     queryData: {},
-    isChanged: false,
+    pagination: {limit: 10, index: 1},
   }
 
   componentDidMount() {
     const { state: {resourceId} = {} } = this.props.history.location
-    this.props.dispatch({
-      type: 'catalogManagement/getCatalogInfo',
-      payload: {
-        params: {
-          index: '1',
-          limit: '10',
-          resourceId,
-        },
-      },
-    })
+    this.handleSearch()
     this.props.dispatch({
       type: 'catalogManagement/getResourceTitle',
       payload: {
@@ -39,113 +63,58 @@ export default class ViewDirectory extends Component {
     })
   }
 
-  codeChange = e => {
-    const { queryData } = this.state
+  tableChange = (pagination) => {
     this.setState({
-      queryData: {
-        ...queryData,
-        resourceItemCode: e.target.value.trim(),
+      pagination: {
+        limit: pagination.current,
+        index: pagination.limit,
       },
-      isChanged: true,
+    }, () => {
+      const { queryData } = this.state
+      this.handleSearch(queryData)
     })
   }
 
-  nameChange = e => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        resourceItemName: e.target.value.trim(),
-      },
-      isChanged: true,
-    })
+  handleReset = () => {
+    console.log('需要重置分页到1页') // eslint-disable-line
   }
 
-
-  selectDataTypeChange = val => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        shareType:val === '-1'?undefined:val,
-      },
-      isChanged: true,
-    })
-  }
-
-  selectNodeChange = val => {
-    const { queryData } = this.state
-    this.setState({
-      queryData: {
-        ...queryData,
-        disparkType:val === '-1'?undefined:val,
-      },
-      isChanged: true,
-    })
-  }
-
-  handelSearch = ({pageSize: limit = '10', current: index = '1'}, params) => {
-    const { isChanged } = this.state
-    if (!isChanged && params) {
-      return null
-    }
-    const { queryData: { resourceItemCode, resourceItemName, shareType, disparkType } } = this.state
-    this.props.dispatch({
+  @Bind()
+  @Throttle(1000, { trailing: false })
+  handleSearch(queryData = {}, resetPage = false) {
+    const pagination = resetPage ? { limit: 10, index: 1 } : this.state.pagination
+    const { state: { resourceId } = {} } = this.props.history.location
+    this.setState({ queryData: { ...queryData } })
+    const { dispatch } = this.props
+    dispatch({
       type: 'catalogManagement/getCatalogInfo',
       payload: {
         params: {
-          resourceId: this.props.history.location.state.resourceId,
-          resourceItemCode,
-          resourceItemName,
-          shareType,
-          disparkType,
-          limit,
-          index,
+          resourceId,
+          ...pagination,
+          ...queryData,
         },
       },
     })
-    this.setState({
-      isChanged: false,
-    })
-  }
-
-  tableChange = pagination => {
-    this.handelSearch(pagination)
+    // this.props.dispatch({
+    //   type: 'catalogManagement/getCatalogInfo',
+    //   payload: {
+    //     params: {
+    //       index: '1',
+    //       limit: '10',
+    //       resourceId,
+    //     },
+    //   },
+    // })
   }
 
   render() {
     const { catalogManagement: { catalogInfo, pagination1, resourceTitle }, loading } = this.props
-    const data = [
-      { value: '-1', id: -1, label: '全部共享类型' },
-      { value: '1', id: 1, label: '有条件共享' },
-      { value: '2', id: 2, label: '无条件共享' },
-      { value: '3', id: 3, label: '不予共享' },
-    ]
-    const selectData = data.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
-    const data1 = [
-      { value: '-1', id: -1, label: '全部开放类型' },
-      { value: '2', id: 2, label: '无条件开放' },
-      { value: '1', id: 1, label: '有条件开放' },
-      { value: '3', id: 3, label: '不予开放' },
-    ]
-    const selectData1 = data1.map(item => {
-      return (
-        <Option value={item.value} key={item.id} title={item.label}>
-          {item.label}
-        </Option>
-      )
-    })
     const columns = [
-      {
-        title: '信息项编码',
-        dataIndex: 'resourceItemCode',
-      },
+      // {
+      //   title: '信息项编码',
+      //   dataIndex: 'resourceItemCode',
+      // },
       {
         title: '信息项名称',
         dataIndex: 'resourceItemName',
@@ -160,23 +129,19 @@ export default class ViewDirectory extends Component {
       },
       {
         title: '共享类型',
-        dataIndex: 'shareTypeName',
+        dataIndex: 'shareType',
       },
       {
         title: '共享条件',
         dataIndex: 'shareCondition',
       },
       {
-        title: '共享方式分类',
-        dataIndex: 'shareWayClassifyName',
+        title: '共享方式',
+        dataIndex: 'shareWayType',
       },
       {
-        title: '共享方式类型',
-        dataIndex: 'shareWayTypeName',
-      },
-      {
-        title: '开放类型',
-        dataIndex: 'disparkTypeName',
+        title: '是否开放',
+        dataIndex: 'disparkType',
       },
       {
         title: '开放条件',
@@ -239,31 +204,13 @@ export default class ViewDirectory extends Component {
             </Row> */}
           </Card>
           <div className={styles.table}>
-            <div className={styles.form}>
-              <Input placeholder="信息项编码" style={{ width: 150, marginRight: 20 }} onChange={this.codeChange} />
-              <Input placeholder="信息项名称" style={{ width: 150, marginRight: 20 }} onChange={this.nameChange} />
-              <Select
-                style={{ marginRight: 20, width: 120 }}
-                defaultValue='-1'
-                onChange={this.selectDataTypeChange}
-                >
-                {selectData}
-              </Select>
-              <Select
-                style={{ marginRight: 20, width: 120 }}
-                defaultValue='-1'
-                onChange={this.selectNodeChange}
-                >
-                {selectData1}
-              </Select>
-              <Button type="primary" onClick={() => this.handelSearch({}, true)}>搜索</Button>
-            </div>
+            <SearchForm formOptions={this.formOptions} />
             <div>
-              <Table
+              <StandardTable
                 loading={loading}
                 columns={columns}
                 dataSource={catalogInfo}
-                pagination={pagination1 && {...pagination1, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / pagination1.pageSize)}页 / ${total}条 数据`}}
+                pagination={pagination1}
                 rowKey="itemId"
                 onChange={this.tableChange}
                 bordered
