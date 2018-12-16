@@ -111,7 +111,7 @@ const convertBase64UrlToBlob = urlData => {
 const base64UrlToUrl = (value, delta, _this) => {
   try {
     const { ops } = delta
-    const uploadURL = `${uploadServer}/uploadOssImage` // 图片上传文件服务器
+    const uploadURL = `${uploadServer}/uploadFastDFSImage` // 图片上传文件服务器
     // eslint-disable-next-line
     const downloadURL = `${downloadServer}/downloadImage` // 图片下载文件服务器 
     if (
@@ -537,7 +537,7 @@ export default class AddArticle extends Component {
               }
               >
               <Upload
-                action={`${uploadServer}/uploadOssImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
+                action={`${uploadServer}/uploadFastDFSImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
                 headers={{accessToken: getCookie('accessToken')}}
                 fileList={fileList}
                 listType="picture-card"
@@ -579,7 +579,7 @@ export default class AddArticle extends Component {
               }
               >
               <Upload 
-                action={`${uploadServer}/uploadOssFile?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
+                action={`${uploadServer}/uploadFastDFSFile?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
                 headers={{accessToken: getCookie('accessToken')}}
                 beforeUpload={file => {
                   if (file.size <= 100 * 1024 * 1024) {

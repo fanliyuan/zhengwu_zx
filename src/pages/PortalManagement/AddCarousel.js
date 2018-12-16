@@ -454,7 +454,7 @@ export default class AddCarousel extends Component {
                   ],
                 })(
                   <Upload
-                    action={`${uploadServer}/uploadOssImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
+                    action={`${uploadServer}/uploadFastDFSImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
                     headers={{accessToken: getCookie('accessToken')}}
                     listType="picture-card"
                     fileList={fileList}

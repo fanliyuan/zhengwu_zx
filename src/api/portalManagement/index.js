@@ -82,8 +82,8 @@ const module = {
      method: 'post',
    },
    {
-     name: 'uploadOssImage',
-     url: 'uploadOssImage',
+     name: 'uploadFastDFSImage',
+     url: 'uploadFastDFSImage',
      method: 'post',
    },
    {

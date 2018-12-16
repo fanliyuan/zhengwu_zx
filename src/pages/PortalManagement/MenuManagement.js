@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-03 15:27:04
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-10-30 10:18:56
+ * @Last Modified time: 2018-12-16 16:46:46
  * @描述: 开发门户管理 -- 目录分类 -- 目录分类管理
  *  
 */
@@ -514,7 +514,7 @@ export default class MenuManagement extends Component {
                     <span style={{display:'inline-block',marginBottom:10}}>上传图标1</span>
                     <Upload
                       className='clearfix'
-                      action={`${uploadServer}/uploadOssImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
+                      action={`${uploadServer}/uploadFastDFSImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
                       headers={{accessToken: getCookie('accessToken')}}
                       listType="picture-card"
                       fileList={fileList}
@@ -536,7 +536,7 @@ export default class MenuManagement extends Component {
                     <span style={{display:'inline-block',marginBottom:10}}>上传图标2</span>
                     <Upload
                       className='clearfix'
-                      action={`${uploadServer}/uploadOssImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
+                      action={`${uploadServer}/uploadFastDFSImage?tenantId=${localStorage.getItem('tenantId') || localStorage.getItem('accountId')}`} // 上传地址
                       headers={{accessToken: getCookie('accessToken')}}
                       listType="picture-card"
                       fileList={fileList1}
