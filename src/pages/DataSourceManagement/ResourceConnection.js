@@ -391,7 +391,7 @@ export default class ResourceConnection extends Component {
       },
     } = this.props
     const typess = (connectFileLists && connectFileLists.value && connectFileLists.value.datasourceEntity.type) ? (connectFileLists && connectFileLists.value && connectFileLists.value.datasourceEntity.type) : ''
-    const connectArr = (connectFileLists && connectFileLists.value && connectFileLists.value.ftpfileEntityCollection) ? connectFileLists.value.ftpfileEntityCollection : []
+    const connectArr = (connectFileLists && connectFileLists.value && (connectFileLists.value.ftpfileEntityCollection || connectFileLists.value.fileEntityCollection)) ? (connectFileLists.value.ftpfileEntityCollection || connectFileLists.value.fileEntityCollection) : []
     const connectRight = (connectFileLists && connectFileLists.value && connectFileLists.value.structEntityCollection) ? connectFileLists.value.structEntityCollection : []
     // const connectLeft = [] // (connectFileLists && connectFileLists.value && connectFileLists.value.syncEntity) ? connectFileLists.value.syncEntity :
     const {
@@ -669,7 +669,7 @@ export default class ResourceConnection extends Component {
                     }
                     // false
                   }
-                  rowKey="id"
+                  rowKey={typess === 'mysql' ? 'id' : null}
                   bordered
                   onChange={this.handleFileTableChange}
                   />
@@ -694,7 +694,7 @@ export default class ResourceConnection extends Component {
                     // }
                     false
                   }
-                  rowKey="id"
+                  rowKey={typess === 'mysql' ? 'id' : null}
                   bordered
                   onChange={this.handleFileTableChange}
                   />
@@ -716,7 +716,7 @@ export default class ResourceConnection extends Component {
                     // }
                     false
                   }
-                  rowKey="id"
+                  rowKey={typess === 'mysql' ? null : 'id'}
                   bordered
                   onChange={this.handleFileTableChange}
                   />
