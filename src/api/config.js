@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-08-05 17:18:26
- * @Last Modified by: fly
- * @Last Modified time: 2018-12-14 13:41:53
+ * @Last Modified by: ChouEric
+ * @Last Modified time: 2018-12-14 13:50:44
  * @Description: 全局接口配置
  */
 const baseConfig = {

@@ -18,6 +18,7 @@ export interface IPageHeaderProps {
   home?: React.ReactNode;
   wide?: boolean;
   hiddenBreadcrumb?: boolean;
+  buttonList?: Array<{ text: string, fn: () => void, type?: string, key?: string }>
 }
 
 export default class PageHeader extends React.Component<IPageHeaderProps, any> {}

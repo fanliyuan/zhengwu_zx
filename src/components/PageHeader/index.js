@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Tabs, Skeleton } from 'antd'
+import { Tabs, Skeleton, Button } from 'antd'
 import classNames from 'classnames'
 import styles from './index.less'
 import BreadcrumbView from './breadcrumb'
@@ -28,7 +28,19 @@ export default class PageHeader extends PureComponent {
       loading = false,
       wide = false,
       hiddenBreadcrumb = false,
+      buttonList = [],
     } = this.props
+
+    const ButtonList = buttonList.map(item => (
+      <Button
+        type={item.type || 'default'}
+        onClick={item.fn}
+        className="mr16"
+        key={item.key || item.text}
+        >
+        {item.text}
+      </Button>
+    ))
 
     const clsString = classNames(styles.pageHeader, className)
     const activeKeyProps = {}
@@ -49,6 +61,7 @@ export default class PageHeader extends PureComponent {
             avatar={{ size: 'large', shape: 'circle' }}
             >
             {hiddenBreadcrumb ? null : <BreadcrumbView {...this.props} />}
+            <div className={styles.buttonList}>{ButtonList}</div>
             <div className={styles.detail}>
               {logo && <div className={styles.logo}>{logo}</div>}
               <div className={styles.main}>

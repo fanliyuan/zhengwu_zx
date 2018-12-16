@@ -18,7 +18,7 @@ const { getSubscription, getResourceSubscribeInfoInfo, getAssessLogs } = apis
       try {
         response = yield call(getSubscription, {body: payload.body})
         const { data, total = 0, pageSize = 10, pageNum: current = 1 } = response.data
-        const pagination = total > pageSize ? {total, pageSize, current} : false
+        const pagination = { total, pageSize, current }
         if (+response.code === 604) {
           yield put({
             type: 'savaDataList',
@@ -64,16 +64,16 @@ const { getSubscription, getResourceSubscribeInfoInfo, getAssessLogs } = apis
       }
     },
     *getAssessLogs({ payload: params }, { call, put }) {
-      let assessLogs = {}
+      let assessLogs = []
       try {
-        const res = yield call(getAssessLogs, params)
-        assessLogs = res.result.datas
+        const res = yield call(getAssessLogs, {body: params})
+        assessLogs = res.data.data
       } catch (error) {
         console.log(error) // eslint-disable-line
       } finally {
         yield put({
           type: 'saveAssessLogs',
-          payload: [assessLogs],
+          payload: assessLogs,
         })
       }
     },
