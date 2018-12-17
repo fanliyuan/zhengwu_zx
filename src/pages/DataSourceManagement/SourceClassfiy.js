@@ -18,6 +18,15 @@ let mountMsg = 'false'
   loadings:loading.models.sourceClassfiy,
 }))
 export default class SourceClassfiy extends Component {
+  buttonList = [
+    {
+      text: '批量导入',
+      fn: () => {
+        console.log('这里做批量导入功能,导入后记得刷新页面') // eslint-disable-line
+      },
+    },
+  ]
+
   state = {
     classfiyName:'',
     ztClassfiyName:'',
@@ -345,7 +354,7 @@ export default class SourceClassfiy extends Component {
     //   },
     // ]
     return (
-      <PageHeaderLayout>
+      <PageHeaderLayout buttonList={this.buttonList}>
         <Card>
           <Tabs defaultActiveKey="1" onChange={this.handleChangeTab}>
             <TabPane tab="1 基础信息资源类" key="1">
