@@ -28,7 +28,7 @@ const FooterView = () => (
       ]}
       copyright={
         <Fragment>
-          Copyright <Icon type="copyright" /> 国信优易
+          Copyright <Icon type="copyright" /> {/* 国信优易 */}
         </Fragment>
       }
       />
