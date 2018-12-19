@@ -124,8 +124,9 @@ export default class ResourceConnection extends Component {
   };
 
   handleBack = () => {
-    const { dispatch } = this.props
-    dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+    // const { dispatch } = this.props
+    // dispatch(routerRedux.push('/dataSourceManagement/catalogManagement'))
+    window.history.back()
   };
 
   handleChooseChange = row => {
