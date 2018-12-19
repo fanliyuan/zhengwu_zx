@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, Button, Radio, Row, Col, Select, message } from 'antd' // Modal
+import { Input, Card, Form, Button, Radio, Select, message } from 'antd' // Modal
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -21,9 +21,9 @@ const msg = [0]
 }))
 export default class AddSourceClassfiy extends Component {
   state = {
-    classifyName:'请选择类',
-    itemName:'请选择项',
-    detailName:'请选择目',
+    // classifyName:'请选择类',
+    // itemName:'请选择项',
+    // detailName:'请选择目',
     selectCode:'',
     level:'',
     pid:'',
@@ -153,9 +153,9 @@ export default class AddSourceClassfiy extends Component {
     })
     setFieldsValue({
       'number':'',
-      "parentName":'请选择类',
-      "item":'请选择项',
-      "classfiyItem":'请选择目',
+      "parentName":undefined,
+      "item":undefined,
+      "classfiyItem":undefined,
       'names':'',
     })
   }
@@ -242,7 +242,7 @@ export default class AddSourceClassfiy extends Component {
     // msg[0] =0
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err){
-        const { selectCode, level, routeid, pid } = this.state
+        const { selectCode, level, routeid, pid, classNum } = this.state
         const { dispatch } = this.props
         if(routeid && routeid !== -1){
           dispatch({
@@ -254,6 +254,13 @@ export default class AddSourceClassfiy extends Component {
           // })
         }
         else {
+          if(!level){
+            message.error("请填写父级")
+            return
+          }
+          if(+classNum !== +level){
+            message.error("请完善父级")      
+          }
           dispatch({
             type:'sourceClassfiy/addItem',
             payload:{name:values.names,code:values.number,parentCode:selectCode,level,pid},
@@ -311,8 +318,8 @@ export default class AddSourceClassfiy extends Component {
       pid:val,
     })
     setFieldsValue({
-      'item':'请选择项',
-      'classfiyItem':'请选择目',
+      'item':undefined,
+      'classfiyItem':undefined,
     })
   }
 
@@ -335,7 +342,7 @@ export default class AddSourceClassfiy extends Component {
       })
     }
     setFieldsValue({
-      'classfiyItem':'请选择目',
+      'classfiyItem':undefined,
     })
     this.setState({
       selectCode:val,
@@ -373,7 +380,7 @@ export default class AddSourceClassfiy extends Component {
     const detailList = itemList.map(item => {
       return <Option value={item.code} key={item.id}>{item.name}</Option>
     })
-    const { classifyName, itemName, detailName, classNum, disAblex, disAblem, disAblexm } = this.state
+    const { classNum, disAblex, disAblem, disAblexm } = this.state // classifyName, itemName, detailName,
     // const { getFieldDecorator, getFieldValue } = this.props.form
     const formItemLayout = {
       labelCol: {
@@ -386,28 +393,28 @@ export default class AddSourceClassfiy extends Component {
         md: { span: 10 },
       },
     }
-    const formThreeItemLayout1 = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5,offset:0 },
-        md: { span: 4 },
-        lg: { span: 5,offset:0 },
-        xl:{ span: 5,offset:0 },
-      },
-      wrapperCol: {
-        xs: { span: 17 },
-        sm: { span: 17 },
-        md: { span: 19 },
-        lg: { span: 17 },
-        xl:{ span: 17 },
-      },
-    }
-    const formThreeItemLayout = {
-      wrapperCol: {
-        xs: { span: 22 },
-        sm: { span: 22 },
-      },
-    }
+    // const formThreeItemLayout1 = {
+    //   labelCol: {
+    //     xs: { span: 24 },
+    //     sm: { span: 5,offset:0 },
+    //     md: { span: 4 },
+    //     lg: { span: 5,offset:0 },
+    //     xl:{ span: 5,offset:0 },
+    //   },
+    //   wrapperCol: {
+    //     xs: { span: 17 },
+    //     sm: { span: 17 },
+    //     md: { span: 19 },
+    //     lg: { span: 17 },
+    //     xl:{ span: 17 },
+    //   },
+    // }
+    // const formThreeItemLayout = {
+    //   wrapperCol: {
+    //     xs: { span: 22 },
+    //     sm: { span: 22 },
+    //   },
+    // }
     const submitLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
@@ -434,7 +441,48 @@ export default class AddSourceClassfiy extends Component {
                   <Radio value={4} disabled={disAblexm}>细目</Radio>
                 </RadioGroup>)}
             </FormItem>
-            <Row>
+            <FormItem label="父级" {...formItemLayout}>
+              {getFieldDecorator('parentName', {
+                    // initialValue:classifyName,
+                    rules: [
+                  {
+                    required: true,
+                    message: '请选择分类名称',
+                  },
+                ],
+              })(
+                <Select placeholder="请选择类" onChange={this.handleChangeClassify} style={{display:'inline-block',width:'33%'}}>
+                  {classifyList}
+                </Select>
+              )}
+              {getFieldDecorator('item', {
+                // initialValue:itemName,
+                // rules: [
+                //   {
+                //     required: true,
+                //     message: '请选择项',
+                //   },
+                // ],
+              })(
+                <Select placeholder="请选择项" onChange={this.handleChangeClassify1} style={{display:+getFieldValue('classify') === 2 ? 'none' : 'inline-block',width:'33%'}}>
+                  {itemsList}
+                </Select>
+              )}
+              {getFieldDecorator('classfiyItem', {
+                // initialValue:detailName,
+                // rules: [
+                //   {
+                //     required: true,
+                //     message: '请选择目',
+                //   },
+                // ],
+              })(
+                <Select placeholder="请选择目" onChange={this.handleChangeClassify2} style={{display:+getFieldValue('classify') === 4 ? 'inline-block' : 'none',width:'33%'}}>
+                  {detailList}
+                </Select>
+              )}
+            </FormItem>
+            {/* <Row>
               <Col sm={{span:4,offset:4}} md={{span:4,offset:5}} lg={{span:4,offset:5}} xl={{span:4,offset:6}}>
                 <FormItem label="父级" {...formThreeItemLayout1}>
                   {getFieldDecorator('parentName', {
@@ -486,7 +534,7 @@ export default class AddSourceClassfiy extends Component {
               )}
                 </FormItem>
               </Col>
-            </Row>
+            </Row> */}
             <FormItem label="编号" {...formItemLayout}>
               {getFieldDecorator('number',{
                 initialValue:autoCodes,
