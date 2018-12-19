@@ -204,6 +204,12 @@ export default class AddSourceClassfiy extends Component {
           'number':getFieldValue('number').slice(0,49),
         })
       }
+      if(+getFieldValue('number')[0] === 0){
+        message.error("细目首位不能为0,请重填！")
+        setFieldsValue({
+          'number':'',
+        })
+      }
     }
   }
 
@@ -296,14 +302,6 @@ export default class AddSourceClassfiy extends Component {
   }
 
   handleChangeClassify2 = (val,options) => {
-    // const{ dispatch } = this.props
-    // const { classNum } = this.state
-    // if(+classNum === 3){
-    //   dispatch({
-    //     type:'sourceClassfiy/getCode',
-    //     payload:{parentCode:val,level:4},
-    //   })
-    // }
     this.setState({
       selectCode:val,
       level:4,
