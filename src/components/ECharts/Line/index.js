@@ -7,6 +7,7 @@ import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/grid'
 import 'echarts/lib/component/axis'
+import isEqual from 'lodash/isEqual'
 
 import styles from './index.less'
 
@@ -25,12 +26,15 @@ export default class Line extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      ...nextProps,
-    }, () => {
-      this.chartRender()
-    })
+    if (!isEqual(this.props, nextProps)) {
+      this.setState({
+        ...nextProps,
+      }, () => {
+        this.chartRender()
+      })
+    }
   }
+
 
   chartRender() {
     const { title, tooltip, legend, series, grid, xAxis, yAxis, dataset, onClick = () => {}, id } = this.state

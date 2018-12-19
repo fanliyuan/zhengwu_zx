@@ -4,6 +4,7 @@ import 'echarts/lib/chart/graph'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/title'
+import isEqual from 'lodash/isEqual'
 
 import styles from './index.less'
 
@@ -25,11 +26,13 @@ export default class Relation extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      ...nextProps,
-    }, () => {
-      this.chartRender()
-    })
+    if (!isEqual(this.props, nextProps)) {
+      this.setState({
+        ...nextProps,
+      }, () => {
+        this.chartRender()
+      })
+    }
   }
   
   chartRender() {

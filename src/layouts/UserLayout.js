@@ -27,7 +27,7 @@ const links = [
 
 const copyright = (
   <Fragment>
-    Copyright <Icon type="copyright" /> www.youedata.cn,All Rights Reserved 
+    Copyright <Icon type="copyright" /> {/* www.youedata.cn,All Rights Reserved  */}
   </Fragment>
 )
 
@@ -58,7 +58,7 @@ class UserLayout extends React.PureComponent {
                 <img alt="logo" className={styles.logo} src={logo} />
               </Link>
             </div>
-            <div className={styles.superTitle}>政务数据共享交换开放系统</div>
+            <div className={styles.superTitle}>数据共享交换开放系统</div>
             {/* <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div> */}
           </div>
           {children}

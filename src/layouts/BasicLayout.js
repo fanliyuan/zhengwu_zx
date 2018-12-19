@@ -183,13 +183,13 @@ class BasicLayout extends React.PureComponent {
     const currRouterData = this.matchParamsPath(pathname)
 
     if (!currRouterData) {
-      return '政务数据共享交换开放系统'
+      return '数据共享交换开放系统'
     }
     const message = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     })
-    return `${message} - 政务数据共享交换开放系统`
+    return `${message} - 数据共享交换开放系统`
   };
 
   getLayoutStyle = () => {
