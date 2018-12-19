@@ -42,6 +42,7 @@ export default {
       }catch(err){
         if(err){
           console.log(err) // eslint-disable-line
+          message.error("网络或系统异常，请重试")
         }
       }
     },
