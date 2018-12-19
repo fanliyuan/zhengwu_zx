@@ -13,6 +13,7 @@ export default {
     autoCodes:'',
     targetData:[],
     mountMessage:false,
+    // editMessage:[0],
   },
   effects:{
     *getLists({ payload} ,{ call, put }){
@@ -24,6 +25,10 @@ export default {
             type:'list',
             payload:{lists:response.data,paginations},
           })
+          // yield put({
+          //   type:'getMessage',
+          //   payload:[0],
+          // })
           if((payload.name === '' && response.data.length === 0) ||  (payload.name && response.data.length === 0)){
             message.error("很遗憾,没有搜索到匹配的分类信息")
           }
@@ -40,6 +45,12 @@ export default {
         }
       }
     },
+    // *switchEdit(_,{put}){
+    //   yield put({
+    //     type:'getMessage',
+    //     payload:[0],
+    //   }) 
+    // },
     *deleteItem({ payload} ,{ call,put }){
       let response = yield call(deletes,{params:payload, headers: {token: undefined}})
       response = JSON.parse(response)
@@ -132,12 +143,23 @@ export default {
       try{
         if(+response.code === 0){
           message.success('修改成功')
+          // yield put({
+          //   type:'getMessage',
+          //   payload:[0],
+          // })
           yield put({
             type:'getLists',
             payload:{type:1,index:1,pageSize:10},
           })
           yield put(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
-        }else {
+        }else if(+response.code === -1){
+          // yield put({
+          //   type:'getMessage',
+          //   payload:[1],
+          // })
+          message.error(response.msg)
+        }
+        else {
           message.error(response.msg)
         }
       }catch(err){
@@ -188,6 +210,10 @@ export default {
               payload:[],
             })
           }
+          // yield put({
+          //   type:'getMessage',
+          //   payload:[0],
+          // })
       }catch(err){
         if(err){
           console.log(err) // eslint-disable-line
@@ -233,5 +259,11 @@ export default {
         mountMessage:payload,
       }
     },
+    // getMessage(state, { payload }){
+    //   return {
+    //     ...state,
+    //     editMessage:payload,
+    //   }
+    // },
   },
 }

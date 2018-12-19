@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Card, Form, Button, Radio, Row, Col, Select, message } from 'antd'
+import { Input, Card, Form, Button, Radio, Row, Col, Select, message } from 'antd' // Modal
 import { connect } from 'dva'
 import { routerRedux } from 'dva/router'
 
@@ -9,8 +9,10 @@ import PageHeaderLayout from '@/components/PageHeaderWrapper'
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
 const { Option } = Select
+// const { confirm }= Modal
 let currentClassify
 let num
+const msg = [0]
 @Form.create()
 
 @connect(({sourceClassfiy,loading}) => ({
@@ -26,16 +28,21 @@ export default class AddSourceClassfiy extends Component {
     level:'',
     pid:'',
     classNum:2,
-    routeid:-1,
+    routeid:'',
     disAblex:false,
     disAblem:false,
     disAblexm:false,
+    // editMsg:true,
   }
 
   componentDidMount = async() => {
     const { dispatch } = this.props
     const { setFieldsValue } = this.props.form
     const { location:{ state } } = this.props.history
+    // this.setState({
+    //   editMsg:true,
+    // })
+    msg[0] = 0
     setFieldsValue({
       'number':'',
     })
@@ -136,12 +143,6 @@ export default class AddSourceClassfiy extends Component {
     currentClassify = ''
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({
-  //     codes:nextProps.sourceClassfiy.autoCodes,
-  //   })
-  // }
-
   handleClassChange = (e) => {
     const { form:{ setFieldsValue} } = this.props
     this.setState({
@@ -160,11 +161,12 @@ export default class AddSourceClassfiy extends Component {
   }
 
   handleNamePCheck =() => {
+    msg[0] = 0
     const { form:{getFieldValue, setFieldsValue} } = this.props
     if(getFieldValue('names').length > 50){
       message.info("输入长度不能超过50个字符")
       setFieldsValue({
-        'names':getFieldValue('names').slice(0,49),
+        'names':getFieldValue('names').slice(0,50),
       })
     }
   }
@@ -190,6 +192,7 @@ export default class AddSourceClassfiy extends Component {
 
   handleNumPCheck = () => {
     const { classNum } = this.state
+    msg[0] = 0
     if(+classNum === 2){
       this.checkNum(2)
     }
@@ -201,7 +204,7 @@ export default class AddSourceClassfiy extends Component {
       if(getFieldValue('number').length > 50){
         message.info("输入长度不能超过50个字符")
         setFieldsValue({
-          'number':getFieldValue('number').slice(0,49),
+          'number':getFieldValue('number').slice(0,50),
         })
       }
       if(+getFieldValue('number')[0] === 0){
@@ -221,10 +224,22 @@ export default class AddSourceClassfiy extends Component {
     else if(+classNum === 3){
       this.addCode(3)
     }
+    const { dispatch } = this.props
+    dispatch({
+      type:'sourceClassfiy/switchEdit',
+    })
   }
+
+  // handleSwitch = () => {
+  //   const { dispatch } = this.props
+  //   dispatch({
+  //     type:'sourceClassfiy/switchEdit',
+  //   })  
+  // }
 
   handleSubmit = (e) => {
     e.preventDefault()
+    // msg[0] =0
     this.props.form.validateFieldsAndScroll((err, values) => {
       if(!err){
         const { selectCode, level, routeid, pid } = this.state
@@ -232,8 +247,11 @@ export default class AddSourceClassfiy extends Component {
         if(routeid && routeid !== -1){
           dispatch({
             type:'sourceClassfiy/editItem',
-            payload:{name:values.names,code:values.number,parentCode:selectCode,level,id:routeid,force:1,pid},
+            payload:{name:values.names,code:values.number,parentCode:selectCode,level,id:routeid,force:0,pid},
           }) 
+          // this.setState({
+          //   editMsg:true,
+          // })
         }
         else {
           dispatch({
@@ -244,6 +262,31 @@ export default class AddSourceClassfiy extends Component {
       }
     })
   }
+
+  // handleEditMust = (e) => {
+  //   e.preventDefault()
+  //   this.props.form.validateFieldsAndScroll((err, values) => {
+  //     if(!err){
+  //       const { selectCode, level, routeid, pid } = this.state
+  //       const { dispatch } = this.props
+  //         dispatch({
+  //           type:'sourceClassfiy/editItem',
+  //           payload:{name:values.names,code:values.number,parentCode:selectCode,level,id:routeid,force:1,pid},
+  //         })
+  //         this.setState({
+  //           editMsg:false,
+  //         })
+  //         msg[0] = 0
+  //     }
+  //   })
+  // }
+
+  // handleEditCancel = () => {
+  //   this.setState({
+  //     editMsg:false,
+  //   })
+  //   msg[0] = 0
+  // }
 
   handleChangeClassify = async(val) => {
     const { dispatch } = this.props
@@ -315,10 +358,10 @@ export default class AddSourceClassfiy extends Component {
   }
 
   render() {
-    const { sourceClassfiy:{resourceLists, itemList, autoCodes, targetData } } = this.props
+    const { sourceClassfiy:{resourceLists, itemList, autoCodes, targetData },form:{getFieldDecorator, getFieldValue} } = this.props
+    // msg = [...editMessage]
     currentClassify = targetData
     num = autoCodes
-    // console.log(targetData)
     const classify = [{value:'1',label:'基础信息资源类'},{value:'2',label:'主题信息资源类'},{value:'3',label:'部门信息资源类'}]
     const classifyList = classify.map(item => {
       return <Option value={item.value} key={item.value}>{item.label}</Option>
@@ -331,7 +374,7 @@ export default class AddSourceClassfiy extends Component {
       return <Option value={item.code} key={item.id}>{item.name}</Option>
     })
     const { classifyName, itemName, detailName, classNum, disAblex, disAblem, disAblexm } = this.state
-    const { getFieldDecorator, getFieldValue } = this.props.form
+    // const { getFieldDecorator, getFieldValue } = this.props.form
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -374,7 +417,7 @@ export default class AddSourceClassfiy extends Component {
     return (
       <PageHeaderLayout>
         <Card>
-          <Form onSubmit={this.handleSubmit}>
+          <Form> {/* onSubmit={this.handleSubmit} */}
             <FormItem label="类别" {...formItemLayout}>
               {getFieldDecorator('classify', {
                 initialValue:classNum,
@@ -460,15 +503,23 @@ export default class AddSourceClassfiy extends Component {
                   required: true,
                   message:'请输入名称',
                 }],
-              })(<Input placeholder="请输入名称" onKeyUp={this.handleNamePCheck} />)}
+              })(<Input placeholder="请输入名称" onKeyUp={this.handleNamePCheck} />)} {/* onBlur={this.handleSwitch} */} 
             </FormItem>
             <FormItem {...submitLayout}>
-              <Button type="primary" htmlType="submit" style={{ marginRight: 20 }}>
-                确定
+              <Button type="primary" style={{ marginRight: 20 }} onClick={this.handleSubmit}> {/* htmlType="submit" */}
+                  确定
               </Button>
               <Button onClick={this.handleCancel}>取消</Button>
             </FormItem>
           </Form>
+          {/* <Modal
+            title="修改"
+            visible={+msg[0] === 1 && editMsg}
+            onOk={this.handleEditMust}
+            onCancel={this.handleEditCancel}
+            >
+            <p>已存在，是否强制修改，后果自负</p>
+          </Modal> */}
         </Card>
       </PageHeaderLayout>
     )
