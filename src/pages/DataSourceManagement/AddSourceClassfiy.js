@@ -255,11 +255,11 @@ export default class AddSourceClassfiy extends Component {
         }
         else {
           if(!level){
-            message.error("请填写父级,若下级不存在，请先创建")
+            message.error("请填写父级，若下级不存在，请先创建")
             return
           }
           if(+classNum !== +level){
-            message.error("请完善父级,若下级不存在，请先创建")
+            message.error("请完善父级，若下级不存在，请先创建")
             return      
           }
           dispatch({
