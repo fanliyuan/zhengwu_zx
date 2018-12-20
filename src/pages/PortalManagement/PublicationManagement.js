@@ -1,8 +1,8 @@
 /*
  * @Author: ChouEric
  * @Date: 2018-07-03 14:31:14
- * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-14 16:09:36
+ * @Last Modified by: fly
+ * @Last Modified time: 2018-12-20 11:06:06
  * @描述: 开放门户管理--资讯管理--发布管理
 */
 import React, { Component, Fragment } from 'react'
@@ -217,7 +217,7 @@ export default class PublicationManagement extends Component {
   }
 
   copyUrl = row => {
-    copy(`${portalsServer}/article?article=${row.articleId}`)
+    copy(`${portalsServer}/news-detail.html?id=${row.articleId}`)
     message.success('复制成功')
   }
 

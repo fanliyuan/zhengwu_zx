@@ -178,26 +178,26 @@ export default {
               type:'resourceList',
               payload:response.data,
             })
-            if(response.data.length === 0){
-              message.error("项不存在，请先创建项")
-              yield put({
-                type:'autoCode',
-                payload:'',
-              })
-            }
+            // if(response.data.length === 0){
+            //   message.error("项不存在，请先创建项")
+            //   yield put({
+            //     type:'autoCode',
+            //     payload:'',
+            //   })
+            // }
           }
           else if(+payload.level === 2){
             yield put({
               type:'itemsList',
               payload:response.data,
             })
-            if(response.data.length === 0){
-              message.error("目不存在，请先创建目")
-              yield put({
-                type:'autoCode',
-                payload:'',
-              })
-            }
+            // if(response.data.length === 0){
+            //   message.error("目不存在，请先创建目")
+            //   yield put({
+            //     type:'autoCode',
+            //     payload:'',
+            //   })
+            // }
           }
         }else if(payload.level === 1) {
             yield put({
