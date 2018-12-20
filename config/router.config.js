@@ -244,6 +244,13 @@ export default [
             // authority: ['operator', 'operator-n'],
           },
           {
+            name: 'editSourceClassfiy',
+            path: 'editSourceClassfiy',
+            component: './DataSourceManagement/AddSourceClassfiy',
+            hideInMenu: true,
+            // authority: ['operator', 'operator-n'],
+          },
+          {
             name: 'sourceManagement',
             path: 'sourceManagement',
             component: './DataSourceManagement/SourceManagement',

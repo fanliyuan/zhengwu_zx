@@ -100,7 +100,7 @@ export default class SourceClassfiy extends Component {
       message.info("该类型下挂载有资源，不能修改")
       return
     }
-    dispatch(routerRedux.push('/DataSourceManagement/AddSourceClassfiy',{
+    dispatch(routerRedux.push('/DataSourceManagement/EditSourceClassfiy',{
       id:row.id,
       level:row.level,
       currentTab,

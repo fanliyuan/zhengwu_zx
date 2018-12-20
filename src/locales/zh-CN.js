@@ -309,6 +309,7 @@ export default {
   'menu.dataSourceManagement.openShareFile': '开放共享文件',
   'menu.dataSourceManagement.sourceClassfiy': '资源属性分类',
   'menu.dataSourceManagement.addSourceClassfiy': '新建资源属性分类',
+  'menu.dataSourceManagement.editSourceClassfiy': '修改资源属性分类',
   'menu.dataSourceManagement.dataBaseSource': '数据库管理',
   'menu.dataSourceManagement.catalogManagement': '目录管理',
   'menu.dataSourceManagement.viewDirectory': '查看资源',
