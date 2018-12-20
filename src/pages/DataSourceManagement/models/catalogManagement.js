@@ -44,6 +44,7 @@ function filterTreeList(params, data) {
     catalogInfo: [],
     resourceTitle: {},
     pagination1: false,
+    pagination2: {},
     resourceTaskInfo: {},
     catalogQueryData: '',
     srcProsTree: [],
@@ -149,13 +150,15 @@ function filterTreeList(params, data) {
       try {
         response = yield call(getResourceItemList, {params: payload.params})
         const { data, total = 0, size = 10, page = 1 } = response
-        const pagination1 = total > size ? {total, pageSize: size, current: page} : false
+        const pagination1 = total > size ? { total, pageSize: size, current: page } : false
+        const pagination2 = { total, current: page, pageSize: size}
         if (+response.code === 0) {
           yield put({
             type: 'savaCatalogInfo',
             payload: {
               catalogInfo: data,
               pagination1,
+              pagination2,
             },
           })
         } else {
@@ -303,11 +306,12 @@ function filterTreeList(params, data) {
         catalogList,
       }
     },
-    savaCatalogInfo(state, {payload: {catalogInfo, pagination1}}) {
+    savaCatalogInfo(state, { payload: { catalogInfo, pagination1, pagination2}}) {
       return {
         ...state,
         catalogInfo,
         pagination1,
+        pagination2,
       }
     },
     savaResourceTaskInfo(state, {payload: {resourceTaskInfo}}) {

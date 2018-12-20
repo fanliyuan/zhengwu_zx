@@ -38,7 +38,7 @@ export default class ViewDirectory extends Component {
         typeOptions: {
           placeholder: '共享类型',
         },
-        children: [{ value: 'all', id: -1, label: '全部开放类型' }, { value: '2', id: 2, label: '无条件开放' }, { value: '1', id: 1, label: '有条件开放' }, { value: '3', id: 3, label: '不予开放' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
+        children: [{ value: 'all', id: -1, label: '全部共享类型' }, { value: '2', id: 2, label: '无条件共享' }, { value: '1', id: 1, label: '有条件共享' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
       },
     ],
     searchHandler: this.handleSearch,
@@ -66,8 +66,8 @@ export default class ViewDirectory extends Component {
   tableChange = (pagination) => {
     this.setState({
       pagination: {
-        limit: pagination.current,
-        index: pagination.limit,
+        limit: pagination.pageSize,
+        index: pagination.current,
       },
     }, () => {
       const { queryData } = this.state
@@ -86,6 +86,7 @@ export default class ViewDirectory extends Component {
     const { state: { resourceId } = {} } = this.props.history.location
     this.setState({ queryData: { ...queryData } })
     const { dispatch } = this.props
+    if (queryData.shareType === 'all') delete queryData.shareType
     dispatch({
       type: 'catalogManagement/getCatalogInfo',
       payload: {
@@ -109,7 +110,7 @@ export default class ViewDirectory extends Component {
   }
 
   render() {
-    const { catalogManagement: { catalogInfo, pagination1, resourceTitle }, loading } = this.props
+    const { catalogManagement: { catalogInfo, pagination2, resourceTitle }, loading } = this.props
     const columns = [
       // {
       //   title: '信息项编码',
@@ -210,7 +211,7 @@ export default class ViewDirectory extends Component {
                 loading={loading}
                 columns={columns}
                 dataSource={catalogInfo}
-                pagination={pagination1}
+                pagination={pagination2}
                 rowKey="itemId"
                 onChange={this.tableChange}
                 bordered
