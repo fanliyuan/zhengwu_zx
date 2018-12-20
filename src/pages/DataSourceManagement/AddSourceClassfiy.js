@@ -259,7 +259,8 @@ export default class AddSourceClassfiy extends Component {
             return
           }
           if(+classNum !== +level){
-            message.error("请完善父级")      
+            message.error("请完善父级")
+            return      
           }
           dispatch({
             type:'sourceClassfiy/addItem',
