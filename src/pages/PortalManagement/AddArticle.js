@@ -2,7 +2,7 @@
  * @Author: ChouEric
  * @Date: 2018-07-24 18:12:55
  * @Last Modified by: ChouEric
- * @Last Modified time: 2018-09-14 11:37:30
+ * @Last Modified time: 2018-12-20 17:51:54
  * @Description: 新增文章
  *  react-quill富文本编辑器的图片没有标识,可能会更改https://github.com/margox/braft-editor
  *  目前 图片 在上传成功后有闪烁的问题,解决办法之一就是在返回公网图片地址之后,作为自定义属性加上去,
@@ -389,7 +389,7 @@ export default class AddArticle extends Component {
                   body: {
                     articleContent: quillText,
                     ...values,
-                    articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+                    articlePname: localStorage.getItem('accountName') || localStorage.getItem('accountId') || '佚名',
                     imgPath: coverUrl,
                     // filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
                     filePath: fileResponse,
@@ -404,7 +404,7 @@ export default class AddArticle extends Component {
                 articleContent: quillText,
                 ...values,
                 articleId: this.props.location.state.articleId,
-                articlePname: localStorage.getItem('accountRealName') || localStorage.getItem('accountName') || localStorage.getItem('accountId'),
+                articlePname: localStorage.getItem('accountName') || localStorage.getItem('accountId') || '佚名',
                 imgPath: coverUrl,
                 // filePath: uploadFileList.length === 0 ? undefined : JSON.stringify(uploadFileList),
                 filePath: fileResponse,

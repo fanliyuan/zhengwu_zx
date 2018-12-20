@@ -145,7 +145,7 @@ export default class AddUser extends Component {
     const { loading } = this.props
     const { getFieldDecorator } = this.props.form
     const accountDetail = this.state.userInfo
-    console.log(accountDetail)
+    // console.log(accountDetail)
     const role = [
       { value: '0', label: '管理员', id: '0' },
       { value: '1', label: '审核员', id: '1' },
