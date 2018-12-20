@@ -38,7 +38,7 @@ export default class ViewDirectory extends Component {
         typeOptions: {
           placeholder: '共享类型',
         },
-        children: [{ value: 'all', id: -1, label: '全部共享类型' }, { value: '2', id: 2, label: '无条件共享' }, { value: '1', id: 1, label: '有条件共享' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
+        children: [{ value: 'all', id: -1, label: '全部共享类型' }, { value: '无条件共享', id: 2, label: '无条件共享' }, { value: '有条件共享', id: 1, label: '有条件共享' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
       },
     ],
     searchHandler: this.handleSearch,

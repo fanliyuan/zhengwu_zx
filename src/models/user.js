@@ -27,6 +27,7 @@ export default {
       try {
         response = yield call(getAccountInfo, {params: {accessToken: Cookies.get('accessToken')},headers: {accessToken: undefined, projectId: undefined}})
         if (+response.code === 200) {
+          localStorage.setItem('accountName', response.data.accountNickName || response.data.accountName)
           yield put({
             type: 'saveCurrentUser',
             payload: {
