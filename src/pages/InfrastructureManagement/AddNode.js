@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Link } from 'dva/router'
-import { Card, Input, Button, Form, TreeSelect } from 'antd'
+import { Card, Input, Button, Form, TreeSelect, message } from 'antd'
 
 // import styles from './AddNode.less';
 import PageHeaderLayout from '@/components/PageHeaderWrapper'
@@ -34,6 +34,38 @@ export default class AddNode extends Component {
     }
   }
 
+  handleNameSameCheck = async(e) => {
+    const { dispatch, form } = this.props
+    const fieldName = e.target.id
+    if (fieldName === 'name') {
+      await dispatch({
+        type:'nodeManagement/check',
+        payload:{ nodeName: e.target.value },
+        callback: res => {
+          if (res.data === 'true') {
+            form.setFieldsValue({
+              name: '',
+            })
+            message.error("节点名称已存在,请重新输入")
+          }
+        },
+      })
+    } else {
+      await dispatch({
+        type:'nodeManagement/check',
+        payload:{ mac: e.target.value },
+        callback: res => {
+          if (res.data === 'true') {
+            form.setFieldsValue({
+              mac: '',
+            })
+            message.error("mac地址已存在,请重新输入")
+          }
+        },
+      })
+    }
+  }
+
   handleSubmit = e => {
     e.preventDefault()
     // message.success('新建成功,即将跳转到上级页面')
@@ -42,6 +74,7 @@ export default class AddNode extends Component {
     // }, 1000)
     this.props.form.validateFields((err, value) => {
       if (!err) {
+        console.log(value)
         const body = {
           nodeName: value.name.trim(),
           mac: value.mac.trim(),
@@ -71,10 +104,9 @@ export default class AddNode extends Component {
   }
 
   render() {
-    console.log(this.state)
     const { getFieldDecorator } = this.props.form
     const { nodeManagement: { parentNodeListT, departmentListT } } = this.props
-    const { nodeInfo: {nodeName, mac, deptId, parentName} } = this.state
+    const { nodeInfo: {nodeName, mac, deptId, pid} } = this.state
     // const role = [
     //   { value: '0', label: '某某机构', id: '0' },
     //   { value: '1', label: 'XX机构', id: '1' },
@@ -123,7 +155,7 @@ export default class AddNode extends Component {
                     message: '名称不能超过20个字,并且不能含有特殊字符',
                   },
                 ],
-              })(<Input placeholder="节点名称" />)}
+              })(<Input placeholder="节点名称" onBlur={this.handleNameSameCheck} />)}
             </FormItem>
             <FormItem label="网卡·MAC·地址" {...formItemLayout}>
               {getFieldDecorator('mac', {
@@ -135,11 +167,11 @@ export default class AddNode extends Component {
                     pattern: /^[A-F0-9]{2}(-[A-F0-9]{2}){5}$/,
                   },
                 ],
-              })(<Input placeholder="网卡·MAC·地址" />)}
+              })(<Input placeholder="网卡·MAC·地址" onBlur={this.handleNameSameCheck} />)}
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('pid',{
-                initialValue: [`${parentName || ''}`],
+                initialValue: [`${pid || ''}`],
               })(
                 <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" allowClear />
               )}

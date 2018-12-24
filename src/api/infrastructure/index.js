@@ -72,6 +72,11 @@ const module = {
       method: 'put',
     },
     {
+      name: 'checkNode',
+      url: 'validateNodeInfo',
+      method: 'post',
+    },
+    {
       name: 'addRegion',
       url: 'regionManager/region',
       method: 'post',
