@@ -35,9 +35,13 @@ export default class AddNode extends Component {
   }
 
   handleNameSameCheck = async(e) => {
-    const { dispatch, form } = this.props
+    const { dispatch, form, route } = this.props
+    const { nodeInfo } = this.state
     const fieldName = e.target.id
     if (fieldName === 'name') {
+      if (route.name === 'editnode' && nodeInfo.nodeName === e.target.value) {
+        return false
+      }
       await dispatch({
         type:'nodeManagement/check',
         payload:{ nodeName: e.target.value },
@@ -51,6 +55,9 @@ export default class AddNode extends Component {
         },
       })
     } else {
+      if (route.name === 'editnode' && nodeInfo.mac === e.target.value) {
+        return false
+      }
       await dispatch({
         type:'nodeManagement/check',
         payload:{ mac: e.target.value },
@@ -74,7 +81,6 @@ export default class AddNode extends Component {
     // }, 1000)
     this.props.form.validateFields((err, value) => {
       if (!err) {
-        console.log(value)
         const body = {
           nodeName: value.name.trim(),
           mac: value.mac.trim(),
