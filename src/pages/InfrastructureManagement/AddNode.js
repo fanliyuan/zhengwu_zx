@@ -71,9 +71,10 @@ export default class AddNode extends Component {
   }
 
   render() {
+    console.log(this.state)
     const { getFieldDecorator } = this.props.form
     const { nodeManagement: { parentNodeListT, departmentListT } } = this.props
-    const { nodeInfo: {nodeName, mac, deptId, parentNodeName} } = this.state
+    const { nodeInfo: {nodeName, mac, deptId, parentName} } = this.state
     // const role = [
     //   { value: '0', label: '某某机构', id: '0' },
     //   { value: '1', label: 'XX机构', id: '1' },
@@ -138,7 +139,7 @@ export default class AddNode extends Component {
             </FormItem>
             <FormItem label="上级节点" {...formItemLayout}>
               {getFieldDecorator('pid',{
-                initialValue: [`${parentNodeName || ''}`],
+                initialValue: [`${parentName || ''}`],
               })(
                 <TreeSelect treeData={parentNodeListT} placeholder="请选择节点" allowClear />
               )}

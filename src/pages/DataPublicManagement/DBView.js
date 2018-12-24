@@ -1,14 +1,15 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import { Table, Icon, Alert, Button, Card, message } from 'antd'
+import { Table, Icon, Button, Card, message } from 'antd'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import DataBaseInfo from '@/components/DataBaseInfo'
 
 import styles from './DataManager.less'
 
-@connect(({ dbView }) => ({
+@connect(({ dbView, loading }) => ({
   dbView,
+  loading: loading.models.dbView,
 }))
 class ViewDb extends Component {
 
@@ -64,6 +65,7 @@ class ViewDb extends Component {
     let currentDetailTable
     let dataBaseInfo
     const {
+        loading,
         dbView: { entityInfo },
         } = this.props
     const { modelName, modelTitle, modelUnit } = this.state
@@ -192,40 +194,28 @@ class ViewDb extends Component {
     )
     return (
       <PageHeaderWrapper action={buttonList}>
-        <Card bordered={false}>
+        <Card bordered={false} loading={loading}>
           <Fragment>
-            {keyArr.length === 0 && (
-              <Alert
-                message="页面正努力加载中......"
-                style={{ marginBottom: 20 }}
-                type="info"
-                showIcon
-                />
-            )}
-            {keyArr.length > 0 && (
-              <Fragment>
-                <DataBaseInfo dataBaseInfo={dataBaseInfo} />
-                <Table
-                  bordered
-                  pagination={false}
-                  dataSource={currentDetailTable}
-                  className="mt16"
-                  columns={tableColumn}
-                  rowKey="tableName"
-                  />
-                <div className={`mt16 ${styles.title}`}>
-                  {modelTitle} 共 <span style={{ color: '#ed4014' }}>{currentList.length}</span> {modelUnit}
-                </div>
-                <Table
-                  bordered
-                  pagination={paginationProps}
-                  dataSource={currentList}
-                  columns={structColumn}
-                  className={`mt16 ${modelName === '结构' ? `${styles.show}` : `${styles.hidden}`}`}
-                  rowKey="id"
-                  />
-              </Fragment>
-            )}
+            <DataBaseInfo dataBaseInfo={dataBaseInfo} />
+            <Table
+              bordered
+              pagination={false}
+              dataSource={currentDetailTable}
+              className="mt16"
+              columns={tableColumn}
+              rowKey="tableName"
+              />
+            <div className={`mt16 ${styles.title}`}>
+              {modelTitle} 共 <span style={{ color: '#ed4014' }}>{currentList.length}</span> {modelUnit}
+            </div>
+            <Table
+              bordered
+              pagination={paginationProps}
+              dataSource={currentList}
+              columns={structColumn}
+              className={`mt16 ${modelName === '结构' ? `${styles.show}` : `${styles.hidden}`}`}
+              rowKey="id"
+              />
           </Fragment>
         </Card>
       </PageHeaderWrapper>

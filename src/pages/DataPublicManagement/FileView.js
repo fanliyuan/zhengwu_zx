@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from 'react'
-import { Table, Alert, Button, Card } from 'antd'
+import { Table, Button, Card } from 'antd'
 import { connect } from 'dva'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import DataBaseInfo from '@/components/DataFileInfo'
 
-@connect(({ dbView }) => ({
+@connect(({ dbView, loading }) => ({
   dbView,
+  loading: loading.models.dbView,
 }))
 class DBView extends Component {
 
@@ -53,6 +54,7 @@ class DBView extends Component {
     let currentList = []
     let dataBaseInfo
     const {
+        loading,
         dbView: { entityInfo },
         } = this.props
     const keyArr = Object.keys(entityInfo)
@@ -115,29 +117,17 @@ class DBView extends Component {
     )
     return (
       <PageHeaderWrapper action={buttonList}>
-        <Card bordered={false}>
+        <Card bordered={false} loading={loading}>
           <Fragment>
-            {keyArr.length === 0 && (
-              <Alert
-                message="页面正努力加载中......"
-                style={{ marginBottom: 20 }}
-                type="info"
-                showIcon
-                />
-            )}
-            {keyArr.length > 0 && (
-              <Fragment>
-                <DataBaseInfo dataBaseInfo={dataBaseInfo} />
-                <Table
-                  bordered
-                  pagination={paginationProps}
-                  dataSource={currentList}
-                  columns={tableColumn}
-                  className="mt16"
-                  rowKey="id"
-                  />
-              </Fragment>
-            )}
+            <DataBaseInfo dataBaseInfo={dataBaseInfo} />
+            <Table
+              bordered
+              pagination={paginationProps}
+              dataSource={currentList}
+              columns={tableColumn}
+              className="mt16"
+              rowKey="id"
+              />
           </Fragment>
         </Card>
       </PageHeaderWrapper>
