@@ -58,7 +58,15 @@ export default {
       try{
         if(+response.code === 0){
           message.success('删除成功')
-          yield put(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
+          yield put({
+            type:'',
+            payload:{},
+          })
+          yield put({
+            type:'getLists',
+            payload:{type:1,index:1,pageSize:10},
+          })
+          // yield put(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
         }else {
           message.error('删除失败')
         }
