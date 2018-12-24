@@ -96,6 +96,10 @@ export default {
           })
         }else {
           message.error('获取自动编码失败,请手动填写')
+          yield put({
+            type:'autoCode',
+            payload:'',
+          })
         }
       }catch(err){
         if(err){
