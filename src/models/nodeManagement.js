@@ -2,7 +2,7 @@ import { routerRedux } from 'dva/router'
 import { message } from 'antd'
 import apis from '../api'
 
-const { getNodes, getParentNodes, getDepartments, deleteNode, addNode, editNode } = apis
+const { getNodes, getParentNodes, getDepartments, deleteNode, addNode, editNode, checkNode } = apis
 
 function number2String(array, field) {
   return array.map((item) => {
@@ -153,6 +153,16 @@ function number2String(array, field) {
         } else {
           message.error(`修改失败, ${response.msg}`)
         }
+      } catch (error) {
+        // eslint-disable-next-line
+        console.log(error)
+      }
+    },
+    *check({ payload, callback }, { call }) {
+      let response
+      try {
+        response = yield call(checkNode, { body: payload })
+        callback(response)
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)
