@@ -25,13 +25,14 @@ export default class ViewDirectory extends Component {
           placeholder: '信息项名称',
         },
       },
-      // {
-      //   name: 'resourceItemCode', 
-      //   typeOptions: {
-      //     maxLength: 50,
-      //     placeholder: '信息项编码',
-      //   },
-      // },
+      {
+        name: 'resourceDataType',
+        type:'Select',
+        typeOptions: {
+          placeholder: '数据类型',
+        },
+        children: [{ value: 'all', id: -1, label: '全部数据类型' }, { value: '数据类型1', id: 2, label: '数据类型1' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
+      },
       {
         name: 'shareType',
         type: 'Select',
@@ -111,6 +112,8 @@ export default class ViewDirectory extends Component {
 
   render() {
     const { catalogManagement: { catalogInfo, pagination2, resourceTitle }, loading } = this.props
+    console.log("详情")
+    console.log(resourceTitle)
     const columns = [
       // {
       //   title: '信息项编码',
@@ -163,28 +166,54 @@ export default class ViewDirectory extends Component {
         <div>
           <Card className={styles.InfoBlock}>
             <Row style={{ marginBottom: 10 }}>
-              <Col span={6}>
-                名称: <span>{resourceTitle.resourceName || '暂无'}</span>
-              </Col>
-              <Col span={6}>
-                分类: <span>{resourceTitle.dataType || '暂无'}</span>
-              </Col>
+              <Col span={24}><h2>核心元数据</h2></Col>
               <Col span={6}>
                 信息资源代码: <span>{resourceTitle.resourceCode || '暂无'}</span>
               </Col>
               <Col span={6}>
-                信息资源格式: <span>{resourceTitle.resourceFormatClassify || '暂无'}</span>
+                信息资源名称: <span>{resourceTitle.resourceName || '暂无'}</span>
               </Col>
+              <Col span={12}>
+                信息资源属性分类: <span>{resourceTitle.resourceProjectCatalogType || '暂无'}</span>
+              </Col>
+              {/* <Col span={8}>
+                分类: <span>{resourceTitle.dataType || '暂无'}</span>
+              </Col> */}
+              {/* <Col span={8}>
+                信息资源格式: <span>{resourceTitle.resourceFormatClassify || '暂无'}</span>
+              </Col> */}
             </Row>
             <Row style={{ marginBottom: 10 }}>
               <Col span={6}>
                 提供方名称: <span>{resourceTitle.resourceProviderName || '暂无'}</span>
               </Col>
               <Col span={6}>
+                提供方代码: <span>{resourceTitle.resourceProviderCode || '暂无'}</span>
+              </Col>
+              <Col span={12}>
                 提供方内部部门: <span>{resourceTitle.resourceProviderDepartment || '暂无'}</span>
               </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
               <Col span={6}>
-                资源提供方代码: <span>{resourceTitle.resourceProviderCode || '暂无'}</span>
+                更新周期: <span>{resourceTitle.resourceUpdateCycle || '暂无'}</span>
+              </Col>
+              <Col span={6}>
+                发布日期: <span>{resourceTitle.createTime || '暂无'}</span>
+              </Col>
+              <Col span={12}>
+                共享日期: <span>{resourceTitle.shareTime || '暂无'}</span>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={6}>
+                信息资源格式: <span>{resourceTitle.resourceFormatClassify || '暂无'}</span>
+              </Col>
+              <Col span={6}>
+                关联资源代码: <span>{resourceTitle.relateCode || '暂无'}</span>
+              </Col>
+              <Col span={12}>
+                信息项: <span>{resourceTitle.itemNum || '暂无'}</span>
               </Col>
             </Row>
             <Row style={{ marginBottom: 10 }}>
