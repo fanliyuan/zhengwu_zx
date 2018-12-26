@@ -123,7 +123,7 @@ export default class SourceClassfiy extends Component {
       message.info("该类型下挂载有资源，不能删除")
       return
     }
-    dispatch({
+    await dispatch({
       type:'sourceClassfiy/deleteItem',
       payload:{id:row.id,level:row.level},
     })
@@ -235,7 +235,7 @@ export default class SourceClassfiy extends Component {
 
   render() {
     const { classfiyName, ztClassfiyName, bmClassfiyName } = this.state
-    const { sourceClassfiy:{loadings, dataList, paginations, mountMessage} } = this.props
+    const { sourceClassfiy:{loadings, dataList = [], paginations, mountMessage} } = this.props
     mountMsg = mountMessage
     const columns = [
       {
@@ -371,7 +371,7 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="onlyId" onChange={this.handleTableChange} bordered />
               </div>
             </TabPane>
             <TabPane tab="2 主题信息资源类" key="2">
@@ -387,7 +387,7 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange1} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="onlyId" onChange={this.handleTableChange1} bordered />
               </div>
             </TabPane>
             <TabPane tab="3 部门信息资源类" key="3">
@@ -403,7 +403,7 @@ export default class SourceClassfiy extends Component {
                 </Button>
               </div>
               <div>
-                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="id" onChange={this.handleTableChange2} bordered />
+                <Table loading={loadings} columns={columns} dataSource={dataList} pagination={paginations && {...paginations, showQuickJumper: true, showTotal: (total) => `共 ${Math.ceil(total / paginations.pageSize)}页 / ${total}条 数据`}} rowKey="onlyId" onChange={this.handleTableChange2} bordered />
               </div>
             </TabPane>
           </Tabs>

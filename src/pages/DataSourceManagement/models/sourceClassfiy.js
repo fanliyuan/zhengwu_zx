@@ -21,6 +21,9 @@ export default {
       try{
         if(+response.code === 0){
           const paginations = response.total > 9 ? {current:response.page,pageSize:response.size,total:response.total} : false
+          response.data.forEach((item,i) => {
+            item.onlyId = i
+          })
           yield put({
             type:'list',
             payload:{lists:response.data,paginations},
@@ -52,7 +55,7 @@ export default {
     //     payload:[0],
     //   }) 
     // },
-    *deleteItem({ payload} ,{ call,put }){
+    *deleteItem({ payload} ,{ call }){
       let response = yield call(deletes,{params:payload, headers: {token: undefined}})
       response = JSON.parse(response)
       try{
@@ -62,10 +65,10 @@ export default {
           //   type:'',
           //   payload:{},
           // })
-          yield put({
-            type:'getLists',
-            payload:{type:1,index:1,pageSize:10},
-          })
+          // yield put({
+          //   type:'getLists',
+          //   payload:{type:1,index:1,pageSize:10},
+          // })
           // yield put(routerRedux.push('/dataSourceManagement/sourceClassfiy'))
         }else {
           message.error('删除失败')

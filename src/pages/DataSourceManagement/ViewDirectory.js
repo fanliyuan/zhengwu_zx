@@ -31,7 +31,7 @@ export default class ViewDirectory extends Component {
       //   typeOptions: {
       //     placeholder: '数据类型',
       //   },
-      //   children: [{ value: 'all', id: -1, label: '全部数据类型' }, { value: '数据类型1', id: 2, label: '数据类型1' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
+      //   children: [{ value: 'all', id: -1, label: '全部数据类型' }, { value: '字符型C', id: 1, label: '字符型C' }, { value: '数值型N', id: 2, label: '数值型N' },{ value: '货币型Y', id: 3, label: '货币型Y' }, { value: '日期型D', id: 4, label: '日期型D' }, { value: '日期型D', id: 5, label: '日期型D' },{ value: '日期型D', id: 6, label: '' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
       // },
       {
         name: 'shareType',
