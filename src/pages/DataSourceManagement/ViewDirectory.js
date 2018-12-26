@@ -25,14 +25,14 @@ export default class ViewDirectory extends Component {
           placeholder: '信息项名称',
         },
       },
-      {
-        name: 'resourceDataType',
-        type:'Select',
-        typeOptions: {
-          placeholder: '数据类型',
-        },
-        children: [{ value: 'all', id: -1, label: '全部数据类型' }, { value: '数据类型1', id: 2, label: '数据类型1' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
-      },
+      // {
+      //   name: 'resourceDataType',
+      //   type:'Select',
+      //   typeOptions: {
+      //     placeholder: '数据类型',
+      //   },
+      //   children: [{ value: 'all', id: -1, label: '全部数据类型' }, { value: '数据类型1', id: 2, label: '数据类型1' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
+      // },
       {
         name: 'shareType',
         type: 'Select',
@@ -112,8 +112,6 @@ export default class ViewDirectory extends Component {
 
   render() {
     const { catalogManagement: { catalogInfo, pagination2, resourceTitle }, loading } = this.props
-    console.log("详情")
-    console.log(resourceTitle)
     const columns = [
       // {
       //   title: '信息项编码',
