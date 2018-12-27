@@ -281,7 +281,12 @@ class TaskView extends Component {
       },
       {
         title: '同步频率',
-        value: `${basicInfo.syncRate / 10} 秒`,
+        value: (() => {
+          if (info.value) {
+            return `${info.value.syncEntity.syncRate} - 每${this.setTimeFormat(info.value.syncEntity.timeSet)}`
+          }
+          return ''
+        })(),
       },
       {
         title: '状态',
