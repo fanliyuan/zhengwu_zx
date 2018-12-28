@@ -638,7 +638,7 @@ export default class ResourceConnection extends Component {
               信息资源摘要:
               <span> {resourceDetail && resourceDetail.resourceAbstract}</span>
             </h3>
-            <Button style={{ marginLeft: 10 }} onClick={this.isFolderOrExpand}>
+            <Button style={{ position: 'absolute', right: 35, top: 20 }} onClick={this.isFolderOrExpand}>
               {isExpandOrFolder ? '展开' : '收起'}
             </Button>
             <Divider />

@@ -25,14 +25,25 @@ export default class ViewDirectory extends Component {
           placeholder: '信息项名称',
         },
       },
-      // {
-      //   name: 'resourceDataType',
-      //   type:'Select',
-      //   typeOptions: {
-      //     placeholder: '数据类型',
-      //   },
-      //   children: [{ value: 'all', id: -1, label: '全部数据类型' }, { value: '字符型C', id: 1, label: '字符型C' }, { value: '数值型N', id: 2, label: '数值型N' },{ value: '货币型Y', id: 3, label: '货币型Y' }, { value: '日期型D', id: 4, label: '日期型D' }, { value: '日期型D', id: 5, label: '日期型D' },{ value: '日期型D', id: 6, label: '' }].map(item => <Option value={item.value} key={item.value} title={item.label}>{item.label}</Option>),
-      // },
+      {
+        name: 'dataType',
+        type:'Select',
+        typeOptions: {
+          placeholder: '数据类型',
+        },
+        children: [{ id: 1, label: '字符型C', value: 'C' },
+        { id: 2, label: '数值型N', value: 'N' },
+        { id: 3, label: '货币型Y', value: 'Y' },
+        { id: 4, label: '日期型D', value: 'D' },
+        { id: 5, label: '日期时间型T', value: 'T' },
+        { id: 6, label: '逻辑型L', value: 'L' },
+        { id: 7, label: '备注型M', value: 'M' },
+        { id: 8, label: '通用型G', value: 'G' },
+        { id: 9, label: '双精度型B', value: 'B' },
+        { id: 10, label: '整型I', value: 'I' },
+        { id: 11, label: '浮点型F', value: 'F' },
+        { id: 12, label: '自定义' }].map(item => <Option value={item.label} key={item.id} title={item.label}>{item.label}</Option>),
+      },
       {
         name: 'shareType',
         type: 'Select',

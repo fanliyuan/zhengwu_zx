@@ -202,6 +202,11 @@ export default class OpenShare extends Component {
     // })
     return (
       <PageHeaderLayout>
+        <div className="btncls">
+          <Button onClick={this.handleBack} className="fr mr40">
+            返回
+          </Button>
+        </div>
         <Card>
           <div className={styles.form}>
             <h3>
@@ -224,7 +229,7 @@ export default class OpenShare extends Component {
               信息资源摘要:
               <span> {resourceDetail && resourceDetail.resourceAbstract}</span>
             </h3>
-            <Button style={{ marginLeft: 10 }} onClick={this.isFolderOrExpand}>
+            <Button style={{ position: 'absolute', right: 35, top: 20 }} onClick={this.isFolderOrExpand}>
               {isExpandOrFolder ? '展开' : '收起'}
             </Button>
             <Divider />
@@ -312,7 +317,7 @@ export default class OpenShare extends Component {
                   >
                   保存
                 </Button> */}
-                <Button onClick={this.handleBack}>返回</Button>
+                {/* <Button onClick={this.handleBack}>返回</Button> */}
               </div>
             </FormItem>
           </Form>
