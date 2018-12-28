@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'dva'
 import { Table, Button, Tabs, List, Card } from 'antd'
 import router from 'umi/router'
+import moment from 'moment'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import DataBaseInfo from '@/components/DataBaseInfo'
@@ -250,7 +251,7 @@ class TaskView extends Component {
           dataBaseName: info.value.dbName,
           dataBaseType: info.value.datasourceEntity.type,
           dataName: info.value.name,
-          updateTime: info.value.updateTime,
+          updateTime: moment(info.value.updateTime).format('YYYY-MM-DD HH:mm:ss'),
           createUnit: info.value.createUnit,
           appsysName: info.value.appsysName,
           dutyName: info.value.dutyName,
@@ -280,7 +281,12 @@ class TaskView extends Component {
       },
       {
         title: '同步频率',
-        value: `${basicInfo.syncRate / 10} 秒`,
+        value: (() => {
+          if (info.value) {
+            return `${info.value.syncEntity.syncRate} - 每${this.setTimeFormat(info.value.syncEntity.timeSet)}`
+          }
+          return ''
+        })(),
       },
       {
         title: '状态',
