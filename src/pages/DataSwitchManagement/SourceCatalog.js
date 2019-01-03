@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
 import { Card, Form, Table, Divider, Tabs } from 'antd'
+import moment from 'moment'
 import router from 'umi/router'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import FilterRowForm from '@/components/FilterRowForm'
@@ -114,9 +115,7 @@ class SourceCatalog extends Component {
           <a
             onClick={() =>
               router.push(
-                `/subscribe/sourceCatalog/infoResource/${record.resourceId}/${
-                  record.mountResourceId
-                }`
+                `/dataPublicManagement/infoSource/${record.mountResourceId}`
               )
             }
             >
@@ -300,6 +299,7 @@ class SourceCatalog extends Component {
     const { dispatch } = this.props
     paramsPage = { pageNum: 1, pageSize: 10 }
     const fields = fieldsForm
+    formValues = { ...fieldsForm }
     Object.defineProperty(fields, 'date', {
       value: ``,
     })
@@ -315,7 +315,12 @@ class SourceCatalog extends Component {
         value: ``,
       })
     }
-    formValues = { ...fieldsForm }
+    Object.defineProperty(paramsTime, 'startTime', {
+      value: moment(paramsTime.startTime).format('YYYY-M-D'),
+    })
+    Object.defineProperty(paramsTime, 'endTime', {
+      value: moment(paramsTime.endTime).format('YYYY-M-D'),
+    })
     formTime = paramsTime
     const values = {
       ...fields,
@@ -451,36 +456,36 @@ class SourceCatalog extends Component {
               },
               options: nodes,
             },
-            {
-              type: 'Select',
-              prop: 'status',
-              label: '订阅状态',
-              typeOptions: {
-                placeholder: '请选择订阅状态',
-              },
-              options: [
-                {
-                  key: '全部',
-                  value: '',
-                },
-                {
-                  key: '待审核',
-                  value: '待审核',
-                },
-                {
-                  key: '未订阅',
-                  value: '未订阅',
-                },
-                {
-                  key: '已订阅',
-                  value: '已订阅',
-                },
-                {
-                  key: '已拒绝',
-                  value: '已拒绝',
-                },
-              ],
-            },
+            // {
+            //   type: 'Select',
+            //   prop: 'status',
+            //   label: '订阅状态',
+            //   typeOptions: {
+            //     placeholder: '请选择订阅状态',
+            //   },
+            //   options: [
+            //     {
+            //       key: '全部',
+            //       value: '',
+            //     },
+            //     {
+            //       key: '待审核',
+            //       value: '待审核',
+            //     },
+            //     {
+            //       key: '未订阅',
+            //       value: '未订阅',
+            //     },
+            //     {
+            //       key: '已订阅',
+            //       value: '已订阅',
+            //     },
+            //     {
+            //       key: '已拒绝',
+            //       value: '已拒绝',
+            //     },
+            //   ],
+            // },
             {
               type: 'RangePicker',
               prop: 'date',
