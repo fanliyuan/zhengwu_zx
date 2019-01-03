@@ -38,6 +38,10 @@ const module = {
       name: 'directoryListAll',
       url: 'directoryListAll',
     },
+    {
+      name: 'listResourceBasicByDity',
+      url: 'listResourceBasicByDity',
+    },
   ],
 }
 module.apis.forEach(item => {
