@@ -490,6 +490,12 @@ export default [
             component: './DataSwitchManagement/AssessLogs',
             hideInMenu: true,
           },
+          {
+            name: 'sourceCatalog',
+            path: 'sourceCatalog',
+            component: './DataSwitchManagement/SourceCatalog',
+            authority: ['operator', 'operator-n'],
+          },
         ],
         authority: ['operator', 'operator-n', 'assessor-n'],
       },

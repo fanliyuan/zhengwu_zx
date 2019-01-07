@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import { Form, Button, Input, Select, DatePicker, Row, Col } from 'antd'
+import { Form, Button, Input, Select, DatePicker, Row, Col, Cascader, Checkbox } from 'antd'
 import moment from 'moment'
 
 const { RangePicker } = DatePicker
@@ -83,6 +83,27 @@ export default class FilterRowForm extends PureComponent {
                       })(
                         <RangePicker style={{ width: '100%' }} placeholder={['开始时间', '结束时间']} />
                       )}
+                    </FormItem>
+                  </Col>
+                )
+              case 'Cascader':
+                return (
+                  <Col md={formData.md} sm={formData.lg} key={compent.prop}>
+                    <FormItem label={compent.label}>
+                      {getFieldDecorator(compent.prop, {
+                        initialValue: data[compent.prop],
+                      })(<Cascader {...compent.typeOptions} />)}
+                    </FormItem>
+                  </Col>
+                )
+              case 'Checkbox':
+                return (
+                  <Col md={formData.md} sm={formData.lg} key={compent.prop}>
+                    <FormItem label={compent.label}>
+                      {getFieldDecorator(compent.prop, {
+                        initialValue: data[compent.prop],
+                      })(<Checkbox {...compent.typeOptions} />)}
+                      {compent.checkLabel}
                     </FormItem>
                   </Col>
                 )

@@ -325,6 +325,7 @@ export default {
   'menu.dataPublicManagement.infoSource': '信息资源',
   'menu.dataSwitchManagement': '数据订阅管理',
   'menu.dataSwitchManagement.allSub': '订阅管理',
+  'menu.dataSwitchManagement.sourceCatalog': '资源目录',
   'menu.dataSwitchManagement.subscriptionTable': '订阅表',
   'menu.dataSwitchManagement.assessLogs': '审核日志',
   'menu.portalManagement': '开放门户',

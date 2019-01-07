@@ -21,6 +21,7 @@ import meta from './meta'
 import resource from './resource'
 import organization from './organization'
 import logging from './logging'
+import openApi from './openApi'
 
 class ApiSub extends apiBase {
   constructor (module) {
@@ -43,4 +44,5 @@ export default {
   ...apiFactory(new ApiSub(resource)),
   ...apiFactory(new ApiSub(organization)),
   ...apiFactory(new ApiSub(logging)),
+  ...apiFactory(new ApiSub(openApi)),
 }
