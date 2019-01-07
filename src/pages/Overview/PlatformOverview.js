@@ -481,8 +481,8 @@ export default class PlatformOverview extends Component {
     for (let i = 1; i < 7; i += 1) {
       rankingListData.push({
         id: i,
-        title: '石家庄市民政局',
-        jg: '石家庄市民政',
+        title: '白银市民政局',
+        jg: '白银市民政',
         total: 10000,
       })
     }
@@ -491,7 +491,7 @@ export default class PlatformOverview extends Component {
       rankingListData1.push({
         id: i,
         title: '人口普查信息',
-        jg: '石家庄市民政',
+        jg: '白银市民政',
         total: 10000,
       })
     }
