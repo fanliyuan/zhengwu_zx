@@ -561,7 +561,7 @@ class SourceCatalog extends Component {
                   />
               </div>
             </TabPane>
-            <TabPane tab="API资源" key="2">
+            <TabPane tab="" key="2" disabled>
               <div className={styles.tableList}>
                 <div className={styles.tableListForm}>{this.renderForm(2)}</div>
                 <Table
