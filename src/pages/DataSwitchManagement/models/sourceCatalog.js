@@ -37,15 +37,25 @@ export default {
       }
     },
     *fetchApi({ payload }, { call, put }) {
-      const response = yield call(listResourceBasicByDity, { params: payload })
-      if (response.code === 0) {
+      try {
+        const response = yield call(listResourceBasicByDity, { params: payload })
+        if (+response.code === 0) {
+          yield put({
+            type: 'queryListApi',
+            payload: response,
+          })
+          yield put({
+            type: 'setPageApi',
+            payload: response.page,
+          })
+        }
+      } catch (error) {
+        console.log(error)
         yield put({
           type: 'queryListApi',
-          payload: response,
-        })
-        yield put({
-          type: 'setPageApi',
-          payload: response.page,
+          payload: {
+            dataListApi: [],
+          },
         })
       }
     },
