@@ -202,22 +202,6 @@ class TaskView extends Component {
         render: text => this.setFileSize(text),
       },
       {
-        title: '新增记录数',
-        dataIndex: 'insertNum',
-      },
-      {
-        title: '更新记录数',
-        dataIndex: 'updateNum',
-      },
-      {
-        title: '删除记录数',
-        dataIndex: 'deleteNum',
-      },
-      {
-        title: '忽略记录数',
-        dataIndex: 'ignoreNum',
-      },
-      {
         title: '错误记录数',
         dataIndex: 'errorNum',
       },
