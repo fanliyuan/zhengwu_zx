@@ -191,7 +191,7 @@ class SourceCatalog extends Component {
       },
     },
     {
-      title: '订阅状态',
+      title: '申请状态',
       align: 'center',
       dataIndex: 'orderStatus',
       render: text => {
@@ -199,9 +199,9 @@ class SourceCatalog extends Component {
           case '待审核':
             return <span style={{ color: '#5cadff' }}>待审核</span>
           case '未订阅':
-            return <span style={{ color: '#999999' }}>未订阅</span>
+            return <span style={{ color: '#999999' }}>未申请</span>
           case '已订阅':
-            return <span style={{ color: '#19be6b' }}>已订阅</span>
+            return <span style={{ color: '#19be6b' }}>已申请</span>
           case '已拒绝':
             return <span style={{ color: '#ed4014' }}>已拒绝</span>
           default:
