@@ -198,9 +198,9 @@ class SourceCatalog extends Component {
         switch (text) {
           case '待审核':
             return <span style={{ color: '#5cadff' }}>待审核</span>
-          case '未订阅':
+          case '未申请':
             return <span style={{ color: '#999999' }}>未申请</span>
-          case '已订阅':
+          case '已申请':
             return <span style={{ color: '#19be6b' }}>已申请</span>
           case '已拒绝':
             return <span style={{ color: '#ed4014' }}>已拒绝</span>
