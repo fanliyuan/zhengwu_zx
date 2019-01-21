@@ -31,7 +31,7 @@ export default {
         yield put({
           type: 'queryList',
           payload: {
-            dataList: [],
+            dataList: {},
           },
         })
       }
@@ -54,7 +54,7 @@ export default {
         yield put({
           type: 'queryListApi',
           payload: {
-            dataListApi: [],
+            dataListApi: {},
           },
         })
       }
