@@ -24,8 +24,10 @@ const option = {
 		formatter: "{a} : {b}",
 	},
 	legend: {
-		x: "right",
-		data: ["已对接", "未对接"],
+		right: 20,
+		bottom: 20,
+		orient: 'vertical',
+		data: ["节点正常运行", "节点服务停止运行", "节点未初始化", "节点告警", "节点失去联系"],
 	},
 	series: [{
 		type: "graph",
@@ -39,28 +41,49 @@ const option = {
 			name: "中心节点",
 			itemStyle: {
 				normal: {
-					color: "#fc9205",
+					color: "#2481BA",
 				},
 			},
 			}, {
-				name: "已对接",
+				name: "节点正常运行",
 				itemStyle: {
 					normal: {
-						color: "#3c97f1",
+						color: "#51C524",
 					},
 				},
 			}, {
-				name: "未对接",
+				name: "节点服务停止运行",
 				itemStyle: {
 					normal: {
-						color: "#c1c1c1",
+						color: "#FC6257",
 					},
 				},
+		}, {
+			name: "节点未初始化",
+			itemStyle: {
+				normal: {
+					color: "#1EBBAD",
+				},
+			},
+		}, {
+			name: "节点告警",
+			itemStyle: {
+				normal: {
+					color: "#FD9941",
+				},
+			},
+		}, {
+			name: "节点失去联系",
+			itemStyle: {
+				normal: {
+					color: "#F33D22",
+				},
+			},
 		}],
 		force: {
 			repulsion: 190,
 			gravity: 0.01,
-			edgeLength: [160, 150],
+			edgeLength: [360, 150],
 			layoutAnimation: true,
 		},
 		symbol: mainframe,
@@ -108,6 +131,7 @@ const option = {
 export default class NodeMonitor extends Component {
 	
 	treeHandle = (e) => {
+		console.log(e)
 		if (e && e.data && e.data.name === '中心节点') {
 			this.props.dispatch(
 				routerRedux.push('/monitor/node')

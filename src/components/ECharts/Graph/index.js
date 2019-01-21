@@ -44,6 +44,7 @@ export default class Relation extends Component {
       tooltip,
       series,
     })
+    window.onresize = echartRelation.resize
     echartRelation.on('click', onClick)
   }
 
