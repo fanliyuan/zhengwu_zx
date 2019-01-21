@@ -1,13 +1,14 @@
 import { message } from 'antd'
 import apis from '../../../api'
 
-const { getEntityInfo } = apis
+const { getEntityInfo, getDataByMog } = apis
 
 export default {
   namespace: 'dbView',
 
   state: {
     entityInfo: {},
+    dataList: {},
   },
 
   effects: {
@@ -22,6 +23,25 @@ export default {
         message.error(response.msg)
       }
     },
+    *getDataByMog({ payload }, { call, put }) {
+      try {
+        const response = yield call(getDataByMog, { params: payload })
+        if (+response.code === 200) {
+          yield put({
+            type: 'saveDataList',
+            payload: response,
+          })
+        }
+      } catch (error) {
+        console.log(error)
+        yield put({
+          type: 'saveDataList',
+          payload: {
+            dataList: {},
+          },
+        })
+      }
+    },
   },
 
   reducers: {
@@ -31,10 +51,17 @@ export default {
         entityInfo: payload.data,
       }
     },
+    saveDataList(state, { payload }) {
+      return {
+        ...state,
+        dataList: payload,
+      }
+    },
     reset(state) {
       return {
         ...state,
         entityInfo: {},
+        dataList: {},
       }
     },
   },

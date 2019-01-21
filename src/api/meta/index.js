@@ -12,6 +12,16 @@ const module = {
       method:'get',
     },
     {
+      name: 'getDataById',
+      url: 'getDataById',
+      method:'get',
+    },
+    {
+      name: 'getDataByMog',
+      url: 'getDataByMog',
+      method:'get',
+    },
+    {
       name: 'getResourceByDataId',
       url: 'getResourceByDataId',
       method:'get',

@@ -1,22 +1,38 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Table, Button, Card } from 'antd'
 import { connect } from 'dva'
+import moment from 'moment'
 
 import PageHeaderWrapper from '@/components/PageHeaderWrapper'
 import DataBaseInfo from '@/components/DataFileInfo'
+import FilterRowForm from '@/components/FilterRowForm'
+
+import styles from './View.less'
+
+let formValues
+let formTime
 
 @connect(({ dbView, loading }) => ({
   dbView,
   loading: loading.models.dbView,
 }))
-class DBView extends Component {
+class FileView extends Component {
 
   componentDidMount() {
     const { dispatch, match } = this.props
+    formValues = {}
+    formTime = {}
     dispatch({
       type: 'dbView/getReqBeanEntityInfo',
       payload: {
         id: match.params.id,
+      },
+    })
+    dispatch({
+      type: 'dbView/getDataByMog',
+      payload: {
+        id: match.params.id,
+        status: 1,
       },
     })
   }
@@ -25,6 +41,34 @@ class DBView extends Component {
     const { dispatch } = this.props
     dispatch({
       type: 'dbView/reset',
+    })
+  }
+
+  handleSearch = (fieldsForm, paramsTime) => {
+    const { dispatch, match } = this.props
+    formValues = { ...fieldsForm }
+    const fields = fieldsForm
+    Object.defineProperty(fields, 'date', {
+      value: ``,
+    })
+    formTime = paramsTime
+    Object.defineProperty(formTime, 'startTime', {
+      value: moment(formTime.startTime).format('YYYY-MM-DD 00:00:00'),
+    })
+    Object.defineProperty(formTime, 'endTime', {
+      value: moment(formTime.endTime).format('YYYY-MM-DD 11:59:59'),
+    })
+    const values = {
+      ...fields,
+      ...formTime,
+    }
+    dispatch({
+      type: 'dbView/getDataByMog',
+      payload: {
+        id: match.params.id,
+        status: 1,
+        ...values,
+      },
     })
   }
 
@@ -49,18 +93,49 @@ class DBView extends Component {
     history.goBack()
   }
 
+  renderForm() {
+    const actions = {
+      handleSearch: this.handleSearch,
+    }
+    const formData = {
+      md: 8,
+      lg: 24,
+      xl: 48,
+      data: [
+        {
+          key: 1,
+          data: [
+            {
+              prop: 'name',
+              label: '文件名称',
+              typeOptions: {
+                placeholder: '请输入文件名称',
+                maxLength: 50,
+              },
+            },
+            {
+              type: 'RangePicker',
+              prop: 'date',
+              label: '更新时间',
+            },
+          ],
+        },
+      ],
+    }
+    const data = {
+      ...formValues,
+    }
+    return <FilterRowForm formData={formData} actions={actions} data={data} />
+  }
+
   render() {
-    let currentDetail
-    let currentList = []
     let dataBaseInfo
     const {
         loading,
-        dbView: { entityInfo },
+        dbView: { entityInfo, dataList },
         } = this.props
     const keyArr = Object.keys(entityInfo)
     if (keyArr.length > 0) {
-      currentDetail = entityInfo.value
-      currentList = currentDetail.fileEntityCollection
       const {
           name,
           createUnit,
@@ -96,14 +171,15 @@ class DBView extends Component {
       {
         title: '最近更新时间',
         dataIndex: 'uploadTime',
+        render: text => moment(text).format('YYYY-MM-DD HH:mm:ss'),
       },
     ]
     const paginationProps = {
       showQuickJumper: true,
-      total: currentList.length,
+      total: dataList.total,
       pageSize: 10,
-      showTotal() {
-        return `共${Math.ceil(currentList.length / 10)}页 / ${currentList.length}条数据`
+      showTotal(total) {
+        return `共${Math.ceil(total / 10)}页 / ${total}条数据`
       },
     }
     const buttonList = (
@@ -118,20 +194,21 @@ class DBView extends Component {
     return (
       <PageHeaderWrapper action={buttonList}>
         <Card bordered={false} loading={loading}>
-          <Fragment>
-            <DataBaseInfo dataBaseInfo={dataBaseInfo} />
+          <DataBaseInfo dataBaseInfo={dataBaseInfo} />
+          <div className={styles.tableList}>
+            <div className={styles.tableListForm}>{this.renderForm()}</div>
             <Table
               bordered
               pagination={paginationProps}
-              dataSource={currentList}
-              columns={tableColumn}
+              dataSource={dataList.data}
               className="mt16"
+              columns={tableColumn}
               rowKey="id"
               />
-          </Fragment>
+          </div>
         </Card>
       </PageHeaderWrapper>
     )
   }
 }
-export default DBView
+export default FileView
